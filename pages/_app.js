@@ -1,7 +1,11 @@
-import '../styles/globals.css'
+import StyledProvider from '../components/providers/StyleProvider';
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
-}
+const App = ({ Component, pageProps }) => {
+	return (
+		<StyledProvider>
+			<Component {...pageProps} />
+		</StyledProvider>
+	);
+};
 
-export default MyApp
+export default App;
