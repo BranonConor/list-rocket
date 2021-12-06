@@ -9,6 +9,7 @@ import { UserContext } from '../../contexts/UserContext';
 import UserIcon from '../icons/user';
 import { motion } from 'framer-motion';
 import styles from './sidebar.module.scss';
+import styled from 'styled-components';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 
