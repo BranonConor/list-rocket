@@ -2,7 +2,7 @@ import { EventContext } from '../../contexts/EventContext';
 import ProfilePhoto from '../images/profile-photo';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { motion } from 'framer-motion';
-import styles from './workspace-controls.module.scss';
+import styled from 'styled-components';
 import { useContext } from 'react';
 
 const WorkspaceControls = () => {
