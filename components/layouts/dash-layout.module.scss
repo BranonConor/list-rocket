@@ -1,0 +1,29 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+/* ---- STYLES ----- */
+.layout {
+    width: 100%;
+    box-sizing: border-box;
+    @extend %col-center;
+    background: $dark-bg;
+    color: white;
+}
+.sideHeader {
+    width: 75px;
+    height: 100%;
+}
+.flexContainer {
+    width: 100%;
+    height: 100vh;
+    @extend %row-center-left;
+}
+.main {
+    position: relative;
+    width: calc(100% - 75px);
+    height: 100%;
+    overflow-y: scroll;
+    padding: $padding-std;
+    box-sizing: border-box;
+    @extend %col-top-left;
+}

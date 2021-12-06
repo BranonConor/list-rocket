@@ -1,0 +1,7 @@
+@import '../../styles/variables.scss';
+
+.ProfilePhoto {
+    border-radius: 100%;
+    border: 1px solid $primary-accent;
+    box-shadow: $glow;
+}

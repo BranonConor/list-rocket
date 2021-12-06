@@ -1,0 +1,33 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
+
+.CreateEventForm {
+    @extend %col-center;
+    padding: $padding-std;
+    box-sizing: border-box;
+    width: 350px;
+    border-radius: 10px;
+    background: $space4;
+    margin: 16px 0;
+
+    .input {
+        box-sizing: border-box;
+        border-radius: 5px;
+        padding: $padding-small;
+        width: 100%;
+        background: $blue-bg;
+        outline: none;
+        border: 1px solid $primary-accent;
+        color: white;
+        margin: 8px 0;
+
+        &::placeholder {
+            color: $primary-accent;
+        }
+    }
+
+    .submit {
+        @extend %btn-styles;
+        margin: 16px 0;
+    }
+}
