@@ -1,9 +1,17 @@
-import styles from './profile-photo.module.scss'
+import styled from 'styled-components';
 
 const ProfilePhoto = (props) => {
-    return (
-        <img src={props.photo} className={styles.ProfilePhoto} width={props.dimensions} height={props.dimensions} />
-    )
-}
+	return (
+		<StyledImage
+			src={props.photo}
+			width={props.dimensions}
+			height={props.dimensions}
+		/>
+	);
+};
 
-export default ProfilePhoto
+export default ProfilePhoto;
+
+const StyledImage = styled.img`
+	border-radius: 100%;
+`;
