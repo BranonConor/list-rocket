@@ -8,7 +8,6 @@ const Button = (props) => {
 	return (
 		<StyledButton
 			href={props.link}
-			className={props.isDisabled ? styles.disabled : styles.button}
 			download={props.download === true}
 			onClick={handleClick}>
 			{/* if an icon prop is passed, display it */}
