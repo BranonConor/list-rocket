@@ -30,7 +30,9 @@ const GlobalStyle = createGlobalStyle`
 
 const theme = {
 	colors: {
+		/* GENERAL */
 		primary: '#fafafa',
+		bgDark: 'black',
 
 		/* FONT */
 		bodyText: 'black',
@@ -43,5 +45,8 @@ const theme = {
 		buttonTextDark: 'black',
 		buttonBorderLight: 'white',
 		buttonBorderDark: 'black',
+
+		/* MENU */
+		menuLinkHover: 'rgba(250,250,250, 0.15)',
 	},
 };

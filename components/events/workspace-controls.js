@@ -3,12 +3,8 @@ import ProfilePhoto from '../images/profile-photo';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { useContext } from 'react';
 
 const WorkspaceControls = () => {
-	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
-	const { events } = useContext(EventContext);
-
 	const handleLoadEvent = async (e, id) => {
 		e.preventDefault();
 		console.log(id);

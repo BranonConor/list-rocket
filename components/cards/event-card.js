@@ -1,18 +1,8 @@
-import { EventContext } from '../../contexts/EventContext';
-import TrashIcon from '../icons/trash';
-import { WorkspaceContext } from '../../contexts/WorkspaceContext';
-import axios from 'axios';
 import { motion } from 'framer-motion';
-import styles from './event-card.module.scss';
-import { useContext } from 'react';
-import { useRouter } from 'next/router';
+import styled from 'styled-components';
 import Button from '../buttons/Button';
 
 const EventCard = (props) => {
-	const router = useRouter();
-	const { getAllEvents } = useContext(EventContext);
-	const { prepWorkspace, setCurrentEvent } = useContext(WorkspaceContext);
-
 	const handleDelete = async (e) => {
 		e.preventDefault();
 		const res = await axios({
@@ -40,7 +30,7 @@ const EventCard = (props) => {
 			<StyledButtonContainer>
 				<Button onClick={handleEnter}>Enter event</Button>
 				<StyledDeleteButton onClick={handleDelete}>
-					<TrashIcon />
+					<img src='/icons/trash.svg' alt='Trash Icon' />
 				</StyledDeleteButton>
 			</StyledButtonContainer>
 		</StyledCard>

@@ -28,7 +28,7 @@ const DashLayout = ({ children }) => {
 				<StyledHeader>
 					<Sidebar />
 				</StyledHeader>
-				<StyledMainSection className={styles.main}>
+				<StyledMainSection>
 					{children}
 					<Footer />
 				</StyledMainSection>

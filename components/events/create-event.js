@@ -1,15 +1,9 @@
 import { useContext, useState } from 'react';
-
-import { EventContext } from '../../contexts/EventContext';
-import { UserContext } from '../../contexts/UserContext';
-import axios from 'axios';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import Button from '../buttons/Button';
 
 const CreateEventForm = () => {
-	const { user } = useContext(UserContext);
-	const { getAllEvents } = useContext(EventContext);
 	const [nameValue, setNameValue] = useState('');
 	const [descriptionValue, setDescriptionValue] = useState('');
 
@@ -39,7 +33,6 @@ const CreateEventForm = () => {
 		<StyledForm
 			action='/api/events/new'
 			method='POST'
-			className={styles.CreateEventForm}
 			onSubmit={handleSubmit}
 			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
 			animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
@@ -52,7 +45,6 @@ const CreateEventForm = () => {
 				placeholder='Choose a name'
 				value={nameValue}
 				onChange={handleName}
-				className={styles.input}
 			/>
 			<label htmlFor='description'></label>
 			<StyledInput
@@ -62,7 +54,6 @@ const CreateEventForm = () => {
 				placeholder='Add a description'
 				value={descriptionValue}
 				onChange={handleDescription}
-				className={styles.input}
 			/>
 			<Button type='submit'>Create event</Button>
 		</StyledForm>
