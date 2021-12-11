@@ -1,7 +1,7 @@
 import Footer from '../footer';
 import Head from 'next/head';
 import Navbar from '../navbars/navbar';
-import styles from './web-layout.module.scss';
+import styled from 'styled-components';
 
 export const siteTitle = 'A productivity tool for streamlining events';
 
@@ -58,3 +58,4 @@ const StyledMainSection = styled.div`
 	padding: 16px;
 	box-sizing: border-box;
 `;
+const StyledHeader = styled.header``;

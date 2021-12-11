@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
     background: #00000;
     margin: 0 auto;
     padding: 0;
+    font-family: 'Baloo Tamma 2';
   }
 
   body {
@@ -30,5 +31,17 @@ const GlobalStyle = createGlobalStyle`
 const theme = {
 	colors: {
 		primary: '#fafafa',
+
+		/* FONT */
+		bodyText: 'black',
+
+		/* LINKS */
+		linkText: 'white',
+
+		/* BUTTON */
+		buttonTextLight: 'white',
+		buttonTextDark: 'black',
+		buttonBorderLight: 'white',
+		buttonBorderDark: 'black',
 	},
 };

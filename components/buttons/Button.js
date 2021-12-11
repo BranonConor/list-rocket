@@ -9,7 +9,8 @@ const Button = (props) => {
 		<StyledButton
 			href={props.link}
 			download={props.download === true}
-			onClick={handleClick}>
+			onClick={handleClick}
+			{...props}>
 			{/* if an icon prop is passed, display it */}
 			{props.icon && (
 				<img
@@ -27,7 +28,8 @@ const Button = (props) => {
 
 export default Button;
 
-const StyledButton = styled.a`
+const StyledButton = styled.a(
+	({ light, theme: { colors } }) => `
 	min-width: 125px;
 	margin: 16px 32px;
 	background: none;
@@ -37,16 +39,15 @@ const StyledButton = styled.a`
 	justify-content: center;
 	align-items: center;
 	border-radius: 5px;
-	border: 1px solid $primary-accent;
-	color: white;
+	border: 1px solid ${light ? colors.buttonBorderLight : colors.buttonBorderDark};
+	color: ${light ? colors.buttonTextLight : colors.buttonTextDark};
 	text-decoration: none;
-	box-shadow: $glow;
 	outline: none;
 	animation: glow 5s infinite linear;
 
 	&:hover {
 		box-shadow: none;
 		cursor: pointer;
-		animation: none;
 	}
-`;
+`
+);
