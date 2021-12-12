@@ -78,14 +78,22 @@ const StyledAnchor = styled.a(
     height: 64px;
 	background: ${isActive && colors.bgLight};
 	box-shadow: inset ${isActive && shadows.standard};
-	transform: ${isActive && 'scale(1.1)'};
 	transition: 0.1s ease all;
+
+	img {
+		transition: 0.1s ease all;
+		transform: ${isActive && 'scale(1.3)'};
+	}
 
     &:hover {
         cursor: pointer;
         background: ${colors.bgLight};
 		box-shadow: inset ${shadows.standard};
-		transform: scale(1.10);
+
+		img {
+			transition: 0.1s ease all;
+			transform: scale(1.3);
+		}
     }
     `
 );
