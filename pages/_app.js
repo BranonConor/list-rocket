@@ -1,10 +1,13 @@
 import StyledProvider from '../components/providers/StyleProvider';
+import { SessionProvider } from 'next-auth/react';
 
-const App = ({ Component, pageProps }) => {
+const App = ({ Component, pageProps: { session, ...pageProps } }) => {
 	return (
-		<StyledProvider>
-			<Component {...pageProps} />
-		</StyledProvider>
+		<SessionProvider session={session}>
+			<StyledProvider>
+				<Component {...pageProps} />
+			</StyledProvider>
+		</SessionProvider>
 	);
 };
 

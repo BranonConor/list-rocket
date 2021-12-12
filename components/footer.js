@@ -18,6 +18,7 @@ const StyledFooter = styled.div(
 	position: fixed;
 	bottom: 0;
 	left: 0;
+	z-index: 5;
 	height: 32px;
 	width: 100%;
 	color: gray;
