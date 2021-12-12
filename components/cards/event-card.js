@@ -28,9 +28,9 @@ const EventCard = (props) => {
 			<p>{props.description}</p>
 
 			<StyledButtonContainer>
-				<Button onClick={handleEnter}>Enter event</Button>
+				<Button onClick={handleEnter} content='Enter event' />
 				<StyledDeleteButton onClick={handleDelete}>
-					<img src='/icons/trash.svg' alt='Trash Icon' />
+					<img src='/icons/trash-light.svg' alt='Trash Icon' />
 				</StyledDeleteButton>
 			</StyledButtonContainer>
 		</StyledCard>
@@ -65,13 +65,18 @@ const StyledButtonContainer = styled.div`
 
 const StyledDeleteButton = styled.button`
 	width: 50px;
-	border: 1px solid rgb(255, 0, 0);
+	background: rgba(255, 0, 0, 0.75);
 	border-radius: 5px;
 	box-sizing: border-box;
+	padding: 8px;
+	outline: none;
+	border: none;
+	transition: 0.15s ease all;
 
 	&:hover {
 		box-shadow: none;
 		animation: none;
 		cursor: pointer;
+		transform: scale(1.025);
 	}
 `;

@@ -17,6 +17,8 @@ const theme = {
 		black: 'black',
 		white: 'white',
 		bgLight: '#f2f2f2',
+		bgPurple: '#BB6BD9',
+		bgPurpleLight: '#E0B7EF',
 		bgDark: '#071D3F',
 		primaryGradient:
 			'linear-gradient(180deg, #071D3F 54.69%, #0071A2 86.98%, #0092D1 99.99%, #00B2FF 100%)',

@@ -31,23 +31,22 @@ export default Button;
 const StyledButton = styled.a(
 	({ light, theme: { colors } }) => `
 	min-width: 125px;
-	margin: 16px 32px;
-	background: none;
+	margin: 16px 0;
+	background: ${colors.bgPurple};
 	padding: 8px 16px;
 	box-sizing: border-box;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	border-radius: 5px;
-	border: 1px solid ${light ? colors.buttonBorderLight : colors.buttonBorderDark};
-	color: ${light ? colors.buttonTextLight : colors.buttonTextDark};
+	color: ${colors.white};
 	text-decoration: none;
 	outline: none;
-	animation: glow 5s infinite linear;
-
+	transition: 0.15s ease all;
+	
 	&:hover {
-		box-shadow: none;
 		cursor: pointer;
+		transform: scale(1.025);
 	}
 `
 );

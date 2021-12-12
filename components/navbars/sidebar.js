@@ -16,7 +16,7 @@ const Sidebar = () => {
 				initial={{ y: '75%', opacity: 0 }}
 				animate={{ y: '0%', opacity: 1 }}
 				transition={{ ease: 'easeIn', duration: '1', type: 'spring' }}>
-				<StyledLogo src='/icons/rocket-plain.svg' alt='rocket icon' />
+				<StyledLogo src='/icons/rocket.svg' alt='rocket icon' />
 			</StyledBrand>
 
 			<Menu />
