@@ -105,7 +105,6 @@ const StyledEventsContainer = styled.div(
 	margin: 16px 16px 16px 0;
 	width: 25%;
 	background: ${colors.bgLight};
-	box-shadow: ${shadows.standard};
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
@@ -134,7 +133,6 @@ const StyledEventInfoContainer = styled(motion.a)(
 	margin: 16px 16px 16px 0;
 	width: 75%;
 	background: ${colors.bgLight};
-	box-shadow: ${shadows.standard};
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;

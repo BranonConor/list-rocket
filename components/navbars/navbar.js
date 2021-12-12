@@ -62,6 +62,8 @@ const StyledBrand = styled.div`
 	width: 200px;
 	height: auto;
 	padding: 4px;
+	display: flex;
+	align-items: center;
 `;
 const StyledLogo = styled.img`
 	height: 32px;
@@ -113,6 +115,12 @@ const StyledItem = styled.li`
 
 	&:hover {
 		cursor: pointer;
+	}
+
+	&:nth-of-type(1) {
+		@media only screen and (max-width: 450px) {
+			display: none;
+		}
 	}
 `;
 

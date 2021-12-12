@@ -33,10 +33,12 @@ const StyledWrapper = styled.div`
 const StyledH1 = styled.h1`
 	margin: 8px 0;
 	padding: 0;
+	text-align: center;
 `;
 const StyledH3 = styled.h3`
 	margin: 0;
 	padding: 0;
+	text-align: center;
 `;
 const StyledLogo = styled.img`
 	width: 40px;

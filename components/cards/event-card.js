@@ -48,7 +48,7 @@ const StyledCard = styled(motion.div)(
 	margin: 16px 16px 16px 0;
 	padding: 16px;
 	background: ${colors.bgLight};
-	box-shadow: ${shadows.standard};
+	
 
 	&:hover {
 		transform: translateY(2px);
