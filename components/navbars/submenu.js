@@ -4,10 +4,12 @@ import Link from 'next/link';
 const Submenu = () => {
 	return (
 		<StyledList>
-			<StyledListItem href='/'>
-				<StyledAnchor>
-					<img src='/icons/home.svg' atl='Home Icon' />
-				</StyledAnchor>
+			<StyledListItem>
+				<Link href='/'>
+					<StyledAnchor>
+						<img src='/icons/home.svg' atl='Home Icon' />
+					</StyledAnchor>
+				</Link>
 			</StyledListItem>
 			<StyledListItem>
 				<StyledAnchor
@@ -35,7 +37,7 @@ const StyledList = styled.div(
 	width: 100%;
 `
 );
-const StyledListItem = styled.div(
+const StyledListItem = styled.li(
 	({ theme: { colors } }) => `
 	display: flex;
 	align-items: center;

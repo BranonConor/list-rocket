@@ -24,20 +24,17 @@ const Navbar = () => {
 			<StyledMenu>
 				<StyledList>
 					<StyledItem>
-						<StyledLink href='/'>
-							<StyledAnchor>Home</StyledAnchor>
-						</StyledLink>
-					</StyledItem>
-					<StyledItem>
 						<StyledLink href='/dashboard'>
 							<StyledAnchor>Dashboard</StyledAnchor>
 						</StyledLink>
 					</StyledItem>
-					{user ? (
-						<Button content='Sign out' light />
-					) : (
-						<Button content='Sign in' light />
-					)}
+					<StyledItem>
+						{user ? (
+							<Button content='Sign out' light />
+						) : (
+							<Button content='Sign in' light />
+						)}
+					</StyledItem>
 				</StyledList>
 			</StyledMenu>
 		</StyledWrapper>
@@ -86,7 +83,7 @@ const StyledList = styled.ul`
 const StyledLink = styled(Link)(
 	({ theme: { colors } }) => `
 	height: 100%;
-	width: 50px;
+	min-width: 50px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -108,7 +105,7 @@ const StyledItem = styled.li`
 	align-items: center;
 	justify-content: center;
 	padding: 8px 16px;
-	width: 75px;
+	min-width: 75px;
 	height: 75px;
 	overflow: hidden;
 	transition: 0.1s ease all;
