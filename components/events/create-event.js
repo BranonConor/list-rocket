@@ -71,7 +71,6 @@ const StyledForm = styled(motion.form)(
 	border-radius: 10px;
 	margin: 16px 0;
 	background: ${colors.bgLight};
-	box-shadow: ${shadows.standard};
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;

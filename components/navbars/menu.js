@@ -79,6 +79,7 @@ const StyledAnchor = styled.a(
 	background: ${isActive && colors.bgLight};
 	box-shadow: inset ${isActive && shadows.standard};
 	transform: ${isActive && 'scale(1.1)'};
+	transition: 0.1s ease all;
 
     &:hover {
         cursor: pointer;

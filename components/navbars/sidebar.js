@@ -43,9 +43,8 @@ const StyledWrapper = styled.div(
 	padding: 0;
 	height: 100vh;
 	background: ${colors.white};
-	border-right: 2px solid ${colors.menuBorder};
-	box-shadow: ${shadows.standard};
-`
+	border-right: 3px solid ${colors.menuBorder};
+	`
 );
 const StyledBrand = styled.div`
 	padding: 16px 0;

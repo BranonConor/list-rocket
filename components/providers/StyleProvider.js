@@ -44,7 +44,7 @@ const theme = {
 	},
 	shadows: {
 		/* CARDS */
-		standard: '0px 4px 6px rgba(101, 172, 194, 0.25)',
+		standard: '0px 4px 6px rgba(0, 0, 0, 0.1)',
 	},
 };
 
