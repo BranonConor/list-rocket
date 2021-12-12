@@ -10,7 +10,7 @@ const UserList = (props) => {
 			transition={{ ease: 'easeIn', duration: '0.25', type: 'spring' }}>
 			<StyledTitle>
 				<ProfilePhoto photo={props.photo} dimensions='40px' />
-				{props.name ? <h3>{props.name}'s List</h3> : <h3>Your List</h3>}
+				<h3>Your List</h3>
 			</StyledTitle>
 		</StyledList>
 	);
