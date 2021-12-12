@@ -18,10 +18,11 @@ const GlobalStyle = createGlobalStyle`
     margin: 0 auto;
     padding: 0;
     font-family: 'Baloo Tamma 2';
+	background: black;
   }
 
   body {
-    background-color: #fafafa;
+    background: black;
     min-height: 100vh;
     padding: 0;
     margin: 0;

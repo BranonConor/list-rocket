@@ -1,4 +1,4 @@
-import ProfilePhoto from '../images/profile-photo';
+import ProfilePhoto from '../profile-photo';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 

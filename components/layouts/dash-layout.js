@@ -43,6 +43,7 @@ const StyledWrapper = styled.div`
 	width: 100%;
 	box-sizing: border-box;
 	color: white;
+	background: none;
 `;
 const StyledHeader = styled.header`
 	width: 75px;
@@ -51,6 +52,8 @@ const StyledHeader = styled.header`
 const StyledContainer = styled.div`
 	width: 100%;
 	height: 100vh;
+	overflow: auto;
+	display: flex;
 `;
 const StyledMainSection = styled.div`
 	position: relative;
@@ -59,4 +62,5 @@ const StyledMainSection = styled.div`
 	overflow-y: scroll;
 	padding: 16px;
 	box-sizing: border-box;
+	background: none;
 `;

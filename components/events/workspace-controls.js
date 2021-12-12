@@ -1,6 +1,4 @@
-import { EventContext } from '../../contexts/EventContext';
-import ProfilePhoto from '../images/profile-photo';
-import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import ProfilePhoto from '../profile-photo';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
@@ -10,6 +8,20 @@ const WorkspaceControls = () => {
 		console.log(id);
 		prepWorkspace(id);
 	};
+
+	//MOCK DATA
+	const events = [
+		{
+			name: 'Test Event',
+			_id: '1',
+		},
+		{
+			name: 'Test Event',
+			_id: '2',
+		},
+	];
+
+	const currentEvent = false;
 
 	return (
 		<StyledWrapper>
@@ -46,7 +58,7 @@ const WorkspaceControls = () => {
 			</StyledEventsContainer>
 			{/* ---- EVENT INFORMATION ---- */}
 			<StyledEventInfoContainer>
-				{Object.keys(currentEvent).length ? (
+				{currentEvent ? (
 					<>
 						<h2>Currently working on: {currentEvent.name}</h2>
 						<p>Event Creator:</p>
@@ -89,7 +101,7 @@ const StyledEventsContainer = styled.div`
 	margin: 16px 16px 16px 0;
 	width: 25%;
 `;
-const StyledEventsContainer = styled.div`
+const StyledEventsWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	width: 100%;
