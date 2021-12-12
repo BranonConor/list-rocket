@@ -18,7 +18,9 @@ const theme = {
 		white: 'white',
 		bgLight: '#f2f2f2',
 		bgPurple: '#BB6BD9',
-		bgPurpleLight: '#E0B7EF',
+		bgPurpleLight: '#C889DF',
+		bgRed: 'rgba(255, 0, 0, 0.75)',
+		bgRedLight: 'rgba(255, 0, 0, 0.60)',
 		bgDark: '#071D3F',
 		primaryGradient:
 			'linear-gradient(180deg, #071D3F 54.69%, #0071A2 86.98%, #0092D1 99.99%, #00B2FF 100%)',

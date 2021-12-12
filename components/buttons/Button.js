@@ -42,11 +42,11 @@ const StyledButton = styled.a(
 	color: ${colors.white};
 	text-decoration: none;
 	outline: none;
-	transition: 0.15s ease all;
+	transition: 0.10s ease all;
 	
 	&:hover {
 		cursor: pointer;
-		transform: scale(1.025);
+		background: ${colors.bgPurpleLight};
 	}
 `
 );

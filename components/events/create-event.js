@@ -37,7 +37,8 @@ const CreateEventForm = () => {
 			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
 			animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
 			transition={{ ease: 'easeIn', duration: '0.25', type: 'spring' }}>
-			<label htmlFor='name'>Create a new event 🚀</label>
+			<h3>Create a new event 🚀</h3>
+			<label htmlFor='name'></label>
 			<StyledInput
 				type='text'
 				name='name'
@@ -71,6 +72,10 @@ const StyledForm = styled(motion.form)(
 	margin: 16px 0;
 	background: ${colors.bgLight};
 	box-shadow: ${shadows.standard};
+
+	@media only screen and (max-width: 768px) {
+		width: 100%;
+	}
 `
 );
 const StyledInput = styled.input`

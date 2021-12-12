@@ -53,6 +53,11 @@ const StyledCard = styled(motion.div)(
 	&:hover {
 		transform: translateY(2px);
 	}
+
+	@media only screen and (max-width: 768px) {
+		width: 100%;
+		margin: 16px 0;
+	}
 `
 );
 
@@ -63,20 +68,22 @@ const StyledButtonContainer = styled.div`
 	width: 100%;
 `;
 
-const StyledDeleteButton = styled.button`
+const StyledDeleteButton = styled.button(
+	({ theme: { colors } }) => `
 	width: 50px;
-	background: rgba(255, 0, 0, 0.75);
+	background: ${colors.bgRed};
 	border-radius: 5px;
 	box-sizing: border-box;
 	padding: 8px;
 	outline: none;
 	border: none;
-	transition: 0.15s ease all;
+	transition: 0.10s ease all;
 
 	&:hover {
 		box-shadow: none;
 		animation: none;
 		cursor: pointer;
-		transform: scale(1.025);
+		background: ${colors.bgRedLight};
 	}
-`;
+`
+);
