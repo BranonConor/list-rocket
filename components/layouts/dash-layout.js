@@ -42,7 +42,6 @@ export default DashLayout;
 const StyledWrapper = styled.div`
 	width: 100%;
 	box-sizing: border-box;
-	color: white;
 	background: none;
 `;
 const StyledHeader = styled.header`
@@ -60,7 +59,7 @@ const StyledMainSection = styled.div`
 	width: calc(100% - 75px);
 	height: 100%;
 	overflow-y: scroll;
-	padding: 16px;
+	padding: 32px;
 	box-sizing: border-box;
 	background: none;
 `;

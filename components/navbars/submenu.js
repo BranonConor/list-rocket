@@ -1,35 +1,25 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 
-const Menu = () => {
+const Submenu = () => {
 	return (
 		<StyledList>
-			<StyledListItem>
-				<Link href='/dashboard'>
-					<StyledAnchor>
-						<img src='icons/grid.svg' alt='Dashboard' />
-					</StyledAnchor>
-				</Link>
+			<StyledListItem href='/'>
+				<StyledAnchor>
+					<img src='/icons/home.svg' atl='Home Icon' />
+				</StyledAnchor>
 			</StyledListItem>
 			<StyledListItem>
-				<Link href='/workspace'>
-					<StyledAnchor>
-						<img src='icons/pencil.svg' alt='Pencil icon' />
-					</StyledAnchor>
-				</Link>
-			</StyledListItem>
-			<StyledListItem>
-				<Link href='/profile'>
-					<StyledAnchor>
-						<img src='/icons/user.svg' alt='user icon' />
-					</StyledAnchor>
-				</Link>
+				<StyledAnchor
+					href={`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/api/logout`}>
+					<img src='/icons/logout.svg' alt='Logout icon' />
+				</StyledAnchor>
 			</StyledListItem>
 		</StyledList>
 	);
 };
 
-export default Menu;
+export default Submenu;
 
 const StyledList = styled.div(
 	({ theme: { colors } }) => `
@@ -41,7 +31,7 @@ const StyledList = styled.div(
 	position: relative;
 	top: 0;
 	z-index: 10;
-	padding: 32px 0;
+	padding: 32px 0 0 0;
 	width: 100%;
 `
 );
@@ -70,6 +60,7 @@ const StyledAnchor = styled.a(
 	z-index: 10;
 	width: 100%;
     height: 64px;
+	transition: 0.15s ease all;
 
     &:hover {
         cursor: pointer;

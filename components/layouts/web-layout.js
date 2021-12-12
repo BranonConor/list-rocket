@@ -42,7 +42,6 @@ export default WebLayout;
 const StyledLayout = styled.div`
 	width: 100%;
 	box-sizing: border-box;
-	color: white;
 `;
 const StyledContainer = styled.div`
 	width: 100%;

@@ -39,13 +39,22 @@ const EventCard = (props) => {
 
 export default EventCard;
 
-const StyledCard = styled(motion.div)`
+const StyledCard = styled(motion.div)(
+	({ theme: { colors, shadows } }) => `
 	width: 350px;
 	border-radius: 10px;
 	box-sizing: border-box;
 	text-align: left;
 	margin: 16px 16px 16px 0;
-`;
+	padding: 16px;
+	background: ${colors.bgLight};
+	box-shadow: ${shadows.standard};
+
+	&:hover {
+		transform: translateY(2px);
+	}
+`
+);
 
 const StyledButtonContainer = styled.div`
 	display: flex;
