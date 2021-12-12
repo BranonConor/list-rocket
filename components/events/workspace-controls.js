@@ -12,11 +12,11 @@ const WorkspaceControls = () => {
 	//MOCK DATA
 	const events = [
 		{
-			name: 'Test Event',
+			name: 'Event 1',
 			_id: '1',
 		},
 		{
-			name: 'Test Event',
+			name: 'Event 2',
 			_id: '2',
 		},
 	];
@@ -93,29 +93,54 @@ export default WorkspaceControls;
 const StyledWrapper = styled.div`
 	display: flex;
 	width: 100%;
+	@media only screen and (max-width: 768px) {
+		flex-direction: column;
+	}
 `;
-const StyledEventsContainer = styled.div`
+const StyledEventsContainer = styled.div(
+	({ theme: { colors, shadows } }) => `
 	border-radius: 10px;
 	padding: 16px;
 	box-sizing: border-box;
 	margin: 16px 16px 16px 0;
 	width: 25%;
-`;
+	background: ${colors.bgLight};
+	box-shadow: ${shadows.standard};
+
+	@media only screen and (max-width: 768px) {
+		width: 100%;
+	}
+`
+);
 const StyledEventsWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	width: 100%;
 `;
-const StyledEvent = styled(motion.a)`
+const StyledEvent = styled(motion.a)(
+	({ theme: { colors } }) => `
 	margin: 4px 8px 4px 0;
-`;
-const StyledEventInfoContainer = styled(motion.a)`
+	padding: 0 8px;
+	border-radius: 10px;
+	color: ${colors.white};
+	background: ${colors.secondaryGradient};
+`
+);
+const StyledEventInfoContainer = styled(motion.a)(
+	({ theme: { colors, shadows } }) => `
 	border-radius: 10px;
 	padding: 16px;
 	box-sizing: border-box;
 	margin: 16px 16px 16px 0;
 	width: 75%;
-`;
+	background: ${colors.bgLight};
+	box-shadow: ${shadows.standard};
+
+	@media only screen and (max-width: 768px) {
+		width: 100%;
+	}
+`
+);
 const StyledInfoCard = styled(motion.a)`
 	display: flex;
 	align-items: center;

@@ -1,26 +1,32 @@
 import styled from 'styled-components';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const Menu = () => {
+	const currentRoute = useRouter().pathname;
+
 	return (
 		<StyledList>
 			<StyledListItem>
 				<Link href='/dashboard'>
-					<StyledAnchor>
+					<StyledAnchor
+						isActive={currentRoute === '/dashboard' ? true : false}>
 						<img src='icons/grid.svg' alt='Dashboard' />
 					</StyledAnchor>
 				</Link>
 			</StyledListItem>
 			<StyledListItem>
 				<Link href='/workspace'>
-					<StyledAnchor>
+					<StyledAnchor
+						isActive={currentRoute === '/workspace' ? true : false}>
 						<img src='icons/pencil.svg' alt='Pencil icon' />
 					</StyledAnchor>
 				</Link>
 			</StyledListItem>
 			<StyledListItem>
 				<Link href='/profile'>
-					<StyledAnchor>
+					<StyledAnchor
+						isActive={currentRoute === '/profile' ? true : false}>
 						<img src='/icons/user.svg' alt='user icon' />
 					</StyledAnchor>
 				</Link>
@@ -59,7 +65,7 @@ const StyledListItem = styled.div(
 `
 );
 const StyledAnchor = styled.a(
-	({ theme: { colors, shadows } }) => `
+	({ isActive, theme: { colors, shadows } }) => `
 	display: flex;
 	align-items: center;
     justify-content: center;
@@ -70,6 +76,9 @@ const StyledAnchor = styled.a(
 	z-index: 10;
 	width: 100%;
     height: 64px;
+	background: ${isActive && colors.bgLight};
+	box-shadow: inset ${isActive && shadows.standard};
+	transform: ${isActive && 'scale(1.1)'};
 
     &:hover {
         cursor: pointer;

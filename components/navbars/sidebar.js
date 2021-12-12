@@ -41,7 +41,7 @@ const StyledWrapper = styled.div(
 	overflow: hidden;
 	width: 100%;
 	padding: 0;
-	height: 100%;
+	height: 100vh;
 	background: ${colors.white};
 	border-right: 2px solid ${colors.menuBorder};
 	box-shadow: ${shadows.standard};

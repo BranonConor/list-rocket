@@ -5,26 +5,17 @@ import { signIn, useSession } from 'next-auth';
 
 const Hero = () => {
 	const handleSignIn = () => {
-		signIn('google', { callbackUrl: 'http://localhost:3000/' });
+		signIn('google', { callbackUrl: 'http://localhost:3000' });
 	};
 
 	return (
 		<StyledWrapper>
-			<StyledLogoWrapper
-				initial={{ y: '500%', opacity: 0 }}
-				animate={{ y: '-25%', opacity: 1 }}
-				transition={{ ease: 'easeIn', duration: '2', type: 'spring' }}>
-				<StyledLogo src='/icons/rocket-plain.svg' alt='Rocket Icon' />
-				<StyledFlame />
-				<StyledFlame />
-				<StyledFlame />
-			</StyledLogoWrapper>
-
-			<StyledContent>
-				<h1>Welcome to ListRocket</h1>
-				<h3>A productivity tool for streamlining event planning</h3>
-				<Button content='Get started!' onClick={handleSignIn} />
-			</StyledContent>
+			<StyledLogo src='/icons/rocket.svg' alt='Rocket Icon' />
+			<StyledH1>Welcome to ListRocket</StyledH1>
+			<StyledH3>
+				A productivity tool for streamlining event planning
+			</StyledH3>
+			<Button content='Get started!' onClick={handleSignIn} />
 		</StyledWrapper>
 	);
 };
@@ -34,15 +25,19 @@ export default Hero;
 const StyledWrapper = styled.div`
 	margin: 75px 0 0 0;
 	padding: 32px 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 `;
-const StyledContent = styled.div``;
-const StyledLogoWrapper = styled(motion.div)``;
+const StyledH1 = styled.h1`
+	margin: 8px 0;
+	padding: 0;
+`;
+const StyledH3 = styled.h3`
+	margin: 0;
+	padding: 0;
+`;
 const StyledLogo = styled.img`
 	width: 40px;
-`;
-const StyledFlame = styled.div`
-	width: 3px;
-	height: 3px;
-	border-radius: 100%;
-	background: orange;
 `;
