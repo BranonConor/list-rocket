@@ -55,30 +55,35 @@ const CreateEventForm = () => {
 				value={descriptionValue}
 				onChange={handleDescription}
 			/>
-			<Button type='submit'>Create event</Button>
+			<Button type='submit' content='Create event' />
 		</StyledForm>
 	);
 };
 
 export default CreateEventForm;
 
-const StyledForm = styled(motion.form)`
+const StyledForm = styled(motion.form)(
+	({ theme: { colors, shadows } }) => `
 	padding: 16px;
 	box-sizing: border-box;
 	width: 350px;
 	border-radius: 10px;
 	margin: 16px 0;
-`;
+	background: ${colors.bgLight};
+	box-shadow: ${shadows.standard};
+`
+);
 const StyledInput = styled.input`
+	font-family: 'Baloo Tamma 2';
 	box-sizing: border-box;
 	border-radius: 5px;
 	padding: 8px;
 	width: 100%;
 	outline: none;
-	color: white;
+	border: none;
 	margin: 8px 0;
 
 	&::placeholder {
-		color: blue;
+		font-family: 'Baloo Tamma 2';
 	}
 `;

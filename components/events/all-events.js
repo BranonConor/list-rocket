@@ -5,6 +5,8 @@ import styled from 'styled-components';
 const AllEvents = () => {
 	const events = [
 		{ name: 'Event 1', _id: '1', description: 'This is an event' },
+		{ name: 'Event 2', _id: '2', description: 'This is an event' },
+		{ name: 'Event 3', _id: '3', description: 'This is an event' },
 	];
 
 	return (
