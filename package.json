@@ -8,14 +8,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@svgr/webpack": "^6.1.1",
+    "framer-motion": "^5.3.3",
     "next": "12.0.7",
+    "next-auth": "^4.0.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "styled-components": "^5.3.3"
+    "sass": "^1.44.0",
+    "styled-components": "^5.3.3",
+    "v8": "^0.1.0"
   },
   "devDependencies": {
+    "babel-plugin-styled-components": "latest",
     "eslint": "8.4.0",
-    "eslint-config-next": "12.0.7",
-    "babel-plugin-styled-components": "latest"
+    "eslint-config-next": "12.0.7"
   }
 }

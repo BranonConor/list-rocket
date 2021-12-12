@@ -1,16 +1,25 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import styled from 'styled-components';
+import Hero from '../components/hero';
+import WebLayout from '../components/layouts/web-layout';
 
 const Home = () => {
-	return <StyledWrapper>Hello!</StyledWrapper>;
+	return (
+		<WebLayout>
+			<Head>
+				<title>Home | List Rocket</title>
+				<link rel='icon' href='/favicon.ico' />
+			</Head>
+
+			<main>
+				<Hero />
+			</main>
+		</WebLayout>
+	);
 };
 
 export default Home;
 
-const StyledWrapper = styled.div`
-	width: 100%;
-	height: 100vh;
-	background: black;
-	color: white;
-`;
+// export async function getServerSideProps(ctx) {
+//   const cookie = ctx.req ? ctx.req.headers.cookie : undefined;
+//   return {props: {cookie: cookie}}
+// }
