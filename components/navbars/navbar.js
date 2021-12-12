@@ -19,9 +19,7 @@ const Navbar = () => {
 	return (
 		<StyledWrapper>
 			<StyledBrand>
-				<a href='/'>
-					<StyledLogo src='/icons/logo.svg' alt='Light Logo' />
-				</a>
+				<StyledLogo src='/icons/logo.svg' alt='Light Logo' />
 			</StyledBrand>
 			<StyledMenu>
 				<StyledList>
