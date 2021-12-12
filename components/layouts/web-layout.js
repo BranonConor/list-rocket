@@ -52,7 +52,7 @@ const StyledContainer = styled.div`
 `;
 const StyledMainSection = styled.div`
 	position: relative;
-	width: calc(100% - 75px);
+	width: 100%;
 	height: 100%;
 	padding: 16px;
 	box-sizing: border-box;

@@ -3,11 +3,13 @@ import styled from 'styled-components';
 const Footer = () => {
 	return (
 		<StyledFooter>
-			App by the
-			<StyledAnchor href='https://www.branon.dev' target='_blank'>
-				{' '}
-				AXN Creative
-			</StyledAnchor>
+			<StyledSpan>
+				App by
+				<StyledAnchor href='https://www.branon.dev' target='_blank'>
+					{' '}
+					AXN Creative
+				</StyledAnchor>
+			</StyledSpan>
 		</StyledFooter>
 	);
 };
@@ -20,13 +22,13 @@ const StyledFooter = styled.div`
 	left: 0;
 	height: 32px;
 	width: 100%;
-	color: white;
+	color: gray;
 	display: flex;
 	justify-content: center;
 `;
 const StyledAnchor = styled.a(
 	({ theme: { colors } }) => `
-	color: ${colors.linkText};
+	color: ${colors.bgPurple};
 	padding: 0 0 0 8px;
 	
 	&:hover {
@@ -34,3 +36,8 @@ const StyledAnchor = styled.a(
 	}
 `
 );
+const StyledSpan = styled.span`
+	border-radius: 10px;
+	background: white;
+	padding: 0 16px;
+`;
