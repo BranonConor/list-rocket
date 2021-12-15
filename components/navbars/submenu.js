@@ -1,7 +1,18 @@
 import styled from 'styled-components';
 import Link from 'next/link';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { Router, useRouter } from 'next/router';
 
 const Submenu = () => {
+	//Access session data
+	const { data: session } = useSession();
+	const router = useRouter();
+
+	const handleSignOut = () => {
+		signOut();
+		router.push('/');
+	};
+
 	return (
 		<StyledList>
 			<StyledListItem>
@@ -12,10 +23,9 @@ const Submenu = () => {
 				</Link>
 			</StyledListItem>
 			<StyledListItem>
-				<StyledAnchor
-					href={`${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/api/logout`}>
+				<StyledButton onClick={handleSignOut}>
 					<img src='/icons/logout.svg' alt='Logout icon' />
-				</StyledAnchor>
+				</StyledButton>
 			</StyledListItem>
 		</StyledList>
 	);
@@ -63,6 +73,31 @@ const StyledAnchor = styled.a(
 	width: 100%;
     height: 64px;
 	transition: 0.15s ease all;
+
+    &:hover {
+        cursor: pointer;
+        background: ${colors.bgLight};
+		box-shadow: inset ${shadows.standard};
+		transform: scale(1.10);
+    }
+    `
+);
+const StyledButton = styled.button(
+	({ theme: { colors, shadows } }) => `
+	display: flex;
+	align-items: center;
+    justify-content: center;
+	list-style: none;
+	box-sizing: border-box;
+	position: relative;
+	top: 0;
+	z-index: 10;
+	width: 100%;
+    height: 64px;
+	outline: none;
+	border: none;
+	transition: 0.15s ease all;
+	background: none;
 
     &:hover {
         cursor: pointer;

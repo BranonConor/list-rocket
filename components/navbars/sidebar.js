@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import Menu from './menu';
 import Submenu from './submenu';
+import Link from 'next/link';
 
 const Sidebar = () => {
 	// const handleLogout = (event) => {
@@ -12,14 +13,26 @@ const Sidebar = () => {
 
 	return (
 		<StyledWrapper>
-			<StyledBrand
-				initial={{ y: '75%', opacity: 0 }}
-				animate={{ y: '0%', opacity: 1 }}
-				transition={{ ease: 'easeIn', duration: '1', type: 'spring' }}>
-				<StyledLogo src='/icons/rocket.svg' alt='rocket icon' />
-			</StyledBrand>
-
-			<Menu />
+			<StyledMenu>
+				<StyledBrand
+					initial={{ y: '75%', opacity: 0 }}
+					animate={{ y: '0%', opacity: 1 }}
+					transition={{
+						ease: 'easeIn',
+						duration: '1',
+						type: 'spring',
+					}}>
+					<StyledLink href='/'>
+						<StyledAnchor>
+							<StyledLogo
+								src='/icons/rocket.svg'
+								alt='rocket icon'
+							/>
+						</StyledAnchor>
+					</StyledLink>
+				</StyledBrand>
+				<Menu />
+			</StyledMenu>
 
 			<Submenu />
 		</StyledWrapper>
@@ -52,11 +65,22 @@ const StyledBrand = styled.div`
 	top: 0;
 	z-index: 8;
 	width: 100%;
-	height: 100px;
+	height: auto;
 	display: flex;
 	justify-content: center;
 `;
-
+const StyledLink = styled(Link)`
+	width: 100%;
+`;
+const StyledAnchor = styled.a`
+	width: 100%;
+	display: flex;
+	justify-content: center;
+`;
+const StyledMenu = styled.div`
+	width: 100%;
+	height: 50%;
+`;
 const StyledLogo = styled.img`
 	width: 50%;
 	height: 50%;
