@@ -47,7 +47,7 @@ const StyledList = styled.div(
 	position: relative;
 	top: 0;
 	z-index: 10;
-	padding: 32px 0;
+	padding: 0;
 	width: 100%;
 `
 );

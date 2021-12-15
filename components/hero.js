@@ -2,10 +2,13 @@ import Button from './buttons/Button';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { signIn, useSession } from 'next-auth';
+import { useRouter } from 'next/router';
 
 const Hero = () => {
+	const router = useRouter();
+
 	const handleSignIn = () => {
-		signIn('google', { callbackUrl: 'http://localhost:3000' });
+		router.push('/api/auth/signin');
 	};
 
 	return (
