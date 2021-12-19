@@ -1,7 +1,6 @@
 import Button from './buttons/Button';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { signIn, useSession } from 'next-auth';
 import { useRouter } from 'next/router';
 
 const Hero = () => {
