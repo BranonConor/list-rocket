@@ -1,20 +1,17 @@
 import Button from '../buttons/Button';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Navbar = () => {
-	// useEffect(() => {
-	//     const [session, loading] = useSession();
-	// })
+	const { data: session, status } = useSession();
+
 	// const handleSignIn = () => {
 	//     signIn("google", { callbackUrl: "http://localhost:3000/" });
 	// }
 	// const handleSignOut = () => {
 	//     signOut();
 	// }
-
-	//DUMMY USER - TODO: add user login context
-	const user = false;
 
 	return (
 		<StyledWrapper>
@@ -29,7 +26,7 @@ const Navbar = () => {
 						</StyledLink>
 					</StyledItem>
 					<StyledItem>
-						{user ? (
+						{session ? (
 							<Button content='Sign out' light />
 						) : (
 							<Button content='Sign in' light />
