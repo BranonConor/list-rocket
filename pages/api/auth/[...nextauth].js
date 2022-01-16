@@ -26,4 +26,7 @@ export default NextAuth({
 			return token;
 		},
 	},
+	pages: {
+		signIn: '/signin',
+	},
 });
