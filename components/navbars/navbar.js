@@ -6,12 +6,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 const Navbar = () => {
 	const { data: session, status } = useSession();
 
-	// const handleSignIn = () => {
-	//     signIn("google", { callbackUrl: "http://localhost:3000/" });
-	// }
-	// const handleSignOut = () => {
-	//     signOut();
-	// }
+	const loggedIn = session && status === 'authenticated';
 
 	return (
 		<StyledWrapper>
@@ -21,15 +16,25 @@ const Navbar = () => {
 			<StyledMenu>
 				<StyledList>
 					<StyledItem>
-						<StyledLink href='/dashboard'>
-							<StyledAnchor>Dashboard</StyledAnchor>
-						</StyledLink>
+						{loggedIn && (
+							<StyledLink href='/dashboard'>
+								<StyledAnchor>Dashboard</StyledAnchor>
+							</StyledLink>
+						)}
 					</StyledItem>
 					<StyledItem>
-						{session ? (
-							<Button content='Sign out' light />
+						{loggedIn ? (
+							<Button
+								content='Sign out'
+								light
+								onClick={() => signOut()}
+							/>
 						) : (
-							<Button content='Sign in' light />
+							<Button
+								content='Sign in'
+								light
+								onClick={() => signIn()}
+							/>
 						)}
 					</StyledItem>
 				</StyledList>
