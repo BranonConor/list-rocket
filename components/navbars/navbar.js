@@ -1,20 +1,12 @@
 import Button from '../buttons/Button';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Navbar = () => {
-	// useEffect(() => {
-	//     const [session, loading] = useSession();
-	// })
-	// const handleSignIn = () => {
-	//     signIn("google", { callbackUrl: "http://localhost:3000/" });
-	// }
-	// const handleSignOut = () => {
-	//     signOut();
-	// }
+	const { data: session, status } = useSession();
 
-	//DUMMY USER - TODO: add user login context
-	const user = false;
+	const loggedIn = session && status === 'authenticated';
 
 	return (
 		<StyledWrapper>
@@ -24,15 +16,25 @@ const Navbar = () => {
 			<StyledMenu>
 				<StyledList>
 					<StyledItem>
-						<StyledLink href='/dashboard'>
-							<StyledAnchor>Dashboard</StyledAnchor>
-						</StyledLink>
+						{loggedIn && (
+							<StyledLink href='/dashboard'>
+								<StyledAnchor>Dashboard</StyledAnchor>
+							</StyledLink>
+						)}
 					</StyledItem>
 					<StyledItem>
-						{user ? (
-							<Button content='Sign out' light />
+						{loggedIn ? (
+							<Button
+								content='Sign out'
+								light
+								onClick={() => signOut()}
+							/>
 						) : (
-							<Button content='Sign in' light />
+							<Button
+								content='Sign in'
+								light
+								onClick={() => signIn()}
+							/>
 						)}
 					</StyledItem>
 				</StyledList>
