@@ -20,8 +20,8 @@ export default function SignIn({ providers }) {
 				</StyledProviderWrapper>
 			))}
 			<StyledRocketWrapper
-				initial={{ y: '100px', opacity: 0 }}
-				animate={{ y: '0px', opacity: 1 }}
+				initial={{ y: '400px', opacity: 0 }}
+				animate={{ y: '0', opacity: 1 }}
 				transition={{
 					ease: 'easeIn',
 					duration: '2',
@@ -236,7 +236,7 @@ const StyledH1 = styled.h1(
 	({ theme: { colors } }) => `
     color: ${colors.white};
     padding: 0;
-    margin: 0;
+    margin: 0 0 16px 0;
     display: flex;
     align-items: center;
 `
