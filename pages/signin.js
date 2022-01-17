@@ -8,15 +8,182 @@ export default function SignIn({ providers }) {
 		<StyledWrapper>
 			{Object.values(providers).map((provider) => (
 				<StyledProviderWrapper key={provider.name}>
-					<StyledH1>Sign in with {provider.name}</StyledH1>
-					<StyledH4>Why complicate things? ;)</StyledH4>
+					<StyledH1>
+						Sign in with{' '}
+						<StyledGoogleLogo src='/icons/google.svg' />
+					</StyledH1>
+					<StyledH4>Get ready for liftoff.</StyledH4>
 					<Button
 						content='Sign in with Google'
 						onClick={() => signIn(provider.id)}
 					/>
 				</StyledProviderWrapper>
 			))}
-			<StyledImage src='/icons/rocket.svg' />
+			<StyledRocketWrapper
+				initial={{ y: '100px', opacity: 0 }}
+				animate={{ y: '0px', opacity: 1 }}
+				transition={{
+					ease: 'easeIn',
+					duration: '2',
+					type: 'spring',
+				}}>
+				<StyledImage
+					animate={{
+						y: [0, 10, 0, 0, 2, -10, 0],
+						repeat: Infinity,
+					}}
+					transition={{
+						duration: '1',
+						type: 'spring',
+						repeat: Infinity,
+					}}
+					src='/icons/rocket-plain.svg'
+				/>
+				<StyledFlameWrapper>
+					<StyledFlame
+						size='2px'
+						animate={{
+							y: [-50, 50],
+							opacity: [1, 0],
+							repeat: Infinity,
+						}}
+						transition={{
+							duration: '0.2',
+							delay: 0.4,
+							repeat: Infinity,
+						}}
+					/>
+					<StyledFlame
+						size='3px'
+						animate={{
+							y: [-100, 100],
+							opacity: [1, 0],
+							repeat: Infinity,
+						}}
+						transition={{
+							duration: '0.4',
+							delay: 0.5,
+							repeat: Infinity,
+						}}
+					/>
+					<StyledFlame
+						size='4px'
+						animate={{
+							y: [-80, 80],
+							opacity: [1, 0],
+							repeat: Infinity,
+						}}
+						transition={{
+							duration: '0.4',
+							delay: 0.1,
+							repeat: Infinity,
+						}}
+					/>
+					<StyledFlame
+						size='3px'
+						animate={{
+							y: [-100, 150],
+							opacity: [1, 0],
+							repeat: Infinity,
+						}}
+						transition={{
+							duration: '0.2',
+							delay: 0.3,
+							repeat: Infinity,
+						}}
+					/>
+					<StyledFlame
+						size='6px'
+						animate={{
+							y: [-100, 140],
+							opacity: [1, 0],
+							repeat: Infinity,
+						}}
+						transition={{
+							duration: '0.5',
+							repeat: Infinity,
+						}}
+					/>
+					<StyledFlame
+						size='3px'
+						animate={{
+							y: [-100, 130],
+							opacity: [1, 0],
+							repeat: Infinity,
+						}}
+						transition={{
+							duration: '0.2',
+							delay: 0.3,
+							repeat: Infinity,
+						}}
+					/>
+					<StyledFlame
+						size='7px'
+						animate={{
+							y: [-100, 150],
+							opacity: [1, 0],
+							repeat: Infinity,
+						}}
+						transition={{
+							duration: '0.55',
+							delay: 0.1,
+							repeat: Infinity,
+						}}
+					/>
+					<StyledFlame
+						size='6px'
+						animate={{
+							y: [-100, 135],
+							opacity: [1, 0],
+							repeat: Infinity,
+						}}
+						transition={{
+							duration: '0.5',
+							delay: 0.1,
+							repeat: Infinity,
+						}}
+					/>
+					<StyledFlame
+						size='3px'
+						animate={{
+							y: [-100, 120],
+							opacity: [1, 0],
+							repeat: Infinity,
+						}}
+						transition={{
+							duration: '0.2',
+							delay: 0.3,
+							repeat: Infinity,
+						}}
+					/>
+					<StyledFlame
+						size='5px'
+						animate={{
+							y: [-50, 50],
+							opacity: [1, 0],
+							repeat: Infinity,
+						}}
+						transition={{
+							duration: '0.4',
+							delay: 0.4,
+							repeat: Infinity,
+						}}
+					/>
+					<StyledFlame
+						size='3px'
+						animate={{
+							y: [-50, 50],
+							opacity: [1, 0],
+							repeat: Infinity,
+						}}
+						transition={{
+							duration: '0.2',
+							delay: 0.3,
+							repeat: Infinity,
+						}}
+					/>
+				</StyledFlameWrapper>
+			</StyledRocketWrapper>
 		</StyledWrapper>
 	);
 }
@@ -58,7 +225,7 @@ const StyledProviderWrapper = styled.div(
     background: rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(7px);
     position: absolute;
     z-index: 1;
@@ -69,6 +236,8 @@ const StyledH1 = styled.h1(
     color: ${colors.white};
     padding: 0;
     margin: 0;
+    display: flex;
+    align-items: center;
 `
 );
 const StyledH4 = styled.h4(
@@ -78,9 +247,39 @@ const StyledH4 = styled.h4(
     margin: 0;
 `
 );
-const StyledImage = styled(motion.img)`
+
+const StyledRocketWrapper = styled(motion.div)`
 	position: absolute;
 	z-index: 0;
-	width: 200px;
+	width: 250px;
+	max-width: 300px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+const StyledGoogleLogo = styled.img`
+	width: 150px;
+	margin: 0 0 0 16px;
+`;
+const StyledImage = styled(motion.img)`
+	width: 250px;
 	max-width: 300px;
 `;
+const StyledFlameWrapper = styled(motion.div)`
+	position: relative;
+	width: 200px;
+	max-width: 300px;
+	display: flex;
+	justify-content: space-around;
+`;
+const StyledFlame = styled(motion.div)(
+	(props) => `
+    position: relative;
+    z-index: -1;
+	width: ${props.size};
+	height: ${props.size};
+	background: rgba(255,192,87,0.9);
+    box-shadow: 0px 1px 32px 13px rgba(255,192,87,0.9);
+	border-radius: 100%;
+`
+);
