@@ -4,7 +4,7 @@ import DashLayout from '../components/layouts/dash-layout';
 import Head from 'next/head';
 import ProfilePhoto from '../components/profile-photo';
 import { motion } from 'framer-motion';
-import styled from 'styled-components';
+import axios from 'axios';
 
 const Dashboard = () => {
 	// const router = useRouter();
@@ -17,7 +17,7 @@ const Dashboard = () => {
 	// });
 
 	//DUMMY USER
-	const user = false;
+	const user = props.currentUser;
 
 	return (
 		<DashLayout>
@@ -47,13 +47,7 @@ const Dashboard = () => {
 
 export default Dashboard;
 
-// export async function getServerSideProps(ctx) {
-//   const cookie = ctx.req ? ctx.req.headers.cookie : undefined;
-//   const res = await axios.get('http://localhost:5000/api/current_user', {
-//     headers: {
-//         cookie: cookie
-//     }
-// });
-//   console.log(res.data);
-//   return {props: {currentUser: res.data}}
-// }
+export async function getServerSideProps() {
+	const res = await axios.get(`${process.env.NEXTAUTH_URL}/api/user`);
+	return { props: { currentUser: res.data } };
+}
