@@ -1,7 +1,34 @@
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
+import MongoClientPromise from '../../../lib/mongodb';
+
+const THIRTY_DAYS = 30 * 24 * 60 * 60;
+const THIRTY_MINUTES = 30 * 60;
 
 export default NextAuth({
+	secret: process.env.SECRET,
+	database: process.env.MONGODB_URI,
+	session: {
+		strategy: 'jwt',
+		maxAge: THIRTY_DAYS,
+		updateAge: THIRTY_MINUTES,
+	},
+	adapter: MongoDBAdapter(MongoClientPromise),
+	callbacks: {
+		session: async ({ session, token }) => {
+			if (session?.user) {
+				session.user.id = token.uid;
+			}
+			return session;
+		},
+		jwt: async ({ user, token }) => {
+			if (user) {
+				token.uid = user.id;
+			}
+			return token;
+		},
+	},
 	// Configure one or more authentication providers
 	providers: [
 		GoogleProvider({
@@ -10,22 +37,6 @@ export default NextAuth({
 		}),
 		// ...add more providers here
 	],
-	secret: process.env.SECRET,
-	database: process.env.MONGODB_URI,
-	callbacks: {
-		session: async ({ session, token, user }) => {
-			// Send properties to the client, like an access_token from a provider.
-			session.accessToken = token.accessToken;
-			return session;
-		},
-		jwt: async ({ token, account }) => {
-			// Persist the OAuth access_token to the token right after signin
-			if (account) {
-				token.accessToken = account.access_token;
-			}
-			return token;
-		},
-	},
 	pages: {
 		signIn: '/signin',
 	},

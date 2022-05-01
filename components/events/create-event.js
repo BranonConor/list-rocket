@@ -1,9 +1,14 @@
-import { useContext, useState } from 'react';
+import { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import Button from '../buttons/Button';
+import { useSession } from 'next-auth/react';
+import axios from 'axios';
+import { EventContext } from '../../contexts/EventContext';
 
 const CreateEventForm = () => {
+	const { data: session } = useSession();
+	const { getAllEvents } = useContext(EventContext);
 	const [nameValue, setNameValue] = useState('');
 	const [descriptionValue, setDescriptionValue] = useState('');
 
@@ -14,25 +19,24 @@ const CreateEventForm = () => {
 		setDescriptionValue(event.target.value);
 	};
 	const handleSubmit = async (event) => {
-		event.preventDefault();
-		const createEvent = await axios({
-			method: 'post',
-			url: `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/api/events/new`,
-			data: {
+		try {
+			event.preventDefault();
+			const res = await axios.post(`http://localhost:3000/api/events`, {
 				name: nameValue,
 				description: descriptionValue,
-				creator: user._id,
-			},
-		});
-		setNameValue('');
-		setDescriptionValue('');
-		getAllEvents();
+				creator: session.user.id,
+			});
+
+			setNameValue('');
+			setDescriptionValue('');
+			getAllEvents();
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
 		<StyledForm
-			action='/api/events/new'
-			method='POST'
 			onSubmit={handleSubmit}
 			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
 			animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
@@ -56,7 +60,7 @@ const CreateEventForm = () => {
 				value={descriptionValue}
 				onChange={handleDescription}
 			/>
-			<Button type='submit' content='Create event' />
+			<Button type='submit' content='Create event' width='100%' />
 		</StyledForm>
 	);
 };

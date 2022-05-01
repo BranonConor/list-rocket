@@ -1,21 +1,27 @@
+import axios from 'axios';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import Button from '../buttons/Button';
+import { useContext } from 'react';
+import { EventContext } from '../../contexts/EventContext';
 
 const EventCard = (props) => {
+	const { name, description, getEvents, id } = props;
+	const { getAllEvents } = useContext(EventContext);
+
+	console.log(`Card ${name}: `, id);
+
 	const handleDelete = async (e) => {
 		e.preventDefault();
-		const res = await axios({
-			method: 'delete', //DELETE REQUEST
-			url: `${process.env.SERVER_DOMAIN}/api/events/${props.id}`,
-		});
-		setCurrentEvent({});
+		const res = await axios.delete(
+			`http://localhost:3000/api/events/${id}`
+		);
 		getAllEvents();
 	};
 
 	const handleEnter = async (e) => {
-		e.preventDefault();
-		await prepWorkspace(props.id);
+		// e.preventDefault();
+		getEvents();
 		router.push('/workspace');
 	};
 
@@ -24,8 +30,8 @@ const EventCard = (props) => {
 			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
 			animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
 			transition={{ ease: 'easeIn', duration: '0.25', type: 'spring' }}>
-			<h3>{props.name}</h3>
-			<p>{props.description}</p>
+			<h3>{name}</h3>
+			<p>{description}</p>
 
 			<StyledButtonContainer>
 				<Button onClick={handleEnter} content='Enter event' />
@@ -78,6 +84,7 @@ const StyledDeleteButton = styled.button(
 	outline: none;
 	border: none;
 	transition: 0.10s ease all;
+		height: 40px;
 
 	&:hover {
 		box-shadow: none;

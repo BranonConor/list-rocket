@@ -1,16 +1,9 @@
-import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import Menu from './menu';
 import Submenu from './submenu';
 import Link from 'next/link';
 
 const Sidebar = () => {
-	// const handleLogout = (event) => {
-	//     event.preventDefault();
-	//     signOut();
-	//     router.push('/');
-	// }
-
 	return (
 		<StyledWrapper>
 			<StyledMenu>

@@ -1,13 +1,11 @@
 import EventCard from '../cards/event-card';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import { useContext } from 'react';
+import { EventContext } from '../../contexts/EventContext';
 
 const AllEvents = () => {
-	const events = [
-		{ name: 'Event 1', _id: '1', description: 'This is an event' },
-		{ name: 'Event 2', _id: '2', description: 'This is an event' },
-		{ name: 'Event 3', _id: '3', description: 'This is an event' },
-	];
+	const { events } = useContext(EventContext);
 
 	return (
 		<StyledWrapper>
