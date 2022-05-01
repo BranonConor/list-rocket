@@ -7,7 +7,6 @@ const Button = (props) => {
 
 	return (
 		<StyledButton
-			href={props.link}
 			download={props.download === true}
 			onClick={handleClick}
 			{...props}>
@@ -28,9 +27,11 @@ const Button = (props) => {
 
 export default Button;
 
-const StyledButton = styled.a(
-	({ light, theme: { colors } }) => `
-	min-width: 125px;
+const StyledButton = styled.button(
+	({ width, theme: { colors } }) => `
+	font-family: 'Barlow';
+	width: ${width || '125px'};
+	height: 40px;
 	margin: 16px 0;
 	background: ${colors.bgPurple};
 	padding: 8px 16px;
@@ -39,6 +40,7 @@ const StyledButton = styled.a(
 	justify-content: center;
 	align-items: center;
 	border-radius: 5px;
+	border: none;
 	color: ${colors.white};
 	text-decoration: none;
 	outline: none;

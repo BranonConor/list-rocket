@@ -1,18 +1,8 @@
 import styled from 'styled-components';
 import Link from 'next/link';
-import { useSession, signIn, signOut } from 'next-auth/react';
-import { Router, useRouter } from 'next/router';
+import { signOut } from 'next-auth/react';
 
 const Submenu = () => {
-	//Access session data
-	const { data: session } = useSession();
-	const router = useRouter();
-
-	const handleSignOut = () => {
-		signOut();
-		router.push('/');
-	};
-
 	return (
 		<StyledList>
 			<StyledListItem>
@@ -23,7 +13,7 @@ const Submenu = () => {
 				</Link>
 			</StyledListItem>
 			<StyledListItem>
-				<StyledButton onClick={handleSignOut}>
+				<StyledButton onClick={() => signOut()}>
 					<img src='/icons/logout.svg' alt='Logout icon' />
 				</StyledButton>
 			</StyledListItem>

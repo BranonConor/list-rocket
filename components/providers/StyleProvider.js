@@ -27,7 +27,7 @@ const theme = {
 		secondaryGradient: 'linear-gradient(180deg, #56CCF2 0%, #AD00FF 100%)',
 
 		/* FONT */
-		bodyText: 'black',
+		bodyText: '#2F2533',
 
 		/* LINKS */
 		linkText: 'white',
@@ -55,14 +55,18 @@ const GlobalStyle = createGlobalStyle(
     background: ${colors.white};
     margin: 0 auto;
     padding: 0;
-    font-family: 'Baloo Tamma 2';
+	font-family: 'Barlow';
   }
 
   body {
     min-height: 100vh;
     padding: 0;
     margin: 0;
-	color: black;
+	color: ${colors.bodyText};
+  }
+
+  h1, h2, h3 {
+	font-family: 'Lalezar';
   }
 `
 );
