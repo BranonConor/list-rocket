@@ -8,7 +8,7 @@ export default async (req, res) => {
 	if (req.method === 'GET') {
 		const user = await db
 			.collection('users')
-			.findOne({ _id: ObjectId(`${req.query.id}`) });
+			.findOne({ _id: ObjectId(req.query.id.trim()) });
 		res.json({ status: 200, data: user });
 	}
 };
