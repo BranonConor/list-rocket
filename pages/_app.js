@@ -1,7 +1,8 @@
 import StyledProvider from '../components/providers/StyleProvider';
 import { SessionProvider } from 'next-auth/react';
 import { EventProvider } from '../contexts/EventContext';
-import { UserContext, UserProvider } from '../contexts/UserContext';
+import { UserProvider } from '../contexts/UserContext';
+import { WorkspaceProvider } from '../contexts/WorkspaceContext';
 
 const App = ({ Component, pageProps: { session, ...pageProps } }) => {
 	return (
@@ -9,7 +10,9 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
 			<StyledProvider>
 				<UserProvider>
 					<EventProvider>
-						<Component {...pageProps} />
+						<WorkspaceProvider>
+							<Component {...pageProps} />
+						</WorkspaceProvider>
 					</EventProvider>
 				</UserProvider>
 			</StyledProvider>

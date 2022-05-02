@@ -5,6 +5,13 @@ export default async (req, res) => {
 	const client = await clientPromise;
 	const db = client.db('list-rocket');
 
+	if (req.method === 'GET') {
+		const event = await db
+			.collection('events')
+			.findOne({ _id: ObjectId(`${req.query.id}`) });
+		res.json({ status: 200, data: event });
+	}
+
 	if (req.method === 'DELETE') {
 		const { eventId } = req.query;
 		const formattedId = new ObjectId(`${eventId}`);
@@ -22,9 +29,4 @@ export default async (req, res) => {
 		// await user.save();
 		// res.send(req.body.name);
 	}
-
-	// if (req.method === 'GET') {
-	// 	const event = await db.collection('events').findOne({ id: req.id });
-	// 	res.json({ status: 200, data: event });
-	// }
 };

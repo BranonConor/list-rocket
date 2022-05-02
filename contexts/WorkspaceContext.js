@@ -1,33 +1,40 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, useEffect } from 'react';
 
-import axios from 'axios'
+import axios from 'axios';
 
 //create a user context to store logged in user info
 export const WorkspaceContext = createContext();
 
 //define provider for new user context
 export const WorkspaceProvider = (props) => {
+	//initialize empty user state
+	const [currentEvent, setCurrentEvent] = useState(undefined);
+	const [creator, setCreator] = useState({});
 
-    //initialize empty user state
-    const [currentEvent, setCurrentEvent] = useState({});
+	const prepWorkspace = async (eventId, creatorId) => {
+		const eventRes = await axios.get(
+			`http://localhost:3000/api/events/${eventId}`,
+			{
+				params: { id: eventId },
+			}
+		);
+		setCurrentEvent(eventRes.data.data);
+		console.log(eventRes.data);
 
-    const prepWorkspace = async (id) => {
-        const res = await axios({
-            method: 'get',
-            url: `${process.env.NEXT_PUBLIC_SERVER_DOMAIN}/api/events/${id}`,
-            withCredentials: true
-        });
-        setCurrentEvent(res.data);
-    }
+		const creatorRes = await axios.get(
+			`http://localhost:3000/api/user/${creatorId}`,
+			{
+				params: { id: creatorId },
+			}
+		);
+		console.log('Creator: ', creatorRes);
+		setCreator(creatorRes.data.data);
+	};
 
-    // //upon render, ping current user API. If someone is auth'd their info will show up in global state. otherwise, blank
-    // useEffect(() => {
-    //     prepWorkspace();
-    // }, [])
-
-    return (
-        <WorkspaceContext.Provider value={{ currentEvent, prepWorkspace, setCurrentEvent }}>
-            {props.children}
-        </WorkspaceContext.Provider>
-    )
-}
+	return (
+		<WorkspaceContext.Provider
+			value={{ currentEvent, creator, prepWorkspace, setCurrentEvent }}>
+			{props.children}
+		</WorkspaceContext.Provider>
+	);
+};

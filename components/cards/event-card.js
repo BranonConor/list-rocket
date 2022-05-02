@@ -4,12 +4,14 @@ import styled from 'styled-components';
 import Button from '../buttons/Button';
 import { useContext } from 'react';
 import { EventContext } from '../../contexts/EventContext';
+import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import { useRouter } from 'next/router';
 
 const EventCard = (props) => {
-	const { name, description, getEvents, id } = props;
+	const { name, description, id } = props;
 	const { getAllEvents } = useContext(EventContext);
-
-	console.log(`Card ${name}: `, id);
+	const { prepWorkspace } = useContext(WorkspaceContext);
+	const router = useRouter();
 
 	const handleDelete = async (e) => {
 		e.preventDefault();
@@ -19,9 +21,9 @@ const EventCard = (props) => {
 		getAllEvents();
 	};
 
-	const handleEnter = async (e) => {
-		// e.preventDefault();
-		getEvents();
+	const handleClick = async (e) => {
+		e.preventDefault();
+		await prepWorkspace(id);
 		router.push('/workspace');
 	};
 
@@ -34,7 +36,7 @@ const EventCard = (props) => {
 			<p>{description}</p>
 
 			<StyledButtonContainer>
-				<Button onClick={handleEnter} content='Enter event' />
+				<Button onClick={handleClick} content='Enter event' />
 				<StyledDeleteButton onClick={handleDelete}>
 					<img src='/icons/trash-light.svg' alt='Trash Icon' />
 				</StyledDeleteButton>
