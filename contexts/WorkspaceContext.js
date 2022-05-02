@@ -27,13 +27,23 @@ export const WorkspaceProvider = (props) => {
 				params: { id: creatorId },
 			}
 		);
-		console.log('Creator: ', creatorRes);
 		setCreator(creatorRes.data.data);
+	};
+
+	const clearWorkspace = () => {
+		setCurrentEvent(undefined);
+		setCreator({});
 	};
 
 	return (
 		<WorkspaceContext.Provider
-			value={{ currentEvent, creator, prepWorkspace, setCurrentEvent }}>
+			value={{
+				currentEvent,
+				setCurrentEvent,
+				creator,
+				prepWorkspace,
+				clearWorkspace,
+			}}>
 			{props.children}
 		</WorkspaceContext.Provider>
 	);
