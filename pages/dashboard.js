@@ -1,5 +1,4 @@
 import AllEvents from '../components/events/all-events';
-import CreateEventForm from '../components/events/create-event';
 import DashLayout from '../components/layouts/dash-layout';
 import Head from 'next/head';
 import ProfilePhoto from '../components/profile-photo';
