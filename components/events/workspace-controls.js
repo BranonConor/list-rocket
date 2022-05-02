@@ -11,9 +11,6 @@ const WorkspaceControls = () => {
 	const { currentEvent, creator, prepWorkspace } =
 		useContext(WorkspaceContext);
 
-	console.log('Events: ', events);
-	console.log('Current Event: ', currentEvent);
-
 	const handleClick = async (e, eventId, creatorId) => {
 		e.preventDefault();
 		prepWorkspace(eventId, creatorId);

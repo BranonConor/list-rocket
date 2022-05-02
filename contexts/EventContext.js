@@ -13,7 +13,7 @@ export const EventProvider = (props) => {
 	const { user } = useContext(UserContext);
 
 	const getAllEvents = async () => {
-		const res = await axios.get(`http://localhost:3000/api/events`, {
+		const res = await axios.get(`/api/events`, {
 			params: {
 				creatorId: user._id,
 			},
