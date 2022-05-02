@@ -7,21 +7,13 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 
 const Dashboard = () => {
 	const router = useRouter();
 	const { data: session, status } = useSession();
-	const [eventData, setEventData] = useState([]);
-
-	useEffect(() => {
-		const getEvents = async () => {
-			const events = await axios.get(`http://localhost:3000/api/events`);
-			setEventData(events.data.data);
-		};
-		getEvents();
-	}, []);
+	const { user } = useContext(UserContext);
 
 	if (status === 'loading') {
 		return <>Loading...</>;
@@ -34,6 +26,7 @@ const Dashboard = () => {
 					<title>Dashboard | List Rocket</title>
 					<link rel='icon' href='/favicon.ico' />
 				</Head>
+
 				<h1 className='title'>Dashboard</h1>
 				<StyledGreeting
 					initial={{ opacity: 0, rotate: '5deg' }}
@@ -43,14 +36,10 @@ const Dashboard = () => {
 						duration: '0.25',
 						type: 'spring',
 					}}>
-					<ProfilePhoto
-						photo={session.user.image}
-						dimensions='40px'
-					/>
-					<StyledP>Welcome, {session.user.name}! ✌🏼</StyledP>
+					<ProfilePhoto photo={user.image} dimensions='40px' />
+					<StyledP>Welcome, {user.name}! ✌🏼</StyledP>
 				</StyledGreeting>
-				<CreateEventForm />
-				<AllEvents events={eventData} />
+				<AllEvents />
 			</DashLayout>
 		);
 	}
@@ -58,11 +47,16 @@ const Dashboard = () => {
 
 export default Dashboard;
 
-const StyledGreeting = styled(motion.div)`
-	width: auto;
+const StyledGreeting = styled(motion.div)(
+	({ theme: { colors, shadows } }) => `
+	max-width: 100%;
 	display: flex;
 	align-items: center;
-`;
+	background: ${colors.bgLight};
+	border-radius: 10px;
+	padding: 8px;
+`
+);
 
 const StyledP = styled.p`
 	display: flex;
