@@ -5,7 +5,10 @@ export default async (req, res) => {
 	const db = client.db('list-rocket');
 
 	if (req.method === 'GET') {
-		const events = await db.collection('events').find({}).toArray();
+		const events = await db
+			.collection('events')
+			.find({ creator: req.query.creatorId })
+			.toArray();
 		res.json({ status: 200, data: events });
 	}
 

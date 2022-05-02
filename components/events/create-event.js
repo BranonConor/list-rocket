@@ -71,7 +71,7 @@ const StyledForm = styled(motion.form)(
 	({ theme: { colors, shadows } }) => `
 	padding: 16px;
 	box-sizing: border-box;
-	width: 350px;
+	width: calc(50% - 16px);
 	border-radius: 10px;
 	margin: 16px 0;
 	background: ${colors.bgLight};
@@ -82,7 +82,6 @@ const StyledForm = styled(motion.form)(
 `
 );
 const StyledInput = styled.input`
-	font-family: 'Baloo Tamma 2';
 	box-sizing: border-box;
 	border-radius: 5px;
 	padding: 8px;
@@ -90,8 +89,4 @@ const StyledInput = styled.input`
 	outline: none;
 	border: none;
 	margin: 8px 0;
-
-	&::placeholder {
-		font-family: 'Baloo Tamma 2';
-	}
 `;

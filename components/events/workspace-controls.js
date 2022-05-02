@@ -1,6 +1,9 @@
 import ProfilePhoto from '../profile-photo';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import CreateEventForm from './create-event';
+import { useContext } from 'react';
+import { EventContext } from '../../contexts/EventContext';
 
 const WorkspaceControls = () => {
 	const handleLoadEvent = async (e, id) => {
@@ -9,17 +12,7 @@ const WorkspaceControls = () => {
 		prepWorkspace(id);
 	};
 
-	//MOCK DATA
-	const events = [
-		{
-			name: 'Event 1',
-			_id: '1',
-		},
-		{
-			name: 'Event 2',
-			_id: '2',
-		},
-	];
+	const { events } = useContext(EventContext);
 
 	const currentEvent = false;
 
@@ -27,34 +20,40 @@ const WorkspaceControls = () => {
 		<StyledWrapper>
 			{/* ---- EVENT CONTROLS ---- */}
 			<StyledEventsContainer>
-				<h2>Your Events</h2>
-				<p>Choose an event to load it into your workspace</p>
-				<StyledEventsWrapper>
-					{events.map((event) => {
-						return (
-							<StyledEvent
-								onClick={(e) => handleLoadEvent(e, event._id)}
-								key={event._id}
-								initial={{
-									scale: 0,
-									opacity: 0,
-									rotate: '15deg',
-								}}
-								animate={{
-									scale: 1,
-									opacity: 1,
-									rotate: '0deg',
-								}}
-								transition={{
-									ease: 'easeIn',
-									duration: '0.25',
-									type: 'spring',
-								}}>
-								{event.name}
-							</StyledEvent>
-						);
-					})}
-				</StyledEventsWrapper>
+				<StyledYourEventsWrapper>
+					<h2>Your Events</h2>
+					<p>Choose an event to load it into your workspace</p>
+
+					<StyledEventsWrapper>
+						{events.map((event) => {
+							return (
+								<StyledChip
+									onClick={(e) =>
+										handleLoadEvent(e, event._id)
+									}
+									key={event._id}
+									initial={{
+										scale: 0,
+										opacity: 0,
+										rotate: '15deg',
+									}}
+									animate={{
+										scale: 1,
+										opacity: 1,
+										rotate: '0deg',
+									}}
+									transition={{
+										ease: 'easeIn',
+										duration: '0.25',
+										type: 'spring',
+									}}>
+									{event.name}
+								</StyledChip>
+							);
+						})}
+					</StyledEventsWrapper>
+				</StyledYourEventsWrapper>
+				<CreateEventForm />
 			</StyledEventsContainer>
 			{/* ---- EVENT INFORMATION ---- */}
 			<StyledEventInfoContainer>
@@ -91,23 +90,33 @@ const WorkspaceControls = () => {
 export default WorkspaceControls;
 
 const StyledWrapper = styled.div`
-	display: flex;
 	width: 100%;
-	@media only screen and (max-width: 768px) {
-		flex-direction: column;
-	}
 `;
+const StyledYourEventsWrapper = styled.div(
+	({ theme: { colors } }) => `
+	padding: 16px;
+	margin: 16px 16px 16px 0;
+	background: ${colors.bgLight};
+	border-radius: 10px;
+	width: 50%;
+
+	@media only screen and (max-width: 768px) {
+		width: auto;
+		margin: 0;
+	}
+`
+);
 const StyledEventsContainer = styled.div(
 	({ theme: { colors, shadows } }) => `
 	border-radius: 10px;
-	padding: 16px;
 	box-sizing: border-box;
 	margin: 16px 16px 16px 0;
-	width: 25%;
-	background: ${colors.bgLight};
+	width: 100%;
+	display: flex;
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
+		flex-direction: column;
 	}
 `
 );
@@ -116,13 +125,13 @@ const StyledEventsWrapper = styled.div`
 	flex-wrap: wrap;
 	width: 100%;
 `;
-const StyledEvent = styled(motion.a)(
+const StyledChip = styled(motion.a)(
 	({ theme: { colors } }) => `
 	margin: 4px 8px 4px 0;
-	padding: 0 8px;
+	padding: 4px 8px;
 	border-radius: 10px;
 	color: ${colors.white};
-	background: ${colors.secondaryGradient};
+	background: ${colors.bgDark};
 `
 );
 const StyledEventInfoContainer = styled(motion.a)(
@@ -131,7 +140,8 @@ const StyledEventInfoContainer = styled(motion.a)(
 	padding: 16px;
 	box-sizing: border-box;
 	margin: 16px 16px 16px 0;
-	width: 75%;
+	width: 100%;
+	display: flex;
 	background: ${colors.bgLight};
 
 	@media only screen and (max-width: 768px) {

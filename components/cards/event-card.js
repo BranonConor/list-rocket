@@ -47,14 +47,14 @@ export default EventCard;
 
 const StyledCard = styled(motion.div)(
 	({ theme: { colors, shadows } }) => `
-	width: 350px;
+	width: calc(25% - 16px);
+	min-width: 275px;
 	border-radius: 10px;
 	box-sizing: border-box;
 	text-align: left;
 	margin: 16px 16px 16px 0;
 	padding: 16px;
 	background: ${colors.bgLight};
-	
 
 	&:hover {
 		transform: translateY(2px);

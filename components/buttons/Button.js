@@ -29,7 +29,6 @@ export default Button;
 
 const StyledButton = styled.button(
 	({ width, theme: { colors } }) => `
-	font-family: 'Barlow';
 	width: ${width || '125px'};
 	height: 40px;
 	margin: 16px 0;

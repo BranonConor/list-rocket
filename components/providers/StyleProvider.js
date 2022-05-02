@@ -27,7 +27,7 @@ const theme = {
 		secondaryGradient: 'linear-gradient(180deg, #56CCF2 0%, #AD00FF 100%)',
 
 		/* FONT */
-		bodyText: '#2F2533',
+		bodyText: '#39303B',
 
 		/* LINKS */
 		linkText: 'white',
@@ -55,7 +55,8 @@ const GlobalStyle = createGlobalStyle(
     background: ${colors.white};
     margin: 0 auto;
     padding: 0;
-	font-family: 'Barlow';
+	font-family: 'Poppins';
+	font-weight: 300;
   }
 
   body {
@@ -67,6 +68,18 @@ const GlobalStyle = createGlobalStyle(
 
   h1, h2, h3 {
 	font-family: 'Lalezar';
+  }
+
+  button {
+	font-family: 'Lalezar';
+  }
+
+  input {
+	font-family: 'Poppins';
+
+	&::placeholder {
+		font-family: 'Poppins';
+	}
   }
 `
 );
