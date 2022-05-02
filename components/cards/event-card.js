@@ -10,7 +10,8 @@ import { useRouter } from 'next/router';
 const EventCard = (props) => {
 	const { name, description, id } = props;
 	const { getAllEvents } = useContext(EventContext);
-	const { prepWorkspace } = useContext(WorkspaceContext);
+	const { prepWorkspace, currentEvent, clearWorkspace } =
+		useContext(WorkspaceContext);
 	const router = useRouter();
 
 	const handleDelete = async (e) => {
@@ -19,6 +20,7 @@ const EventCard = (props) => {
 			`http://localhost:3000/api/events/${id}`
 		);
 		getAllEvents();
+		currentEvent._id === id && clearWorkspace();
 	};
 
 	const handleClick = async (e) => {
