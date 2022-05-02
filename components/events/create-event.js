@@ -21,7 +21,7 @@ const CreateEventForm = () => {
 	const handleSubmit = async (event) => {
 		try {
 			event.preventDefault();
-			const res = await axios.post(`http://localhost:3000/api/events`, {
+			const res = await axios.post(`/api/events`, {
 				name: nameValue,
 				description: descriptionValue,
 				creator: session.user.id,

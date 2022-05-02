@@ -5,7 +5,7 @@ const Footer = () => {
 		<StyledFooter>
 			App by
 			<StyledAnchor href='https://www.branon.dev' target='_blank'>
-				AXN Creative
+				Branon Eusebio
 			</StyledAnchor>
 		</StyledFooter>
 	);

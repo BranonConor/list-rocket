@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState } from 'react';
 
 import axios from 'axios';
 
@@ -12,21 +12,14 @@ export const WorkspaceProvider = (props) => {
 	const [creator, setCreator] = useState({});
 
 	const prepWorkspace = async (eventId, creatorId) => {
-		const eventRes = await axios.get(
-			`http://localhost:3000/api/events/${eventId}`,
-			{
-				params: { id: eventId },
-			}
-		);
+		const eventRes = await axios.get(`/api/events/${eventId}`, {
+			params: { id: eventId },
+		});
 		setCurrentEvent(eventRes.data.data);
-		console.log(eventRes.data);
 
-		const creatorRes = await axios.get(
-			`http://localhost:3000/api/user/${creatorId}`,
-			{
-				params: { id: creatorId },
-			}
-		);
+		const creatorRes = await axios.get(`/api/user/${creatorId}`, {
+			params: { id: creatorId },
+		});
 		setCreator(creatorRes.data.data);
 	};
 

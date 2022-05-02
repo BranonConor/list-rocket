@@ -8,15 +8,14 @@ export default async (req, res) => {
 	if (req.method === 'GET') {
 		const event = await db
 			.collection('events')
-			.findOne({ _id: ObjectId(`${req.query.id}`) });
+			.findOne({ _id: ObjectId(req.query.id.trim()) });
 		res.json({ status: 200, data: event });
 	}
 
 	if (req.method === 'DELETE') {
 		const { eventId } = req.query;
-		const formattedId = new ObjectId(`${eventId}`);
 		const deletedEvent = await db.collection('events').deleteOne({
-			_id: formattedId,
+			_id: ObjectId(eventId.trim()),
 		});
 
 		res.send({

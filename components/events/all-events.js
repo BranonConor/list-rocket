@@ -17,6 +17,7 @@ const AllEvents = () => {
 							<EventCard
 								name={event.name}
 								description={event.description}
+								creator={event.creator}
 								id={event._id}
 								key={event._id}
 							/>

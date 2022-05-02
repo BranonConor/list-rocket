@@ -8,7 +8,7 @@ import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { useRouter } from 'next/router';
 
 const EventCard = (props) => {
-	const { name, description, id } = props;
+	const { name, description, id, creator } = props;
 	const { getAllEvents } = useContext(EventContext);
 	const { prepWorkspace, currentEvent, clearWorkspace } =
 		useContext(WorkspaceContext);
@@ -16,16 +16,14 @@ const EventCard = (props) => {
 
 	const handleDelete = async (e) => {
 		e.preventDefault();
-		const res = await axios.delete(
-			`http://localhost:3000/api/events/${id}`
-		);
+		const res = await axios.delete(`/api/events/${id}`);
 		getAllEvents();
 		currentEvent._id === id && clearWorkspace();
 	};
 
 	const handleClick = async (e) => {
 		e.preventDefault();
-		await prepWorkspace(id);
+		prepWorkspace(id, creator);
 		router.push('/workspace');
 	};
 
