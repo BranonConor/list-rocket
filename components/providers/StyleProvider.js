@@ -71,7 +71,7 @@ const GlobalStyle = createGlobalStyle(
   }
 
   button {
-	font-family: 'Lalezar';
+	font-family: 'Poppins';
   }
 
   input {

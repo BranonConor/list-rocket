@@ -8,12 +8,16 @@ import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 
 const WorkspaceControls = () => {
 	const { events } = useContext(EventContext);
-	const { currentEvent, creator, prepWorkspace } =
+	const { currentEvent, creator, prepWorkspace, clearWorkspace } =
 		useContext(WorkspaceContext);
 
 	const handleClick = async (e, eventId, creatorId) => {
 		e.preventDefault();
 		prepWorkspace(eventId, creatorId);
+	};
+	const handleExitClick = async (e) => {
+		e.preventDefault();
+		clearWorkspace();
 	};
 
 	return (
@@ -59,7 +63,13 @@ const WorkspaceControls = () => {
 			<StyledEventInfoContainer>
 				{currentEvent ? (
 					<StyledInfoWrapper>
-						<h2>Currently working on: {currentEvent.name}</h2>
+						<StyledSpan>
+							<h2>Currently working on: {currentEvent.name} </h2>
+							<StyledButton onClick={handleExitClick}>
+								<StyledImg src='/icons/x.svg' />
+							</StyledButton>
+						</StyledSpan>
+						<p>{currentEvent.description}</p>
 						<StyledInfoCard>
 							<StyledP>Event Creator:</StyledP>
 							<StyledAvatar
@@ -135,6 +145,7 @@ const StyledInfoWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+	position: relative;
 `;
 const StyledChip = styled(motion.a)(
 	({ theme: { colors } }) => `
@@ -177,6 +188,44 @@ const StyledAvatar = styled(motion.a)(
 const StyledP = styled.p`
 	padding: 0 16px 0 0;
 `;
-const StyledInfoCard = styled.div`
+
+const StyledInfoCard = styled.div(
+	({ theme: { colors, shadows } }) => `
 	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 180px;
+	background: ${colors.bgDark};
+	color: white;
+	border-radius: 10px;
+	height: 50px;
+`
+);
+
+const StyledButton = styled.button`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	outline: none;
+	border: none;
+	background: none;
+
+	&:hover {
+		cursor: pointer;
+
+		img {
+			transform: scale(1.25);
+		}
+	}
+`;
+const StyledSpan = styled.span`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+`;
+const StyledImg = styled.img`
+	width: 24px;
+	height: 24px;
+	transition: 0.15s ease all;
 `;
