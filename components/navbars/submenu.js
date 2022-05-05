@@ -35,6 +35,10 @@ const StyledList = styled.div(
 	z-index: 10;
 	padding: 32px 0 0 0;
 	width: 100%;
+
+	@media only screen and (max-width: 768px) {
+		display: none;
+	}
 `
 );
 const StyledListItem = styled.li(

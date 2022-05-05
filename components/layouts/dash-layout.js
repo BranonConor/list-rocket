@@ -47,6 +47,13 @@ const StyledWrapper = styled.div`
 const StyledHeader = styled.header`
 	width: 75px;
 	height: 100%;
+
+	@media only screen and (max-width: 768px) {
+		width: 100%;
+		height: 75px;
+		position: absolute;
+		bottom: 0;
+	}
 `;
 const StyledContainer = styled.div`
 	width: 100%;
@@ -62,4 +69,8 @@ const StyledMainSection = styled.div`
 	padding: 32px;
 	box-sizing: border-box;
 	background: none;
+
+	@media only screen and (max-width: 768px) {
+		width: 100%;
+	}
 `;
