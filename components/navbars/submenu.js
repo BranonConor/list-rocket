@@ -3,6 +3,13 @@ import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 
 const Submenu = () => {
+	const handleClick = (e) => {
+		e.preventDefault();
+		signOut({
+			callbackUrl: `/`,
+		});
+	};
+
 	return (
 		<StyledList>
 			<StyledListItem>
@@ -13,7 +20,7 @@ const Submenu = () => {
 				</Link>
 			</StyledListItem>
 			<StyledListItem>
-				<StyledButton onClick={() => signOut()}>
+				<StyledButton onClick={handleClick}>
 					<img src='/icons/logout.svg' alt='Logout icon' />
 				</StyledButton>
 			</StyledListItem>

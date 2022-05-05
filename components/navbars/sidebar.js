@@ -53,10 +53,12 @@ const StyledWrapper = styled.div(
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
-		height: 75px;
+		height: auto;
 		border-right: none;
 		flex-direction: row;
 		justify-content: center;
+		position: absolute;
+		bottom: 0;
 	}
 	`
 );
@@ -95,6 +97,10 @@ const StyledAnchor = styled.a`
 const StyledMenu = styled.div`
 	width: 100%;
 	height: 50%;
+
+	@media only screen and (max-width: 768px) {
+		height: auto;
+	}
 `;
 const StyledLogo = styled.img`
 	width: 50%;

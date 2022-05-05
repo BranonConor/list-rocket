@@ -5,9 +5,18 @@ import { UserContext } from '../contexts/UserContext';
 import styled from 'styled-components';
 import ProfilePhoto from '../components/profile-photo';
 import { motion } from 'framer-motion';
+import { signOut } from 'next-auth/react';
+import Button from '../components/buttons/Button';
 
 const Profile = () => {
 	const { user } = useContext(UserContext);
+
+	const handleClick = (e) => {
+		e.preventDefault();
+		signOut({
+			callbackUrl: `/`,
+		});
+	};
 
 	return (
 		<DashLayout>
@@ -40,6 +49,7 @@ const Profile = () => {
 					<StyledP>Email:</StyledP>
 					{user.email}
 				</StyledCard>
+				<Button content='Log out' onClick={handleClick} />
 			</main>
 		</DashLayout>
 	);
@@ -58,11 +68,12 @@ const StyledCard = styled(motion.div)(
 	width: 50%;
 
 	@media only screen and (max-width: 768px) {
-		width: 100%;
+		width: auto;
 	}
 `
 );
 const StyledP = styled.p`
 	padding: 0 8px 0 0;
 	font-weight: bold;
+	width: auto;
 `;
