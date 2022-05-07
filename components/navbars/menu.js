@@ -49,9 +49,11 @@ const StyledList = styled.div(
 	z-index: 10;
 	padding: 0;
 	width: 100%;
+	height: 100%;
 
 	@media only screen and (max-width: 768px) {
 		flex-direction: row;
+		bottom: 0;
 	}
 `
 );
@@ -64,7 +66,6 @@ const StyledListItem = styled.div(
 	box-sizing: border-box;
 	position: relative;
 	top: 0;
-	z-index: 10;
 	width: 100%;
 `
 );

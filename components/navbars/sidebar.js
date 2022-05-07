@@ -53,12 +53,10 @@ const StyledWrapper = styled.div(
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
-		height: auto;
+		height: 100%;
 		border-right: none;
 		flex-direction: row;
 		justify-content: center;
-		position: absolute;
-		bottom: 0;
 	}
 	`
 );
@@ -78,28 +76,18 @@ const StyledBrand = styled.div`
 `;
 const StyledLink = styled(Link)`
 	width: 100%;
-
-	@media only screen and (max-width: 768px) {
-		width: 75px;
-		height: 75px;
-	}
 `;
 const StyledAnchor = styled.a`
 	width: 100%;
 	display: flex;
 	justify-content: center;
-
-	@media only screen and (max-width: 768px) {
-		width: 75px;
-		height: 75px;
-	}
 `;
 const StyledMenu = styled.div`
 	width: 100%;
 	height: 50%;
 
 	@media only screen and (max-width: 768px) {
-		height: auto;
+		height: 100%;
 	}
 `;
 const StyledLogo = styled.img`
