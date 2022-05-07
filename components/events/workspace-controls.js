@@ -2,7 +2,7 @@ import ProfilePhoto from '../profile-photo';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import CreateEventForm from './create-event';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 
@@ -24,7 +24,7 @@ const WorkspaceControls = () => {
 		<StyledWrapper>
 			{/* ---- EVENT CONTROLS ---- */}
 			<StyledEventsContainer>
-				<StyledYourEventsWrapper>
+				<StyledYourEventsWrapper isEvent={currentEvent}>
 					<h2>Your Events</h2>
 					<p>Choose an event to load it into your workspace</p>
 
@@ -50,14 +50,19 @@ const WorkspaceControls = () => {
 										ease: 'easeIn',
 										duration: '0.25',
 										type: 'spring',
-									}}>
+									}}
+									isActive={
+										currentEvent
+											? currentEvent._id === event._id
+											: null
+									}>
 									{event.name}
 								</StyledChip>
 							);
 						})}
 					</StyledEventsWrapper>
 				</StyledYourEventsWrapper>
-				<CreateEventForm />
+				{currentEvent ? null : <CreateEventForm />}
 			</StyledEventsContainer>
 			{/* ---- EVENT INFORMATION ---- */}
 			<StyledEventInfoContainer>
@@ -109,12 +114,13 @@ const StyledWrapper = styled.div`
 	width: 100%;
 `;
 const StyledYourEventsWrapper = styled.div(
-	({ theme: { colors } }) => `
+	({ isEvent, theme: { colors } }) => `
 	padding: 16px;
-	margin: 16px 16px 8px 0;
+	margin: ${isEvent ? '0 0 8px 0' : '16px 16px 8px 0'};
 	background: ${colors.bgLight};
 	border-radius: 10px;
-	width: 50%;
+	width: ${isEvent ? '100%' : '50%'};
+	transition: 0.25s ease all;
 
 	@media only screen and (max-width: 768px) {
 		width: auto;
@@ -148,12 +154,12 @@ const StyledInfoWrapper = styled.div`
 	position: relative;
 `;
 const StyledChip = styled(motion.a)(
-	({ theme: { colors } }) => `
+	({ isActive, theme: { colors } }) => `
 	margin: 4px 8px 4px 0;
 	padding: 4px 8px;
 	border-radius: 10px;
 	color: ${colors.white};
-	background: ${colors.bgDark};
+	background: ${isActive ? colors.bgPurple : colors.bgDark};
 
 	&:hover {
 		cursor: pointer;
@@ -170,6 +176,8 @@ const StyledEventInfoContainer = styled(motion.a)(
 	width: 100%;
 	display: flex;
 	background: ${colors.bgLight};
+	transition: 2s ease all;
+	height: auto;
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
@@ -209,20 +217,21 @@ const StyledButton = styled.button`
 	outline: none;
 	border: none;
 	background: none;
+	transform: translateY(-2.5px);
 
 	&:hover {
 		cursor: pointer;
 
 		img {
-			transform: scale(1.25);
+			transform: scale(1.3);
 		}
 	}
 `;
 const StyledSpan = styled.span`
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
 	width: 100%;
+	position: relative;
 `;
 const StyledImg = styled.img`
 	width: 24px;

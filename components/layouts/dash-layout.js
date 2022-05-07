@@ -50,9 +50,10 @@ const StyledHeader = styled.header`
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
-		height: 75px;
-		position: absolute;
+		height: 64px;
+		position: fixed;
 		bottom: 0;
+		z-index: 1000;
 	}
 `;
 const StyledContainer = styled.div`
@@ -72,5 +73,6 @@ const StyledMainSection = styled.div`
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
+		padding: 32px 32px 80px 32px;
 	}
 `;
