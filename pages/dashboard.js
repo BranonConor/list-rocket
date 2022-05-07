@@ -28,11 +28,11 @@ const Dashboard = () => {
 
 				<h1 className='title'>Dashboard</h1>
 				<StyledGreeting
-					initial={{ opacity: 0, rotate: '5deg' }}
-					animate={{ opacity: 1, rotate: '0deg' }}
+					initial={{ opacity: 0, width: '50%' }}
+					animate={{ opacity: 1, width: '100%' }}
 					transition={{
 						ease: 'easeIn',
-						duration: '0.25',
+						duration: '1',
 						type: 'spring',
 					}}>
 					<ProfilePhoto photo={user.image} dimensions='40px' />

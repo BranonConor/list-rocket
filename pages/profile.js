@@ -24,39 +24,46 @@ const Profile = () => {
 				<title>Profile | List Rocket</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<main>
+			<StyledMain>
 				<h1>Your Profile</h1>
 				<ProfilePhoto photo={user.image} dimensions={80} />
 				<StyledCard
-					initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
-					animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
+					initial={{ opacity: 0, width: '25%' }}
+					animate={{ opacity: 1, width: 'auto' }}
 					transition={{
 						ease: 'easeIn',
-						duration: '0.25',
+						duration: '0.75',
 						type: 'spring',
 					}}>
 					<StyledP>Logged in as:</StyledP>
 					{user.name}
 				</StyledCard>
 				<StyledCard
-					initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
-					animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
+					initial={{ opacity: 0, width: '25%' }}
+					animate={{ opacity: 1, width: 'auto' }}
 					transition={{
 						ease: 'easeIn',
-						duration: '0.3',
+						duration: '0.9',
 						type: 'spring',
 					}}>
 					<StyledP>Email:</StyledP>
 					{user.email}
 				</StyledCard>
 				<Button content='Log out' onClick={handleClick} />
-			</main>
+			</StyledMain>
 		</DashLayout>
 	);
 };
 
 export default Profile;
 
+const StyledMain = styled.main`
+	width: 50%;
+
+	@media only screen and (max-width: 768px) {
+		width: 100%;
+	}
+`;
 const StyledCard = styled(motion.div)(
 	({ theme: { colors } }) => `
 	display: flex;
@@ -65,11 +72,6 @@ const StyledCard = styled(motion.div)(
 	padding: 16px;
 	border-radius: 10px;
 	margin: 8px 0;
-	width: 50%;
-
-	@media only screen and (max-width: 768px) {
-		width: auto;
-	}
 `
 );
 const StyledP = styled.p`

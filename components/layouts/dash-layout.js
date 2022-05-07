@@ -73,6 +73,6 @@ const StyledMainSection = styled.div`
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
-		padding: 32px 32px 80px 32px;
+		padding: 16px 16px 80px 16px;
 	}
 `;

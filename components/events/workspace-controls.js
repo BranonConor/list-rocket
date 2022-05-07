@@ -124,7 +124,7 @@ const StyledYourEventsWrapper = styled.div(
 
 	@media only screen and (max-width: 768px) {
 		width: auto;
-		margin: 0;
+		margin: 8px 0;
 	}
 `
 );
@@ -167,7 +167,7 @@ const StyledChip = styled(motion.a)(
 	}
 `
 );
-const StyledEventInfoContainer = styled(motion.a)(
+const StyledEventInfoContainer = styled.div(
 	({ theme: { colors } }) => `
 	border-radius: 10px;
 	padding: 16px;
@@ -176,11 +176,11 @@ const StyledEventInfoContainer = styled(motion.a)(
 	width: 100%;
 	display: flex;
 	background: ${colors.bgLight};
-	transition: 2s ease all;
 	height: auto;
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
+		margin: 8px 0;
 	}
 `
 );

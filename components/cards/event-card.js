@@ -8,7 +8,7 @@ import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { useRouter } from 'next/router';
 
 const EventCard = (props) => {
-	const { name, description, id, creator } = props;
+	const { name, description, id, creator, animationFactor } = props;
 	const { getAllEvents } = useContext(EventContext);
 	const { prepWorkspace, currentEvent, clearWorkspace } =
 		useContext(WorkspaceContext);
@@ -18,7 +18,7 @@ const EventCard = (props) => {
 		e.preventDefault();
 		const res = await axios.delete(`/api/events/${id}`);
 		getAllEvents();
-		currentEvent._id === id && clearWorkspace();
+		currentEvent?._id === id && clearWorkspace();
 	};
 
 	const handleClick = async (e) => {
@@ -31,9 +31,13 @@ const EventCard = (props) => {
 		<StyledCard
 			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
 			animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
-			transition={{ ease: 'easeIn', duration: '0.25', type: 'spring' }}>
+			transition={{
+				ease: 'easeIn',
+				duration: `${0.125 * (animationFactor + 0.5)}`,
+				type: 'spring',
+			}}>
 			<h3>{name}</h3>
-			<p>{description}</p>
+			<StyledP>{description}</StyledP>
 
 			<StyledButtonContainer>
 				<Button onClick={handleClick} content='Enter event' />
@@ -65,7 +69,7 @@ const StyledCard = styled(motion.div)(
 	@media only screen and (max-width: 768px) {
 		width: 100%;
 		margin: 8px 0;
-
+		padding: 8px 16px;
 	}
 `
 );
@@ -97,3 +101,9 @@ const StyledDeleteButton = styled.button(
 	}
 `
 );
+
+const StyledP = styled.p`
+	@media only screen and (max-width: 768px) {
+		display: none;
+	}
+`;
