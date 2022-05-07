@@ -52,6 +52,7 @@ const StyledWrapper = styled.div`
 const StyledEventsContainer = styled.div`
 	display: flex;
 	align-items: flex-start;
-	justify-content: flex-start;
+	justify-content: space-between;
 	flex-wrap: wrap;
+	width: 100%;
 `;

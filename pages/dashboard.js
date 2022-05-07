@@ -1,5 +1,6 @@
 import AllEvents from '../components/events/all-events';
 import DashLayout from '../components/layouts/dash-layout';
+import LoadingLayout from '../components/layouts/loading-layout';
 import Head from 'next/head';
 import ProfilePhoto from '../components/profile-photo';
 import { motion } from 'framer-motion';
@@ -15,7 +16,7 @@ const Dashboard = () => {
 	const { user } = useContext(UserContext);
 
 	if (status === 'loading') {
-		return <>Loading...</>;
+		return <LoadingLayout>Loading...</LoadingLayout>;
 	} else if (status === 'unauthenticated') {
 		router.push('/');
 	} else {
@@ -28,15 +29,24 @@ const Dashboard = () => {
 
 				<h1 className='title'>Dashboard</h1>
 				<StyledGreeting
-					initial={{ opacity: 0, width: '50%' }}
-					animate={{ opacity: 1, width: '100%' }}
+					initial={{ opacity: 0, width: '80%' }}
+					animate={{ opacity: 1, width: 'auto' }}
 					transition={{
 						ease: 'easeIn',
 						duration: '1',
 						type: 'spring',
 					}}>
 					<ProfilePhoto photo={user.image} dimensions='40px' />
-					<StyledP>Welcome, {user.name}! ✌🏼</StyledP>
+					<StyledP
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{
+							ease: 'easeIn',
+							duration: '2',
+							type: 'spring',
+						}}>
+						Welcome, {user.name}! ✌🏼
+					</StyledP>
 				</StyledGreeting>
 				<AllEvents />
 			</DashLayout>
@@ -57,10 +67,9 @@ const StyledGreeting = styled(motion.div)(
 `
 );
 
-const StyledP = styled.p`
+const StyledP = styled(motion.p)`
 	display: flex;
 	padding: 0 8px;
 	box-sizing: border-box;
 	border-radius: 10px;
-	width: 350px;
 `;

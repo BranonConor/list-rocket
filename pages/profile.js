@@ -28,26 +28,62 @@ const Profile = () => {
 				<h1>Your Profile</h1>
 				<ProfilePhoto photo={user.image} dimensions={80} />
 				<StyledCard
-					initial={{ opacity: 0, width: '25%' }}
+					initial={{ opacity: 0, width: '80%' }}
 					animate={{ opacity: 1, width: 'auto' }}
 					transition={{
 						ease: 'easeIn',
 						duration: '0.75',
 						type: 'spring',
 					}}>
-					<StyledP>Logged in as:</StyledP>
-					{user.name}
+					<StyledP
+						initial={{ opacity: 0, width: 'auto' }}
+						animate={{ opacity: 1, width: 'auto' }}
+						transition={{
+							ease: 'easeIn',
+							duration: '2',
+							type: 'spring',
+						}}>
+						Logged in as:
+					</StyledP>
+					<StyledP
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{
+							ease: 'easeIn',
+							duration: '2',
+							type: 'spring',
+						}}>
+						{user.name}
+					</StyledP>
 				</StyledCard>
 				<StyledCard
-					initial={{ opacity: 0, width: '25%' }}
+					initial={{ opacity: 0, width: '80%' }}
 					animate={{ opacity: 1, width: 'auto' }}
 					transition={{
 						ease: 'easeIn',
-						duration: '0.9',
+						duration: '1',
 						type: 'spring',
 					}}>
-					<StyledP>Email:</StyledP>
-					{user.email}
+					<StyledP
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{
+							ease: 'easeIn',
+							duration: '2',
+							type: 'spring',
+						}}>
+						Email:
+					</StyledP>
+					<StyledP
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{
+							ease: 'easeIn',
+							duration: '2',
+							type: 'spring',
+						}}>
+						{user.email}
+					</StyledP>
 				</StyledCard>
 				<Button content='Log out' onClick={handleClick} />
 			</StyledMain>
@@ -71,11 +107,10 @@ const StyledCard = styled(motion.div)(
 	background: ${colors.bgLight};
 	padding: 16px;
 	border-radius: 10px;
-	margin: 8px 0;
+	margin: 16px 0;
 `
 );
-const StyledP = styled.p`
+const StyledP = styled(motion.p)`
 	padding: 0 8px 0 0;
-	font-weight: bold;
 	width: auto;
 `;

@@ -29,7 +29,7 @@ const WorkspaceControls = () => {
 					<p>Choose an event to load it into your workspace</p>
 
 					<StyledEventsWrapper>
-						{events.map((event) => {
+						{events.map((event, index) => {
 							return (
 								<StyledChip
 									onClick={(e) =>
@@ -48,7 +48,7 @@ const WorkspaceControls = () => {
 									}}
 									transition={{
 										ease: 'easeIn',
-										duration: '0.25',
+										duration: `${0.125 * (index + 0.5)}`,
 										type: 'spring',
 									}}
 									isActive={
