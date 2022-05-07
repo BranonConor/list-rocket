@@ -12,7 +12,7 @@ const AllEvents = () => {
 			<h2>Your Events</h2>
 			<StyledEventsContainer>
 				{events.length ? (
-					events.map((event) => {
+					events.map((event, index) => {
 						return (
 							<EventCard
 								name={event.name}
@@ -20,6 +20,7 @@ const AllEvents = () => {
 								creator={event.creator}
 								id={event._id}
 								key={event._id}
+								animationFactor={index}
 							/>
 						);
 					})
@@ -51,6 +52,7 @@ const StyledWrapper = styled.div`
 const StyledEventsContainer = styled.div`
 	display: flex;
 	align-items: flex-start;
-	justify-content: flex-start;
+	justify-content: space-between;
 	flex-wrap: wrap;
+	width: 100%;
 `;

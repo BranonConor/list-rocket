@@ -16,7 +16,10 @@ const Workspace = () => {
 			<h1>Event Workspace</h1>
 			<WorkspaceControls />
 			{/* ---- WORKSPACE ---- */}
-			<StyledWorkspaceWrapper></StyledWorkspaceWrapper>
+			<StyledWorkspaceWrapper>
+				{/* <CollaboratorsGrid />
+				<UserList /> */}
+			</StyledWorkspaceWrapper>
 		</DashLayout>
 	);
 };
