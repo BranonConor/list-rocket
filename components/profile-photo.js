@@ -14,4 +14,5 @@ export default ProfilePhoto;
 
 const StyledImage = styled.img`
 	border-radius: 100%;
+	transition: 0.15s ease all;
 `;
