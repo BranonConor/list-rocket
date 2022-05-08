@@ -5,10 +5,12 @@ import Button from '../buttons/Button';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { EventContext } from '../../contexts/EventContext';
+import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 
 const CreateEventForm = () => {
 	const { data: session } = useSession();
 	const { getAllEvents } = useContext(EventContext);
+	const { currentEvent } = useContext(WorkspaceContext);
 	const [nameValue, setNameValue] = useState('');
 	const [descriptionValue, setDescriptionValue] = useState('');
 
@@ -25,6 +27,14 @@ const CreateEventForm = () => {
 				name: nameValue,
 				description: descriptionValue,
 				creator: session.user.id,
+				collaborators: [
+					{
+						_id: session.user.id,
+						name: session.user.name,
+						email: session.user.email,
+						image: session.user.image,
+					},
+				],
 			});
 
 			setNameValue('');

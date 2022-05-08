@@ -26,10 +26,10 @@ const AddCollaboratorForm = () => {
 			setErrorMessage(null);
 			prepWorkspace(currentEvent._id, currentEvent.creator);
 		} catch (axiosError) {
-			const error = axiosError.response.status;
-			if (error === 500) {
+			const error = axiosError.response.data.error;
+			if (error.message === 'user already exists') {
 				setErrorMessage('That user is already in the event!');
-			} else if (error === 404) {
+			} else if (error.message === 'user not found') {
 				setErrorMessage('User not found...');
 			} else {
 				setErrorMessage('Unknown error occurred');

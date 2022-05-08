@@ -17,7 +17,7 @@ export default async (req, res) => {
 		//Create new event with request details
 		const newEvent = await db
 			.collection('events')
-			.insertOne({ ...req.body, collaborators: [] });
+			.insertOne({ ...req.body });
 		res.send(newEvent.status);
 		// //Add new event to user's array of events
 		// const user = await User.findById(req.body.creator);
@@ -34,18 +34,36 @@ export default async (req, res) => {
 		if (!user) {
 			res.status(404).send({
 				success: false,
-				error: { message: 'User not found' },
+				error: { message: 'user not found' },
 			});
 		} else {
 			//find an event where the user is not already a collaborator or creator
-			const eventUpdate = await db.collection('events').findOneAndUpdate(
-				{
-					_id: ObjectId(req.body.eventId.trim()),
-					$not: { collaborators: user },
-				},
-				{ $push: { collaborators: user } }
-			);
-			res.send(eventUpdate.status);
+			const event = await db.collection('events').findOne({
+				_id: ObjectId(req.body.eventId.trim()),
+			});
+			//check for the user before doing anything else
+			const collaborators = [];
+			await event.collaborators.forEach((collaborator) => {
+				collaborators.push(collaborator.email);
+			});
+			const userExists = await collaborators.includes(user.email);
+			if (userExists) {
+				res.status(404).send({
+					success: false,
+					error: { message: 'user already exists' },
+				});
+				return false;
+			} else {
+				//proceed with updating the event with the new collaborator if none exist already
+				const eventUpdate = db.collection('events').findOneAndUpdate(
+					{
+						_id: ObjectId(req.body.eventId.trim()),
+						collaborators: { $ne: user },
+					},
+					{ $push: { collaborators: user } }
+				);
+				return res.send(eventUpdate.status);
+			}
 		}
 	}
 };
