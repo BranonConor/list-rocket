@@ -42,32 +42,27 @@ export default async (req, res) => {
 				_id: ObjectId(req.body.eventId.trim()),
 			});
 			//check for the user before doing anything else
-			let userExists;
+			const collaborators = [];
 			await event.collaborators.forEach((collaborator) => {
-				if (
-					collaborator._id === user._id ||
-					event.creator === user._id
-				) {
-					return (userExists = true);
-				}
+				collaborators.push(collaborator.email);
 			});
+			const userExists = await collaborators.includes(user.email);
 			if (userExists) {
 				res.status(404).send({
 					success: false,
 					error: { message: 'user already exists' },
 				});
+				return false;
 			} else {
-				//proceed with updating the event with the new collaborator
-				const eventUpdate = await db
-					.collection('events')
-					.findOneAndUpdate(
-						{
-							_id: ObjectId(req.body.eventId.trim()),
-							collaborators: { $ne: user },
-						},
-						{ $push: { collaborators: user } }
-					);
-				res.send(eventUpdate.status);
+				//proceed with updating the event with the new collaborator if none exist already
+				const eventUpdate = db.collection('events').findOneAndUpdate(
+					{
+						_id: ObjectId(req.body.eventId.trim()),
+						collaborators: { $ne: user },
+					},
+					{ $push: { collaborators: user } }
+				);
+				return res.send(eventUpdate.status);
 			}
 		}
 	}
