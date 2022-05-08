@@ -19,7 +19,7 @@ const CollaboratorsGrid = () => {
 				{currentEvent.collaborators.length > 0
 					? currentEvent.collaborators.map((collaborator) => {
 							return (
-								<StyledButton>
+								<StyledButton key={collaborator._id}>
 									<ProfilePhoto
 										photo={collaborator.image}
 										dimensions={40}
