@@ -37,8 +37,7 @@ const Menu = () => {
 
 export default Menu;
 
-const StyledList = styled.div(
-	({ theme: { colors } }) => `
+const StyledList = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -55,20 +54,17 @@ const StyledList = styled.div(
 		flex-direction: row;
 		bottom: 0;
 	}
-`
-);
-const StyledListItem = styled.div(
-	({ theme: { colors } }) => `
+`;
+const StyledListItem = styled.div`
 	display: flex;
 	align-items: center;
-    justify-content: center;
+	justify-content: center;
 	list-style: none;
 	box-sizing: border-box;
 	position: relative;
 	top: 0;
 	width: 100%;
-`
-);
+`;
 const StyledAnchor = styled.a(
 	({ isActive, theme: { colors, shadows } }) => `
 	display: flex;

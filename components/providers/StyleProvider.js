@@ -14,42 +14,37 @@ export default StyleProvider;
 
 const theme = {
 	colors: {
-		/* GENERAL */
 		black: colors.black,
 		white: colors.white,
 		bgLight: colors.rocketSteel,
-
-		/* BUTTONS */
+		primaryGradient: colors.horizon,
+		secondaryGradient: colors.atmosphere,
 		button: {
 			defaultBg: colors.stellar,
 			hoverBg: colors.lightStellar,
+			textLight: colors.white,
+			textDark: colors.black,
+			borderLight: colors.white,
+			borderDark: colors.black,
+			bgRed: colors.siren,
+			bgRedLight: colors.lightSiren,
 		},
-
-		bgRed: colors.siren,
-		bgRedLight: colors.lightSiren,
-		bgDark: colors.deepSpace,
-		primaryGradient: colors.horizon,
-		secondaryGradient: colors.atmosphere,
-
-		/* FONT */
-		bodyText: '#39303B',
-
-		/* LINKS */
-		linkText: 'white',
-
-		/* BUTTON */
-		buttonTextLight: 'white',
-		buttonTextDark: 'black',
-		buttonBorderLight: 'white',
-		buttonBorderDark: 'black',
-
+		chip: {
+			defaultBg: colors.deepSpace,
+			hoverBg: colors.stellar,
+			activeBg: colors.stellar,
+		},
+		font: {
+			body: colors.smoke,
+		},
+		link: {
+			default: colors.white,
+		},
 		menu: {
-			linkHover: 'rgba(0,0,0, 0.15)',
-			border: '#f2f2f2',
+			border: colors.rocketSteel,
 		},
 	},
 	shadows: {
-		/* CARDS */
 		standard: '0px 4px 6px rgba(0, 0, 0, 0.1)',
 	},
 };
@@ -69,7 +64,7 @@ const GlobalStyle = createGlobalStyle(
     min-height: 100vh;
     padding: 0;
     margin: 0;
-	color: ${colors.bodyText};
+	color: ${colors.font.body};
   }
 
   h1, h2, h3 {

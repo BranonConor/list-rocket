@@ -128,8 +128,7 @@ const StyledYourEventsWrapper = styled.div(
 	}
 `
 );
-const StyledEventsContainer = styled.div(
-	({ theme: { colors, shadows } }) => `
+const StyledEventsContainer = styled.div`
 	border-radius: 10px;
 	box-sizing: border-box;
 	margin: 16px 16px 8px 0;
@@ -140,8 +139,7 @@ const StyledEventsContainer = styled.div(
 		width: 100%;
 		flex-direction: column;
 	}
-`
-);
+`;
 const StyledEventsWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
@@ -159,11 +157,11 @@ const StyledChip = styled(motion.a)(
 	padding: 4px 8px;
 	border-radius: 10px;
 	color: ${colors.white};
-	background: ${isActive ? colors.bgPurple : colors.bgDark};
+	background: ${isActive ? colors.chip.activeBg : colors.chip.defaultBg};
 
 	&:hover {
 		cursor: pointer;
-		background: ${colors.bgPurple};
+		background: ${colors.chip.hoverBg};
 	}
 `
 );
@@ -184,26 +182,24 @@ const StyledEventInfoContainer = styled.div(
 	}
 `
 );
-const StyledAvatar = styled(motion.a)(
-	({ theme: { colors, shadows } }) => `
+const StyledAvatar = styled(motion.a)`
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	width: auto;
 	border-radius: 10px;
-`
-);
+`;
 const StyledP = styled.p`
 	padding: 0 16px 0 0;
 `;
 
 const StyledInfoCard = styled.div(
-	({ theme: { colors, shadows } }) => `
+	({ theme: { colors } }) => `
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	width: 180px;
-	background: ${colors.bgDark};
+	background: ${colors.chip.defaultBg};
 	color: white;
 	border-radius: 10px;
 	height: 50px;

@@ -72,7 +72,7 @@ export default AddCollaboratorForm;
 
 const StyledFormWrapper = styled.div``;
 const StyledForm = styled(motion.form)(
-	({ theme: { colors, shadows } }) => `
+	({ theme: { colors } }) => `
 	display: flex;
 	align-items: center;
 	padding: 16px;

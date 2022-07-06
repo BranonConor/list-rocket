@@ -11,4 +11,5 @@ export const colors = {
 	rocketSteel: '#F2F2F2',
 	siren: '#E73939',
 	lightSiren: '#ED6060',
+	smoke: '#39303B',
 };
