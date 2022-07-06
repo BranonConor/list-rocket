@@ -1,4 +1,5 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { colors } from './colors';
 
 const StyleProvider = ({ children }) => {
 	return (
@@ -13,37 +14,37 @@ export default StyleProvider;
 
 const theme = {
 	colors: {
-		/* GENERAL */
-		black: 'black',
-		white: 'white',
-		bgLight: '#f2f2f2',
-		bgPurple: '#BB6BD9',
-		bgPurpleLight: '#C889DF',
-		bgRed: 'rgba(255, 0, 0, 0.75)',
-		bgRedLight: 'rgba(255, 0, 0, 0.60)',
-		bgDark: '#071D3F',
-		primaryGradient:
-			'linear-gradient(180deg, #071D3F 54.69%, #0071A2 86.98%, #0092D1 99.99%, #00B2FF 100%)',
-		secondaryGradient: 'linear-gradient(180deg, #56CCF2 0%, #AD00FF 100%)',
-
-		/* FONT */
-		bodyText: '#39303B',
-
-		/* LINKS */
-		linkText: 'white',
-
-		/* BUTTON */
-		buttonTextLight: 'white',
-		buttonTextDark: 'black',
-		buttonBorderLight: 'white',
-		buttonBorderDark: 'black',
-
-		/* MENU */
-		menuLinkHover: 'rgba(0,0,0, 0.15)',
-		menuBorder: '#f2f2f2',
+		black: colors.black,
+		white: colors.white,
+		bgLight: colors.rocketSteel,
+		primaryGradient: colors.horizon,
+		secondaryGradient: colors.atmosphere,
+		button: {
+			defaultBg: colors.stellar,
+			hoverBg: colors.lightStellar,
+			textLight: colors.white,
+			textDark: colors.black,
+			borderLight: colors.white,
+			borderDark: colors.black,
+			bgRed: colors.siren,
+			bgRedLight: colors.lightSiren,
+		},
+		chip: {
+			defaultBg: colors.deepSpace,
+			hoverBg: colors.stellar,
+			activeBg: colors.stellar,
+		},
+		font: {
+			body: colors.smoke,
+		},
+		link: {
+			default: colors.white,
+		},
+		menu: {
+			border: colors.rocketSteel,
+		},
 	},
 	shadows: {
-		/* CARDS */
 		standard: '0px 4px 6px rgba(0, 0, 0, 0.1)',
 	},
 };
@@ -63,7 +64,7 @@ const GlobalStyle = createGlobalStyle(
     min-height: 100vh;
     padding: 0;
     margin: 0;
-	color: ${colors.bodyText};
+	color: ${colors.font.body};
   }
 
   h1, h2, h3 {

@@ -35,7 +35,7 @@ const Sidebar = () => {
 export default Sidebar;
 
 const StyledWrapper = styled.div(
-	({ theme: { colors, shadows } }) => `
+	({ theme: { colors } }) => `
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -49,7 +49,7 @@ const StyledWrapper = styled.div(
 	padding: 0;
 	height: 100vh;
 	background: ${colors.white};
-	border-right: 3px solid ${colors.menuBorder};
+	border-right: 3px solid ${colors.menu.border};
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;

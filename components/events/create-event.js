@@ -78,7 +78,7 @@ const CreateEventForm = () => {
 export default CreateEventForm;
 
 const StyledForm = styled(motion.form)(
-	({ theme: { colors, shadows } }) => `
+	({ theme: { colors } }) => `
 	padding: 16px;
 	box-sizing: border-box;
 	width: calc(50% - 16px);

@@ -52,7 +52,7 @@ const EventCard = (props) => {
 export default EventCard;
 
 const StyledCard = styled(motion.div)(
-	({ theme: { colors, shadows } }) => `
+	({ theme: { colors } }) => `
 	width: calc(25% - 16px);
 	border-radius: 10px;
 	box-sizing: border-box;
@@ -88,7 +88,7 @@ const StyledButtonContainer = styled.div`
 const StyledDeleteButton = styled.button(
 	({ theme: { colors } }) => `
 	width: 50px;
-	background: ${colors.bgRed};
+	background: ${colors.button.bgRed};
 	border-radius: 5px;
 	box-sizing: border-box;
 	padding: 8px;
@@ -101,7 +101,7 @@ const StyledDeleteButton = styled.button(
 		box-shadow: none;
 		animation: none;
 		cursor: pointer;
-		background: ${colors.bgRedLight};
+		background: ${colors.button.bgRedLight};
 	}
 `
 );

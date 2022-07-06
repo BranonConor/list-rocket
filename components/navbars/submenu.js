@@ -30,8 +30,7 @@ const Submenu = () => {
 
 export default Submenu;
 
-const StyledList = styled.div(
-	({ theme: { colors } }) => `
+const StyledList = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -46,21 +45,18 @@ const StyledList = styled.div(
 	@media only screen and (max-width: 768px) {
 		display: none;
 	}
-`
-);
-const StyledListItem = styled.li(
-	({ theme: { colors } }) => `
+`;
+const StyledListItem = styled.li`
 	display: flex;
 	align-items: center;
-    justify-content: center;
+	justify-content: center;
 	list-style: none;
 	box-sizing: border-box;
 	position: relative;
 	top: 0;
 	z-index: 10;
 	width: 100%;
-`
-);
+`;
 const StyledAnchor = styled.a(
 	({ theme: { colors, shadows } }) => `
 	display: flex;
