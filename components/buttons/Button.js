@@ -32,7 +32,7 @@ const StyledButton = styled.button(
 	width: ${width || '125px'};
 	height: 40px;
 	margin: 16px 0;
-	background: ${colors.bgPurple};
+	background: ${colors.button.defaultBg};
 	padding: 8px 16px;
 	box-sizing: border-box;
 	display: flex;
@@ -47,7 +47,7 @@ const StyledButton = styled.button(
 	
 	&:hover {
 		cursor: pointer;
-		background: ${colors.bgPurpleLight};
+		background: ${colors.button.hoverBg};
 	}
 `
 );

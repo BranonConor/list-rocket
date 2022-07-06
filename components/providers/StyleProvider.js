@@ -1,4 +1,5 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { colors } from './colors';
 
 const StyleProvider = ({ children }) => {
 	return (
@@ -14,17 +15,21 @@ export default StyleProvider;
 const theme = {
 	colors: {
 		/* GENERAL */
-		black: 'black',
-		white: 'white',
-		bgLight: '#f2f2f2',
-		bgPurple: '#BB6BD9',
-		bgPurpleLight: '#C889DF',
-		bgRed: 'rgba(255, 0, 0, 0.75)',
-		bgRedLight: 'rgba(255, 0, 0, 0.60)',
-		bgDark: '#071D3F',
-		primaryGradient:
-			'linear-gradient(180deg, #071D3F 54.69%, #0071A2 86.98%, #0092D1 99.99%, #00B2FF 100%)',
-		secondaryGradient: 'linear-gradient(180deg, #56CCF2 0%, #AD00FF 100%)',
+		black: colors.black,
+		white: colors.white,
+		bgLight: colors.rocketSteel,
+
+		/* BUTTONS */
+		button: {
+			defaultBg: colors.stellar,
+			hoverBg: colors.lightStellar,
+		},
+
+		bgRed: colors.siren,
+		bgRedLight: colors.lightSiren,
+		bgDark: colors.deepSpace,
+		primaryGradient: colors.horizon,
+		secondaryGradient: colors.atmosphere,
 
 		/* FONT */
 		bodyText: '#39303B',
@@ -38,9 +43,10 @@ const theme = {
 		buttonBorderLight: 'white',
 		buttonBorderDark: 'black',
 
-		/* MENU */
-		menuLinkHover: 'rgba(0,0,0, 0.15)',
-		menuBorder: '#f2f2f2',
+		menu: {
+			linkHover: 'rgba(0,0,0, 0.15)',
+			border: '#f2f2f2',
+		},
 	},
 	shadows: {
 		/* CARDS */
