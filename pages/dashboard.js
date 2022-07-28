@@ -9,6 +9,8 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
+import { Title } from '../components/typography/Title.tsx';
+import { Text } from '../components/typography/Text.tsx';
 
 const Dashboard = () => {
 	const router = useRouter();
@@ -27,7 +29,7 @@ const Dashboard = () => {
 					<link rel='icon' href='/favicon.ico' />
 				</Head>
 
-				<h1 className='title'>Dashboard</h1>
+				<Title variant='heading1'>Dashboard</Title>
 				<StyledGreeting
 					initial={{ opacity: 0, width: '80%' }}
 					animate={{ opacity: 1, width: 'auto' }}
@@ -38,6 +40,7 @@ const Dashboard = () => {
 					}}>
 					<ProfilePhoto photo={user.image} dimensions='40px' />
 					<StyledP
+						variant='body1'
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{
@@ -45,7 +48,7 @@ const Dashboard = () => {
 							duration: '2',
 							type: 'spring',
 						}}>
-						Welcome, {user.name}! ✌🏼
+						<Text variant='body1'>Welcome, {user.name}! ✌🏼</Text>
 					</StyledP>
 				</StyledGreeting>
 				<AllEvents />

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import { Title } from '../typography/Title.tsx';
 
 const ProfileCard = (props) => {
 	return (
@@ -8,9 +9,9 @@ const ProfileCard = (props) => {
 			animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
 			transition={{ ease: 'easeIn', duration: '0.25', type: 'spring' }}>
 			<StyledImage src={props.photo} alt='Logged in user' />
-			<h3>
+			<Title variant='heading3'>
 				{props.firstName} {props.lastName}
-			</h3>
+			</Title>
 			<StyledList>
 				<li>Email: {props.email}</li>
 			</StyledList>

@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import ProfilePhoto from '../profile-photo';
 import AddCollaboratorForm from '../events/AddCollaboratorForm';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import { Title } from '../typography/Title.tsx';
 
 const CollaboratorsGrid = () => {
 	const { currentEvent } = useContext(WorkspaceContext);
@@ -15,7 +16,7 @@ const CollaboratorsGrid = () => {
 			animate={{ opacity: 1 }}
 			transition={{ ease: 'easeIn', duration: '0.25', type: 'spring' }}>
 			<StyledCollaboratorsWrapper>
-				<StyledH2>Collaborators:</StyledH2>
+				<StyledH2 variant='heading2'>Collaborators:</StyledH2>
 				{currentEvent.collaborators.length > 0
 					? currentEvent.collaborators.map((collaborator) => {
 							return (
@@ -45,7 +46,7 @@ const StyledCollaboratorsWrapper = styled(motion.div)`
 	width: 100%;
 	margin: 16px 0;
 `;
-const StyledH2 = styled.h2`
+const StyledH2 = styled(Title)`
 	margin: 0 16px 0 0;
 `;
 const StyledButton = styled.button`

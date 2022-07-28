@@ -5,6 +5,8 @@ import CreateEventForm from './create-event';
 import { useContext, useState } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import { Title } from '../typography/Title.tsx';
+import { Text } from '../typography/Text.tsx';
 
 const WorkspaceControls = () => {
 	const { events } = useContext(EventContext);
@@ -25,8 +27,10 @@ const WorkspaceControls = () => {
 			{/* ---- EVENT CONTROLS ---- */}
 			<StyledEventsContainer>
 				<StyledYourEventsWrapper isEvent={currentEvent}>
-					<h2>Your Events</h2>
-					<p>Choose an event to load it into your workspace</p>
+					<Title variant='heading2'>Your Events</Title>
+					<Text variant='body1'>
+						Choose an event to load it into your workspace
+					</Text>
 
 					<StyledEventsWrapper>
 						{events.map((event, index) => {
@@ -69,14 +73,16 @@ const WorkspaceControls = () => {
 				{currentEvent ? (
 					<StyledInfoWrapper>
 						<StyledSpan>
-							<h2>Currently working on: {currentEvent.name} </h2>
+							<Title variant='heading2'>
+								Currently working on: {currentEvent.name}{' '}
+							</Title>
 							<StyledButton onClick={handleExitClick}>
 								<StyledImg src='/icons/x.svg' />
 							</StyledButton>
 						</StyledSpan>
-						<p>{currentEvent.description}</p>
+						<Text variant='body1'>{currentEvent.description}</Text>
 						<StyledInfoCard>
-							<StyledP>Event Creator:</StyledP>
+							<StyledP variant='body1'>Event Creator:</StyledP>
 							<StyledAvatar
 								initial={{
 									scale: 0,
@@ -101,7 +107,7 @@ const WorkspaceControls = () => {
 						</StyledInfoCard>
 					</StyledInfoWrapper>
 				) : (
-					<p>No event loaded... 👻</p>
+					<Text variant='body1'>No event loaded... 👻</Text>
 				)}
 			</StyledEventInfoContainer>
 		</StyledWrapper>
@@ -152,12 +158,16 @@ const StyledInfoWrapper = styled.div`
 	position: relative;
 `;
 const StyledChip = styled(motion.a)(
-	({ isActive, theme: { colors } }) => `
+	({ isActive, theme: { colors, typography } }) => `
 	margin: 4px 8px 4px 0;
 	padding: 4px 8px;
 	border-radius: 10px;
 	color: ${colors.white};
 	background: ${isActive ? colors.chip.activeBg : colors.chip.defaultBg};
+	font-family: ${typography.font.caption};
+	font-size: ${typography.size.caption};
+	letter-spacing: ${typography.letterSpacing.caption};
+	font-weight: ${typography.weight.caption};
 
 	&:hover {
 		cursor: pointer;
@@ -189,7 +199,7 @@ const StyledAvatar = styled(motion.a)`
 	width: auto;
 	border-radius: 10px;
 `;
-const StyledP = styled.p`
+const StyledP = styled(Text)`
 	padding: 0 16px 0 0;
 `;
 
