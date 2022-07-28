@@ -3,7 +3,6 @@ import { getProviders, signIn, getSession } from 'next-auth/react';
 import styled from 'styled-components';
 import Button from '../components/buttons/Button';
 import { Title } from '../components/typography/Title.tsx';
-import { Text } from '../components/typography/Text.tsx';
 
 export default function SignIn({ providers }) {
 	return (

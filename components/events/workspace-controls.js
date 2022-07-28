@@ -158,12 +158,16 @@ const StyledInfoWrapper = styled.div`
 	position: relative;
 `;
 const StyledChip = styled(motion.a)(
-	({ isActive, theme: { colors } }) => `
+	({ isActive, theme: { colors, typography } }) => `
 	margin: 4px 8px 4px 0;
 	padding: 4px 8px;
 	border-radius: 10px;
 	color: ${colors.white};
 	background: ${isActive ? colors.chip.activeBg : colors.chip.defaultBg};
+	font-family: ${typography.font.caption};
+	font-size: ${typography.size.caption};
+	letter-spacing: ${typography.letterSpacing.caption};
+	font-weight: ${typography.weight.caption};
 
 	&:hover {
 		cursor: pointer;

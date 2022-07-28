@@ -6,6 +6,8 @@ import WorkspaceControls from '../components/events/workspace-controls';
 import styled from 'styled-components';
 import { WorkspaceContext } from '../contexts/WorkspaceContext';
 import { useContext } from 'react';
+import { Title } from '../components/typography/Title.tsx';
+import { Text } from '../components/typography/Text.tsx';
 
 const Workspace = () => {
 	const { currentEvent } = useContext(WorkspaceContext);
@@ -17,7 +19,7 @@ const Workspace = () => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 
-			<h1>Event Workspace</h1>
+			<Title variant='heading1'>Event Workspace</Title>
 			<WorkspaceControls />
 			{/* ---- WORKSPACE ---- */}
 			<StyledWorkspaceWrapper isEventActive={currentEvent}>
@@ -26,7 +28,7 @@ const Workspace = () => {
 						<CollaboratorsGrid />
 					</>
 				) : (
-					<StyledH3>LOAD AN EVENT</StyledH3>
+					<StyledH3 variant='heading3'>LOAD AN EVENT</StyledH3>
 				)}
 			</StyledWorkspaceWrapper>
 		</DashLayout>
@@ -52,7 +54,7 @@ const StyledWorkspaceWrapper = styled.div(
 	justify-content: ${isEventActive ? 'flex-start' : 'center'};
 `
 );
-const StyledH3 = styled.h3(
+const StyledH3 = styled(Title)(
 	({ theme: { colors } }) => `
 	color: ${colors.bgLight}
 `
