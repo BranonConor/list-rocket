@@ -3,20 +3,7 @@ import styled from 'styled-components';
 
 interface Props {
 	children: ReactNode;
-	variant:
-		| 'heading1'
-		| 'heading2'
-		| 'heading3'
-		| 'heading4'
-		| 'heading5'
-		| 'heading6'
-		| 'subtitle1'
-		| 'subtitle2'
-		| 'body1'
-		| 'body2'
-		| 'button'
-		| 'caption'
-		| 'overline';
+	variant: 'body1' | 'body2' | 'button' | 'caption' | 'overline';
 }
 
 export const Text: React.FC<Props> = ({ children, variant }: Props) => {
