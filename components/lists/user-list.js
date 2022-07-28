@@ -1,6 +1,7 @@
 import ProfilePhoto from '../profile-photo';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
+import { Title } from '../typography/Title.tsx';
 
 const UserList = (props) => {
 	return (
@@ -10,7 +11,7 @@ const UserList = (props) => {
 			transition={{ ease: 'easeIn', duration: '0.25', type: 'spring' }}>
 			<StyledTitle>
 				<ProfilePhoto photo={props.photo} dimensions='40px' />
-				<h3>Your List</h3>
+				<Title variant='heading3'>Your List</Title>
 			</StyledTitle>
 		</StyledList>
 	);

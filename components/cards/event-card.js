@@ -7,6 +7,7 @@ import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { useRouter } from 'next/router';
 import { Title } from '../typography/Title.tsx';
+import { Text } from '../typography/Text.tsx';
 
 const EventCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
@@ -38,7 +39,7 @@ const EventCard = (props) => {
 				type: 'spring',
 			}}>
 			<Title variant='heading3'>{name}</Title>
-			<StyledP>{description}</StyledP>
+			<StyledP variant='body1'>{description}</StyledP>
 
 			<StyledButtonContainer>
 				<Button onClick={handleClick} content='Enter event' />
@@ -107,7 +108,7 @@ const StyledDeleteButton = styled.button(
 `
 );
 
-const StyledP = styled.p`
+const StyledP = styled(Text)`
 	@media only screen and (max-width: 768px) {
 		display: none;
 	}

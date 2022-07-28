@@ -2,17 +2,21 @@ import { motion } from 'framer-motion';
 import { getProviders, signIn, getSession } from 'next-auth/react';
 import styled from 'styled-components';
 import Button from '../components/buttons/Button';
+import { Title } from '../components/typography/Title.tsx';
+import { Text } from '../components/typography/Text.tsx';
 
 export default function SignIn({ providers }) {
 	return (
 		<StyledWrapper>
 			{Object.values(providers).map((provider) => (
 				<StyledProviderWrapper key={provider.name}>
-					<StyledH1>
-						Sign in with{' '}
+					<StyledH1 variant='heading1'>
+						Sign in with
 						<StyledGoogleLogo src='/icons/google.svg' />
 					</StyledH1>
-					<StyledH4>Get ready for liftoff.</StyledH4>
+					<StyledSubtitle variant='subtitle1'>
+						Get ready for liftoff.
+					</StyledSubtitle>
 					<Button
 						content='Sign in with Google'
 						onClick={() => signIn(provider.id)}
@@ -236,16 +240,17 @@ const StyledProviderWrapper = styled.div(
     z-index: 1;
 `
 );
-const StyledH1 = styled.h1(
-	({ theme: { colors } }) => `
+const StyledH1 = styled(Title)(
+	({ theme: { colors, typography } }) => `
     color: ${colors.white};
     padding: 0;
     margin: 0 0 16px 0;
     display: flex;
     align-items: center;
+	font-size: ${typography.size.heading4};
 `
 );
-const StyledH4 = styled.h4(
+const StyledSubtitle = styled(Title)(
 	({ theme: { colors } }) => `
     color: ${colors.white};
     padding: 0;
@@ -264,7 +269,7 @@ const StyledRocketWrapper = styled(motion.div)`
 `;
 const StyledGoogleLogo = styled.img`
 	width: 100px;
-	margin: 0 0 0 16px;
+	margin: 0 0 0 8px;
 `;
 const StyledImage = styled(motion.img)`
 	width: 100px;

@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import { Title } from '../typography/Title.tsx';
 
 const CreateEventForm = () => {
 	const { data: session } = useSession();
@@ -51,7 +52,7 @@ const CreateEventForm = () => {
 			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
 			animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
 			transition={{ ease: 'easeIn', duration: '0.25', type: 'spring' }}>
-			<h2>Create a new event 🚀</h2>
+			<Title variant='heading2'>Create a new event 🚀</Title>
 			<label htmlFor='name'></label>
 			<StyledInput
 				type='text'

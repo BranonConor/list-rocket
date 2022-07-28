@@ -6,8 +6,16 @@ interface Props {
 	variant: 'body1' | 'body2' | 'button' | 'caption' | 'overline';
 }
 
-export const Text: React.FC<Props> = ({ children, variant }: Props) => {
-	return <StyledP variant={variant}>{children}</StyledP>;
+export const Text: React.FC<Props> = ({
+	children,
+	variant,
+	...otherProps
+}: Props) => {
+	return (
+		<StyledP variant={variant} {...otherProps}>
+			{children}
+		</StyledP>
+	);
 };
 
 const StyledP = styled.p<Props>(

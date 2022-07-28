@@ -23,11 +23,15 @@ interface Props {
 		| 'subtitle2';
 }
 
-export const Title: React.FC<Props> = ({ children, variant }: Props) => {
+export const Title: React.FC<Props> = ({
+	children,
+	variant,
+	...otherProps
+}: Props) => {
 	//Dynamically choose the type of HTML element to render based on the variant and its mapping
 	//in the TITLE_COMPONENTS enum
 	const TitleElement: keyof JSX.IntrinsicElements = TITLE_COMPONENTS[variant];
 
 	//Render it with children!
-	return <TitleElement>{children}</TitleElement>;
+	return <TitleElement {...otherProps}>{children}</TitleElement>;
 };

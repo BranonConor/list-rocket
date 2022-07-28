@@ -7,6 +7,8 @@ import ProfilePhoto from '../components/profile-photo';
 import { motion } from 'framer-motion';
 import { signOut } from 'next-auth/react';
 import Button from '../components/buttons/Button';
+import { Title } from '../components/typography/Title.tsx';
+import { Text } from '../components/typography/Text.tsx';
 
 const Profile = () => {
 	const { user } = useContext(UserContext);
@@ -25,7 +27,7 @@ const Profile = () => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<StyledMain>
-				<h1>Your Profile</h1>
+				<Title variant='heading1'>Your Profile</Title>
 				<ProfilePhoto photo={user.image} dimensions={80} />
 				<StyledCard
 					initial={{ opacity: 0, width: '80%' }}
@@ -43,17 +45,7 @@ const Profile = () => {
 							duration: '2',
 							type: 'spring',
 						}}>
-						Logged in as:
-					</StyledP>
-					<StyledP
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{
-							ease: 'easeIn',
-							duration: '2',
-							type: 'spring',
-						}}>
-						{user.name}
+						<Text variant='body1'>Logged in as: {user.name}</Text>
 					</StyledP>
 				</StyledCard>
 				<StyledCard
@@ -72,17 +64,7 @@ const Profile = () => {
 							duration: '2',
 							type: 'spring',
 						}}>
-						Email:
-					</StyledP>
-					<StyledP
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{
-							ease: 'easeIn',
-							duration: '2',
-							type: 'spring',
-						}}>
-						{user.email}
+						<Text variant='body1'>Email: {user.email}</Text>
 					</StyledP>
 				</StyledCard>
 				<Button content='Log out' onClick={handleClick} />
