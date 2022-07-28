@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { useRouter } from 'next/router';
+import { Title } from '../typography/Title.tsx';
 
 const EventCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
@@ -36,7 +37,7 @@ const EventCard = (props) => {
 				duration: `${0.125 * (animationFactor + 0.5)}`,
 				type: 'spring',
 			}}>
-			<h3>{name}</h3>
+			<Title variant='heading3'>{name}</Title>
 			<StyledP>{description}</StyledP>
 
 			<StyledButtonContainer>

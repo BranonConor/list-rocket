@@ -1,4 +1,7 @@
-export const size = {
+interface TypographyProperties {
+	[key: string]: string;
+}
+export const size: TypographyProperties = {
 	heading1: '48px',
 	heading2: '32px',
 	heading3: '28px',
@@ -13,7 +16,7 @@ export const size = {
 	caption: '13px',
 	overline: '12px',
 };
-export const font = {
+export const font: TypographyProperties = {
 	heading1: 'Lalezar',
 	heading2: 'Lalezar',
 	heading3: 'Lalezar',
@@ -28,7 +31,7 @@ export const font = {
 	caption: 'Poppins',
 	overline: 'Poppins',
 };
-export const weight = {
+export const weight: TypographyProperties = {
 	heading1: '400',
 	heading2: '400',
 	heading3: '400',
@@ -43,7 +46,7 @@ export const weight = {
 	caption: '400',
 	overline: '400',
 };
-export const lineHeight = {
+export const lineHeight: TypographyProperties = {
 	heading1: '56px',
 	heading2: '42px',
 	heading3: '34px',
@@ -58,7 +61,7 @@ export const lineHeight = {
 	caption: '20px',
 	overline: '18px',
 };
-export const letterSpacing = {
+export const letterSpacing: TypographyProperties = {
 	heading1: '-0.015em',
 	heading2: '-0.5px',
 	heading3: '0px',

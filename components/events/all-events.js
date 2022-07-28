@@ -3,13 +3,14 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useContext } from 'react';
 import { EventContext } from '../../contexts/EventContext';
+import { Title } from '../typography/Title.tsx';
 
 const AllEvents = () => {
 	const { events } = useContext(EventContext);
 
 	return (
 		<StyledWrapper>
-			<h2>Your Events</h2>
+			<Title variant='heading2'>Your Events</Title>
 			<StyledEventsContainer>
 				{events.length ? (
 					events.map((event, index) => {

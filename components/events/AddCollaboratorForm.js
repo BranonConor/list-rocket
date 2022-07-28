@@ -5,6 +5,7 @@ import Button from '../buttons/Button';
 import axios from 'axios';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import { Text } from '../typography/Text.tsx';
 
 const AddCollaboratorForm = () => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
@@ -63,7 +64,11 @@ const AddCollaboratorForm = () => {
 					width='200px'
 				/>
 			</StyledForm>
-			{errorMessage && <StyledErrorText>{errorMessage}</StyledErrorText>}
+			{errorMessage && (
+				<StyledErrorText variant='caption'>
+					{errorMessage}
+				</StyledErrorText>
+			)}
 		</StyledFormWrapper>
 	);
 };
@@ -109,6 +114,6 @@ const StyledInput = styled.input`
 		margin: 0;
 	}
 `;
-const StyledErrorText = styled.span`
+const StyledErrorText = styled(Text)`
 	color: red;
 `;

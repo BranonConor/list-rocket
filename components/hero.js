@@ -14,8 +14,8 @@ const Hero = () => {
 	return (
 		<StyledWrapper>
 			<StyledLogo src='/icons/rocket.svg' alt='Rocket Icon' />
-			<StyledTitle variant='heading1'>Welcome to ListRocket</StyledTitle>
-			<StyledH3>
+			<StyledH1 variant='heading1'>Welcome to ListRocket</StyledH1>
+			<StyledH3 variant='heading3'>
 				A productivity tool for streamlining event planning
 			</StyledH3>
 			<Button content='Get started!' onClick={handleSignIn} />
@@ -33,12 +33,12 @@ const StyledWrapper = styled.div`
 	justify-content: center;
 	align-items: center;
 `;
-const StyledTitle = styled(Title)`
+const StyledH1 = styled(Title)`
 	margin: 8px 0;
 	padding: 0;
 	text-align: center;
 `;
-const StyledH3 = styled.h3`
+const StyledH3 = styled(Title)`
 	margin: 0;
 	padding: 0;
 	text-align: center;

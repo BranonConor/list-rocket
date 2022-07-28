@@ -10,15 +10,12 @@ export const Text: React.FC<Props> = ({ children, variant }: Props) => {
 	return <StyledP variant={variant}>{children}</StyledP>;
 };
 
-interface StyleProps {
-	variant: string;
-}
-const StyledP = styled.p<StyleProps>(
+const StyledP = styled.p<Props>(
 	({ variant, theme: { typography } }) => `
-    fontFamily: ${typography.fonts[variant]};
-    fontWeight: ${typography.weights[variant]};
-    fontSize: ${typography.sizes[variant]};
-    lineHeight: ${typography.lineHeights[variant]};
-    letterSpacing: ${typography.letterSpacing[variant]};
+    font-family: ${typography.font[variant]};
+    font-weight: ${typography.weight[variant]};
+    font-size: ${typography.size[variant]};
+    line-height: ${typography.lineHeight[variant]};
+    letter-spacing: ${typography.letterSpacing[variant]};
 `
 );
