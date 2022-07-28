@@ -1,7 +1,15 @@
 import { ReactNode } from 'react';
-import styled from 'styled-components';
-import { TITLE_COMPONENTS } from './contants';
 
+enum TITLE_COMPONENTS {
+	'heading1' = 'h1',
+	'heading2' = 'h2',
+	'heading3' = 'h3',
+	'heading4' = 'h4',
+	'heading5' = 'h5',
+	'heading6' = 'h6',
+	'subtitle1' = 'p',
+	'subtitle2' = 'p',
+}
 interface Props {
 	children: ReactNode;
 	variant:
@@ -18,24 +26,8 @@ interface Props {
 export const Title: React.FC<Props> = ({ children, variant }: Props) => {
 	//Dynamically choose the type of HTML element to render based on the variant and its mapping
 	//in the TITLE_COMPONENTS enum
-	const TitleElement = TITLE_COMPONENTS[
-		variant
-	] as keyof JSX.IntrinsicElements;
-
-	//Style that custom element
-	interface StyleProps {
-		variant: string;
-	}
-	const StyledTitle = styled(TitleElement)<StyleProps>(
-		({ variant, theme: { typography } }) => `
-		fontFamily: ${typography.fonts[variant]};
-		fontWeight: ${typography.weights[variant]};
-		fontSize: ${typography.sizes[variant]};
-		lineHeight: ${typography.lineHeights[variant]};
-		letterSpacing: ${typography.letterSpacing[variant]};
-	`
-	);
+	const TitleElement: keyof JSX.IntrinsicElements = TITLE_COMPONENTS[variant];
 
 	//Render it with children!
-	return <StyledTitle variant={variant}>{children}</StyledTitle>;
+	return <TitleElement>{children}</TitleElement>;
 };

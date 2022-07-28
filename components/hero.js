@@ -2,6 +2,7 @@ import Button from './buttons/Button';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import { Title } from './typography/Title.tsx';
 
 const Hero = () => {
 	const router = useRouter();
@@ -13,7 +14,7 @@ const Hero = () => {
 	return (
 		<StyledWrapper>
 			<StyledLogo src='/icons/rocket.svg' alt='Rocket Icon' />
-			<StyledH1>Welcome to ListRocket</StyledH1>
+			<StyledTitle variant='heading1'>Welcome to ListRocket</StyledTitle>
 			<StyledH3>
 				A productivity tool for streamlining event planning
 			</StyledH3>
@@ -32,7 +33,7 @@ const StyledWrapper = styled.div`
 	justify-content: center;
 	align-items: center;
 `;
-const StyledH1 = styled.h1`
+const StyledTitle = styled(Title)`
 	margin: 8px 0;
 	padding: 0;
 	text-align: center;

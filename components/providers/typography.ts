@@ -1,10 +1,10 @@
-export const sizes = {
-	heading1: '111px',
-	heading2: '69px',
-	heading3: '55px',
-	heading4: '39px',
-	heading5: '28px',
-	heading6: '23px',
+export const size = {
+	heading1: '48px',
+	heading2: '32px',
+	heading3: '28px',
+	heading4: '24px',
+	heading5: '20px',
+	heading6: '18px',
 	subtitle1: '18px',
 	subtitle2: '16px',
 	body1: '15px',
@@ -13,7 +13,7 @@ export const sizes = {
 	caption: '13px',
 	overline: '12px',
 };
-export const fonts = {
+export const font = {
 	heading1: 'Lalezar',
 	heading2: 'Lalezar',
 	heading3: 'Lalezar',
@@ -28,7 +28,7 @@ export const fonts = {
 	caption: 'Poppins',
 	overline: 'Poppins',
 };
-export const weights = {
+export const weight = {
 	heading1: '400',
 	heading2: '400',
 	heading3: '400',
@@ -43,13 +43,13 @@ export const weights = {
 	caption: '400',
 	overline: '400',
 };
-export const lineHeights = {
-	heading1: '174px',
-	heading2: '108px',
-	heading3: '86px',
-	heading4: '61px',
-	heading5: '44px',
-	heading6: '36px',
+export const lineHeight = {
+	heading1: '56px',
+	heading2: '42px',
+	heading3: '34px',
+	heading4: '28px',
+	heading5: '24px',
+	heading6: '22px',
 	subtitle1: '28px',
 	subtitle2: '25px',
 	body1: '22px',
