@@ -8,6 +8,7 @@ import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { useRouter } from 'next/router';
 import { Title } from '../typography/Title.tsx';
 import { Text } from '../typography/Text.tsx';
+import { toast } from 'react-toastify';
 
 const EventCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
@@ -18,9 +19,19 @@ const EventCard = (props) => {
 
 	const handleDelete = async (e) => {
 		e.preventDefault();
-		const res = await axios.delete(`/api/events/${id}`);
-		getAllEvents();
-		currentEvent?._id === id && clearWorkspace();
+		try {
+			const res = await axios.delete(`/api/events/${id}`);
+			getAllEvents();
+			currentEvent?._id === id && clearWorkspace();
+			toast.success('Successfully deleted your event 🗑', {
+				toastId: 'delete-event-toast',
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error('Something went wrong, sorry! 😵‍💫', {
+				toastId: 'error-delete-event-toast',
+			});
+		}
 	};
 
 	const handleClick = async (e) => {
