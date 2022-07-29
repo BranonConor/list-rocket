@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
+import { toast } from 'react-toastify';
 
 const Submenu = () => {
 	const handleClick = (e) => {
 		e.preventDefault();
+		toast.success('Successfully created your event ✨', {
+			toastId: 'unauthenticated-route-toast',
+		});
 		signOut({
 			callbackUrl: `/`,
 		});

@@ -7,6 +7,7 @@ import axios from 'axios';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Title } from '../typography/Title.tsx';
+import { toast } from 'react-toastify';
 
 const CreateEventForm = () => {
 	const { data: session } = useSession();
@@ -41,8 +42,15 @@ const CreateEventForm = () => {
 			setNameValue('');
 			setDescriptionValue('');
 			getAllEvents();
+
+			toast.success('Successfully created your event ✨', {
+				toastId: 'unauthenticated-route-toast',
+			});
 		} catch (error) {
 			console.log(error);
+			toast.error('Something went wrong, sorry! 😵‍💫', {
+				toastId: 'unauthenticated-route-toast',
+			});
 		}
 	};
 

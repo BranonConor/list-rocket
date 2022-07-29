@@ -13,7 +13,7 @@ const StyleProvider = ({ children }) => {
 
 export default StyleProvider;
 
-const theme = {
+export const theme = {
 	colors: {
 		black: colors.black,
 		white: colors.white,
@@ -43,6 +43,9 @@ const theme = {
 		},
 		menu: {
 			border: colors.rocketSteel,
+		},
+		toast: {
+			progressBarBg: colors.flame,
 		},
 	},
 	shadows: {
@@ -133,6 +136,35 @@ const GlobalStyle = createGlobalStyle(
 		letter-spacing: ${typography.letterSpacing.heading6};
 		padding: 0;
 		margin: 8px 0;
+	}
+
+	// https://styled-components.com/docs/faqs#how-can-i-override-styles-with-higher-specificity
+	.Toastify__toast--info {
+		background: ${colors.white};
+		color: ${colors.font.body};
+		font-family: ${typography.font.caption};
+		font-size: ${typography.size.caption};
+	}
+	.Toastify__toast--success {
+		background: ${colors.white};
+		color: ${colors.font.body};
+		font-family: ${typography.font.caption};
+		font-size: ${typography.size.caption};
+	}
+	.Toastify__toast--warning {
+		background: ${colors.white};
+		color: ${colors.font.body};
+		font-family: ${typography.font.caption};
+		font-size: ${typography.size.caption};
+	}
+	.Toastify__toast--error {
+		background: ${colors.white};
+		color: ${colors.font.body};
+		font-family: ${typography.font.caption};
+		font-size: ${typography.size.caption};
+	}
+	.Toastify__progress-bar {
+		background: ${colors.toast.progressBarBg};
 	}
 `
 );
