@@ -73,6 +73,11 @@ const GlobalStyle = createGlobalStyle(
 		padding: 0;
 		margin: 0;
 		color: ${colors.font.body};
+		font-family: ${typography.font.body1};
+		font-size: ${typography.size.body1};
+		font-weight: ${typography.weight.body1};
+		line-height: ${typography.lineHeight.body1};
+		letter-spacing: ${typography.letterSpacing.body1};
 	}
 
 	h1 {
@@ -81,6 +86,8 @@ const GlobalStyle = createGlobalStyle(
 		font-weight: ${typography.weight.heading1};
 		line-height: ${typography.lineHeight.heading1};
 		letter-spacing: ${typography.letterSpacing.heading1};
+		padding: 0;
+		margin: 16px 0;
 	}
 	h2 {
 		font-family: ${typography.font.heading2};
@@ -88,6 +95,8 @@ const GlobalStyle = createGlobalStyle(
 		font-weight: ${typography.weight.heading2};
 		line-height: ${typography.lineHeight.heading2};
 		letter-spacing: ${typography.letterSpacing.heading2};
+		padding: 0;
+		margin: 16px 0;
 	}
 	h3 {
 		font-family: ${typography.font.heading3};
@@ -95,6 +104,8 @@ const GlobalStyle = createGlobalStyle(
 		font-weight: ${typography.weight.heading3};
 		line-height: ${typography.lineHeight.heading3};
 		letter-spacing: ${typography.letterSpacing.heading3};
+		padding: 0;
+		margin: 16px 0;
 	}
 	h4 {
 		font-family: ${typography.font.heading4};
@@ -102,6 +113,8 @@ const GlobalStyle = createGlobalStyle(
 		font-weight: ${typography.weight.heading4};
 		line-height: ${typography.lineHeight.heading4};
 		letter-spacing: ${typography.letterSpacing.heading4};
+		padding: 0;
+		margin: 8px 0;
 	}
 	h5 {
 		font-family: ${typography.font.heading5};
@@ -109,6 +122,8 @@ const GlobalStyle = createGlobalStyle(
 		font-weight: ${typography.weight.heading5};
 		line-height: ${typography.lineHeight.heading5};
 		letter-spacing: ${typography.letterSpacing.heading5};
+		padding: 0;
+		margin: 8px 0;
 	}
 	h6 {
 		font-family: ${typography.font.heading6};
@@ -116,18 +131,8 @@ const GlobalStyle = createGlobalStyle(
 		font-weight: ${typography.weight.heading6};
 		line-height: ${typography.lineHeight.heading6};
 		letter-spacing: ${typography.letterSpacing.heading6};
-	}
-
-	button {
-		font-family: 'Poppins';
-	}
-
-	input {
-		font-family: 'Poppins';
-
-		&::placeholder {
-			font-family: 'Poppins';
-		}
+		padding: 0;
+		margin: 8px 0;
 	}
 `
 );
