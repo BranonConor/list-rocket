@@ -11,50 +11,55 @@ import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import { Title } from '../components/typography/Title.tsx';
 import { Text } from '../components/typography/Text.tsx';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Dashboard = () => {
 	const router = useRouter();
 	const { data: session, status } = useSession();
 	const { user } = useContext(UserContext);
 
+	if (status === 'unauthenticated') {
+		toast.error('You must be logged in to access that page!', {
+			toastId: 'unauthenticated-route-toast',
+		});
+		router.push('/');
+	}
 	if (status === 'loading') {
 		return <LoadingLayout>Loading...</LoadingLayout>;
-	} else if (status === 'unauthenticated') {
-		router.push('/');
-	} else {
-		return (
-			<DashLayout>
-				<Head>
-					<title>Dashboard | List Rocket</title>
-					<link rel='icon' href='/favicon.ico' />
-				</Head>
+	}
+	return (
+		<DashLayout>
+			<Head>
+				<title>Dashboard | List Rocket</title>
+				<link rel='icon' href='/favicon.ico' />
+			</Head>
 
-				<Title variant='heading1'>Dashboard</Title>
-				<StyledGreeting
-					initial={{ opacity: 0, width: '80%' }}
-					animate={{ opacity: 1, width: 'auto' }}
+			<Title variant='heading1'>Dashboard</Title>
+			<StyledGreeting
+				initial={{ opacity: 0, width: '80%' }}
+				animate={{ opacity: 1, width: 'auto' }}
+				transition={{
+					ease: 'easeIn',
+					duration: '1',
+					type: 'spring',
+				}}>
+				<ProfilePhoto photo={user.image} dimensions='40px' />
+				<StyledP
+					variant='body1'
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
 					transition={{
 						ease: 'easeIn',
-						duration: '1',
+						duration: '2',
 						type: 'spring',
 					}}>
-					<ProfilePhoto photo={user.image} dimensions='40px' />
-					<StyledP
-						variant='body1'
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{
-							ease: 'easeIn',
-							duration: '2',
-							type: 'spring',
-						}}>
-						<Text variant='body1'>Welcome, {user.name}! ✌🏼</Text>
-					</StyledP>
-				</StyledGreeting>
-				<AllEvents />
-			</DashLayout>
-		);
-	}
+					<Text variant='body1'>Welcome, {user.name}! ✌🏼</Text>
+				</StyledP>
+			</StyledGreeting>
+			<AllEvents />
+		</DashLayout>
+	);
 };
 
 export default Dashboard;
