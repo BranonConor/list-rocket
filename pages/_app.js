@@ -4,6 +4,7 @@ import { EventProvider } from '../contexts/EventContext';
 import { UserProvider } from '../contexts/UserContext';
 import { WorkspaceProvider } from '../contexts/WorkspaceContext';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = ({ Component, pageProps: { session, ...pageProps } }) => {
 	return (
