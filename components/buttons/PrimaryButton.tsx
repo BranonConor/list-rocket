@@ -50,7 +50,12 @@ const StyledButton = styled.button<StyleProps>(
 	text-decoration: none;
 	outline: none;
 	transition: 0.10s ease all;
-	fontFamily: ${typography.font.button};
+	font-family: ${typography.font.button};
+	text-transform: ${typography.textTransform.button};
+	font-size: ${typography.size.button};
+	font-weight: ${typography.weight.button};
+	line-height: ${typography.lineHeight.button};
+	letter-spacing: ${typography.letterSpacing.button};
 	
 	&:hover {
 		cursor: pointer;
