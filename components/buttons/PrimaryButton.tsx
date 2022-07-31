@@ -5,7 +5,6 @@ export enum BUTTON_VARIANTS {
 	'large' = '130px',
 	'small' = '100px',
 }
-
 interface Props {
 	download: boolean;
 	onClick: () => void;
@@ -20,19 +19,21 @@ export const PrimaryButton: React.FC<Props> = ({
 	content,
 	icon,
 }: Props) => {
+	const handleClick = (e) => {
+		onClick ? onClick() : null;
+	};
 	return (
-		<StyledButton onClick={onClick} variant={variant}>
+		<StyledButton onClick={handleClick} variant={variant}>
 			{icon && <img src={icon} alt='' width='30' height='30' />}
 			{content}
 		</StyledButton>
 	);
 };
-
 interface StyleProps {
-	variant: string;
+	variant: 'full' | 'large' | 'small';
 }
 const StyledButton = styled.button<StyleProps>(
-	({ variant, theme: { colors } }) => `
+	({ variant, theme: { colors, typography } }) => `
 	width: ${BUTTON_VARIANTS[variant]};
 	minWidth: 100%;
 	height: 40px;
@@ -49,6 +50,7 @@ const StyledButton = styled.button<StyleProps>(
 	text-decoration: none;
 	outline: none;
 	transition: 0.10s ease all;
+	fontFamily: ${typography.font.button};
 	
 	&:hover {
 		cursor: pointer;

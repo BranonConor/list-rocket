@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import Button from '../buttons/Button';
+import { PrimaryButton } from '../buttons/PrimaryButton.tsx';
 import { useContext } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
@@ -53,7 +53,11 @@ const EventCard = (props) => {
 			<StyledP variant='body1'>{description}</StyledP>
 
 			<StyledButtonContainer>
-				<Button onClick={handleClick} content='Enter event' />
+				<PrimaryButton
+					onClick={handleClick}
+					content='Enter event'
+					variant='large'
+				/>
 				<StyledDeleteButton onClick={handleDelete}>
 					<img src='/icons/trash-light.svg' alt='Trash Icon' />
 				</StyledDeleteButton>
