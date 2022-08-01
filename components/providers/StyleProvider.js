@@ -1,6 +1,13 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { colors } from './colors.ts';
-import { size, font, weight, lineHeight, letterSpacing } from './typography.ts';
+import {
+	size,
+	font,
+	weight,
+	lineHeight,
+	letterSpacing,
+	textTransform,
+} from './typography.ts';
 
 const StyleProvider = ({ children }) => {
 	return (
@@ -57,6 +64,7 @@ export const theme = {
 		weight: weight,
 		lineHeight: lineHeight,
 		letterSpacing: letterSpacing,
+		textTransform: textTransform,
 	},
 };
 

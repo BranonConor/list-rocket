@@ -76,3 +76,7 @@ export const letterSpacing: TypographyProperties = {
 	caption: '1.25px',
 	overline: '1.5px',
 };
+export const textTransform: TypographyProperties = {
+	button: 'uppercase',
+	overline: 'uppercase',
+};

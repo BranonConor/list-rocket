@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import Button from '../buttons/Button';
+import { PrimaryButton } from '../buttons/PrimaryButton.tsx';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { EventContext } from '../../contexts/EventContext';
@@ -79,7 +79,11 @@ const CreateEventForm = () => {
 				value={descriptionValue}
 				onChange={handleDescription}
 			/>
-			<Button type='submit' content='Create event' width='100%' />
+			<PrimaryButton
+				variant='fullSmall'
+				type='submit'
+				content='Create event'
+			/>
 		</StyledForm>
 	);
 };

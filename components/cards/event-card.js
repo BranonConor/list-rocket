@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import Button from '../buttons/Button';
+import { PrimaryButton } from '../buttons/PrimaryButton.tsx';
 import { useContext } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
@@ -18,7 +18,7 @@ const EventCard = (props) => {
 	const router = useRouter();
 
 	const handleDelete = async (e) => {
-		e.preventDefault();
+		e?.preventDefault();
 		try {
 			const res = await axios.delete(`/api/events/${id}`);
 			getAllEvents();
@@ -35,7 +35,7 @@ const EventCard = (props) => {
 	};
 
 	const handleClick = async (e) => {
-		e.preventDefault();
+		e?.preventDefault();
 		prepWorkspace(id, creator);
 		router.push('/workspace');
 	};
@@ -53,9 +53,13 @@ const EventCard = (props) => {
 			<StyledP variant='body1'>{description}</StyledP>
 
 			<StyledButtonContainer>
-				<Button onClick={handleClick} content='Enter event' />
+				<PrimaryButton
+					onClick={handleClick}
+					content='Enter event'
+					variant='small'
+				/>
 				<StyledDeleteButton onClick={handleDelete}>
-					<img src='/icons/trash-light.svg' alt='Trash Icon' />
+					<img src='/icons/trash-red.svg' alt='Trash Icon' />
 				</StyledDeleteButton>
 			</StyledButtonContainer>
 		</StyledCard>
@@ -98,26 +102,24 @@ const StyledButtonContainer = styled.div`
 	width: 100%;
 `;
 
-const StyledDeleteButton = styled.button(
-	({ theme: { colors } }) => `
+const StyledDeleteButton = styled.button`
 	width: 50px;
-	background: ${colors.button.bgRed};
+	background: none;
 	border-radius: 5px;
 	box-sizing: border-box;
 	padding: 8px;
 	outline: none;
 	border: none;
-	transition: 0.10s ease all;
-		height: 40px;
+	transition: 0.1s ease all;
+	height: 40px;
 
 	&:hover {
 		box-shadow: none;
 		animation: none;
 		cursor: pointer;
-		background: ${colors.button.bgRedLight};
+		transform: scale(1.15);
 	}
-`
-);
+`;
 
 const StyledP = styled(Text)`
 	@media only screen and (max-width: 768px) {

@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import Button from '../buttons/Button';
+import { PrimaryButton } from '../buttons/PrimaryButton.tsx';
 import axios from 'axios';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
@@ -58,10 +58,10 @@ const AddCollaboratorForm = () => {
 					value={emailValue}
 					onChange={handleEmail}
 				/>
-				<Button
+				<PrimaryButton
+					variant='small'
 					type='submit'
 					content='Add Collaborator'
-					width='200px'
 				/>
 			</StyledForm>
 			{errorMessage && (
