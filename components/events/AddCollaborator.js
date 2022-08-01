@@ -19,6 +19,9 @@ export const AddCollaborator = (props) => {
 	const handleSubmit = async (event) => {
 		try {
 			event.preventDefault();
+			if (emailValue === '') {
+				throw new Error();
+			}
 			const res = await axios.put(`/api/events`, {
 				eventId: currentEvent._id,
 				email: emailValue,
@@ -31,19 +34,25 @@ export const AddCollaborator = (props) => {
 			});
 			props.setIsAddCollaboratorButtonClicked(false);
 		} catch (axiosError) {
-			const error = axiosError.response.data.error;
-			if (error.message === 'user already exists') {
-				toast.error(`${emailValue} is already here! 🤝`, {
-					toastId: 'collaborator-already-here-toast',
-				});
-			} else if (error.message === 'user not found') {
-				toast.error(`${emailValue} doesn't have an account. 👀`, {
+			if (emailValue === '') {
+				toast.error(`Please enter a value. 👀`, {
 					toastId: 'collaborator-not-found-toast',
 				});
 			} else {
-				toast.error(`Unknown error occured. 😵‍💫`, {
-					toastId: 'unknown-error-toast',
-				});
+				const error = axiosError.response.data.error;
+				if (error.message === 'user already exists') {
+					toast.error(`${emailValue} is already here! 🤝`, {
+						toastId: 'collaborator-already-here-toast',
+					});
+				} else if (error.message === 'user not found') {
+					toast.error(`${emailValue} doesn't have an account. 👀`, {
+						toastId: 'collaborator-not-found-toast',
+					});
+				} else {
+					toast.error(`Unknown error occured. 😵‍💫`, {
+						toastId: 'unknown-error-toast',
+					});
+				}
 			}
 		}
 	};
@@ -68,16 +77,23 @@ export const AddCollaborator = (props) => {
 					value={emailValue}
 					onChange={handleEmail}
 				/>
-				<PrimaryButton variant='small' type='submit' content='Submit' />
-				<StyledAddCollaboratorButton
-					type='button'
-					onClick={(e) => {
-						e.preventDefault();
-						setEmailValue('');
-						props.setIsAddCollaboratorButtonClicked(false);
-					}}>
-					<img src='/icons/x.svg' alt='Add Collaborator' />
-				</StyledAddCollaboratorButton>
+				<StyledButtonWrapper>
+					<StyledSubmitButton
+						variant='small'
+						type='submit'
+						content='Submit'
+					/>
+					<StyledCancelButton
+						content='Cancel'
+						variant='small'
+						type='button'
+						onClick={(e) => {
+							e?.preventDefault();
+							setEmailValue('');
+							props.setIsAddCollaboratorButtonClicked(false);
+						}}
+					/>
+				</StyledButtonWrapper>
 			</StyledForm>
 			{errorMessage && (
 				<StyledErrorText variant='caption'>
@@ -94,63 +110,65 @@ const StyledFormWrapper = styled.div`
 
 const StyledForm = styled(motion.form)(
 	({ theme: { colors } }) => `
-	width: 50%;
-	height: auto;
+	max-height: 64px;
 	display: flex;
-	justify-content: space-evenly;
+	justify-content: space-between;
 	align-items: center;
-	padding: 8px;
+	padding: 8px 16px;
 	box-sizing: border-box;
 	height: calc(40px + 32px);
 	border-radius: 10px;
 	margin: 16px 0;
 	background: ${colors.bgLight};
 
-	@media only screen and (max-width: 535px) {
-		width: 100%;
-		height: auto;
+	@media only screen and (max-width: 555px) {
 		flex-direction: column;
-		align-items: center;
-
-		button {
-			width: 100%;
-			margin: 16px 0 0 0;
-		}
+		padding: 16px;
+		height: auto;
+		max-height: 100%;
 	}
 `
 );
 const StyledInput = styled.input`
-	width: 50%;
+	width: calc(100% - 280px);
 	box-sizing: border-box;
 	border-radius: 5px;
 	padding: 8px;
-	margin: 0 16px 0 0;
 	height: 40px;
 	outline: none;
 	border: none;
 
-	@media only screen and (max-width: 535px) {
+	@media only screen and (max-width: 555px) {
 		width: 100%;
-		margin: 0;
 	}
 `;
 const StyledErrorText = styled(Text)`
 	color: red;
 `;
-const StyledAddCollaboratorButton = styled.button`
-	padding: 8px;
-	margin: 0;
-	height: 40px;
-	width: 40px;
+const StyledButtonWrapper = styled.div`
+	width: 50%;
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	border: none;
-	background: none;
-	transition: 0.15s ease all;
 
-	&:hover {
-		cursor: pointer;
-		transform: scale(1.15);
+	@media only screen and (max-width: 555px) {
+		width: 100%;
+		margin: 8px 0 0 0;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+	}
+`;
+const StyledSubmitButton = styled(PrimaryButton)`
+	margin: 0 8px 0 16px;
+
+	@media only screen and (max-width: 555px) {
+		width: 100%;
+		margin: 8px 0;
+	}
+`;
+const StyledCancelButton = styled(PrimaryButton)`
+	margin: 0 8px 0 8px;
+
+	@media only screen and (max-width: 555px) {
+		width: 100%;
+		margin: 8px 0;
 	}
 `;

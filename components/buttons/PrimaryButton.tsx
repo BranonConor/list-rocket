@@ -19,6 +19,8 @@ interface Props {
 	content: string;
 	icon: string;
 	type?: 'submit' | 'reset' | 'button';
+	margin?: string;
+	className?: string;
 }
 
 export const PrimaryButton: React.FC<Props> = ({
@@ -27,7 +29,8 @@ export const PrimaryButton: React.FC<Props> = ({
 	content,
 	icon,
 	type = 'button',
-	...otherProps
+	margin,
+	className,
 }: Props) => {
 	const handleClick = () => {
 		onClick ? onClick() : null;
@@ -37,7 +40,8 @@ export const PrimaryButton: React.FC<Props> = ({
 			onClick={handleClick}
 			variant={variant}
 			type={type}
-			{...otherProps}>
+			margin={margin}
+			className={className}>
 			{icon && <img src={icon} alt='' width='30' height='30' />}
 			{content}
 		</StyledButton>
@@ -45,9 +49,10 @@ export const PrimaryButton: React.FC<Props> = ({
 };
 interface StyleProps {
 	variant: 'small' | 'large' | 'fullSmall' | 'fullLarge';
+	margin?: string;
 }
 const StyledButton = styled.button<StyleProps>(
-	({ variant, theme: { colors, typography } }) => `
+	({ variant, margin, theme: { colors, typography } }) => `
 	min-width: ${BUTTON_WIDTH_VARIANTS[variant]};
 	height: 40px;
 	background: ${colors.button.defaultBg};
@@ -68,6 +73,7 @@ const StyledButton = styled.button<StyleProps>(
 	font-weight: ${typography.weight.button};
 	line-height: ${typography.lineHeight.button};
 	letter-spacing: ${typography.letterSpacing.button};
+	margin: ${margin};
 	
 	&:hover {
 		cursor: pointer;
