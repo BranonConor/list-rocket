@@ -1,14 +1,21 @@
 import styled from 'styled-components';
 
-export enum BUTTON_VARIANTS {
-	'full' = '100%',
-	'large' = '130px',
+export enum BUTTON_WIDTH_VARIANTS {
 	'small' = '100px',
+	'large' = '130px',
+	'fullSmall' = '100%',
+	'fullLarge' = '100%',
+}
+export enum BUTTON_PADDING_VARIANTS {
+	'small' = '8px 16px',
+	'large' = '24px 32px',
+	'fullSmall' = '8px 16px',
+	'fullLarge' = '24px 32px',
 }
 interface Props {
 	download: boolean;
 	onClick: () => void;
-	variant: 'full' | 'large' | 'small';
+	variant: 'small' | 'large' | 'fullSmall' | 'fullLarge';
 	content: string;
 	icon: string;
 }
@@ -19,7 +26,7 @@ export const PrimaryButton: React.FC<Props> = ({
 	content,
 	icon,
 }: Props) => {
-	const handleClick = (e) => {
+	const handleClick = () => {
 		onClick ? onClick() : null;
 	};
 	return (
@@ -30,16 +37,15 @@ export const PrimaryButton: React.FC<Props> = ({
 	);
 };
 interface StyleProps {
-	variant: 'full' | 'large' | 'small';
+	variant: 'small' | 'large' | 'fullSmall' | 'fullLarge';
 }
 const StyledButton = styled.button<StyleProps>(
 	({ variant, theme: { colors, typography } }) => `
-	width: ${BUTTON_VARIANTS[variant]};
-	minWidth: 100%;
+	min-width: ${BUTTON_WIDTH_VARIANTS[variant]};
 	height: 40px;
 	margin: 16px 0;
 	background: ${colors.button.defaultBg};
-	padding: 8px 16px;
+	padding: ${BUTTON_PADDING_VARIANTS[variant]};
 	box-sizing: border-box;
 	display: flex;
 	justify-content: center;

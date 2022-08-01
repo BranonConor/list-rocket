@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import ProfilePhoto from '../components/profile-photo';
 import { motion } from 'framer-motion';
 import { signOut } from 'next-auth/react';
-import Button from '../components/buttons/Button';
+import { PrimaryButton } from '../components/buttons/PrimaryButton.tsx';
 import { Title } from '../components/typography/Title.tsx';
 import { Text } from '../components/typography/Text.tsx';
 
@@ -14,7 +14,7 @@ const Profile = () => {
 	const { user } = useContext(UserContext);
 
 	const handleClick = (e) => {
-		e.preventDefault();
+		e?.preventDefault();
 		signOut({
 			callbackUrl: `/`,
 		});
@@ -67,7 +67,11 @@ const Profile = () => {
 						<Text variant='body1'>Email: {user.email}</Text>
 					</StyledP>
 				</StyledCard>
-				<Button content='Log out' onClick={handleClick} />
+				<PrimaryButton
+					variant='large'
+					content='Log out'
+					onClick={handleClick}
+				/>
 			</StyledMain>
 		</DashLayout>
 	);

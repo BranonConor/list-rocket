@@ -1,6 +1,6 @@
-import Button from '../buttons/Button';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { PrimaryButton } from '../buttons/PrimaryButton.tsx';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Navbar = () => {
@@ -24,13 +24,15 @@ const Navbar = () => {
 					</StyledItem>
 					<StyledItem>
 						{loggedIn ? (
-							<Button
+							<PrimaryButton
+								variant='small'
 								content='Sign out'
 								light
 								onClick={() => signOut()}
 							/>
 						) : (
-							<Button
+							<PrimaryButton
+								variant='small'
 								content='Sign in'
 								light
 								onClick={() => signIn()}

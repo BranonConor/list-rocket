@@ -1,4 +1,4 @@
-import Button from './buttons/Button';
+import { PrimaryButton } from './buttons/PrimaryButton.tsx';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
@@ -15,10 +15,14 @@ const Hero = () => {
 		<StyledWrapper>
 			<StyledLogo src='/icons/rocket.svg' alt='Rocket Icon' />
 			<StyledH1 variant='heading1'>Welcome to ListRocket</StyledH1>
-			<StyledH3 variant='heading3'>
+			<StyledH3 variant='heading4'>
 				A productivity tool for streamlining event planning
 			</StyledH3>
-			<Button content='Get started!' onClick={handleSignIn} />
+			<PrimaryButton
+				variant='large'
+				content='Get started!'
+				onClick={handleSignIn}
+			/>
 		</StyledWrapper>
 	);
 };
