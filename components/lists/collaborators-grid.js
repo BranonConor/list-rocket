@@ -16,7 +16,7 @@ const CollaboratorsGrid = () => {
 			animate={{ opacity: 1 }}
 			transition={{ ease: 'easeIn', duration: '0.25', type: 'spring' }}>
 			<StyledCollaboratorsWrapper>
-				<StyledH2 variant='heading2'>Collaborators:</StyledH2>
+				<StyledH2 variant='heading3'>Collaborators:</StyledH2>
 				{currentEvent.collaborators.length > 0
 					? currentEvent.collaborators.map((collaborator) => {
 							return (
