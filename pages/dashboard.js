@@ -12,6 +12,7 @@ import { UserContext } from '../contexts/UserContext';
 import { Title } from '../components/typography/Title.tsx';
 import { Text } from '../components/typography/Text.tsx';
 import { toast } from 'react-toastify';
+import CreateEventForm from '../components/events/CreateEvent';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Dashboard = () => {
@@ -36,27 +37,30 @@ const Dashboard = () => {
 			</Head>
 
 			<Title variant='heading1'>Dashboard</Title>
-			<StyledGreeting
-				initial={{ opacity: 0, width: '80%' }}
-				animate={{ opacity: 1, width: 'auto' }}
-				transition={{
-					ease: 'easeIn',
-					duration: '1',
-					type: 'spring',
-				}}>
-				<ProfilePhoto photo={user.image} dimensions='40px' />
-				<StyledP
-					variant='body1'
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
+			<StyledDashWrapper>
+				<CreateEventForm />
+				<StyledGreeting
+					initial={{ opacity: 0, width: '80%' }}
+					animate={{ opacity: 1, width: 'auto' }}
 					transition={{
 						ease: 'easeIn',
-						duration: '2',
+						duration: '1',
 						type: 'spring',
 					}}>
-					<Text variant='body1'>Welcome, {user.name}! ✌🏼</Text>
-				</StyledP>
-			</StyledGreeting>
+					<ProfilePhoto photo={user.image} dimensions='40px' />
+					<StyledP
+						variant='body1'
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{
+							ease: 'easeIn',
+							duration: '1',
+							type: 'spring',
+						}}>
+						<Text variant='body1'>Welcome, {user.name}! ✌🏼</Text>
+					</StyledP>
+				</StyledGreeting>
+			</StyledDashWrapper>
 			<AllEvents />
 		</DashLayout>
 	);
@@ -65,13 +69,23 @@ const Dashboard = () => {
 export default Dashboard;
 
 const StyledGreeting = styled(motion.div)(
-	({ theme: { colors, shadows } }) => `
-	max-width: 100%;
+	({ theme: { colors } }) => `
+	min-width: 50%;
 	display: flex;
 	align-items: center;
-	background: ${colors.bgLight};
+	background: ${colors.tertiaryGradient};
+	color: ${colors.white};
 	border-radius: 10px;
-	padding: 8px;
+	box-sizing: border-box;
+	padding: 8px 16px;
+	margin: 16px 0 8px 16px; 
+	height: 60px;
+
+	@media only screen and (max-width: 768px) {
+		min-width: 100%;
+		width: 100%;
+		margin: 16px 0;
+	}
 `
 );
 
@@ -80,4 +94,14 @@ const StyledP = styled(motion.p)`
 	padding: 0 8px;
 	box-sizing: border-box;
 	border-radius: 10px;
+`;
+
+const StyledDashWrapper = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+
+	@media only screen and (max-width: 768px) {
+		flex-direction: column-reverse;
+	}
 `;

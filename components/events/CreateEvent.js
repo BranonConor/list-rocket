@@ -57,10 +57,10 @@ const CreateEventForm = () => {
 	return (
 		<StyledForm
 			onSubmit={handleSubmit}
-			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
-			animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
+			initial={{ scale: 0.95, opacity: 0 }}
+			animate={{ scale: 1, opacity: 1 }}
 			transition={{ ease: 'easeIn', duration: '0.25', type: 'spring' }}>
-			<Title variant='heading2'>Create a new event 🚀</Title>
+			<Title variant='heading3'>Create a new event 🚀</Title>
 			<label htmlFor='name'></label>
 			<StyledInput
 				type='text'
@@ -79,7 +79,7 @@ const CreateEventForm = () => {
 				value={descriptionValue}
 				onChange={handleDescription}
 			/>
-			<PrimaryButton
+			<StyledSubmitButton
 				variant='fullSmall'
 				type='submit'
 				content='Create event'
@@ -112,5 +112,10 @@ const StyledInput = styled.input`
 	width: 100%;
 	outline: none;
 	border: none;
+	margin: 8px 0 16px 0;
+	font-family: inherit;
+	height: 40px;
+`;
+const StyledSubmitButton = styled(PrimaryButton)`
 	margin: 8px 0;
 `;
