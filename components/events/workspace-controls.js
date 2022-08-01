@@ -199,7 +199,7 @@ const StyledInfoCard = styled.div(
 	align-items: center;
 	justify-content: center;
 	width: 180px;
-	background: ${colors.chip.defaultBg};
+	background: ${colors.card.darkBg};
 	color: white;
 	border-radius: 10px;
 	height: 50px;

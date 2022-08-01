@@ -44,6 +44,9 @@ export const theme = {
 			border: colors.deepSpace,
 			text: colors.deepSpace,
 		},
+		card: {
+			darkBg: colors.deepSpace,
+		},
 		font: {
 			body: colors.smoke,
 		},
