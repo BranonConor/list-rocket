@@ -1,13 +1,11 @@
 import CollaboratorsGrid from '../components/lists/collaborators-grid';
 import DashLayout from '../components/layouts/dash-layout';
 import Head from 'next/head';
-import UserList from '../components/lists/user-list';
 import WorkspaceControls from '../components/events/workspace-controls';
 import styled from 'styled-components';
 import { WorkspaceContext } from '../contexts/WorkspaceContext';
 import { useContext } from 'react';
 import { Title } from '../components/typography/Title.tsx';
-import { Text } from '../components/typography/Text.tsx';
 
 const Workspace = () => {
 	const { currentEvent } = useContext(WorkspaceContext);

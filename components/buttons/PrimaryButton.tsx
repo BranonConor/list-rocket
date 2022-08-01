@@ -18,6 +18,7 @@ interface Props {
 	variant: 'small' | 'large' | 'fullSmall' | 'fullLarge';
 	content: string;
 	icon: string;
+	type?: 'submit' | 'reset' | 'button';
 }
 
 export const PrimaryButton: React.FC<Props> = ({
@@ -25,12 +26,18 @@ export const PrimaryButton: React.FC<Props> = ({
 	variant,
 	content,
 	icon,
+	type = 'button',
+	...otherProps
 }: Props) => {
 	const handleClick = () => {
 		onClick ? onClick() : null;
 	};
 	return (
-		<StyledButton onClick={handleClick} variant={variant}>
+		<StyledButton
+			onClick={handleClick}
+			variant={variant}
+			type={type}
+			{...otherProps}>
 			{icon && <img src={icon} alt='' width='30' height='30' />}
 			{content}
 		</StyledButton>
@@ -43,7 +50,6 @@ const StyledButton = styled.button<StyleProps>(
 	({ variant, theme: { colors, typography } }) => `
 	min-width: ${BUTTON_WIDTH_VARIANTS[variant]};
 	height: 40px;
-	margin: 16px 0;
 	background: ${colors.button.defaultBg};
 	padding: ${BUTTON_PADDING_VARIANTS[variant]};
 	box-sizing: border-box;

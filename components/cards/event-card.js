@@ -50,7 +50,7 @@ const EventCard = (props) => {
 				type: 'spring',
 			}}>
 			<Title variant='heading3'>{name}</Title>
-			<StyledP variant='body1'>{description}</StyledP>
+			<Text variant='body1'>{description}</Text>
 
 			<StyledButtonContainer>
 				<PrimaryButton
@@ -74,7 +74,7 @@ const StyledCard = styled(motion.div)(
 	border-radius: 10px;
 	box-sizing: border-box;
 	text-align: left;
-	padding: 16px;
+	padding: 16px 16px 32px 16px;
 	background: ${colors.bgLight};
 	
 	&:hover {
@@ -84,13 +84,13 @@ const StyledCard = styled(motion.div)(
 	@media only screen and (max-width: 1150px) {
 		width: calc(50% - 8px);
 		margin: 8px 0;
-		padding: 8px 16px;
+		padding: 16px 16px 32px 16px;
 	}
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
 		margin: 8px 0;
-		padding: 8px 16px;
+		padding: 8px 16px 16px 16px;
 	}
 `
 );
@@ -118,11 +118,5 @@ const StyledDeleteButton = styled.button`
 		animation: none;
 		cursor: pointer;
 		transform: scale(1.15);
-	}
-`;
-
-const StyledP = styled(Text)`
-	@media only screen and (max-width: 768px) {
-		display: none;
 	}
 `;

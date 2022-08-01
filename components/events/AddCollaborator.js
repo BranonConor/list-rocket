@@ -6,8 +6,9 @@ import axios from 'axios';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Text } from '../typography/Text.tsx';
+import { toast } from 'react-toastify';
 
-const AddCollaboratorForm = () => {
+export const AddCollaborator = (props) => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
 	const [emailValue, setEmailValue] = useState('');
 	const [errorMessage, setErrorMessage] = useState(null);
@@ -24,16 +25,25 @@ const AddCollaboratorForm = () => {
 			});
 
 			setEmailValue('');
-			setErrorMessage(null);
 			prepWorkspace(currentEvent._id, currentEvent.creator);
+			toast.success(`Invited ${emailValue} to the event! 👍🏽`, {
+				toastId: 'added-collaborator-toast',
+			});
+			props.setIsAddCollaboratorButtonClicked(false);
 		} catch (axiosError) {
 			const error = axiosError.response.data.error;
 			if (error.message === 'user already exists') {
-				setErrorMessage('That user is already in the event!');
+				toast.error(`${emailValue} is already here! 🤝`, {
+					toastId: 'collaborator-already-here-toast',
+				});
 			} else if (error.message === 'user not found') {
-				setErrorMessage('User not found...');
+				toast.error(`${emailValue} doesn't have an account. 👀`, {
+					toastId: 'collaborator-not-found-toast',
+				});
 			} else {
-				setErrorMessage('Unknown error occurred');
+				toast.error(`Unknown error occured. 😵‍💫`, {
+					toastId: 'unknown-error-toast',
+				});
 			}
 		}
 	};
@@ -42,11 +52,11 @@ const AddCollaboratorForm = () => {
 		<StyledFormWrapper>
 			<StyledForm
 				onSubmit={handleSubmit}
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
+				initial={{ top: -200, opacity: 0 }}
+				animate={{ top: 0, opacity: 1 }}
 				transition={{
 					ease: 'easeIn',
-					duration: '0.25',
+					duration: 0.25,
 					type: 'spring',
 				}}>
 				<label htmlFor='email'></label>
@@ -58,11 +68,16 @@ const AddCollaboratorForm = () => {
 					value={emailValue}
 					onChange={handleEmail}
 				/>
-				<PrimaryButton
-					variant='small'
-					type='submit'
-					content='Add Collaborator'
-				/>
+				<PrimaryButton variant='small' type='submit' content='Submit' />
+				<StyledAddCollaboratorButton
+					type='button'
+					onClick={(e) => {
+						e.preventDefault();
+						setEmailValue('');
+						props.setIsAddCollaboratorButtonClicked(false);
+					}}>
+					<img src='/icons/x.svg' alt='Add Collaborator' />
+				</StyledAddCollaboratorButton>
 			</StyledForm>
 			{errorMessage && (
 				<StyledErrorText variant='caption'>
@@ -73,24 +88,29 @@ const AddCollaboratorForm = () => {
 	);
 };
 
-export default AddCollaboratorForm;
+const StyledFormWrapper = styled.div`
+	display: block;
+`;
 
-const StyledFormWrapper = styled.div``;
 const StyledForm = styled(motion.form)(
 	({ theme: { colors } }) => `
+	width: 50%;
+	height: auto;
 	display: flex;
+	justify-content: space-evenly;
 	align-items: center;
-	padding: 16px;
+	padding: 8px;
 	box-sizing: border-box;
-	width: 100%;
 	height: calc(40px + 32px);
 	border-radius: 10px;
 	margin: 16px 0;
 	background: ${colors.bgLight};
 
 	@media only screen and (max-width: 535px) {
-		flex-direction: column;
+		width: 100%;
 		height: auto;
+		flex-direction: column;
+		align-items: center;
 
 		button {
 			width: 100%;
@@ -100,11 +120,11 @@ const StyledForm = styled(motion.form)(
 `
 );
 const StyledInput = styled.input`
+	width: 50%;
 	box-sizing: border-box;
 	border-radius: 5px;
 	padding: 8px;
 	margin: 0 16px 0 0;
-	width: calc(100% - 200px);
 	height: 40px;
 	outline: none;
 	border: none;
@@ -116,4 +136,21 @@ const StyledInput = styled.input`
 `;
 const StyledErrorText = styled(Text)`
 	color: red;
+`;
+const StyledAddCollaboratorButton = styled.button`
+	padding: 8px;
+	margin: 0;
+	height: 40px;
+	width: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	background: none;
+	transition: 0.15s ease all;
+
+	&:hover {
+		cursor: pointer;
+		transform: scale(1.15);
+	}
 `;
