@@ -7,6 +7,7 @@ import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Title } from '../typography/Title.tsx';
 import { Text } from '../typography/Text.tsx';
+import { ChipButton } from '../buttons/ChipButton.tsx';
 
 const WorkspaceControls = () => {
 	const { events } = useContext(EventContext);
@@ -14,11 +15,11 @@ const WorkspaceControls = () => {
 		useContext(WorkspaceContext);
 
 	const handleClick = async (e, eventId, creatorId) => {
-		e.preventDefault();
+		e?.preventDefault();
 		prepWorkspace(eventId, creatorId);
 	};
 	const handleExitClick = async (e) => {
-		e.preventDefault();
+		e?.preventDefault();
 		clearWorkspace();
 	};
 
@@ -35,10 +36,7 @@ const WorkspaceControls = () => {
 					<StyledEventsWrapper>
 						{events.map((event, index) => {
 							return (
-								<StyledChip
-									onClick={(e) =>
-										handleClick(e, event._id, event.creator)
-									}
+								<StyledChipWrapper
 									key={event._id}
 									initial={{
 										scale: 0,
@@ -54,14 +52,23 @@ const WorkspaceControls = () => {
 										ease: 'easeIn',
 										duration: `${0.125 * (index + 0.5)}`,
 										type: 'spring',
-									}}
-									isActive={
-										currentEvent
-											? currentEvent._id === event._id
-											: null
-									}>
-									{event.name}
-								</StyledChip>
+									}}>
+									<ChipButton
+										onClick={(e) =>
+											handleClick(
+												e,
+												event._id,
+												event.creatorId
+											)
+										}
+										content={event.name}
+										isActive={
+											currentEvent
+												? currentEvent._id === event._id
+												: null
+										}
+									/>
+								</StyledChipWrapper>
 							);
 						})}
 					</StyledEventsWrapper>
@@ -150,6 +157,7 @@ const StyledEventsWrapper = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	width: 100%;
+	height: auto;
 `;
 const StyledInfoWrapper = styled.div`
 	display: flex;
@@ -157,24 +165,6 @@ const StyledInfoWrapper = styled.div`
 	width: 100%;
 	position: relative;
 `;
-const StyledChip = styled(motion.a)(
-	({ isActive, theme: { colors, typography } }) => `
-	margin: 4px 8px 4px 0;
-	padding: 4px 8px;
-	border-radius: 10px;
-	color: ${colors.white};
-	background: ${isActive ? colors.chip.activeBg : colors.chip.defaultBg};
-	font-family: ${typography.font.caption};
-	font-size: ${typography.size.caption};
-	letter-spacing: ${typography.letterSpacing.caption};
-	font-weight: ${typography.weight.caption};
-
-	&:hover {
-		cursor: pointer;
-		background: ${colors.chip.hoverBg};
-	}
-`
-);
 const StyledEventInfoContainer = styled.div(
 	({ theme: { colors } }) => `
 	border-radius: 10px;
@@ -209,7 +199,7 @@ const StyledInfoCard = styled.div(
 	align-items: center;
 	justify-content: center;
 	width: 180px;
-	background: ${colors.chip.defaultBg};
+	background: ${colors.card.darkBg};
 	color: white;
 	border-radius: 10px;
 	height: 50px;
@@ -243,4 +233,8 @@ const StyledImg = styled.img`
 	width: 24px;
 	height: 24px;
 	transition: 0.15s ease all;
+`;
+const StyledChipWrapper = styled(motion.div)`
+	margin: 8px 8px 16px 0;
+	min-height: 20px;
 `;

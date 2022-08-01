@@ -14,4 +14,5 @@ export const colors = {
 	smoke: '#39303B',
 	success: '#5A9F61',
 	warning: '#67521B',
+	metallicBlue: '#CBE0FF',
 };
