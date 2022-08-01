@@ -38,9 +38,11 @@ export const theme = {
 			bgRedLight: colors.lightSiren,
 		},
 		chip: {
-			defaultBg: colors.deepSpace,
-			hoverBg: colors.stellar,
-			activeBg: colors.stellar,
+			defaultBg: colors.metallicBlue,
+			hoverBg: colors.lightStellar,
+			activeBg: colors.lightStellar,
+			border: colors.deepSpace,
+			text: colors.deepSpace,
 		},
 		font: {
 			body: colors.smoke,
