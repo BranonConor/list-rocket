@@ -27,6 +27,7 @@ export const theme = {
 		bgLight: colors.rocketSteel,
 		primaryGradient: colors.horizon,
 		secondaryGradient: colors.atmosphere,
+		tertiaryGradient: colors.flame,
 		button: {
 			defaultBg: colors.stellar,
 			hoverBg: colors.lightStellar,

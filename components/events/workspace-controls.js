@@ -1,7 +1,6 @@
 import ProfilePhoto from '../profile-photo';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import CreateEventForm from './create-event';
 import { useContext, useState } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
@@ -73,21 +72,35 @@ const WorkspaceControls = () => {
 						})}
 					</StyledEventsWrapper>
 				</StyledYourEventsWrapper>
-				{currentEvent ? null : <CreateEventForm />}
 			</StyledEventsContainer>
 			{/* ---- EVENT INFORMATION ---- */}
 			<StyledEventInfoContainer>
 				{currentEvent ? (
-					<StyledInfoWrapper>
+					<StyledInfoWrapper
+						initial={{
+							top: -20,
+							opacity: 0,
+						}}
+						animate={{
+							top: 0,
+							opacity: 1,
+						}}
+						transition={{
+							ease: 'easeIn',
+							duration: 0.25,
+							type: 'spring',
+						}}>
 						<StyledSpan>
-							<Title variant='heading2'>
+							<Title variant='heading3'>
 								Currently working on: {currentEvent.name}{' '}
 							</Title>
 							<StyledButton onClick={handleExitClick}>
 								<StyledImg src='/icons/x.svg' />
 							</StyledButton>
 						</StyledSpan>
-						<Text variant='body1'>{currentEvent.description}</Text>
+						<StyledDescription variant='body1'>
+							{currentEvent.description}
+						</StyledDescription>
 						<StyledInfoCard>
 							<StyledP variant='body1'>Event Creator:</StyledP>
 							<StyledAvatar
@@ -114,7 +127,20 @@ const WorkspaceControls = () => {
 						</StyledInfoCard>
 					</StyledInfoWrapper>
 				) : (
-					<Text variant='body1'>No event loaded... 👻</Text>
+					<motion.div
+						initial={{
+							opacity: 0,
+						}}
+						animate={{
+							opacity: 1,
+						}}
+						transition={{
+							ease: 'easeIn',
+							duration: 1,
+							type: 'spring',
+						}}>
+						<Text variant='body1'>No event loaded... 👻</Text>
+					</motion.div>
 				)}
 			</StyledEventInfoContainer>
 		</StyledWrapper>
@@ -127,12 +153,12 @@ const StyledWrapper = styled.div`
 	width: 100%;
 `;
 const StyledYourEventsWrapper = styled.div(
-	({ isEvent, theme: { colors } }) => `
+	({ theme: { colors } }) => `
 	padding: 16px;
-	margin: ${isEvent ? '0 0 8px 0' : '16px 16px 8px 0'};
+	margin: 8px 0;
 	background: ${colors.bgLight};
 	border-radius: 10px;
-	width: ${isEvent ? '100%' : '50%'};
+	width: 100%;
 	transition: 0.25s ease all;
 
 	@media only screen and (max-width: 768px) {
@@ -159,7 +185,7 @@ const StyledEventsWrapper = styled.div`
 	width: 100%;
 	height: auto;
 `;
-const StyledInfoWrapper = styled.div`
+const StyledInfoWrapper = styled(motion.div)`
 	display: flex;
 	flex-direction: column;
 	width: 100%;
@@ -192,7 +218,9 @@ const StyledAvatar = styled(motion.a)`
 const StyledP = styled(Text)`
 	padding: 0 16px 0 0;
 `;
-
+const StyledDescription = styled(Text)`
+	margin: 0 0 16px 0;
+`;
 const StyledInfoCard = styled.div(
 	({ theme: { colors } }) => `
 	display: flex;
@@ -203,6 +231,7 @@ const StyledInfoCard = styled.div(
 	color: white;
 	border-radius: 10px;
 	height: 50px;
+	margin: 0 0 16px 0;
 `
 );
 

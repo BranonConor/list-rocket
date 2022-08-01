@@ -43,7 +43,7 @@ const StyledH1 = styled(Title)`
 	text-align: center;
 `;
 const StyledH3 = styled(Title)`
-	margin: 0;
+	margin: 16px 0 32px 0;
 	padding: 0;
 	text-align: center;
 `;

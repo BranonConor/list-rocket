@@ -18,6 +18,9 @@ interface Props {
 	variant: 'small' | 'large' | 'fullSmall' | 'fullLarge';
 	content: string;
 	icon: string;
+	type?: 'submit' | 'reset' | 'button';
+	margin?: string;
+	className?: string;
 }
 
 export const PrimaryButton: React.FC<Props> = ({
@@ -25,12 +28,20 @@ export const PrimaryButton: React.FC<Props> = ({
 	variant,
 	content,
 	icon,
+	type = 'button',
+	margin,
+	className,
 }: Props) => {
 	const handleClick = () => {
 		onClick ? onClick() : null;
 	};
 	return (
-		<StyledButton onClick={handleClick} variant={variant}>
+		<StyledButton
+			onClick={handleClick}
+			variant={variant}
+			type={type}
+			margin={margin}
+			className={className}>
 			{icon && <img src={icon} alt='' width='30' height='30' />}
 			{content}
 		</StyledButton>
@@ -38,12 +49,12 @@ export const PrimaryButton: React.FC<Props> = ({
 };
 interface StyleProps {
 	variant: 'small' | 'large' | 'fullSmall' | 'fullLarge';
+	margin?: string;
 }
 const StyledButton = styled.button<StyleProps>(
-	({ variant, theme: { colors, typography } }) => `
+	({ variant, margin, theme: { colors, typography } }) => `
 	min-width: ${BUTTON_WIDTH_VARIANTS[variant]};
 	height: 40px;
-	margin: 16px 0;
 	background: ${colors.button.defaultBg};
 	padding: ${BUTTON_PADDING_VARIANTS[variant]};
 	box-sizing: border-box;
@@ -62,6 +73,7 @@ const StyledButton = styled.button<StyleProps>(
 	font-weight: ${typography.weight.button};
 	line-height: ${typography.lineHeight.button};
 	letter-spacing: ${typography.letterSpacing.button};
+	margin: ${margin};
 	
 	&:hover {
 		cursor: pointer;
