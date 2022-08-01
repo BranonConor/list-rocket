@@ -27,14 +27,12 @@ const Navbar = () => {
 							<PrimaryButton
 								variant='small'
 								content='Sign out'
-								light
 								onClick={() => signOut()}
 							/>
 						) : (
 							<PrimaryButton
 								variant='small'
 								content='Sign in'
-								light
 								onClick={() => signIn()}
 							/>
 						)}
