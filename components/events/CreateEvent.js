@@ -25,6 +25,9 @@ const CreateEventForm = () => {
 	const handleSubmit = async (event) => {
 		try {
 			event.preventDefault();
+			if (nameValue === '' || descriptionValue === '') {
+				throw new Error();
+			}
 			const res = await axios.post(`/api/events`, {
 				name: nameValue,
 				description: descriptionValue,
@@ -44,13 +47,18 @@ const CreateEventForm = () => {
 			getAllEvents();
 
 			toast.success('Successfully created your event ✨', {
-				toastId: 'unauthenticated-route-toast',
+				toastId: 'created-event-toast',
 			});
 		} catch (error) {
-			console.log(error);
-			toast.error('Something went wrong, sorry! 😵‍💫', {
-				toastId: 'unauthenticated-route-toast',
-			});
+			if (nameValue === '' || descriptionValue === '') {
+				toast.error('Please enter a name and description. ✍🏾', {
+					toastId: 'unauthenticated-route-toast',
+				});
+			} else {
+				toast.error('Something went wrong, sorry! 😵‍💫', {
+					toastId: 'error-creating-event-toast',
+				});
+			}
 		}
 	};
 
