@@ -111,6 +111,7 @@ const StyledFormWrapper = styled.div`
 const StyledForm = styled(motion.form)(
 	({ theme: { colors } }) => `
 	max-height: 64px;
+	max-width: 500px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -130,7 +131,7 @@ const StyledForm = styled(motion.form)(
 `
 );
 const StyledInput = styled.input`
-	width: calc(100% - 280px);
+	width: 100%;
 	box-sizing: border-box;
 	border-radius: 5px;
 	padding: 8px;
