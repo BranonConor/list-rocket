@@ -70,7 +70,6 @@ export default EventCard;
 
 const StyledCard = styled(motion.div)(
 	({ theme: { colors } }) => `
-	width: calc(25% - 16px);
 	border-radius: 10px;
 	box-sizing: border-box;
 	text-align: left;
@@ -79,18 +78,6 @@ const StyledCard = styled(motion.div)(
 	
 	&:hover {
 		transform: translateY(2px);
-	}
-
-	@media only screen and (max-width: 1150px) {
-		width: calc(50% - 8px);
-		margin: 8px 0;
-		padding: 16px 16px 32px 16px;
-	}
-
-	@media only screen and (max-width: 768px) {
-		width: 100%;
-		margin: 8px 0;
-		padding: 8px 16px 16px 16px;
 	}
 `
 );
