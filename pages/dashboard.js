@@ -41,7 +41,7 @@ const Dashboard = () => {
 				<div>
 					<StyledGreeting
 						initial={{ opacity: 0, width: '80%' }}
-						animate={{ opacity: 1, width: 'auto' }}
+						animate={{ opacity: 1, width: '100%' }}
 						transition={{
 							ease: 'easeIn',
 							duration: '1',
