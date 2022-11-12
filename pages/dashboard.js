@@ -38,28 +38,32 @@ const Dashboard = () => {
 
 			<Title variant='heading1'>Dashboard</Title>
 			<StyledDashWrapper>
-				<CreateEventForm />
-				<StyledGreeting
-					initial={{ opacity: 0, width: '80%' }}
-					animate={{ opacity: 1, width: 'auto' }}
-					transition={{
-						ease: 'easeIn',
-						duration: '1',
-						type: 'spring',
-					}}>
-					<ProfilePhoto photo={user.image} dimensions='40px' />
-					<StyledP
-						variant='body1'
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
+				<div>
+					<StyledGreeting
+						initial={{ opacity: 0, width: '80%' }}
+						animate={{ opacity: 1, width: 'auto' }}
 						transition={{
 							ease: 'easeIn',
 							duration: '1',
 							type: 'spring',
 						}}>
-						<Text variant='body1'>Welcome, {user.name}! ✌🏼</Text>
-					</StyledP>
-				</StyledGreeting>
+						<ProfilePhoto photo={user.image} dimensions='40px' />
+						<StyledP
+							variant='body1'
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{
+								ease: 'easeIn',
+								duration: '1',
+								type: 'spring',
+							}}>
+							<Text variant='body1'>
+								Welcome, {user.name}! ✌🏼
+							</Text>
+						</StyledP>
+					</StyledGreeting>
+					<CreateEventForm />
+				</div>
 			</StyledDashWrapper>
 			<AllEvents />
 		</DashLayout>
@@ -70,16 +74,15 @@ export default Dashboard;
 
 const StyledGreeting = styled(motion.div)(
 	({ theme: { colors } }) => `
-	min-width: 50%;
 	display: flex;
 	align-items: center;
 	background: ${colors.tertiaryGradient};
 	color: ${colors.white};
 	border-radius: 10px;
 	box-sizing: border-box;
-	padding: 8px 16px;
-	margin: 16px 0 8px 16px; 
+	padding: 8px;
 	height: 60px;
+	margin: 0 0 16px 0;
 
 	@media only screen and (max-width: 768px) {
 		min-width: 100%;
@@ -97,11 +100,15 @@ const StyledP = styled(motion.p)`
 `;
 
 const StyledDashWrapper = styled.div`
-	width: 100%;
-	display: flex;
-	justify-content: flex-start;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-gap: 16px;
 
-	@media only screen and (max-width: 768px) {
-		flex-direction: column-reverse;
+	@media only screen and (max-width: 1600px) {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	@media only screen and (max-width: 900px) {
+		grid-template-columns: 1fr;
 	}
 `;
