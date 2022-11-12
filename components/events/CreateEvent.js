@@ -102,9 +102,8 @@ const StyledForm = styled(motion.form)(
 	({ theme: { colors } }) => `
 	padding: 16px;
 	box-sizing: border-box;
-	width: calc(50% - 16px);
+	width: auto;
 	border-radius: 10px;
-	margin: 16px 0 8px 0;
 	background: ${colors.bgLight};
 
 	@media only screen and (max-width: 768px) {
