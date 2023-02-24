@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 import { UserContext } from './UserContext';
 import axios from 'axios';
 
 //create a user context to store logged in user info
-export const EventContext = createContext();
+export const EventContext = createContext({});
 
 //define provider for new user context
 export const EventProvider = (props) => {

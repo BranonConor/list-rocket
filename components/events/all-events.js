@@ -1,4 +1,4 @@
-import EventCard from '../cards/event-card';
+import EventCard from '../cards/EventCard';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useContext } from 'react';

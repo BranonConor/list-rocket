@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Image from 'next/image';
 
 export enum BUTTON_WIDTH_VARIANTS {
 	'small' = '100px',
@@ -12,37 +13,33 @@ export enum BUTTON_PADDING_VARIANTS {
 	'fullSmall' = '8px 16px',
 	'fullLarge' = '24px 32px',
 }
-interface Props {
-	download: boolean;
-	onClick: () => void;
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+	download?: boolean;
 	variant: 'small' | 'large' | 'fullSmall' | 'fullLarge';
 	content: string;
-	icon: string;
+	icon?: string;
 	type?: 'submit' | 'reset' | 'button';
 	margin?: string;
 	className?: string;
 }
 
 export const PrimaryButton: React.FC<Props> = ({
-	onClick,
 	variant,
 	content,
 	icon,
 	type = 'button',
 	margin,
 	className,
+	...otherProps
 }: Props) => {
-	const handleClick = () => {
-		onClick ? onClick() : null;
-	};
 	return (
 		<StyledButton
-			onClick={handleClick}
+			{...otherProps}
 			variant={variant}
 			type={type}
 			margin={margin}
 			className={className}>
-			{icon && <img src={icon} alt='' width='30' height='30' />}
+			{icon && <Image src={icon} alt='' width='30' height='30' />}
 			{content}
 		</StyledButton>
 	);

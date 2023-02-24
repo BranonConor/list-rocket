@@ -1,14 +1,15 @@
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { PrimaryButton } from '../buttons/PrimaryButton.tsx';
+import { PrimaryButton } from '../buttons/PrimaryButton';
 import { useContext } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { useRouter } from 'next/router';
-import { Title } from '../typography/Title.tsx';
-import { Text } from '../typography/Text.tsx';
+import { Title } from '../typography/Title';
+import { Text } from '../typography/Text';
 import { toast } from 'react-toastify';
+import Image from 'next/image';
 
 const EventCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
@@ -45,8 +46,7 @@ const EventCard = (props) => {
 			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
 			animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
 			transition={{
-				ease: 'easeIn',
-				duration: `${0.125 * (animationFactor + 0.5)}`,
+				duration: 0.125 * (animationFactor + 0.5),
 				type: 'spring',
 			}}>
 			<Title variant='heading3'>{name}</Title>
@@ -59,7 +59,7 @@ const EventCard = (props) => {
 					variant='small'
 				/>
 				<StyledDeleteButton onClick={handleDelete}>
-					<img src='/icons/trash-red.svg' alt='Trash Icon' />
+					<Image src='/icons/trash-red.svg' alt='Trash Icon' />
 				</StyledDeleteButton>
 			</StyledButtonContainer>
 		</StyledCard>

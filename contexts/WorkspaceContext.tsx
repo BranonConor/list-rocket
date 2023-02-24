@@ -1,9 +1,8 @@
-import React, { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 
 import axios from 'axios';
 
-//create a user context to store logged in user info
-export const WorkspaceContext = createContext();
+export const WorkspaceContext = createContext({});
 
 //define provider for new user context
 export const WorkspaceProvider = (props) => {
@@ -11,7 +10,7 @@ export const WorkspaceProvider = (props) => {
 	const [currentEvent, setCurrentEvent] = useState(undefined);
 	const [creator, setCreator] = useState({});
 
-	const prepWorkspace = async (eventId, creatorId) => {
+	const prepWorkspace = async (eventId: string, creatorId: string) => {
 		const eventRes = await axios.get(`/api/events/${eventId}`, {
 			params: { id: eventId },
 		});
