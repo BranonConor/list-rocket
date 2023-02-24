@@ -29,6 +29,7 @@ const Dashboard = () => {
 	if (status === 'loading') {
 		return <LoadingLayout>Loading...</LoadingLayout>;
 	}
+
 	return (
 		<DashLayout>
 			<Head>
