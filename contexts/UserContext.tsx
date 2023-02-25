@@ -2,24 +2,10 @@ import { createContext, useEffect, useState } from 'react';
 
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import { IUser, IUserContext } from './types';
 
-interface IUser {
-	_id: string;
-	name: string;
-	email: string;
-	image: string;
-	emailVerified: null;
-}
-
-interface IUserContext {
-	user: IUser;
-	getUserData: () => void;
-}
-
-//create a user context to store logged in user info
 export const UserContext = createContext<IUserContext | null>(null);
 
-//define provider for new user context
 export const UserProvider = (props) => {
 	//initialize empty user state
 	const [user, setUser] = useState<IUser>(null);

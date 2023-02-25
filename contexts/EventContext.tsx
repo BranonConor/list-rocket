@@ -2,14 +2,12 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 import { UserContext } from './UserContext';
 import axios from 'axios';
+import { IEvent, IEventContext } from './types';
 
-//create a user context to store logged in user info
-export const EventContext = createContext({});
+export const EventContext = createContext<IEventContext | null>(null);
 
-//define provider for new user context
 export const EventProvider = (props) => {
-	//initialize empty user state
-	const [events, setEvents] = useState([]);
+	const [events, setEvents] = useState<IEvent[]>([]);
 	const { user } = useContext(UserContext);
 
 	const getAllEvents = async () => {
@@ -21,7 +19,6 @@ export const EventProvider = (props) => {
 		setEvents(res.data.data);
 	};
 
-	//upon render, ping current user API. If someone is auth'd their info will show up in global state. otherwise, blank
 	useEffect(() => {
 		getAllEvents();
 	}, [user]);
