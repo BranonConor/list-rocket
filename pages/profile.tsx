@@ -3,17 +3,19 @@ import Head from 'next/head';
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import styled from 'styled-components';
-import ProfilePhoto from '../components/profile-photo';
+import { ProfilePhoto } from '../components/ProfilePhoto';
 import { motion } from 'framer-motion';
 import { signOut } from 'next-auth/react';
-import { PrimaryButton } from '../components/buttons/PrimaryButton.tsx';
-import { Title } from '../components/typography/Title.tsx';
-import { Text } from '../components/typography/Text.tsx';
+import { PrimaryButton } from '../components/buttons/PrimaryButton';
+import { Title } from '../components/typography/Title';
+import { Text } from '../components/typography/Text';
+import { EventContext } from '../contexts/EventContext';
 
 const Profile = () => {
 	const { user } = useContext(UserContext);
+	const { events } = useContext(EventContext);
 
-	const handleClick = (e) => {
+	const handleClick = (e: any) => {
 		e?.preventDefault();
 		signOut({
 			callbackUrl: `/`,
@@ -28,43 +30,62 @@ const Profile = () => {
 			</Head>
 			<StyledMain>
 				<Title variant='heading1'>Your Profile</Title>
-				<ProfilePhoto photo={user.image} dimensions={80} />
+				<ProfilePhoto photo={user?.image} dimensions='90px' />
 				<StyledCard
 					initial={{ opacity: 0, width: '80%' }}
 					animate={{ opacity: 1, width: 'auto' }}
 					transition={{
-						ease: 'easeIn',
-						duration: '0.75',
+						duration: 0.75,
 						type: 'spring',
 					}}>
 					<StyledP
 						initial={{ opacity: 0, width: 'auto' }}
 						animate={{ opacity: 1, width: 'auto' }}
 						transition={{
-							ease: 'easeIn',
-							duration: '2',
+							duration: 2,
 							type: 'spring',
 						}}>
-						<Text variant='body1'>Logged in as: {user.name}</Text>
+						<Text variant='body1'>
+							<b>Logged in as:</b> {user?.name}
+						</Text>
 					</StyledP>
 				</StyledCard>
 				<StyledCard
 					initial={{ opacity: 0, width: '80%' }}
 					animate={{ opacity: 1, width: 'auto' }}
 					transition={{
-						ease: 'easeIn',
-						duration: '1',
+						duration: 1,
 						type: 'spring',
 					}}>
 					<StyledP
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{
-							ease: 'easeIn',
-							duration: '2',
+							duration: 2,
 							type: 'spring',
 						}}>
-						<Text variant='body1'>Email: {user.email}</Text>
+						<Text variant='body1'>
+							<b>Email: </b> {user?.email}
+						</Text>
+					</StyledP>
+				</StyledCard>
+				<StyledCard
+					initial={{ opacity: 0, width: '80%' }}
+					animate={{ opacity: 1, width: 'auto' }}
+					transition={{
+						duration: 1.25,
+						type: 'spring',
+					}}>
+					<StyledP
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{
+							duration: 2.5,
+							type: 'spring',
+						}}>
+						<Text variant='body1'>
+							<b>Total Events: </b> {events.length}
+						</Text>
 					</StyledP>
 				</StyledCard>
 				<PrimaryButton
