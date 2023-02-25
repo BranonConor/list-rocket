@@ -56,7 +56,7 @@ export const WorkspaceControls = () => {
 											handleClick(
 												e,
 												event._id,
-												event.creatorId
+												event.creator
 											)
 										}
 										content={event.name}
