@@ -1,12 +1,12 @@
 import ProfilePhoto from '../profile-photo';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
-import { Title } from '../typography/Title.tsx';
-import { Text } from '../typography/Text.tsx';
-import { ChipButton } from '../buttons/ChipButton.tsx';
+import { Title } from '../typography/Title';
+import { Text } from '../typography/Text';
+import { ChipButton } from '../buttons/ChipButton';
 
 const WorkspaceControls = () => {
 	const { events } = useContext(EventContext);
@@ -26,14 +26,14 @@ const WorkspaceControls = () => {
 		<StyledWrapper>
 			{/* ---- EVENT CONTROLS ---- */}
 			<StyledEventsContainer>
-				<StyledYourEventsWrapper isEvent={currentEvent}>
+				<StyledYourEventsWrapper>
 					<Title variant='heading2'>Your Events</Title>
 					<Text variant='body1'>
 						Choose an event to load it into your workspace
 					</Text>
 
 					<StyledEventsWrapper>
-						{events.map((event, index) => {
+						{events.map((event, index: number) => {
 							return (
 								<StyledChipWrapper
 									key={event._id}
@@ -48,8 +48,7 @@ const WorkspaceControls = () => {
 										rotate: '0deg',
 									}}
 									transition={{
-										ease: 'easeIn',
-										duration: `${0.125 * (index + 0.5)}`,
+										duration: 0.125 * (index + 0.5),
 										type: 'spring',
 									}}>
 									<ChipButton
@@ -86,7 +85,6 @@ const WorkspaceControls = () => {
 							opacity: 1,
 						}}
 						transition={{
-							ease: 'easeIn',
 							duration: 0.25,
 							type: 'spring',
 						}}>
@@ -115,8 +113,7 @@ const WorkspaceControls = () => {
 									rotate: '0deg',
 								}}
 								transition={{
-									ease: 'easeIn',
-									duration: '0.25',
+									duration: 0.25,
 									type: 'spring',
 								}}>
 								<ProfilePhoto
@@ -135,7 +132,6 @@ const WorkspaceControls = () => {
 							opacity: 1,
 						}}
 						transition={{
-							ease: 'easeIn',
 							duration: 1,
 							type: 'spring',
 						}}>
