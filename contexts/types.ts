@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 // EVENTS TYPES
 export interface ICollaborator {
 	_id: string;
@@ -29,4 +31,21 @@ export interface IUser {
 export interface IUserContext {
 	user: IUser;
 	getUserData: () => void;
+}
+
+// WORKSPACE TYPES
+export interface IWorkspace {
+	_id: string;
+	name: string;
+	email: string;
+	image: string;
+	emailVerified: null;
+}
+
+export interface IWorkspaceContext {
+	currentEvent: IEvent;
+	setCurrentEvent: Dispatch<SetStateAction<IEvent>>;
+	creator: IUser;
+	prepWorkspace: (eventId: string, creatorId: string) => Promise<void>;
+	clearWorkspace: () => void;
 }
