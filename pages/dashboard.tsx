@@ -2,7 +2,7 @@ import AllEvents from '../components/events/all-events';
 import DashLayout from '../components/layouts/dash-layout';
 import LoadingLayout from '../components/layouts/loading-layout';
 import Head from 'next/head';
-import ProfilePhoto from '../components/profile-photo';
+import { ProfilePhoto } from '../components/ProfilePhoto';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useSession } from 'next-auth/react';

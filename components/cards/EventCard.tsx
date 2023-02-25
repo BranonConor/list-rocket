@@ -49,8 +49,10 @@ const EventCard = (props) => {
 				duration: 0.125 * (animationFactor + 0.5),
 				type: 'spring',
 			}}>
-			<Title variant='heading3'>{name}</Title>
-			<Text variant='body1'>{description}</Text>
+			<div>
+				<Title variant='heading3'>{name}</Title>
+				<Text variant='body1'>{description}</Text>
+			</div>
 
 			<StyledButtonContainer>
 				<PrimaryButton
@@ -59,7 +61,7 @@ const EventCard = (props) => {
 					variant='small'
 				/>
 				<StyledDeleteButton onClick={handleDelete}>
-					<Image src='/icons/trash-red.svg' alt='Trash Icon' />
+					<img src='/icons/trash-red.svg' alt='Trash Icon' />
 				</StyledDeleteButton>
 			</StyledButtonContainer>
 		</StyledCard>
@@ -70,10 +72,13 @@ export default EventCard;
 
 const StyledCard = styled(motion.div)(
 	({ theme: { colors } }) => `
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	border-radius: 10px;
 	box-sizing: border-box;
 	text-align: left;
-	padding: 16px 16px 32px 16px;
+	padding: 16px;
 	background: ${colors.bgLight};
 	
 	&:hover {
