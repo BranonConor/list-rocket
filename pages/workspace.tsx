@@ -20,7 +20,7 @@ const Workspace = () => {
 			<Title variant='heading1'>Event Workspace</Title>
 			<WorkspaceControls />
 			{/* ---- WORKSPACE ---- */}
-			<StyledWorkspaceWrapper isEventActive={currentEvent}>
+			<StyledWorkspaceWrapper isEventActive={Boolean(currentEvent)}>
 				{currentEvent ? (
 					<>
 						<CollaboratorsGrid />
