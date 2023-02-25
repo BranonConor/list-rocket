@@ -1,7 +1,7 @@
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 
-export default async (req, res) => {
+const eventsApiRoutes = async (req, res) => {
 	const client = await clientPromise;
 	const db = client.db('list-rocket');
 
@@ -39,7 +39,7 @@ export default async (req, res) => {
 		} else {
 			//find an event where the user is not already a collaborator or creator
 			const event = await db.collection('events').findOne({
-				_id: ObjectId(req.body.eventId.trim()),
+				_id: new ObjectId(req.body.eventId.trim()),
 			});
 			//check for the user before doing anything else
 			const collaborators = [];
@@ -57,7 +57,7 @@ export default async (req, res) => {
 				//proceed with updating the event with the new collaborator if none exist already
 				const eventUpdate = db.collection('events').findOneAndUpdate(
 					{
-						_id: ObjectId(req.body.eventId.trim()),
+						_id: new ObjectId(req.body.eventId.trim()),
 						collaborators: { $ne: user },
 					},
 					{ $push: { collaborators: user } }
@@ -67,3 +67,5 @@ export default async (req, res) => {
 		}
 	}
 };
+
+export default eventsApiRoutes;

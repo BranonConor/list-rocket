@@ -1,14 +1,15 @@
 import clientPromise from '../../../lib/mongodb';
-import { ObjectId } from 'mongodb';
 
-export default async (req, res) => {
+const usersApiRoutes = async (req, res) => {
 	const client = await clientPromise;
 	const db = client.db('list-rocket');
 
 	if (req.method === 'GET') {
 		const user = await db
 			.collection('users')
-			.findOne({ _id: ObjectId(req.query.id.trim()) });
+			.findOne({ email: req.query.email });
 		res.json({ status: 200, data: user });
 	}
 };
+
+export default usersApiRoutes;
