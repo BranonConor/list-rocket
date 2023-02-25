@@ -1,19 +1,27 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { Title } from '../typography/Title.tsx';
+import { Title } from '../typography/Title';
 
-const ProfileCard = (props) => {
+interface Props {
+	photo: string;
+	firstName: string;
+	lastName: string;
+	email: string;
+}
+
+const ProfileCard: React.FC<Props> = (props) => {
+	const { photo, firstName, lastName, email } = props;
 	return (
 		<StyledWrapper
 			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
 			animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
-			transition={{ ease: 'easeIn', duration: '0.25', type: 'spring' }}>
-			<StyledImage src={props.photo} alt='Logged in user' />
+			transition={{ duration: 0.25, type: 'spring' }}>
+			<StyledImage src={photo} alt='Logged in user' />
 			<Title variant='heading3'>
-				{props.firstName} {props.lastName}
+				{firstName} {lastName}
 			</Title>
 			<StyledList>
-				<li>Email: {props.email}</li>
+				<li>Email: {email}</li>
 			</StyledList>
 		</StyledWrapper>
 	);

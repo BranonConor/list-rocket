@@ -9,7 +9,6 @@ import { useRouter } from 'next/router';
 import { Title } from '../typography/Title';
 import { Text } from '../typography/Text';
 import { toast } from 'react-toastify';
-import Image from 'next/image';
 
 const EventCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
