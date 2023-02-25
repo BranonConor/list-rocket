@@ -10,6 +10,7 @@ interface IUser {
 	image: string;
 	emailVerified: null;
 }
+
 interface IUserContext {
 	user: IUser;
 	getUserData: () => void;

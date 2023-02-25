@@ -9,8 +9,8 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
-import { Title } from '../components/typography/Title.tsx';
-import { Text } from '../components/typography/Text.tsx';
+import { Title } from '../components/typography/Title';
+import { Text } from '../components/typography/Text';
 import { toast } from 'react-toastify';
 import CreateEventForm from '../components/events/CreateEvent';
 import 'react-toastify/dist/ReactToastify.css';
@@ -44,22 +44,20 @@ const Dashboard = () => {
 						initial={{ opacity: 0, width: '80%' }}
 						animate={{ opacity: 1, width: '100%' }}
 						transition={{
-							ease: 'easeIn',
-							duration: '1',
+							duration: 1,
 							type: 'spring',
 						}}>
-						<ProfilePhoto photo={user.image} dimensions='40px' />
+						<ProfilePhoto photo={user?.image} dimensions='40px' />
 						<StyledP
 							variant='body1'
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							transition={{
-								ease: 'easeIn',
-								duration: '1',
+								duration: 1,
 								type: 'spring',
 							}}>
 							<Text variant='body1'>
-								Welcome, {user.name}! ✌🏼
+								Welcome, {user?.name}! ✌🏼
 							</Text>
 						</StyledP>
 					</StyledGreeting>
@@ -93,7 +91,7 @@ const StyledGreeting = styled(motion.div)(
 `
 );
 
-const StyledP = styled(motion.p)`
+const StyledP = styled(motion(Text))`
 	display: flex;
 	padding: 0 8px;
 	box-sizing: border-box;

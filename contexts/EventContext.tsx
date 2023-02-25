@@ -15,7 +15,7 @@ export const EventProvider = (props) => {
 	const getAllEvents = async () => {
 		const res = await axios.get(`/api/events`, {
 			params: {
-				creatorId: user._id,
+				creatorId: user?._id,
 			},
 		});
 		setEvents(res.data.data);
