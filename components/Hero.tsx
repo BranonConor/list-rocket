@@ -1,8 +1,7 @@
-import { PrimaryButton } from './buttons/PrimaryButton.tsx';
-import { motion } from 'framer-motion';
+import { PrimaryButton } from './buttons/PrimaryButton';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import { Title } from './typography/Title.tsx';
+import { Title } from './typography/Title';
 
 const Hero = () => {
 	const router = useRouter();
