@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useContext, useState } from 'react';
-import ProfilePhoto from '../profile-photo';
+import { ProfilePhoto } from '../ProfilePhoto';
 import { AddCollaborator } from '../events/AddCollaborator';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
-import { Title } from '../typography/Title.tsx';
+import { Title } from '../typography/Title';
 
-const CollaboratorsGrid = () => {
+export const CollaboratorsGrid = () => {
 	const { currentEvent } = useContext(WorkspaceContext);
 	const [isAddCollaboratorButtonClicked, setIsAddCollaboratorButtonClicked] =
 		useState(false);
@@ -22,7 +22,6 @@ const CollaboratorsGrid = () => {
 				opacity: 1,
 			}}
 			transition={{
-				ease: 'easeIn',
 				delay: 0.1,
 				duration: 0.5,
 				type: 'spring',
@@ -35,7 +34,7 @@ const CollaboratorsGrid = () => {
 							<StyledButton key={collaborator._id}>
 								<ProfilePhoto
 									photo={collaborator.image}
-									dimensions={40}
+									dimensions='40px'
 								/>
 							</StyledButton>
 						);
@@ -60,8 +59,6 @@ const CollaboratorsGrid = () => {
 		</StyledGrid>
 	);
 };
-
-export default CollaboratorsGrid;
 
 const StyledGrid = styled(motion.div)`
 	width: 100%;

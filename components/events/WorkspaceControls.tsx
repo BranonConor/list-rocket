@@ -1,4 +1,4 @@
-import ProfilePhoto from '../profile-photo';
+import { ProfilePhoto } from '../ProfilePhoto';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useContext } from 'react';
@@ -8,7 +8,7 @@ import { Title } from '../typography/Title';
 import { Text } from '../typography/Text';
 import { ChipButton } from '../buttons/ChipButton';
 
-const WorkspaceControls = () => {
+export const WorkspaceControls = () => {
 	const { events } = useContext(EventContext);
 	const { currentEvent, creator, prepWorkspace, clearWorkspace } =
 		useContext(WorkspaceContext);
@@ -142,8 +142,6 @@ const WorkspaceControls = () => {
 		</StyledWrapper>
 	);
 };
-
-export default WorkspaceControls;
 
 const StyledWrapper = styled.div`
 	width: 100%;

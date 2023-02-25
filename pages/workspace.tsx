@@ -1,11 +1,11 @@
-import CollaboratorsGrid from '../components/lists/collaborators-grid';
+import { CollaboratorsGrid } from '../components/lists/CollaboratorsGrid';
 import DashLayout from '../components/layouts/dash-layout';
 import Head from 'next/head';
-import WorkspaceControls from '../components/events/workspace-controls';
+import { WorkspaceControls } from '../components/events/WorkspaceControls';
 import styled from 'styled-components';
 import { WorkspaceContext } from '../contexts/WorkspaceContext';
 import { useContext } from 'react';
-import { Title } from '../components/typography/Title.tsx';
+import { Title } from '../components/typography/Title';
 
 const Workspace = () => {
 	const { currentEvent } = useContext(WorkspaceContext);
@@ -39,8 +39,10 @@ export default Workspace;
 //   const cookie = ctx.req ? ctx.req.headers.cookie : undefined;
 //   return {props: {cookie: cookie}}
 // }
-
-const StyledWorkspaceWrapper = styled.div(
+interface StyledWorkspaceWrapperProps {
+	isEventActive: boolean;
+}
+const StyledWorkspaceWrapper = styled.div<StyledWorkspaceWrapperProps>(
 	({ isEventActive, theme: { colors } }) => `
 	border: 2px dashed ${colors.bgLight};
 	border-radius: 10px;
