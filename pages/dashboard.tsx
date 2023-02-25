@@ -49,7 +49,6 @@ const Dashboard = () => {
 						}}>
 						<ProfilePhoto photo={user?.image} dimensions='40px' />
 						<StyledP
-							variant='body1'
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							transition={{
@@ -91,7 +90,7 @@ const StyledGreeting = styled(motion.div)(
 `
 );
 
-const StyledP = styled(motion(Text))`
+const StyledP = styled(motion.p)`
 	display: flex;
 	padding: 0 8px;
 	box-sizing: border-box;
