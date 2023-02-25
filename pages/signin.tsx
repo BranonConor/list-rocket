@@ -1,14 +1,23 @@
 import { motion } from 'framer-motion';
-import { getProviders, signIn, getSession } from 'next-auth/react';
+import { BuiltInProviderType } from 'next-auth/providers';
+import {
+	getProviders,
+	signIn,
+	getSession,
+	ClientSafeProvider,
+	LiteralUnion,
+} from 'next-auth/react';
 import styled from 'styled-components';
-import Button from '../components/buttons/Button';
-import { Title } from '../components/typography/Title.tsx';
+import { PrimaryButton } from '../components/buttons/PrimaryButton';
+import { Title } from '../components/typography/Title';
 
-export default function SignIn({ providers }) {
+const SignIn = ({
+	providers,
+}: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>) => {
 	return (
 		<StyledWrapper>
 			{Object.values(providers).map((provider) => (
-				<StyledProviderWrapper key={provider.name}>
+				<StyledProviderWrapper key={provider?.name}>
 					<StyledH1 variant='heading1'>
 						Sign in with
 						<StyledGoogleLogo src='/icons/google.svg' />
@@ -16,10 +25,10 @@ export default function SignIn({ providers }) {
 					<StyledSubtitle variant='subtitle1'>
 						Get ready for liftoff.
 					</StyledSubtitle>
-					<Button
+					<PrimaryButton
+						variant='fullLarge'
 						content='Sign in with Google'
-						onClick={() => signIn(provider.id)}
-						width='100%'
+						onClick={() => signIn(provider?.id)}
 					/>
 				</StyledProviderWrapper>
 			))}
@@ -27,17 +36,15 @@ export default function SignIn({ providers }) {
 				initial={{ y: '400px', opacity: 0 }}
 				animate={{ y: '0', opacity: 1 }}
 				transition={{
-					ease: 'easeIn',
-					duration: '2',
+					duration: 2,
 					type: 'spring',
 				}}>
 				<StyledImage
 					animate={{
 						y: [0, 10, 0, 0, 2, -10, 0],
-						repeat: Infinity,
 					}}
 					transition={{
-						duration: '1',
+						duration: 1,
 						type: 'spring',
 						repeat: Infinity,
 					}}
@@ -49,7 +56,6 @@ export default function SignIn({ providers }) {
 						animate={{
 							y: [-50, 50],
 							opacity: [1, 0],
-							repeat: Infinity,
 						}}
 						transition={{
 							duration: '0.2',
@@ -62,7 +68,6 @@ export default function SignIn({ providers }) {
 						animate={{
 							y: [-100, 100],
 							opacity: [1, 0],
-							repeat: Infinity,
 						}}
 						transition={{
 							duration: '0.4',
@@ -75,7 +80,6 @@ export default function SignIn({ providers }) {
 						animate={{
 							y: [-80, 80],
 							opacity: [1, 0],
-							repeat: Infinity,
 						}}
 						transition={{
 							duration: '0.4',
@@ -88,7 +92,6 @@ export default function SignIn({ providers }) {
 						animate={{
 							y: [-100, 150],
 							opacity: [1, 0],
-							repeat: Infinity,
 						}}
 						transition={{
 							duration: '0.2',
@@ -101,7 +104,6 @@ export default function SignIn({ providers }) {
 						animate={{
 							y: [-100, 140],
 							opacity: [1, 0],
-							repeat: Infinity,
 						}}
 						transition={{
 							duration: '0.5',
@@ -113,7 +115,6 @@ export default function SignIn({ providers }) {
 						animate={{
 							y: [-100, 130],
 							opacity: [1, 0],
-							repeat: Infinity,
 						}}
 						transition={{
 							duration: '0.2',
@@ -126,7 +127,6 @@ export default function SignIn({ providers }) {
 						animate={{
 							y: [-100, 150],
 							opacity: [1, 0],
-							repeat: Infinity,
 						}}
 						transition={{
 							duration: '0.55',
@@ -139,7 +139,6 @@ export default function SignIn({ providers }) {
 						animate={{
 							y: [-100, 135],
 							opacity: [1, 0],
-							repeat: Infinity,
 						}}
 						transition={{
 							duration: '0.5',
@@ -152,7 +151,6 @@ export default function SignIn({ providers }) {
 						animate={{
 							y: [-100, 120],
 							opacity: [1, 0],
-							repeat: Infinity,
 						}}
 						transition={{
 							duration: '0.2',
@@ -165,7 +163,6 @@ export default function SignIn({ providers }) {
 						animate={{
 							y: [-50, 50],
 							opacity: [1, 0],
-							repeat: Infinity,
 						}}
 						transition={{
 							duration: '0.4',
@@ -178,7 +175,6 @@ export default function SignIn({ providers }) {
 						animate={{
 							y: [-50, 50],
 							opacity: [1, 0],
-							repeat: Infinity,
 						}}
 						transition={{
 							duration: '0.2',
@@ -190,7 +186,9 @@ export default function SignIn({ providers }) {
 			</StyledRocketWrapper>
 		</StyledWrapper>
 	);
-}
+};
+
+export default SignIn;
 
 // This is the recommended way for Next.js 9.3 or newer
 export async function getServerSideProps(context) {
@@ -207,38 +205,34 @@ export async function getServerSideProps(context) {
 		props: { providers },
 	};
 }
-const StyledWrapper = styled.div(
-	({ theme: { colors } }) => `
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+const StyledWrapper = styled.div`
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
-    background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHhtbG5zOnhsaW5rPSdodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rJyB3aWR0aD0nNjAwJyBoZWlnaHQ9JzYwMCcgdmlld0JveD0nMCAwIDE1MCAxNTAnPgo8ZmlsdGVyIGlkPSdpJyB4PScwJyB5PScwJz4KCTxmZUNvbG9yTWF0cml4IHR5cGU9J21hdHJpeCcgdmFsdWVzPScxIDAgMCAwIDAgIDAgMSAwIDAgMCAgMCAwIDEgMCAwICAwIDAgMCAwIDAnIC8+CjwvZmlsdGVyPgo8ZmlsdGVyIGlkPSduJyB4PScwJyB5PScwJz4KCTxmZVR1cmJ1bGVuY2UgdHlwZT0ndHVyYnVsZW5jZScgYmFzZUZyZXF1ZW5jeT0nLjcnIHJlc3VsdD0nZnV6eicgbnVtT2N0YXZlcz0nMicgc3RpdGNoVGlsZXM9J3N0aXRjaCcvPgoJPGZlQ29tcG9zaXRlIGluPSdTb3VyY2VHcmFwaGljJyBpbjI9J2Z1enonIG9wZXJhdG9yPSdhcml0aG1ldGljJyBrMT0nMCcgazI9JzEnIGszPSctNzMnIGs0PScuMDEnIC8+CjwvZmlsdGVyPgo8cmVjdCB3aWR0aD0nMTAyJScgaGVpZ2h0PScxMDIlJyBmaWxsPScjMDMwMzFhJy8+CjxyZWN0IHg9Jy0xJScgeT0nLTElJyB3aWR0aD0nMTAyJScgaGVpZ2h0PScxMDIlJyBmaWxsPScjZmZmZmZmJyBmaWx0ZXI9J3VybCgjbiknIG9wYWNpdHk9JzEnLz4KPHJlY3QgeD0nLTElJyB5PSctMSUnIHdpZHRoPScxMDIlJyBoZWlnaHQ9JzEwMiUnIGZpbGw9JyMwMzAzMWEnIGZpbHRlcj0ndXJsKCNpKScgb3BhY2l0eT0nMScvPgo8L3N2Zz4=');
-	`
-);
-const StyledProviderWrapper = styled.div(
-	({ theme: { colors } }) => `
+	background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHhtbG5zOnhsaW5rPSdodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rJyB3aWR0aD0nNjAwJyBoZWlnaHQ9JzYwMCcgdmlld0JveD0nMCAwIDE1MCAxNTAnPgo8ZmlsdGVyIGlkPSdpJyB4PScwJyB5PScwJz4KCTxmZUNvbG9yTWF0cml4IHR5cGU9J21hdHJpeCcgdmFsdWVzPScxIDAgMCAwIDAgIDAgMSAwIDAgMCAgMCAwIDEgMCAwICAwIDAgMCAwIDAnIC8+CjwvZmlsdGVyPgo8ZmlsdGVyIGlkPSduJyB4PScwJyB5PScwJz4KCTxmZVR1cmJ1bGVuY2UgdHlwZT0ndHVyYnVsZW5jZScgYmFzZUZyZXF1ZW5jeT0nLjcnIHJlc3VsdD0nZnV6eicgbnVtT2N0YXZlcz0nMicgc3RpdGNoVGlsZXM9J3N0aXRjaCcvPgoJPGZlQ29tcG9zaXRlIGluPSdTb3VyY2VHcmFwaGljJyBpbjI9J2Z1enonIG9wZXJhdG9yPSdhcml0aG1ldGljJyBrMT0nMCcgazI9JzEnIGszPSctNzMnIGs0PScuMDEnIC8+CjwvZmlsdGVyPgo8cmVjdCB3aWR0aD0nMTAyJScgaGVpZ2h0PScxMDIlJyBmaWxsPScjMDMwMzFhJy8+CjxyZWN0IHg9Jy0xJScgeT0nLTElJyB3aWR0aD0nMTAyJScgaGVpZ2h0PScxMDIlJyBmaWxsPScjZmZmZmZmJyBmaWx0ZXI9J3VybCgjbiknIG9wYWNpdHk9JzEnLz4KPHJlY3QgeD0nLTElJyB5PSctMSUnIHdpZHRoPScxMDIlJyBoZWlnaHQ9JzEwMiUnIGZpbGw9JyMwMzAzMWEnIGZpbHRlcj0ndXJsKCNpKScgb3BhY2l0eT0nMScvPgo8L3N2Zz4=');
+`;
+const StyledProviderWrapper = styled.div`
 	width: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    border-radius: 10px;
-    padding: 32px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(7px);
-    position: absolute;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	border-radius: 10px;
+	padding: 32px;
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 16px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+	backdrop-filter: blur(15px);
+	-webkit-backdrop-filter: blur(7px);
+	position: absolute;
 	bottom: 25%;
-    z-index: 1;
-`
-);
+	z-index: 1;
+`;
 const StyledH1 = styled(Title)(
 	({ theme: { colors, typography } }) => `
     color: ${colors.white};
@@ -252,7 +246,7 @@ const StyledH1 = styled(Title)(
 const StyledSubtitle = styled(Title)(
 	({ theme: { colors } }) => `
     color: ${colors.white};
-    padding: 0;
+    padding: 0 0 24px 0;
     margin: 0;
 `
 );
@@ -281,7 +275,10 @@ const StyledFlameWrapper = styled(motion.div)`
 	display: flex;
 	justify-content: space-around;
 `;
-const StyledFlame = styled(motion.div)(
+interface IStyledFlameProps {
+	size: string;
+}
+const StyledFlame = styled(motion.div)<IStyledFlameProps>(
 	(props) => `
     position: relative;
     z-index: -1;

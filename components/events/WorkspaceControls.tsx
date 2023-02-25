@@ -90,7 +90,7 @@ export const WorkspaceControls = () => {
 						}}>
 						<StyledSpan>
 							<Title variant='heading3'>
-								Currently working on: {currentEvent.name}{' '}
+								Currently working on: {currentEvent?.name}{' '}
 							</Title>
 							<StyledButton onClick={handleExitClick}>
 								<StyledImg src='/icons/x.svg' />
@@ -117,7 +117,7 @@ export const WorkspaceControls = () => {
 									type: 'spring',
 								}}>
 								<ProfilePhoto
-									photo={creator.image}
+									photo={creator?.image}
 									dimensions='35px'
 								/>
 							</StyledAvatar>
