@@ -2,13 +2,16 @@ import { ProfilePhoto } from '../ProfilePhoto';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { Title } from '../typography/Title';
+import { IListItem } from '../../contexts/types';
+import { Text } from '../typography/Text';
 
 interface Props {
 	photo: string;
+	items: IListItem[];
 }
 
 export const UserList: React.FC<Props> = (props) => {
-	const { photo } = props;
+	const { photo, items } = props;
 	return (
 		<StyledList
 			initial={{
@@ -28,6 +31,18 @@ export const UserList: React.FC<Props> = (props) => {
 				<ProfilePhoto photo={photo} dimensions='40px' />
 				<Title variant='heading3'>Your List</Title>
 			</StyledTitle>
+			<StyledContent>
+				<></>
+				{items?.length ? (
+					<>
+						{items.map((item) => {
+							<li>{item.name}</li>;
+						})}
+					</>
+				) : (
+					<Text variant='body1'>Add your first items!</Text>
+				)}
+			</StyledContent>
 		</StyledList>
 	);
 };
@@ -53,4 +68,8 @@ const StyledTitle = styled.div`
 	& img {
 		margin: 0 16px 0 0;
 	}
+`;
+const StyledContent = styled.ul`
+	list-style: none;
+	padding: 0;
 `;

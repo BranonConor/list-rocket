@@ -13,6 +13,21 @@ const Workspace = () => {
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
 
+	// get the user list by current user id
+	const getUserListItems = () => {
+		// get all lists from the current event
+		const lists = currentEvent?.lists;
+		// find the list this user created by using their id
+		const userList = lists?.find((list) => {
+			list.creator?._id === user._id;
+		});
+		return userList?.items;
+	};
+
+	const items = getUserListItems();
+
+	console.log(items);
+
 	return (
 		<DashLayout>
 			<Head>
@@ -28,7 +43,7 @@ const Workspace = () => {
 					<>
 						<CollaboratorsGrid />
 						<StyledListWrapper>
-							<UserList photo={user?.image} />
+							<UserList photo={user?.image} items={items} />
 						</StyledListWrapper>
 					</>
 				) : (
