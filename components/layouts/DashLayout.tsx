@@ -1,7 +1,7 @@
-import { Footer } from '../Footer';
 import Head from 'next/head';
 import { ProductNav } from '../navbars/ProductNav';
 import styled from 'styled-components';
+import { Footer } from '../Footer';
 
 export const DashLayout = ({ children }) => {
 	const siteTitle = 'A productivity tool for streamlining events';

@@ -36,7 +36,6 @@ const StyledAnchor = styled.a(
 	({ theme: { colors } }) => `
 	color: ${colors.bgPurple};
 	padding: 0 0 0 8px;
-
 	
 	&:hover {
 		color: ${colors.linkTextHover};

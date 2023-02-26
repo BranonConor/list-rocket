@@ -1,4 +1,4 @@
-import AllEvents from '../components/events/all-events';
+import { AllEvents } from '../components/events/AllEvents';
 import { DashLayout } from '../components/layouts/DashLayout';
 import { LoadingLayout } from '../components/layouts/LoadingLayout';
 import Head from 'next/head';
@@ -12,8 +12,9 @@ import { UserContext } from '../contexts/UserContext';
 import { Title } from '../components/typography/Title';
 import { Text } from '../components/typography/Text';
 import { toast } from 'react-toastify';
-import CreateEventForm from '../components/events/CreateEvent';
+import { CreateEventForm } from '../components/events/CreateEvent';
 import 'react-toastify/dist/ReactToastify.css';
+import { Footer } from '../components/Footer';
 
 const Dashboard = () => {
 	const router = useRouter();

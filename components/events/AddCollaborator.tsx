@@ -1,11 +1,10 @@
 import { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { PrimaryButton } from '../buttons/PrimaryButton.tsx';
+import { PrimaryButton } from '../buttons/PrimaryButton';
 import axios from 'axios';
-import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
-import { Text } from '../typography/Text.tsx';
+import { Text } from '../typography/Text';
 import { toast } from 'react-toastify';
 
 export const AddCollaborator = (props) => {
@@ -64,7 +63,6 @@ export const AddCollaborator = (props) => {
 				initial={{ top: -200, opacity: 0 }}
 				animate={{ top: 0, opacity: 1 }}
 				transition={{
-					ease: 'easeIn',
 					duration: 0.25,
 					type: 'spring',
 				}}>

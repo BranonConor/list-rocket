@@ -3,9 +3,9 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useContext } from 'react';
 import { EventContext } from '../../contexts/EventContext';
-import { Title } from '../typography/Title.tsx';
+import { Title } from '../typography/Title';
 
-const AllEvents = () => {
+export const AllEvents = () => {
 	const { events } = useContext(EventContext);
 
 	return (
@@ -30,8 +30,7 @@ const AllEvents = () => {
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{
-							ease: 'easeIn',
-							duration: '5',
+							duration: 5,
 							type: 'spring',
 						}}>
 						Start your first event! ✨
@@ -41,8 +40,6 @@ const AllEvents = () => {
 		</StyledWrapper>
 	);
 };
-
-export default AllEvents;
 
 const StyledWrapper = styled.div`
 	width: 100%;

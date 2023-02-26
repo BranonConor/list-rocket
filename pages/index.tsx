@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { Footer } from '../components/Footer';
 import { Hero } from '../components/Hero';
 import { WebLayout } from '../components/layouts/WebLayout';
 

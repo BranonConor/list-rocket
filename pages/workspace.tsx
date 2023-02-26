@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { WorkspaceContext } from '../contexts/WorkspaceContext';
 import { useContext } from 'react';
 import { Title } from '../components/typography/Title';
+import { Footer } from '../components/Footer';
 
 const Workspace = () => {
 	const { currentEvent } = useContext(WorkspaceContext);

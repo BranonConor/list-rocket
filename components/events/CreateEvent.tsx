@@ -1,18 +1,16 @@
 import { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { PrimaryButton } from '../buttons/PrimaryButton.tsx';
+import { PrimaryButton } from '../buttons/PrimaryButton';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { EventContext } from '../../contexts/EventContext';
-import { WorkspaceContext } from '../../contexts/WorkspaceContext';
-import { Title } from '../typography/Title.tsx';
+import { Title } from '../typography/Title';
 import { toast } from 'react-toastify';
 
-const CreateEventForm = () => {
+export const CreateEventForm = () => {
 	const { data: session } = useSession();
 	const { getAllEvents } = useContext(EventContext);
-	const { currentEvent } = useContext(WorkspaceContext);
 	const [nameValue, setNameValue] = useState('');
 	const [descriptionValue, setDescriptionValue] = useState('');
 
@@ -31,10 +29,10 @@ const CreateEventForm = () => {
 			const res = await axios.post(`/api/events`, {
 				name: nameValue,
 				description: descriptionValue,
-				creator: session.user.id,
+				creator: session.user?.id,
 				collaborators: [
 					{
-						_id: session.user.id,
+						_id: session.user?.id,
 						name: session.user.name,
 						email: session.user.email,
 						image: session.user.image,
@@ -67,7 +65,7 @@ const CreateEventForm = () => {
 			onSubmit={handleSubmit}
 			initial={{ scale: 0.95, opacity: 0 }}
 			animate={{ scale: 1, opacity: 1 }}
-			transition={{ ease: 'easeIn', duration: '0.25', type: 'spring' }}>
+			transition={{ duration: 0.25, type: 'spring' }}>
 			<Title variant='heading3'>Create a new event 🚀</Title>
 			<label htmlFor='name'></label>
 			<StyledInput
@@ -95,8 +93,6 @@ const CreateEventForm = () => {
 		</StyledForm>
 	);
 };
-
-export default CreateEventForm;
 
 const StyledForm = styled(motion.form)(
 	({ theme: { colors } }) => `

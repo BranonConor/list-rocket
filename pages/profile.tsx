@@ -10,6 +10,7 @@ import { PrimaryButton } from '../components/buttons/PrimaryButton';
 import { Title } from '../components/typography/Title';
 import { Text } from '../components/typography/Text';
 import { EventContext } from '../contexts/EventContext';
+import { Footer } from '../components/Footer';
 
 const Profile = () => {
 	const { user } = useContext(UserContext);

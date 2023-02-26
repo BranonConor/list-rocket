@@ -21,7 +21,8 @@
 		"**/*.ts",
 		"**/*.tsx",
 		"pages/api/auth/[...nextauth].js",
-		"pages/_document.tsx"
+		"pages/_document.tsx",
+		"components/events/CreateEvent.js"
 	],
 	"exclude": ["node_modules"]
 }
