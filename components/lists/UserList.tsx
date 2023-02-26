@@ -53,7 +53,8 @@ export const UserList: React.FC<Props> = (props) => {
 };
 
 const StyledList = styled(motion.div)(
-	({ theme: { shadows } }) => `
+	({ theme: { colors } }) => `
+	background: ${colors.bgLight};
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -61,19 +62,21 @@ const StyledList = styled(motion.div)(
 	padding: 16px;
 	box-sizing: border-box;
 	border-radius: 5px;
-	box-shadow: ${shadows.standard};
 `
 );
-const StyledTitle = styled.div`
+const StyledTitle = styled.div(
+	({ theme: { colors } }) => `
 	display: flex;
 	align-items: center;
 	width: 100%;
 	justify-content: flex-start;
+	color: ${colors.textLight};
 
 	& img {
 		margin: 0 16px 0 0;
 	}
-`;
+`
+);
 const StyledContent = styled.ul`
 	list-style: none;
 	padding: 0;

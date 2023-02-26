@@ -36,10 +36,23 @@ export const ListItem: React.FC<Props> = (props) => {
 };
 
 const StyledCard = styled(motion.div)(
-	({ theme: { colors } }) => `
-    background: ${colors.bgLight};
-    padding: 8px;
+	({ theme: { colors, shadows } }) => `
+    padding: 16px;
     border-radius: 5px;
-    margin: 8px 0;
-`
+    margin: 0 0 16px 0;
+	transition: 0.10s ease all;
+	background: ${colors.white};
+
+	&:hover {
+		box-shadow: ${shadows.standard};
+		transform: translateY(-2px);
+	}
+
+	& a {
+		color: ${colors.link.default};
+		&:hover {
+			color: ${colors.link.hover};
+		}
+	}
+	`
 );

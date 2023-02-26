@@ -81,4 +81,8 @@ const StyledListWrapper = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	grid-gap: 16px;
+
+	@media only screen and (max-width: 768px) {
+		grid-template-columns: 1fr;
+	}
 `;
