@@ -1,25 +1,16 @@
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
 
-interface Props {
-	onClick: () => void;
+interface Props extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 	content: string;
 	icon?: string;
 	isActive: boolean;
 }
 
-export const ChipButton: React.FC<Props> = ({
-	onClick,
-	content,
-	icon,
-	isActive,
-}: Props) => {
-	const handleClick = () => {
-		onClick ? onClick() : null;
-	};
+export const ChipButton: React.FC<Props> = (props) => {
+	const { content, icon, isActive, ...otherProps } = props;
 
 	return (
-		<StyledChip onClick={handleClick} isActive={isActive}>
+		<StyledChip isActive={isActive} {...otherProps}>
 			{icon && <img src={icon} alt='' />}
 			{content}
 		</StyledChip>
@@ -29,7 +20,7 @@ export const ChipButton: React.FC<Props> = ({
 interface StyleProps {
 	isActive: boolean;
 }
-const StyledChip = styled(motion.a)<StyleProps>(
+const StyledChip = styled.a<StyleProps>(
 	({ isActive, theme: { colors, typography } }) => `
 	width: auto;
 	height: auto;
