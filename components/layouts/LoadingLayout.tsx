@@ -1,11 +1,9 @@
-import Footer from '../footer';
 import Head from 'next/head';
-import Navbar from '../navbars/navbar';
 import styled from 'styled-components';
 
-export const siteTitle = 'A productivity tool for streamlining events';
+export const LoadingLayout = ({ children }) => {
+	const siteTitle = 'A productivity tool for streamlining events';
 
-const WebLayout = ({ children }) => {
 	return (
 		<StyledLayout>
 			<Head>
@@ -23,37 +21,20 @@ const WebLayout = ({ children }) => {
 				<meta name='og:title' content={siteTitle} />
 				<meta name='twitter:card' content='summary_large_image' />
 			</Head>
-
-			<StyledContainer>
-				<StyledHeader>
-					<Navbar />
-				</StyledHeader>
-				<StyledMainSection>
-					{children}
-					<Footer />
-				</StyledMainSection>
-			</StyledContainer>
+			<StyledMainSection>{children}</StyledMainSection>
 		</StyledLayout>
 	);
 };
-
-export default WebLayout;
 
 const StyledLayout = styled.div`
 	width: 100%;
 	box-sizing: border-box;
 `;
-const StyledContainer = styled.div`
+const StyledMainSection = styled.div`
 	width: 100%;
 	height: 100vh;
 	display: flex;
-	flex-direction: column;
-`;
-const StyledMainSection = styled.div`
-	position: relative;
-	width: 100%;
-	height: 100vh;
-	padding: 75px 16px 16px 16px;
+	align-items: center;
+	justify-content: center;
 	box-sizing: border-box;
 `;
-const StyledHeader = styled.header``;

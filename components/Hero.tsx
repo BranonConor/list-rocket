@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import { Title } from './typography/Title';
 
-const Hero = () => {
+export const Hero = () => {
 	const router = useRouter();
 
 	const handleSignIn = () => {
@@ -25,8 +25,6 @@ const Hero = () => {
 		</StyledWrapper>
 	);
 };
-
-export default Hero;
 
 const StyledWrapper = styled.div`
 	margin: 75px 0 0 0;

@@ -1,11 +1,11 @@
-import Footer from '../footer';
+import { Footer } from '../Footer';
 import Head from 'next/head';
-import Sidebar from '../navbars/ProductNav';
+import { ProductNav } from '../navbars/ProductNav';
 import styled from 'styled-components';
 
-export const siteTitle = 'A productivity tool for streamlining events';
+export const DashLayout = ({ children }) => {
+	const siteTitle = 'A productivity tool for streamlining events';
 
-const DashLayout = ({ children }) => {
 	return (
 		<StyledWrapper>
 			<Head>
@@ -26,7 +26,7 @@ const DashLayout = ({ children }) => {
 
 			<StyledContainer>
 				<StyledHeader>
-					<Sidebar />
+					<ProductNav />
 				</StyledHeader>
 				<StyledMainSection>
 					{children}
@@ -36,8 +36,6 @@ const DashLayout = ({ children }) => {
 		</StyledWrapper>
 	);
 };
-
-export default DashLayout;
 
 const StyledWrapper = styled.div`
 	width: 100%;

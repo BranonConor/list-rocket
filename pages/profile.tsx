@@ -1,4 +1,4 @@
-import DashLayout from '../components/layouts/dash-layout';
+import { DashLayout } from '../components/layouts/DashLayout';
 import Head from 'next/head';
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';

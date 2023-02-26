@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { Menu } from './Menu';
-import Submenu from './submenu';
+import { Submenu } from './Submenu';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
-const Sidebar = () => {
+export const ProductNav = () => {
 	return (
 		<StyledWrapper>
 			<StyledMenu>
@@ -31,8 +31,6 @@ const Sidebar = () => {
 		</StyledWrapper>
 	);
 };
-
-export default Sidebar;
 
 const StyledWrapper = styled.div(
 	({ theme: { colors } }) => `

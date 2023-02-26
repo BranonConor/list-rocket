@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import styled from 'styled-components';
-import { PrimaryButton } from '../buttons/PrimaryButton.tsx';
+import { PrimaryButton } from '../buttons/PrimaryButton';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
-const Navbar = () => {
+export const WebNav = () => {
 	const { data: session, status } = useSession();
 
 	const loggedIn = session && status === 'authenticated';
@@ -42,8 +42,6 @@ const Navbar = () => {
 		</StyledWrapper>
 	);
 };
-
-export default Navbar;
 
 const StyledWrapper = styled.div`
 	display: flex;
@@ -125,8 +123,3 @@ const StyledItem = styled.li`
 		}
 	}
 `;
-
-// &:hover svg {
-//     animation: bounce 0.25s linear 1;
-//     animation-fill-mode: forwards;
-// }

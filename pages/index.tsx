@@ -1,8 +1,8 @@
 import Head from 'next/head';
-import Hero from '../components/hero';
-import WebLayout from '../components/layouts/web-layout';
+import { Hero } from '../components/Hero';
+import { WebLayout } from '../components/layouts/WebLayout';
 
-const Home = () => {
+const Index = () => {
 	return (
 		<WebLayout>
 			<Head>
@@ -17,7 +17,7 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default Index;
 
 // export async function getServerSideProps(ctx) {
 //   const cookie = ctx.req ? ctx.req.headers.cookie : undefined;

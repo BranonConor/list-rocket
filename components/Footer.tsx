@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Footer = () => {
+export const Footer = () => {
 	return (
 		<StyledFooter>
 			App by
@@ -10,8 +10,6 @@ const Footer = () => {
 		</StyledFooter>
 	);
 };
-
-export default Footer;
 
 const StyledFooter = styled.div(
 	({ theme: { colors } }) => `

@@ -1,6 +1,6 @@
 import AllEvents from '../components/events/all-events';
-import DashLayout from '../components/layouts/dash-layout';
-import LoadingLayout from '../components/layouts/loading-layout';
+import { DashLayout } from '../components/layouts/DashLayout';
+import { LoadingLayout } from '../components/layouts/LoadingLayout';
 import Head from 'next/head';
 import { ProfilePhoto } from '../components/ProfilePhoto';
 import { motion } from 'framer-motion';

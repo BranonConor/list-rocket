@@ -1,5 +1,5 @@
 import { CollaboratorsGrid } from '../components/lists/CollaboratorsGrid';
-import DashLayout from '../components/layouts/dash-layout';
+import { DashLayout } from '../components/layouts/DashLayout';
 import Head from 'next/head';
 import { WorkspaceControls } from '../components/events/WorkspaceControls';
 import styled from 'styled-components';

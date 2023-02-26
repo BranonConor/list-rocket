@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { Title } from '../typography/Title';
 
-const UserList = (props) => {
+export const UserList = (props) => {
 	return (
 		<StyledList
 			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
@@ -16,8 +16,6 @@ const UserList = (props) => {
 		</StyledList>
 	);
 };
-
-export default UserList;
 
 const StyledList = styled(motion.div)`
 	width: 350px;

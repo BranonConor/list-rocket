@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import { toast } from 'react-toastify';
 
-const Submenu = () => {
-	const handleClick = (e) => {
+export const Submenu = () => {
+	const handleClick = (e: any) => {
 		e.preventDefault();
 		toast.success('Successfully created your event ✨', {
 			toastId: 'unauthenticated-route-toast',
@@ -17,7 +17,7 @@ const Submenu = () => {
 	return (
 		<StyledList>
 			<StyledListItem>
-				<Link href='/'>
+				<Link href='/' passHref>
 					<StyledAnchor>
 						<img src='/icons/home.svg' atl='Home Icon' />
 					</StyledAnchor>
@@ -31,8 +31,6 @@ const Submenu = () => {
 		</StyledList>
 	);
 };
-
-export default Submenu;
 
 const StyledList = styled.div`
 	display: flex;
