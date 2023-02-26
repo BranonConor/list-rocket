@@ -8,18 +8,18 @@ const eventSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'users',
 	},
-	// collaborators: [
-	//     {
-	//         type: Schema.Types.ObjectId,
-	//         ref: 'users'
-	//     }
-	// ],
-	// lists: [
-	//     {
-	//         type: Schema.Types.ObjectId,
-	//         ref: 'lists'
-	//     }
-	// ]
+	collaborators: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'users',
+		},
+	],
+	lists: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'lists',
+		},
+	],
 });
 
 const Event = mongoose.model('events', eventSchema);

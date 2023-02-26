@@ -68,7 +68,7 @@ const StyledCollaboratorsWrapper = styled(motion.div)`
 	flex-wrap: wrap;
 	align-items: center;
 	width: 100%;
-	margin: 16px 0;
+	margin: 16px 0 32px 0;
 `;
 const StyledH2 = styled(Title)`
 	margin: 0 16px 0 0;

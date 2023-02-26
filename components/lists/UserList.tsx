@@ -3,22 +3,37 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { Title } from '../typography/Title';
 
-export const UserList = (props) => {
+interface Props {
+	photo: string;
+}
+
+export const UserList: React.FC<Props> = (props) => {
+	const { photo } = props;
 	return (
 		<StyledList
-			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
-			animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
-			transition={{ duration: 0.25, type: 'spring' }}>
+			initial={{
+				top: -20,
+				opacity: 0,
+			}}
+			animate={{
+				top: 0,
+				opacity: 1,
+			}}
+			transition={{
+				delay: 0.15,
+				duration: 0.5,
+				type: 'spring',
+			}}>
 			<StyledTitle>
-				<ProfilePhoto photo={props.photo} dimensions='40px' />
+				<ProfilePhoto photo={photo} dimensions='40px' />
 				<Title variant='heading3'>Your List</Title>
 			</StyledTitle>
 		</StyledList>
 	);
 };
 
-const StyledList = styled(motion.div)`
-	width: 350px;
+const StyledList = styled(motion.div)(
+	({ theme: { shadows } }) => `
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -26,9 +41,16 @@ const StyledList = styled(motion.div)`
 	padding: 16px;
 	box-sizing: border-box;
 	border-radius: 5px;
-	margin: 16px 16px 16px 0;
-`;
+	box-shadow: ${shadows.standard};
+`
+);
 const StyledTitle = styled.div`
 	display: flex;
 	align-items: center;
+	width: 100%;
+	justify-content: flex-start;
+
+	& img {
+		margin: 0 16px 0 0;
+	}
 `;
