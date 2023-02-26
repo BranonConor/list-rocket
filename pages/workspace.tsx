@@ -6,10 +6,22 @@ import styled from 'styled-components';
 import { WorkspaceContext } from '../contexts/WorkspaceContext';
 import { useContext } from 'react';
 import { Title } from '../components/typography/Title';
-import { Footer } from '../components/Footer';
+import { UserList } from '../components/lists/UserList';
+import { UserContext } from '../contexts/UserContext';
 
 const Workspace = () => {
 	const { currentEvent } = useContext(WorkspaceContext);
+	const { user } = useContext(UserContext);
+
+	// get the user list by current user id
+	const getUserListItems = () => {
+		// get all lists from the current event
+		const lists = currentEvent?.lists;
+		// find the list this user created by using their id
+		return lists?.find((list) => list.creator._id === user._id);
+	};
+
+	const items = getUserListItems()?.items;
 
 	return (
 		<DashLayout>
@@ -25,6 +37,9 @@ const Workspace = () => {
 				{currentEvent ? (
 					<>
 						<CollaboratorsGrid />
+						<StyledListWrapper>
+							<UserList photo={user?.image} items={items} />
+						</StyledListWrapper>
 					</>
 				) : (
 					<StyledH3 variant='heading3'>LOAD AN EVENT</StyledH3>
@@ -51,7 +66,7 @@ const StyledWorkspaceWrapper = styled.div<StyledWorkspaceWrapperProps>(
 	min-height: 200px;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	align-items: ${isEventActive ? 'flex-start' : 'center'};
 	justify-content: ${isEventActive ? 'flex-start' : 'center'};
 `
 );
@@ -60,3 +75,14 @@ const StyledH3 = styled(Title)(
 	color: ${colors.bgLight}
 `
 );
+const StyledListWrapper = styled.div`
+	max-width: 700px;
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 16px;
+
+	@media only screen and (max-width: 768px) {
+		grid-template-columns: 1fr;
+	}
+`;

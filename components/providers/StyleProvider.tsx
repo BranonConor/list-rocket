@@ -25,6 +25,7 @@ export const theme = {
 		black: colors.black,
 		white: colors.white,
 		bgLight: colors.rocketSteel,
+		bgDark: colors.deepSpace,
 		primaryGradient: colors.horizon,
 		secondaryGradient: colors.atmosphere,
 		tertiaryGradient: colors.flame,
@@ -52,7 +53,8 @@ export const theme = {
 			body: colors.smoke,
 		},
 		link: {
-			default: colors.white,
+			default: colors.deepSpace,
+			hover: colors.lightStellar,
 		},
 		menu: {
 			border: colors.rocketSteel,

@@ -13,6 +13,7 @@ export interface IEvent {
 	description: string;
 	creator: string;
 	collaborators: ICollaborator[];
+	lists: IList[];
 }
 export interface IEventContext {
 	events: IEvent[];
@@ -48,4 +49,16 @@ export interface IWorkspaceContext {
 	creator: IUser;
 	prepWorkspace: (eventId: string, creatorId: string) => Promise<void>;
 	clearWorkspace: () => void;
+}
+
+// LIST TYPES
+export interface IListItem {
+	name: string;
+	description: string;
+	link: string;
+}
+
+export interface IList {
+	creator: IUser;
+	items: IListItem[];
 }

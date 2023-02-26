@@ -40,6 +40,12 @@ export const CreateEventForm = () => {
 						image: session.user.image,
 					},
 				],
+				lists: [
+					{
+						creator: user,
+						items: null,
+					},
+				],
 			});
 
 			setNameValue('');
