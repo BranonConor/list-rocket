@@ -18,15 +18,10 @@ const Workspace = () => {
 		// get all lists from the current event
 		const lists = currentEvent?.lists;
 		// find the list this user created by using their id
-		const userList = lists?.find((list) => {
-			list.creator?._id === user._id;
-		});
-		return userList?.items;
+		return lists?.find((list) => list.creator._id === user._id);
 	};
 
-	const items = getUserListItems();
-
-	console.log(items);
+	const items = getUserListItems()?.items;
 
 	return (
 		<DashLayout>

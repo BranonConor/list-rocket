@@ -23,14 +23,17 @@ export const AddCollaborator = (props) => {
 			}
 			const res = await axios.put(`/api/events`, {
 				eventId: currentEvent._id,
-				email: emailValue,
+				email: emailValue.toLowerCase(),
 			});
 
 			setEmailValue('');
 			prepWorkspace(currentEvent._id, currentEvent.creator);
-			toast.success(`Invited ${emailValue} to the event! 👍🏽`, {
-				toastId: 'added-collaborator-toast',
-			});
+			toast.success(
+				`Invited ${emailValue.toLowerCase()} to the event! 👍🏽`,
+				{
+					toastId: 'added-collaborator-toast',
+				}
+			);
 			props.setIsAddCollaboratorButtonClicked(false);
 		} catch (axiosError) {
 			if (emailValue === '') {
@@ -117,7 +120,7 @@ const StyledForm = styled(motion.form)(
 	box-sizing: border-box;
 	height: calc(40px + 32px);
 	border-radius: 10px;
-	margin: 16px 0;
+	margin: 16px 0 32px 0;
 	background: ${colors.bgLight};
 
 	@media only screen and (max-width: 555px) {

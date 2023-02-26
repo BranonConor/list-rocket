@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Title } from '../typography/Title';
 import { IListItem } from '../../contexts/types';
 import { Text } from '../typography/Text';
+import { ListItem } from './ListItem';
 
 interface Props {
 	photo: string;
@@ -32,16 +33,20 @@ export const UserList: React.FC<Props> = (props) => {
 				<Title variant='heading3'>Your List</Title>
 			</StyledTitle>
 			<StyledContent>
-				<></>
-				{items?.length ? (
-					<>
-						{items.map((item) => {
-							<li>{item.name}</li>;
-						})}
-					</>
-				) : (
-					<Text variant='body1'>Add your first items!</Text>
-				)}
+				<>
+					{items?.length
+						? items?.map((item, index) => (
+								<li key={item.name}>
+									<ListItem
+										name={item.name}
+										description={item.description}
+										link={item.link}
+										animationFactor={index}
+									/>
+								</li>
+						  ))
+						: 'Add your first items!'}
+				</>
 			</StyledContent>
 		</StyledList>
 	);
