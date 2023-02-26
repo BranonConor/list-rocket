@@ -19,7 +19,7 @@ export const Submenu = () => {
 			<StyledListItem>
 				<Link href='/' passHref>
 					<StyledAnchor>
-						<img src='/icons/home.svg' atl='Home Icon' />
+						<img src='/icons/home.svg' alt='Home Icon' />
 					</StyledAnchor>
 				</Link>
 			</StyledListItem>
