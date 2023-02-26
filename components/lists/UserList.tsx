@@ -1,14 +1,14 @@
-import ProfilePhoto from '../profile-photo';
+import { ProfilePhoto } from '../ProfilePhoto';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { Title } from '../typography/Title.tsx';
+import { Title } from '../typography/Title';
 
 const UserList = (props) => {
 	return (
 		<StyledList
 			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
 			animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
-			transition={{ ease: 'easeIn', duration: '0.25', type: 'spring' }}>
+			transition={{ duration: 0.25, type: 'spring' }}>
 			<StyledTitle>
 				<ProfilePhoto photo={props.photo} dimensions='40px' />
 				<Title variant='heading3'>Your List</Title>

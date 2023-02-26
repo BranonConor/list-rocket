@@ -1,6 +1,6 @@
 import Footer from '../footer';
 import Head from 'next/head';
-import Sidebar from '../navbars/sidebar';
+import Sidebar from '../navbars/ProductNav';
 import styled from 'styled-components';
 
 export const siteTitle = 'A productivity tool for streamlining events';

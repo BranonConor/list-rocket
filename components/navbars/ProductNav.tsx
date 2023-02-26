@@ -1,18 +1,18 @@
 import styled from 'styled-components';
-import Menu from './menu';
+import { Menu } from './Menu';
 import Submenu from './submenu';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 const Sidebar = () => {
 	return (
 		<StyledWrapper>
 			<StyledMenu>
 				<StyledBrand
-					initial={{ y: '75%', opacity: 0 }}
+					initial={{ y: '15%', opacity: 0 }}
 					animate={{ y: '0%', opacity: 1 }}
 					transition={{
-						ease: 'easeIn',
-						duration: '1',
+						duration: 1,
 						type: 'spring',
 					}}>
 					<StyledLink href='/'>
@@ -47,7 +47,7 @@ const StyledWrapper = styled.div(
 	overflow: hidden;
 	width: 100%;
 	padding: 0;
-	height: 100vh;
+	height: 100%;
 	background: ${colors.white};
 	border-right: 3px solid ${colors.menu.border};
 
@@ -60,7 +60,7 @@ const StyledWrapper = styled.div(
 	}
 	`
 );
-const StyledBrand = styled.div`
+const StyledBrand = styled(motion.div)`
 	padding: 16px 0;
 	position: relative;
 	top: 0;

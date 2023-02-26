@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import Menu from './menu';
-import Link from 'next/link';
+import { Menu } from './Menu';
 
 const MobileNav = () => {
 	return (
@@ -15,7 +14,7 @@ const MobileNav = () => {
 export default MobileNav;
 
 const StyledWrapper = styled.div(
-	({ theme: { colors, shadows } }) => `
+	({ theme: { colors } }) => `
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
@@ -43,38 +42,6 @@ const StyledWrapper = styled.div(
 	}
 	`
 );
-const StyledBrand = styled.div`
-	padding: 16px 0;
-	position: relative;
-	top: 0;
-	z-index: 8;
-	width: 100%;
-	height: auto;
-	display: flex;
-	justify-content: center;
-
-	@media only screen and (max-width: 768px) {
-		display: none;
-	}
-`;
-const StyledLink = styled(Link)`
-	width: 100%;
-
-	@media only screen and (max-width: 768px) {
-		width: 75px;
-		height: 75px;
-	}
-`;
-const StyledAnchor = styled.a`
-	width: 100%;
-	display: flex;
-	justify-content: center;
-
-	@media only screen and (max-width: 768px) {
-		width: 75px;
-		height: 75px;
-	}
-`;
 const StyledMenu = styled.div`
 	width: 100%;
 	height: 50%;
