@@ -7,10 +7,12 @@ import axios from 'axios';
 import { EventContext } from '../../contexts/EventContext';
 import { Title } from '../typography/Title';
 import { toast } from 'react-toastify';
+import { UserContext } from '../../contexts/UserContext';
 
 export const CreateEventForm = () => {
 	const { data: session } = useSession();
 	const { getAllEvents } = useContext(EventContext);
+	const { user } = useContext(UserContext);
 	const [nameValue, setNameValue] = useState('');
 	const [descriptionValue, setDescriptionValue] = useState('');
 
@@ -29,10 +31,10 @@ export const CreateEventForm = () => {
 			const res = await axios.post(`/api/events`, {
 				name: nameValue,
 				description: descriptionValue,
-				creator: session.user?.id,
+				creator: user._id,
 				collaborators: [
 					{
-						_id: session.user?.id,
+						_id: user._id,
 						name: session.user.name,
 						email: session.user.email,
 						image: session.user.image,
