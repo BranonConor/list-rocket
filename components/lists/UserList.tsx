@@ -5,6 +5,8 @@ import { Title } from '../typography/Title';
 import { IListItem, IUser } from '../../contexts/types';
 import { ListItem } from './ListItem';
 import { AddListItemForm } from './AddListItemForm';
+import { useContext } from 'react';
+import { UserContext } from '../../contexts/UserContext';
 
 interface Props {
 	creator: IUser;
@@ -13,6 +15,8 @@ interface Props {
 
 export const UserList: React.FC<Props> = (props) => {
 	const { creator, items } = props;
+	const { user } = useContext(UserContext);
+
 	return (
 		<StyledList
 			initial={{
@@ -30,7 +34,11 @@ export const UserList: React.FC<Props> = (props) => {
 			}}>
 			<StyledTitle>
 				<ProfilePhoto photo={creator.image} dimensions='40px' />
-				<Title variant='heading3'>Your List</Title>
+				<Title variant='heading3'>
+					{creator.name === user.name
+						? 'Your List'
+						: `${creator.name}'s List`}
+				</Title>
 			</StyledTitle>
 			<StyledContent>
 				<>
