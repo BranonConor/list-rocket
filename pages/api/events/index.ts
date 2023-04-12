@@ -31,9 +31,7 @@ const eventsApiRoutes = async (req, res) => {
 			const creatorList = await new List({
 				creator: req.body.user,
 			});
-			console.log('Creator List: ', creatorList);
 			newEvent.lists = [creatorList];
-			console.log('Event lists: ', newEvent);
 			//Add this event to the creator's list of events
 			const creator = await User.findById(req.body.user._id);
 			await creator.events.push(newEvent);
@@ -43,7 +41,7 @@ const eventsApiRoutes = async (req, res) => {
 			res.send(newEvent.status);
 		} catch (error) {
 			console.log(error);
-			res.send(error);
+			res.sendStatus(500);
 		}
 	}
 
