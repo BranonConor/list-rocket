@@ -13,9 +13,16 @@ const eventsApiRoutes = async (req, res) => {
 	await connectMongo();
 
 	if (req.method === 'GET') {
-		//get user and populate their events, return events
-		const events = await Event.find();
-		res.json({ status: 200, data: events });
+		try {
+			//get user and populate their events, return events
+			const currentUser = await User.findById(req.query.id).populate(
+				'events'
+			);
+			res.json({ status: 200, data: currentUser.events });
+		} catch (error) {
+			console.log(error);
+			res.status(500).send('Internal Server Error');
+		}
 	}
 
 	if (req.method === 'POST') {
@@ -41,7 +48,7 @@ const eventsApiRoutes = async (req, res) => {
 			res.send(newEvent.status);
 		} catch (error) {
 			console.log(error);
-			res.sendStatus(500);
+			res.status(500).send('Internal Server Error');
 		}
 	}
 

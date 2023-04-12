@@ -12,7 +12,7 @@ export const AllEvents = () => {
 		<StyledWrapper>
 			<Title variant='heading2'>Your Events</Title>
 			<StyledEventsContainer>
-				{events.length ? (
+				{events?.length ? (
 					events.map((event, index) => {
 						return (
 							<EventCard
