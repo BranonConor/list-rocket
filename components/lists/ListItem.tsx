@@ -30,7 +30,9 @@ export const ListItem: React.FC<Props> = (props) => {
 			}}>
 			<Title variant='heading4'>{name}</Title>
 			<Text variant='body2'>{description}</Text>
-			<a href={link}>See item</a>
+			<a href={link} target='_blank' rel='noopenner noreferrer'>
+				See item
+			</a>
 		</StyledCard>
 	);
 };

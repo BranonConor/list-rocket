@@ -5,11 +5,17 @@ import { PrimaryButton } from '../buttons/PrimaryButton';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import { motion } from 'framer-motion';
 
-export const AddListItemForm = () => {
+interface IProps {
+	listId: string;
+}
+
+export const AddListItemForm: React.FC<IProps> = (props) => {
+	const { listId } = props;
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
 	const [isAddItemClicked, setIsAddItemClicked] = useState<boolean>(false);
-	const [title, setTitle] = useState<string>('');
+	const [name, setName] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
 	const [link, setLink] = useState<string>('');
 
@@ -22,21 +28,27 @@ export const AddListItemForm = () => {
 	const handleSubmit = async (event: any) => {
 		try {
 			event.preventDefault();
-			if (title === '' || description === '' || link === '') {
+			if (name === '' || description === '' || link === '') {
 				throw new Error();
 			}
-
 			const res = await axios.put(`/api/lists`, {
-				listId: currentEvent._id,
+				listItem: {
+					name: name,
+					description: description,
+					link: link,
+				},
+				listId: listId,
 			});
-
 			prepWorkspace(currentEvent._id);
 			toast.success(`Successfully added new list item! 👍🏽`, {
 				toastId: 'added-list-item-toast',
 			});
+			setName('');
+			setDescription('');
+			setLink('');
 			setIsAddItemClicked(false);
 		} catch (axiosError) {
-			if (title === '' || description === '' || link === '') {
+			if (name === '' || description === '' || link === '') {
 				toast.error(`Please fill out all list item fields. 👀`, {
 					toastId: 'list-item-value-not-found-toast',
 				});
@@ -49,14 +61,28 @@ export const AddListItemForm = () => {
 	};
 
 	return isAddItemClicked ? (
-		<StyledWrapper>
+		<StyledWrapper
+			initial={{
+				scale: 0,
+				opacity: 0,
+				rotate: '15deg',
+			}}
+			animate={{
+				scale: 1,
+				opacity: 1,
+				rotate: '0deg',
+			}}
+			transition={{
+				duration: 0.125,
+				type: 'spring',
+			}}>
 			<StyledForm>
 				<StyledInput
-					value={title}
+					value={name}
 					placeholder='Add a title'
 					name='title'
 					required
-					onChange={(e) => setTitle(e.target.value)}
+					onChange={(e) => setName(e.target.value)}
 				/>
 				<StyledInput
 					value={description}
@@ -94,14 +120,14 @@ export const AddListItemForm = () => {
 		/>
 	);
 };
-const StyledWrapper = styled.div(
+const StyledWrapper = styled(motion.div)(
 	({ theme: { shadows } }) => `
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	background: white;
-	border-radius: 8px;
-	padding: 16px;
+	border-radius: 5px;
+	padding: 16px 8px;
 	box-sizing: border-box;
     box-shadow: ${shadows.standard};
 `
@@ -130,6 +156,7 @@ const StyledButtonWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	margin: 8px 0 0 0;
+	padding: 0 8px;
 
 	button:first-of-type {
 		margin-right: 8px;

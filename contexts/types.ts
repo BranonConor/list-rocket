@@ -58,6 +58,7 @@ export interface IListItem {
 }
 
 export interface IList {
+	_id: string;
 	creator: IUser;
 	items: IListItem[];
 }

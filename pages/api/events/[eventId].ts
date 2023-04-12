@@ -17,6 +17,12 @@ const eventApiRoutes = async (req, res) => {
 				populate: {
 					path: 'creator',
 				},
+			})
+			.populate({
+				path: 'lists',
+				populate: {
+					path: 'items',
+				},
 			});
 		res.json({ status: 200, data: event });
 	}

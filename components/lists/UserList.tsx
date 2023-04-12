@@ -11,11 +11,14 @@ import { UserContext } from '../../contexts/UserContext';
 interface Props {
 	creator: IUser;
 	items: IListItem[];
+	id: string;
 }
 
 export const UserList: React.FC<Props> = (props) => {
-	const { creator, items } = props;
+	const { creator, items, id } = props;
 	const { user } = useContext(UserContext);
+
+	console.log('Items in this list: ', items);
 
 	return (
 		<StyledList
@@ -56,7 +59,7 @@ export const UserList: React.FC<Props> = (props) => {
 						: 'Add your first items! ✍🏽'}
 				</>
 			</StyledContent>
-			<AddListItemForm />
+			<AddListItemForm listId={id} />
 		</StyledList>
 	);
 };
@@ -70,7 +73,7 @@ const StyledList = styled(motion.div)(
 	justify-content: center;
 	padding: 16px;
 	box-sizing: border-box;
-	border-radius: 5px;
+	border-radius: 10px;
 `
 );
 const StyledTitle = styled.div(
@@ -89,4 +92,5 @@ const StyledTitle = styled.div(
 const StyledContent = styled.ul`
 	list-style: none;
 	padding: 0;
+	margin: 8px 0 0 0;
 `;
