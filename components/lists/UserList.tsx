@@ -5,6 +5,7 @@ import { Title } from '../typography/Title';
 import { IListItem } from '../../contexts/types';
 import { Text } from '../typography/Text';
 import { ListItem } from './ListItem';
+import { AddListItemForm } from './AddListItemForm';
 
 interface Props {
 	photo: string;
@@ -45,9 +46,10 @@ export const UserList: React.FC<Props> = (props) => {
 									/>
 								</li>
 						  ))
-						: 'Add your first items!'}
+						: 'Add your first items! ✍🏽'}
 				</>
 			</StyledContent>
+			<AddListItemForm />
 		</StyledList>
 	);
 };
