@@ -43,7 +43,7 @@ const EventCard = (props) => {
 
 	const handleClick = async (e) => {
 		e?.preventDefault();
-		prepWorkspace(id, creator);
+		prepWorkspace(id);
 		router.push('/workspace');
 	};
 

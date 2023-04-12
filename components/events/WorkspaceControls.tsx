@@ -10,12 +10,12 @@ import { ChipButton } from '../buttons/ChipButton';
 
 export const WorkspaceControls = () => {
 	const { events } = useContext(EventContext);
-	const { currentEvent, creator, prepWorkspace, clearWorkspace } =
+	const { currentEvent, prepWorkspace, clearWorkspace } =
 		useContext(WorkspaceContext);
 
-	const handleChipButtonClick = async (e, eventId, creatorId) => {
+	const handleChipButtonClick = async (e, eventId) => {
 		e?.preventDefault();
-		prepWorkspace(eventId, creatorId);
+		prepWorkspace(eventId);
 	};
 	const handleExitClick = async (e) => {
 		e?.preventDefault();
@@ -53,11 +53,7 @@ export const WorkspaceControls = () => {
 									}}>
 									<ChipButton
 										onClick={(e) =>
-											handleChipButtonClick(
-												e,
-												event._id,
-												event.creator
-											)
+											handleChipButtonClick(e, event._id)
 										}
 										content={event.name}
 										isActive={
@@ -117,7 +113,7 @@ export const WorkspaceControls = () => {
 									type: 'spring',
 								}}>
 								<ProfilePhoto
-									photo={creator?.image}
+									photo={currentEvent.creator?.image}
 									dimensions='35px'
 								/>
 							</StyledAvatar>

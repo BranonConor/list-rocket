@@ -27,7 +27,7 @@ export const AddCollaborator = (props) => {
 			});
 
 			setEmailValue('');
-			prepWorkspace(currentEvent._id, currentEvent.creator);
+			prepWorkspace(currentEvent._id);
 			toast.success(
 				`Invited ${emailValue.toLowerCase()} to the event! 👍🏽`,
 				{
