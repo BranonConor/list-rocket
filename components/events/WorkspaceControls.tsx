@@ -13,7 +13,7 @@ export const WorkspaceControls = () => {
 	const { currentEvent, creator, prepWorkspace, clearWorkspace } =
 		useContext(WorkspaceContext);
 
-	const handleClick = async (e, eventId, creatorId) => {
+	const handleChipButtonClick = async (e, eventId, creatorId) => {
 		e?.preventDefault();
 		prepWorkspace(eventId, creatorId);
 	};
@@ -53,7 +53,7 @@ export const WorkspaceControls = () => {
 									}}>
 									<ChipButton
 										onClick={(e) =>
-											handleClick(
+											handleChipButtonClick(
 												e,
 												event._id,
 												event.creator

@@ -18,7 +18,7 @@ const Workspace = () => {
 		// get all lists from the current event
 		const lists = currentEvent?.lists;
 		// find the list this user created by using their id
-		return lists?.find((list) => list.creator._id === user._id);
+		return lists?.find((list) => list.creator?._id === user._id);
 	};
 
 	const items = getUserListItems()?.items;

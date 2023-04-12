@@ -1,14 +1,9 @@
-import clientPromise from '../../../lib/mongodb';
-import { ObjectId } from 'mongodb';
 import connectMongo from '../../../models/utils/connectMongo';
 import { Event } from '../../../models/Event';
 import { User } from '../../../models/User';
 import { List } from '../../../models/List';
 
 const eventsApiRoutes = async (req, res) => {
-	const client = await clientPromise;
-	const db = client.db('list-rocket');
-
 	//mongoose code
 	await connectMongo();
 
@@ -42,6 +37,8 @@ const eventsApiRoutes = async (req, res) => {
 			//Add this event to the creator's list of events
 			const creator = await User.findById(req.body.user._id);
 			await creator.events.push(newEvent);
+			//Add this creator to the event as well
+			newEvent.creator = creator;
 			//Save everything
 			await newEvent.save();
 			await creator.save();
@@ -54,9 +51,7 @@ const eventsApiRoutes = async (req, res) => {
 
 	if (req.method === 'PUT') {
 		//find the user object we want to add as a collaborator
-		const user = await db
-			.collection('users')
-			.findOne({ email: req.body.email });
+		const user = await User.findOne({ email: req.body.email });
 		if (!user) {
 			res.status(404).send({
 				success: false,
@@ -64,15 +59,9 @@ const eventsApiRoutes = async (req, res) => {
 			});
 		} else {
 			//find an event where the user is not already a collaborator or creator
-			const event = await db.collection('events').findOne({
-				_id: new ObjectId(req.body.eventId.trim()),
-			});
+			const event = await Event.findById(req.body.eventId);
 			//check for the user before doing anything else
-			const collaborators = [];
-			await event.collaborators.forEach((collaborator) => {
-				collaborators.push(collaborator.email);
-			});
-			const userExists = await collaborators.includes(user.email);
+			const userExists = await event.collaborators.includes(user.email);
 			if (userExists) {
 				res.status(404).send({
 					success: false,
@@ -81,14 +70,9 @@ const eventsApiRoutes = async (req, res) => {
 				return false;
 			} else {
 				//proceed with updating the event with the new collaborator if none exist already
-				const eventUpdate = db.collection('events').findOneAndUpdate(
-					{
-						_id: new ObjectId(req.body.eventId.trim()),
-						collaborators: { $ne: user },
-					},
-					{ $push: { collaborators: user } }
-				);
-				return res.send(eventUpdate.status);
+				await event.collaborators.push(user);
+				await event.save();
+				return res.status(200).send();
 			}
 		}
 	}

@@ -9,10 +9,12 @@ import { useRouter } from 'next/router';
 import { Title } from '../typography/Title';
 import { Text } from '../typography/Text';
 import { toast } from 'react-toastify';
+import { UserContext } from '../../contexts/UserContext';
 
 const EventCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
 	const { getAllEvents } = useContext(EventContext);
+	const { user } = useContext(UserContext);
 	const { prepWorkspace, currentEvent, clearWorkspace } =
 		useContext(WorkspaceContext);
 	const router = useRouter();
@@ -20,7 +22,12 @@ const EventCard = (props) => {
 	const handleDelete = async (e) => {
 		e?.preventDefault();
 		try {
-			const res = await axios.delete(`/api/events/${id}`);
+			const res = await axios.delete(`/api/events/${id}`, {
+				data: {
+					eventId: id,
+					user: user,
+				},
+			});
 			getAllEvents();
 			currentEvent?._id === id && clearWorkspace();
 			toast.success('Successfully deleted your event 🗑', {

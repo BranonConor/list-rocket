@@ -30,6 +30,7 @@ export const CollaboratorsGrid = () => {
 				<StyledH2 variant='heading3'>Collaborators:</StyledH2>
 				{currentEvent.collaborators.length > 0 &&
 					currentEvent.collaborators.map((collaborator) => {
+						console.log('Collaborator in Grid: ', collaborator);
 						return (
 							<StyledButton key={collaborator._id}>
 								<ProfilePhoto
