@@ -1,14 +1,12 @@
-import clientPromise from '../../../lib/mongodb';
-import { ObjectId } from 'mongodb';
+import connectMongo from '../../../models/utils/connectMongo';
+import { User } from '../../../models/User';
 
 const userApiRoutes = async (req, res) => {
-	const client = await clientPromise;
-	const db = client.db('list-rocket');
+	//mongoose code
+	await connectMongo();
 
 	if (req.method === 'GET') {
-		const user = await db
-			.collection('users')
-			.findOne({ _id: new ObjectId(req.query.id.trim()) });
+		const user = await User.findById(req.query.id.trim());
 		res.json({ status: 200, data: user });
 	}
 };

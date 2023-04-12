@@ -1,32 +1,38 @@
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
+import connectMongo from '../../../models/utils/connectMongo';
+import { Event } from '../../../models/Event';
+import { User } from '../../../models/User';
 
 const eventApiRoutes = async (req, res) => {
-	const client = await clientPromise;
-	const db = client.db('list-rocket');
+	//mongoose code
+	await connectMongo();
 
 	if (req.method === 'GET') {
-		const event = await db
-			.collection('events')
-			.findOne({ _id: new ObjectId(req.query.id.trim()) });
+		const event = await Event.findById(req.query.id)
+			.populate('creator')
+			.populate('collaborators');
 		res.json({ status: 200, data: event });
 	}
 
 	if (req.method === 'DELETE') {
-		const { eventId } = req.query;
-		const deletedEvent = await db.collection('events').deleteOne({
-			_id: new ObjectId(eventId.trim()),
+		//Delete it from the user's events array
+		const user = await User.findById(req.body.user._id);
+		const newUserEvents = await user.events.filter(
+			(event) => event._id.toString() !== req.body.eventId
+		);
+		user.events = newUserEvents;
+		await user.save();
+
+		//Delete the event
+		const deletedEvent = await Event.deleteOne({
+			_id: req.body.eventId,
 		});
 
 		res.send({
 			status: 200,
 			data: deletedEvent,
 		});
-		// //Add new event to user's array of events
-		// const user = await User.findById(req.body.creator);
-		// await user.events.push(event._id);
-		// await user.save();
-		// res.send(req.body.name);
 	}
 };
 

@@ -2,7 +2,6 @@ import { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { PrimaryButton } from '../buttons/PrimaryButton';
-import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { EventContext } from '../../contexts/EventContext';
 import { Title } from '../typography/Title';
@@ -10,7 +9,6 @@ import { toast } from 'react-toastify';
 import { UserContext } from '../../contexts/UserContext';
 
 export const CreateEventForm = () => {
-	const { data: session } = useSession();
 	const { getAllEvents } = useContext(EventContext);
 	const { user } = useContext(UserContext);
 	const [nameValue, setNameValue] = useState('');
@@ -29,23 +27,11 @@ export const CreateEventForm = () => {
 				throw new Error();
 			}
 			const res = await axios.post(`/api/events`, {
-				name: nameValue,
-				description: descriptionValue,
-				creator: user._id,
-				collaborators: [
-					{
-						_id: user._id,
-						name: session.user.name,
-						email: session.user.email,
-						image: session.user.image,
-					},
-				],
-				lists: [
-					{
-						creator: user,
-						items: null,
-					},
-				],
+				event: {
+					name: nameValue,
+					description: descriptionValue,
+				},
+				user: user,
 			});
 
 			setNameValue('');

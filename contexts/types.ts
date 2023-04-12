@@ -11,7 +11,7 @@ export interface IEvent {
 	_id: string;
 	name: string;
 	description: string;
-	creator: string;
+	creator: IUser;
 	collaborators: ICollaborator[];
 	lists: IList[];
 }
@@ -46,8 +46,7 @@ export interface IWorkspace {
 export interface IWorkspaceContext {
 	currentEvent: IEvent;
 	setCurrentEvent: Dispatch<SetStateAction<IEvent>>;
-	creator: IUser;
-	prepWorkspace: (eventId: string, creatorId: string) => Promise<void>;
+	prepWorkspace: (eventId: string) => Promise<void>;
 	clearWorkspace: () => void;
 }
 
