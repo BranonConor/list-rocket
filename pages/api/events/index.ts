@@ -1,29 +1,50 @@
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
+import connectMongo from '../../../models/utils/connectMongo';
+import { Event } from '../../../models/Event';
+import { User } from '../../../models/User';
+import { List } from '../../../models/List';
 
 const eventsApiRoutes = async (req, res) => {
 	const client = await clientPromise;
 	const db = client.db('list-rocket');
 
+	//mongoose code
+	await connectMongo();
+
 	if (req.method === 'GET') {
-		const events = await db
-			.collection('events')
-			.find({ creator: req.query.creatorId })
-			.toArray();
+		//get user and populate their events, return events
+		const events = await Event.find();
 		res.json({ status: 200, data: events });
 	}
 
 	if (req.method === 'POST') {
-		//Create new event with request details
-		const newEvent = await db
-			.collection('events')
-			.insertOne({ ...req.body });
-		res.send(newEvent.status);
-		// //Add new event to user's array of events
-		// const user = await User.findById(req.body.creator);
-		// await user.events.push(event._id);
-		// await user.save();
-		// res.send(req.body.name);
+		try {
+			//Create a new event from req data
+			const newEvent = await new Event({ ...req.body.event });
+			newEvent.collaborators = [
+				{
+					...req.body.user,
+				},
+			];
+			//Create a new list and add it to the event
+			const creatorList = await new List({
+				creator: req.body.user,
+			});
+			console.log('Creator List: ', creatorList);
+			newEvent.lists = [creatorList];
+			console.log('Event lists: ', newEvent);
+			//Add this event to the creator's list of events
+			const creator = await User.findById(req.body.user._id);
+			await creator.events.push(newEvent);
+			//Save everything
+			await newEvent.save();
+			await creator.save();
+			res.send(newEvent.status);
+		} catch (error) {
+			console.log(error);
+			res.send(error);
+		}
 	}
 
 	if (req.method === 'PUT') {
