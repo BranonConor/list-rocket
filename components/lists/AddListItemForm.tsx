@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SecondaryButton } from '../buttons/SecondaryButton';
 import { PrimaryButton } from '../buttons/PrimaryButton';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 
 export const AddListItemForm = () => {
+	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
 	const [isAddItemClicked, setIsAddItemClicked] = useState<boolean>(false);
 	const [title, setTitle] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
@@ -15,9 +19,33 @@ export const AddListItemForm = () => {
 	const handleCancelClick = () => {
 		setIsAddItemClicked(false);
 	};
-	const handleSubmit = (e: any) => {
-		e.preventDefault();
-		console.log({ title, description, link });
+	const handleSubmit = async (event: any) => {
+		try {
+			event.preventDefault();
+			if (title === '' || description === '' || link === '') {
+				throw new Error();
+			}
+
+			const res = await axios.put(`/api/lists`, {
+				listId: currentEvent._id,
+			});
+
+			prepWorkspace(currentEvent._id);
+			toast.success(`Successfully added new list item! 👍🏽`, {
+				toastId: 'added-list-item-toast',
+			});
+			setIsAddItemClicked(false);
+		} catch (axiosError) {
+			if (title === '' || description === '' || link === '') {
+				toast.error(`Please fill out all list item fields. 👀`, {
+					toastId: 'list-item-value-not-found-toast',
+				});
+			} else {
+				toast.error('Something went wrong, sorry! 😵‍💫', {
+					toastId: 'error-creating-list-item-toast',
+				});
+			}
+		}
 	};
 
 	return isAddItemClicked ? (

@@ -18,6 +18,8 @@ export const WorkspaceProvider = (props) => {
 		setCurrentEvent(eventRes.data.data);
 	};
 
+	console.log(currentEvent);
+
 	const clearWorkspace = () => {
 		setCurrentEvent(null);
 	};

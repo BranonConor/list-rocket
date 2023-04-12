@@ -38,7 +38,12 @@ const Workspace = () => {
 					<>
 						<CollaboratorsGrid />
 						<StyledListWrapper>
-							<UserList photo={user?.image} items={items} />
+							{currentEvent.lists.map((list) => (
+								<UserList
+									creator={list.creator}
+									items={list.items}
+								/>
+							))}
 						</StyledListWrapper>
 					</>
 				) : (

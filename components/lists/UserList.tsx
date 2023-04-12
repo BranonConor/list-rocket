@@ -2,18 +2,17 @@ import { ProfilePhoto } from '../ProfilePhoto';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { Title } from '../typography/Title';
-import { IListItem } from '../../contexts/types';
-import { Text } from '../typography/Text';
+import { IListItem, IUser } from '../../contexts/types';
 import { ListItem } from './ListItem';
 import { AddListItemForm } from './AddListItemForm';
 
 interface Props {
-	photo: string;
+	creator: IUser;
 	items: IListItem[];
 }
 
 export const UserList: React.FC<Props> = (props) => {
-	const { photo, items } = props;
+	const { creator, items } = props;
 	return (
 		<StyledList
 			initial={{
@@ -30,7 +29,7 @@ export const UserList: React.FC<Props> = (props) => {
 				type: 'spring',
 			}}>
 			<StyledTitle>
-				<ProfilePhoto photo={photo} dimensions='40px' />
+				<ProfilePhoto photo={creator.image} dimensions='40px' />
 				<Title variant='heading3'>Your List</Title>
 			</StyledTitle>
 			<StyledContent>
