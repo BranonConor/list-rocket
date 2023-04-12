@@ -9,11 +9,9 @@ const eventApiRoutes = async (req, res) => {
 	await connectMongo();
 
 	if (req.method === 'GET') {
-		console.log('Event id: ', req.query.id);
 		const event = await Event.findById(req.query.id)
 			.populate('creator')
 			.populate('collaborators');
-		console.log(event);
 		res.json({ status: 200, data: event });
 	}
 

@@ -22,8 +22,6 @@ export const WorkspaceProvider = (props) => {
 		setCurrentEvent(null);
 	};
 
-	console.log('Current event: ', currentEvent);
-
 	return (
 		<WorkspaceContext.Provider
 			value={{

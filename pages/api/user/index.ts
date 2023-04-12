@@ -1,13 +1,12 @@
-import clientPromise from '../../../lib/mongodb';
+import { User } from '../../../models/User';
+import connectMongo from '../../../models/utils/connectMongo';
 
 const usersApiRoutes = async (req, res) => {
-	const client = await clientPromise;
-	const db = client.db('list-rocket');
+	//mongoose code
+	await connectMongo();
 
 	if (req.method === 'GET') {
-		const user = await db
-			.collection('users')
-			.findOne({ email: req.query.email });
+		const user = await User.findOne({ email: req.query.email });
 		res.json({ status: 200, data: user });
 	}
 };
