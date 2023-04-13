@@ -7,6 +7,7 @@ import { ListItem } from './ListItem';
 import { AddListItemForm } from './AddListItemForm';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
+import { Text } from '../typography/Text';
 
 interface Props {
 	creator: IUser;
@@ -45,20 +46,24 @@ export const UserList: React.FC<Props> = (props) => {
 			</StyledTitle>
 			<StyledContent>
 				<>
-					{items?.length
-						? items?.map((item, index) => (
-								<li key={item.name}>
-									<ListItem
-										name={item.name}
-										description={item.description}
-										link={item.link}
-										animationFactor={index}
-										listId={id}
-										id={item._id}
-									/>
-								</li>
-						  ))
-						: 'Add your first items! ✍🏽'}
+					{items?.length ? (
+						items?.map((item, index) => (
+							<StyledListItem key={item.name}>
+								<ListItem
+									name={item.name}
+									description={item.description}
+									link={item.link}
+									animationFactor={index}
+									listId={id}
+									id={item._id}
+								/>
+							</StyledListItem>
+						))
+					) : (
+						<StyledText variant='body1'>
+							Add your first items! ✍🏽
+						</StyledText>
+					)}
 				</>
 			</StyledContent>
 			<AddListItemForm listId={id} />
@@ -92,7 +97,16 @@ const StyledTitle = styled.div(
 `
 );
 const StyledContent = styled.ul`
+	box-sizing: border-box;
+	width: 100%;
 	list-style: none;
 	padding: 0;
 	margin: 8px 0 0 0;
+`;
+const StyledListItem = styled.li`
+	width: 100%;
+	box-sizing: border-box;
+`;
+const StyledText = styled(Text)`
+	margin: 0 0 16px 0;
 `;
