@@ -11,7 +11,19 @@ const eventApiRoutes = async (req, res) => {
 	if (req.method === 'GET') {
 		const event = await Event.findById(req.query.id)
 			.populate('creator')
-			.populate('collaborators');
+			.populate('collaborators')
+			.populate({
+				path: 'lists',
+				populate: {
+					path: 'creator',
+				},
+			})
+			.populate({
+				path: 'lists',
+				populate: {
+					path: 'items',
+				},
+			});
 		res.json({ status: 200, data: event });
 	}
 

@@ -38,6 +38,13 @@ export const theme = {
 			borderDark: colors.black,
 			bgRed: colors.siren,
 			bgRedLight: colors.lightSiren,
+			secondary: {
+				defaultBg: 'transparent',
+				hoverBg: colors.deepSpace,
+				borderDark: colors.deepSpace,
+				textLight: colors.white,
+				textDark: colors.deepSpace,
+			},
 		},
 		chip: {
 			defaultBg: colors.metallicBlue,

@@ -52,12 +52,14 @@ export interface IWorkspaceContext {
 
 // LIST TYPES
 export interface IListItem {
+	_id: string;
 	name: string;
 	description: string;
 	link: string;
 }
 
 export interface IList {
+	_id: string;
 	creator: IUser;
 	items: IListItem[];
 }

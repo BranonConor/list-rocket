@@ -2,17 +2,24 @@ import { ProfilePhoto } from '../ProfilePhoto';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { Title } from '../typography/Title';
-import { IListItem } from '../../contexts/types';
-import { Text } from '../typography/Text';
+import { IListItem, IUser } from '../../contexts/types';
 import { ListItem } from './ListItem';
+import { AddListItemForm } from './AddListItemForm';
+import { useContext } from 'react';
+import { UserContext } from '../../contexts/UserContext';
 
 interface Props {
-	photo: string;
+	creator: IUser;
 	items: IListItem[];
+	id: string;
 }
 
 export const UserList: React.FC<Props> = (props) => {
-	const { photo, items } = props;
+	const { creator, items, id } = props;
+	const { user } = useContext(UserContext);
+
+	console.log('Items in this list: ', items);
+
 	return (
 		<StyledList
 			initial={{
@@ -29,8 +36,12 @@ export const UserList: React.FC<Props> = (props) => {
 				type: 'spring',
 			}}>
 			<StyledTitle>
-				<ProfilePhoto photo={photo} dimensions='40px' />
-				<Title variant='heading3'>Your List</Title>
+				<ProfilePhoto photo={creator.image} dimensions='40px' />
+				<Title variant='heading3'>
+					{creator.name === user.name
+						? 'Your List'
+						: `${creator.name}'s List`}
+				</Title>
 			</StyledTitle>
 			<StyledContent>
 				<>
@@ -42,12 +53,15 @@ export const UserList: React.FC<Props> = (props) => {
 										description={item.description}
 										link={item.link}
 										animationFactor={index}
+										listId={id}
+										id={item._id}
 									/>
 								</li>
 						  ))
-						: 'Add your first items!'}
+						: 'Add your first items! ✍🏽'}
 				</>
 			</StyledContent>
+			<AddListItemForm listId={id} />
 		</StyledList>
 	);
 };
@@ -61,7 +75,7 @@ const StyledList = styled(motion.div)(
 	justify-content: center;
 	padding: 16px;
 	box-sizing: border-box;
-	border-radius: 5px;
+	border-radius: 10px;
 `
 );
 const StyledTitle = styled.div(
@@ -80,4 +94,5 @@ const StyledTitle = styled.div(
 const StyledContent = styled.ul`
 	list-style: none;
 	padding: 0;
+	margin: 8px 0 0 0;
 `;

@@ -7,21 +7,9 @@ import { WorkspaceContext } from '../contexts/WorkspaceContext';
 import { useContext } from 'react';
 import { Title } from '../components/typography/Title';
 import { UserList } from '../components/lists/UserList';
-import { UserContext } from '../contexts/UserContext';
 
 const Workspace = () => {
 	const { currentEvent } = useContext(WorkspaceContext);
-	const { user } = useContext(UserContext);
-
-	// get the user list by current user id
-	const getUserListItems = () => {
-		// get all lists from the current event
-		const lists = currentEvent?.lists;
-		// find the list this user created by using their id
-		return lists?.find((list) => list.creator?._id === user._id);
-	};
-
-	const items = getUserListItems()?.items;
 
 	return (
 		<DashLayout>
@@ -38,7 +26,14 @@ const Workspace = () => {
 					<>
 						<CollaboratorsGrid />
 						<StyledListWrapper>
-							<UserList photo={user?.image} items={items} />
+							{currentEvent.lists.map((list) => (
+								<UserList
+									creator={list.creator}
+									items={list.items}
+									id={list._id}
+									key={list._id}
+								/>
+							))}
 						</StyledListWrapper>
 					</>
 				) : (

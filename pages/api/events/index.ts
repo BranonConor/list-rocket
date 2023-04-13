@@ -40,6 +40,7 @@ const eventsApiRoutes = async (req, res) => {
 			//Add this creator to the event as well
 			newEvent.creator = creator;
 			//Save everything
+			await creatorList.save();
 			await newEvent.save();
 			await creator.save();
 			res.send(newEvent.status);
