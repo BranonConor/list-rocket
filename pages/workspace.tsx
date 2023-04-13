@@ -31,6 +31,7 @@ const Workspace = () => {
 									creator={list.creator}
 									items={list.items}
 									id={list._id}
+									key={list._id}
 								/>
 							))}
 						</StyledListWrapper>
