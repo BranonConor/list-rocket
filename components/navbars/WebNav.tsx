@@ -89,12 +89,12 @@ const StyledLink = styled(Link)(
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: ${colors.link.default};
+	color: ${colors.white};
 `
 );
 const StyledAnchor = styled.a(
 	({ theme: { colors } }) => `
-	color: ${colors.link.default};
+	color: ${colors.white};
 	display: flex;
 	align-items: center;
 	justify-content: center;

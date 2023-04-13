@@ -85,6 +85,8 @@ const StyledCard = styled(motion.div)(
     margin: 0 0 16px 0;
 	transition: 0.10s ease all;
 	background: ${colors.white};
+	width: 100%;
+	box-sizing: border-box;
 
 	&:hover {
 		box-shadow: ${shadows.standard};
