@@ -1,7 +1,7 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const userSchema = new Schema({
+const UserSchema = new Schema({
 	googleId: String,
 	firstName: String,
 	lastName: String,
@@ -16,4 +16,4 @@ const userSchema = new Schema({
 });
 
 export const User =
-	mongoose.models.users || mongoose.model('users', userSchema);
+	mongoose.models.users || mongoose.model('users', UserSchema);
