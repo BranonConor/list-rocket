@@ -1,6 +1,15 @@
 import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
+const ListItemSchema = new Schema({
+	name: String,
+	description: String,
+	link: String,
+});
+
+export const ListItem =
+	mongoose.models.listitems || mongoose.model('listitems', ListItemSchema);
+
 const ListSchema = new Schema({
 	creator: {
 		type: Schema.Types.ObjectId,
@@ -9,7 +18,7 @@ const ListSchema = new Schema({
 	items: [
 		{
 			type: Schema.Types.ObjectId,
-			ref: 'listItems',
+			ref: 'listitems',
 		},
 	],
 });

@@ -1,10 +1,5 @@
-import clientPromise from '../../../lib/mongodb';
-import { ObjectId } from 'mongodb';
 import connectMongo from '../../../models/utils/connectMongo';
-import { Event } from '../../../models/Event';
-import { User } from '../../../models/User';
-import { List } from '../../../models/List';
-import { ListItem } from '../../../models/ListItem';
+import { List, ListItem } from '../../../models/List';
 
 const listApiRoutes = async (req, res) => {
 	//mongoose code

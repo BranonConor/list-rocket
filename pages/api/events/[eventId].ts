@@ -1,5 +1,3 @@
-import clientPromise from '../../../lib/mongodb';
-import { ObjectId } from 'mongodb';
 import connectMongo from '../../../models/utils/connectMongo';
 import { Event } from '../../../models/Event';
 import { User } from '../../../models/User';
@@ -9,7 +7,7 @@ const eventApiRoutes = async (req, res) => {
 	await connectMongo();
 
 	if (req.method === 'GET') {
-		const event = await Event.findById(req.query.id)
+		const event = await Event.findById(req.query.eventId)
 			.populate('creator')
 			.populate('collaborators')
 			.populate({
