@@ -37,6 +37,7 @@ export default NextAuth({
 			httpOptions: {
 				timeout: 40000,
 			},
+			allowDangerousEmailAccountLinking: true,
 		}),
 		// ...add more providers here
 	],
