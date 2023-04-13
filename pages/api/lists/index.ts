@@ -1,6 +1,5 @@
 import connectMongo from '../../../models/utils/connectMongo';
-import { List } from '../../../models/List';
-import { ListItem } from '../../../models/ListItem';
+import { List, ListItem } from '../../../models/List';
 
 const listsApiRoutes = async (req, res) => {
 	//mongoose code
