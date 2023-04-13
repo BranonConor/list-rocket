@@ -1,7 +1,7 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const eventSchema = new Schema({
+const EventSchema = new Schema({
 	name: String,
 	description: String,
 	creator: {
@@ -23,4 +23,4 @@ const eventSchema = new Schema({
 });
 
 export const Event =
-	mongoose.models.events || mongoose.model('events', eventSchema);
+	mongoose.models.events || mongoose.model('events', EventSchema);

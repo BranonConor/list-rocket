@@ -1,7 +1,7 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
-const listSchema = new Schema({
+const ListSchema = new Schema({
 	creator: {
 		type: Schema.Types.ObjectId,
 		ref: 'users',
@@ -15,4 +15,4 @@ const listSchema = new Schema({
 });
 
 export const List =
-	mongoose.models.lists || mongoose.model('lists', listSchema);
+	mongoose.models.lists || mongoose.model('lists', ListSchema);
