@@ -8,4 +8,4 @@ const listItemSchema = new Schema({
 });
 
 export const ListItem =
-	mongoose.models.listItems || mongoose.model('listItems', listItemSchema);
+	mongoose.models.listitems || mongoose.model('listitems', listItemSchema);
