@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { Text } from '../typography/Text';
 import { Title } from '../typography/Title';
 import { useContext } from 'react';
-import { EventContext } from '../../contexts/EventContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 
 interface Props {
 	name: string;
@@ -18,6 +18,7 @@ interface Props {
 
 export const ListItem: React.FC<Props> = (props) => {
 	const { name, description, link, animationFactor, id, listId } = props;
+	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
 
 	const handleDelete = async (e) => {
 		e?.preventDefault();
@@ -28,7 +29,7 @@ export const ListItem: React.FC<Props> = (props) => {
 					listItemId: id,
 				},
 			});
-			//prep workspace?
+			prepWorkspace(currentEvent._id);
 			toast.success('Successfully deleted your item 🗑', {
 				toastId: 'delete-list-item-toast',
 			});
@@ -38,6 +39,10 @@ export const ListItem: React.FC<Props> = (props) => {
 				toastId: 'error-delete-list-item-toast',
 			});
 		}
+	};
+
+	const handleEdit = () => {
+		alert('editing coming soon!');
 	};
 
 	return (
@@ -64,7 +69,7 @@ export const ListItem: React.FC<Props> = (props) => {
 				<StyledDeleteButton onClick={handleDelete}>
 					<img src='/icons/trash-red.svg' alt='Trash Icon' />
 				</StyledDeleteButton>
-				<StyledEditButton onClick={handleDelete}>
+				<StyledEditButton onClick={handleEdit}>
 					<img src='/icons/pencil.svg' alt='Edit Icon' />
 				</StyledEditButton>
 			</StyledButtonContainer>

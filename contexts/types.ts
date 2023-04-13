@@ -52,6 +52,7 @@ export interface IWorkspaceContext {
 
 // LIST TYPES
 export interface IListItem {
+	_id: string;
 	name: string;
 	description: string;
 	link: string;
