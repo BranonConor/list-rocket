@@ -13,7 +13,7 @@ const eventsApiRoutes = async (req, res) => {
 			const currentUser = await User.findById(req.query.id).populate(
 				'events'
 			);
-			res.json({ status: 200, data: currentUser.events });
+			res.json({ status: 200, data: currentUser?.events });
 		} catch (error) {
 			console.log(error);
 			res.status(500).send('Internal Server Error');
