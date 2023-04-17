@@ -50,6 +50,25 @@ const usersApiRoutes = async (req, res) => {
 		}
 	}
 
+	if (req.method === 'PUT' && req.body.action === 'decline') {
+		//find the user object we want to add as a collaborator
+		const user = await User.findOne({ email: req.body.user.email });
+		if (!user) {
+			res.status(404).send({
+				success: false,
+				error: { message: 'user not found' },
+			});
+		} else {
+			//find the invite and remove it from user's list
+			const newUserInvites = await user.invites.filter(
+				(invite: any) => invite.toString() !== req.body.eventId
+			);
+			user.invites = newUserInvites;
+			await user.save();
+			return res.status(200).send();
+		}
+	}
+
 	if (req.method === 'PUT' && req.body.action === 'accept') {
 		//find the user object we want to add as a collaborator
 		const user = await User.findOne({ email: req.body.user.email });
