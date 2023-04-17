@@ -72,7 +72,6 @@ export const ListItem: React.FC<Props> = (props) => {
 		}
 	};
 
-	//TODO - adjust this to uncheck the resolvedBy user
 	const handleUncheck = async () => {
 		try {
 			const res = await axios.put(`/api/lists/${id}`, {
@@ -175,6 +174,7 @@ const StyledCard = styled(motion.div)<ICardProps>(
 	box-sizing: border-box;
 	display: flex;
 	text-decoration: ${resolvedBy ? 'line-through' : 'none'};
+	text-decoration-color: ${resolvedBy ? colors.font.body2 : colors.body};
 	
 	p, h4, div a {
 		color: ${resolvedBy ? colors.font.body2 : colors.body};
