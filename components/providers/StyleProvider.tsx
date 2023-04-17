@@ -58,6 +58,7 @@ export const theme = {
 		},
 		font: {
 			body: colors.smoke,
+			body2: colors.lightSmoke,
 		},
 		link: {
 			default: colors.deepSpace,

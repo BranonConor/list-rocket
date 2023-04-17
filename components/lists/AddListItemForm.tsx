@@ -76,7 +76,7 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 				duration: 0.125,
 				type: 'spring',
 			}}>
-			<StyledForm>
+			<StyledForm onSubmit={handleSubmit}>
 				<StyledInput
 					value={name}
 					placeholder='Add a title'
@@ -98,19 +98,19 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 					required
 					onChange={(e) => setLink(e.target.value)}
 				/>
+				<StyledButtonWrapper>
+					<PrimaryButton
+						variant='small'
+						content='Submit'
+						type='submit'
+					/>
+					<SecondaryButton
+						variant='small'
+						content='Cancel'
+						onClick={handleCancelClick}
+					/>
+				</StyledButtonWrapper>
 			</StyledForm>
-			<StyledButtonWrapper>
-				<PrimaryButton
-					variant='small'
-					content='Submit'
-					onClick={handleSubmit}
-				/>
-				<SecondaryButton
-					variant='small'
-					content='Cancel'
-					onClick={handleCancelClick}
-				/>
-			</StyledButtonWrapper>
 		</StyledWrapper>
 	) : (
 		<SecondaryButton

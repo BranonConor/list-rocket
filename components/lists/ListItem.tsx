@@ -6,19 +6,25 @@ import { useContext } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import { UserContext } from '../../contexts/UserContext';
+import { IUser } from '../../contexts/types';
+import { ProfilePhoto } from '../ProfilePhoto';
 
 interface Props {
 	name: string;
 	description: string;
 	link: string;
+	resolvedBy: IUser | null;
 	animationFactor: number;
 	id: string;
 	listId: string;
 }
 
 export const ListItem: React.FC<Props> = (props) => {
-	const { name, description, link, animationFactor, id, listId } = props;
+	const { name, description, link, resolvedBy, animationFactor, id, listId } =
+		props;
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
+	const { user } = useContext(UserContext);
 
 	const handleDelete = async (e) => {
 		e?.preventDefault();
@@ -45,6 +51,47 @@ export const ListItem: React.FC<Props> = (props) => {
 		alert('editing coming soon!');
 	};
 
+	const handleCheck = async () => {
+		try {
+			const res = await axios.put(`/api/lists/${id}`, {
+				data: {
+					listItemId: id,
+					userEmail: user?.email,
+					action: 'check',
+				},
+			});
+			prepWorkspace(currentEvent._id);
+			toast.success('Item completed 🚀', {
+				toastId: 'completed-list-item-toast',
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error('Something went wrong, sorry! 😵‍💫', {
+				toastId: 'completed-list-item-error-toast',
+			});
+		}
+	};
+
+	const handleUncheck = async () => {
+		try {
+			const res = await axios.put(`/api/lists/${id}`, {
+				data: {
+					listItemId: id,
+					action: 'uncheck',
+				},
+			});
+			prepWorkspace(currentEvent._id);
+			toast.info('Item restored ✨', {
+				toastId: 'restored-list-item-toast',
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error('Something went wrong, sorry! 😵‍💫', {
+				toastId: 'restored-list-item-error-toast',
+			});
+		}
+	};
+
 	return (
 		<StyledCard
 			initial={{
@@ -59,26 +106,64 @@ export const ListItem: React.FC<Props> = (props) => {
 				delay: 0.1 + 0.05 * animationFactor,
 				duration: 0.5,
 				type: 'spring',
-			}}>
-			<StyledTitle variant='heading4'>{name}</StyledTitle>
-			<Text variant='body2'>{description}</Text>
-			<a href={link} target='_blank' rel='noopenner noreferrer'>
-				See item
-			</a>
+			}}
+			resolvedBy={!!resolvedBy}>
+			<StyledContentWrapper>
+				<Title variant='heading4'>{name}</Title>
+				<Text variant='body2'>{description}</Text>
+				<a href={link} target='_blank' rel='noopenner noreferrer'>
+					See item
+				</a>
+			</StyledContentWrapper>
 			<StyledButtonContainer>
-				<StyledDeleteButton onClick={handleDelete}>
-					<img src='/icons/trash-red.svg' alt='Trash Icon' />
-				</StyledDeleteButton>
-				<StyledEditButton onClick={handleEdit}>
+				{resolvedBy ? (
+					<StyledPhotoButton
+						onClick={handleUncheck}
+						initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
+						animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
+						transition={{
+							duration: 0.125,
+							type: 'spring',
+						}}
+						whileHover={{
+							scale: 1.2,
+							transition: { duration: 0.1 },
+						}}>
+						<ProfilePhoto
+							photo={resolvedBy.image}
+							dimensions='18px'
+						/>
+						<StyledCheckmarkWrapper>
+							<img
+								src='/icons/check-mark-success.svg'
+								alt='Check Mark Icon'
+							/>
+						</StyledCheckmarkWrapper>
+					</StyledPhotoButton>
+				) : (
+					<StyledIconButton onClick={handleCheck}>
+						<img
+							src='/icons/check-mark.svg'
+							alt='Check Mark Icon'
+						/>
+					</StyledIconButton>
+				)}
+				<StyledIconButton onClick={handleEdit}>
 					<img src='/icons/pencil.svg' alt='Edit Icon' />
-				</StyledEditButton>
+				</StyledIconButton>
+				<StyledIconButton onClick={handleDelete}>
+					<img src='/icons/trash-red.svg' alt='Trash Icon' />
+				</StyledIconButton>
 			</StyledButtonContainer>
 		</StyledCard>
 	);
 };
 
-const StyledCard = styled(motion.div)(
-	({ theme: { colors, shadows } }) => `
+interface ICardProps {
+	resolvedBy: boolean;
+}
+const StyledCard = styled(motion.div)<ICardProps>(
+	({ resolvedBy, theme: { colors, shadows } }) => `
 	position: relative;
     padding: 16px;
     border-radius: 5px;
@@ -87,6 +172,13 @@ const StyledCard = styled(motion.div)(
 	background: ${colors.white};
 	width: 100%;
 	box-sizing: border-box;
+	display: flex;
+	text-decoration: ${resolvedBy ? 'line-through' : 'none'};
+	text-decoration-color: ${resolvedBy ? colors.font.body2 : colors.body};
+	
+	p, h4, div a {
+		color: ${resolvedBy ? colors.font.body2 : colors.body};
+	}
 
 	&:hover {
 		box-shadow: ${shadows.standard};
@@ -99,60 +191,78 @@ const StyledCard = styled(motion.div)(
 
 	& a {
 		color: ${colors.link.default};
+		
 		&:hover {
 			color: ${colors.link.hover};
 		}
 	}
 	`
 );
-const StyledTitle = styled(Title)`
-	width: 75%;
-`;
 const StyledButtonContainer = styled.div`
-	position: absolute;
-	top: 12px;
-	right: 10px;
-	z-index: 2;
 	box-sizing: border-box;
 	transition: 0.1s ease all;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	padding-left: 16px;
+`;
+const StyledIconButton = styled.button`
+	background: none;
+	border-radius: 5px;
+	box-sizing: border-box;
+	padding: 0;
+	outline: none;
+	border: none;
+	transition: 0.1s ease all;
+	height: 34px;
+	width: 18px;
 
+	&:hover {
+		box-shadow: none;
+		animation: none;
+		cursor: pointer;
+		transform: scale(1.25);
+	}
 	img {
 		filter: grayscale(100%);
-		width: 18px;
-		height: 18px;
+		width: 14px;
+		height: 14px;
 	}
 `;
-const StyledDeleteButton = styled.button`
+const StyledContentWrapper = styled.div(
+	({ theme: { colors } }) => `
+	width: 100%;
+	padding-right: 16px;
+	border-right: 1px solid ${colors.bgLight};
+`
+);
+const StyledPhotoButton = styled(motion.button)`
+	position: relative;
 	background: none;
 	border-radius: 5px;
 	box-sizing: border-box;
-	padding: 8px;
+	padding: 0;
 	outline: none;
 	border: none;
 	transition: 0.1s ease all;
-	height: 40px;
+	height: 34px;
+	width: 100%;
 
 	&:hover {
 		box-shadow: none;
 		animation: none;
 		cursor: pointer;
-		transform: scale(1.15);
 	}
 `;
-const StyledEditButton = styled.button`
-	background: none;
-	border-radius: 5px;
-	box-sizing: border-box;
-	padding: 8px;
-	outline: none;
-	border: none;
-	transition: 0.1s ease all;
-	height: 40px;
+const StyledCheckmarkWrapper = styled.div`
+	position: absolute;
+	top: 14px;
+	right: -4px;
+	z-index: 2;
 
-	&:hover {
-		box-shadow: none;
-		animation: none;
-		cursor: pointer;
-		transform: scale(1.15);
+	img {
+		width: 14px;
+		height: 14px;
 	}
 `;

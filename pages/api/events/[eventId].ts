@@ -20,6 +20,9 @@ const eventApiRoutes = async (req, res) => {
 				path: 'lists',
 				populate: {
 					path: 'items',
+					populate: {
+						path: 'resolvedBy',
+					},
 				},
 			});
 		res.json({ status: 200, data: event });

@@ -56,6 +56,7 @@ export interface IListItem {
 	name: string;
 	description: string;
 	link: string;
+	resolvedBy: IUser;
 }
 
 export interface IList {

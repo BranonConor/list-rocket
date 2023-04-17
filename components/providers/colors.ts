@@ -12,6 +12,7 @@ export const colors = {
 	siren: '#E73939',
 	lightSiren: '#ED6060',
 	smoke: '#39303B',
+	lightSmoke: '#706B72',
 	success: '#5A9F61',
 	warning: '#67521B',
 	metallicBlue: '#CBE0FF',

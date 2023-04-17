@@ -53,6 +53,7 @@ export const UserList: React.FC<Props> = (props) => {
 									name={item.name}
 									description={item.description}
 									link={item.link}
+									resolvedBy={item.resolvedBy}
 									animationFactor={index}
 									listId={id}
 									id={item._id}
