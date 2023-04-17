@@ -13,6 +13,7 @@ export interface IEvent {
 	description: string;
 	creator: IUser;
 	collaborators: ICollaborator[];
+	pendingCollaborators: ICollaborator[];
 	lists: IList[];
 }
 export interface IEventContext {
@@ -27,6 +28,7 @@ export interface IUser {
 	email: string;
 	image: string;
 	emailVerified: null;
+	invites: IEvent[];
 }
 
 export interface IUserContext {

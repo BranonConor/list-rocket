@@ -1,21 +1,21 @@
-import EventCard from '../cards/EventCard';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useContext } from 'react';
-import { EventContext } from '../../contexts/EventContext';
 import { Title } from '../typography/Title';
+import { UserContext } from '../../contexts/UserContext';
+import { InviteCard } from '../cards/InviteCard';
 
-export const AllEvents = () => {
-	const { events } = useContext(EventContext);
+export const AllInvites = () => {
+	const { user } = useContext(UserContext);
 
 	return (
 		<StyledWrapper>
-			<Title variant='heading2'>Your Events</Title>
+			<Title variant='heading3'>Pending Invites</Title>
 			<StyledEventsContainer>
-				{events?.length ? (
-					events.map((event, index) => {
+				{user?.invites?.length ? (
+					user?.invites?.map((event, index) => {
 						return (
-							<EventCard
+							<InviteCard
 								name={event.name}
 								description={event.description}
 								creator={event.creator}
@@ -33,7 +33,7 @@ export const AllEvents = () => {
 							duration: 5,
 							type: 'spring',
 						}}>
-						Start your first event! ✨
+						You are all caught up! ⏳
 					</motion.p>
 				)}
 			</StyledEventsContainer>

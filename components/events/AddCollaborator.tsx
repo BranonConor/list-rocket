@@ -6,6 +6,7 @@ import axios from 'axios';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Text } from '../typography/Text';
 import { toast } from 'react-toastify';
+import { SecondaryButton } from '../buttons/SecondaryButton';
 
 export const AddCollaborator = (props) => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
@@ -21,9 +22,15 @@ export const AddCollaborator = (props) => {
 			if (emailValue === '') {
 				throw new Error();
 			}
-			const res = await axios.put(`/api/events`, {
+			const eventsRes = await axios.put(`/api/events`, {
 				eventId: currentEvent._id,
 				email: emailValue.toLowerCase(),
+				action: 'invite',
+			});
+			const userRes = await axios.put(`/api/user`, {
+				eventId: currentEvent._id,
+				email: emailValue.toLowerCase(),
+				action: 'invite',
 			});
 
 			setEmailValue('');
@@ -49,6 +56,10 @@ export const AddCollaborator = (props) => {
 				} else if (error.message === 'user not found') {
 					toast.error(`${emailValue} doesn't have an account. 👀`, {
 						toastId: 'collaborator-not-found-toast',
+					});
+				} else if (error.message === 'user invite is pending') {
+					toast.error(`${emailValue} is pending ⏳`, {
+						toastId: 'unknown-error-toast',
 					});
 				} else {
 					toast.error(`Unknown error occured. 😵‍💫`, {
@@ -131,7 +142,8 @@ const StyledForm = styled(motion.form)(
 	}
 `
 );
-const StyledInput = styled.input`
+const StyledInput = styled.input(
+	({ theme: { typography } }) => `
 	width: 100%;
 	box-sizing: border-box;
 	border-radius: 5px;
@@ -139,11 +151,15 @@ const StyledInput = styled.input`
 	height: 40px;
 	outline: none;
 	border: none;
+	font-family: Poppins;
+	font-size: ${typography.size.body2};
+	padding: 4px 8px;
 
 	@media only screen and (max-width: 555px) {
 		width: 100%;
 	}
-`;
+`
+);
 const StyledErrorText = styled(Text)`
 	color: red;
 `;
@@ -166,7 +182,7 @@ const StyledSubmitButton = styled(PrimaryButton)`
 		margin: 8px 0;
 	}
 `;
-const StyledCancelButton = styled(PrimaryButton)`
+const StyledCancelButton = styled(SecondaryButton)`
 	margin: 0 8px 0 8px;
 
 	@media only screen and (max-width: 555px) {

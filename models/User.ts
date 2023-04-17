@@ -13,6 +13,12 @@ const UserSchema = new Schema({
 			ref: 'events',
 		},
 	],
+	invites: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'events',
+		},
+	],
 });
 
 export const User =

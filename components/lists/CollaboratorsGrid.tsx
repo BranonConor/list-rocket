@@ -28,17 +28,26 @@ export const CollaboratorsGrid = () => {
 			}}>
 			<StyledCollaboratorsWrapper>
 				<StyledH2 variant='heading3'>Collaborators:</StyledH2>
-				{currentEvent.collaborators.length > 0 &&
-					currentEvent.collaborators.map((collaborator) => {
-						return (
-							<StyledButton key={collaborator._id}>
-								<ProfilePhoto
-									photo={collaborator.image}
-									dimensions='40px'
-								/>
-							</StyledButton>
-						);
-					})}
+				{currentEvent.collaborators?.map((collaborator) => {
+					return (
+						<StyledButton key={collaborator._id}>
+							<ProfilePhoto
+								photo={collaborator.image}
+								dimensions='40px'
+							/>
+						</StyledButton>
+					);
+				})}
+				{currentEvent.pendingCollaborators?.map((collaborator) => {
+					return (
+						<StyledPendingButton key={collaborator._id}>
+							<ProfilePhoto
+								photo={collaborator.image}
+								dimensions='40px'
+							/>
+						</StyledPendingButton>
+					);
+				})}
 				{!isAddCollaboratorButtonClicked && (
 					<StyledAddCollaboratorButton
 						onClick={() => setIsAddCollaboratorButtonClicked(true)}>
@@ -78,6 +87,21 @@ const StyledButton = styled.button`
 	border: none;
 	background: none;
 	transition: 0.15s ease all;
+
+	&:hover {
+		cursor: pointer;
+
+		img {
+			transform: scale(1.1);
+		}
+	}
+`;
+const StyledPendingButton = styled.button`
+	outline: none;
+	border: none;
+	background: none;
+	transition: 0.15s ease all;
+	opacity: 0.6;
 
 	&:hover {
 		cursor: pointer;
