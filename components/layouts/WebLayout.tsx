@@ -47,7 +47,7 @@ const StyledMainSection = styled.div`
 	position: relative;
 	width: 100%;
 	height: 100vh;
-	padding: 75px 16px 16px 16px;
+	padding: 75px 0 0 0;
 	box-sizing: border-box;
 `;
 const StyledHeader = styled.header``;
