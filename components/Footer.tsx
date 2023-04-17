@@ -5,7 +5,10 @@ export const Footer = () => {
 		<StyledFooter>
 			App by
 			<StyledAnchor href='https://www.branon.dev' target='_blank'>
-				Branon Eusebio
+				<StyledImage
+					src='icons/liftoff-logo.svg'
+					alt='Liftoff Technologies'
+				/>
 			</StyledAnchor>
 		</StyledFooter>
 	);
@@ -16,8 +19,6 @@ const StyledFooter = styled.div(
 	position: fixed;
 	bottom: 0;
 	left: 0;
-	z-index: 5;
-	height: 32px;
 	width: 100%;
 	color: gray;
 	display: flex;
@@ -25,7 +26,8 @@ const StyledFooter = styled.div(
 	justify-content: center;
 	font-size: 12px;
 	background: white;
-	border-top: 3px solid ${colors.bgLight};
+	padding: 8px 0;
+	border-top: 2px solid ${colors.bgLight};
 
 	@media only screen and (max-width: 768px) {
 		display: none;
@@ -36,9 +38,14 @@ const StyledAnchor = styled.a(
 	({ theme: { colors } }) => `
 	color: ${colors.bgPurple};
 	padding: 0 0 0 8px;
+	display: flex;
+	align-items: center;
 	
 	&:hover {
 		color: ${colors.linkTextHover};
 	}
 `
 );
+const StyledImage = styled.img`
+	height: 20px;
+`;

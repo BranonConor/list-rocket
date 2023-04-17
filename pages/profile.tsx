@@ -10,7 +10,6 @@ import { PrimaryButton } from '../components/buttons/PrimaryButton';
 import { Title } from '../components/typography/Title';
 import { Text } from '../components/typography/Text';
 import { EventContext } from '../contexts/EventContext';
-import { Footer } from '../components/Footer';
 
 const Profile = () => {
 	const { user } = useContext(UserContext);
@@ -85,7 +84,7 @@ const Profile = () => {
 							type: 'spring',
 						}}>
 						<Text variant='body1'>
-							<b>Total Events: </b> {events.length}
+							<b>Total Events: </b> {events?.length}
 						</Text>
 					</StyledP>
 				</StyledCard>
