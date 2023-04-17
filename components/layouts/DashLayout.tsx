@@ -45,6 +45,7 @@ const StyledWrapper = styled.div`
 const StyledHeader = styled.header`
 	width: 75px;
 	height: fill-content;
+	position: relative;
 	z-index: 1000;
 
 	@media only screen and (max-width: 768px) {
@@ -63,6 +64,7 @@ const StyledContainer = styled.div`
 `;
 const StyledMainSection = styled.div`
 	width: calc(100% - 75px);
+	height: 100%;
 	overflow-y: scroll;
 	padding: 32px 32px 64px 32px;
 	box-sizing: border-box;
