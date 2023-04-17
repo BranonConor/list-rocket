@@ -82,7 +82,7 @@ export const ListItem: React.FC<Props> = (props) => {
 				},
 			});
 			prepWorkspace(currentEvent._id);
-			toast.success('Item restored ✨', {
+			toast.info('Item restored ✨', {
 				toastId: 'restored-list-item-toast',
 			});
 		} catch (error) {
