@@ -44,28 +44,27 @@ const StyledWrapper = styled.div`
 `;
 const StyledHeader = styled.header`
 	width: 75px;
-	height: 100%;
+	height: fill-content;
+	z-index: 1000;
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
 		height: 64px;
 		position: fixed;
 		bottom: 0;
-		z-index: 1000;
 	}
 `;
 const StyledContainer = styled.div`
 	width: 100%;
 	height: 100vh;
+	max-height: 100%;
 	overflow: auto;
 	display: flex;
 `;
 const StyledMainSection = styled.div`
-	position: relative;
 	width: calc(100% - 75px);
-	height: 100%;
 	overflow-y: scroll;
-	padding: 32px;
+	padding: 32px 32px 64px 32px;
 	box-sizing: border-box;
 	background: none;
 
