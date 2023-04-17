@@ -8,7 +8,12 @@ const usersApiRoutes = async (req, res) => {
 	await connectMongo();
 
 	if (req.method === 'GET') {
-		const user = await User.findOne({ email: req.query.email });
+		const user = await User.findOne({ email: req.query.email }).populate({
+			path: 'invites',
+			populate: {
+				path: 'creator',
+			},
+		});
 		res.json({ status: 200, data: user });
 	}
 

@@ -14,7 +14,7 @@ import { Text } from '../components/typography/Text';
 import { toast } from 'react-toastify';
 import { CreateEventForm } from '../components/events/CreateEvent';
 import 'react-toastify/dist/ReactToastify.css';
-import { Footer } from '../components/Footer';
+import { AllInvites } from '../components/events/AllInvites';
 
 const Dashboard = () => {
 	const router = useRouter();
@@ -65,6 +65,7 @@ const Dashboard = () => {
 				</div>
 			</StyledDashWrapper>
 			<AllEvents />
+			<AllInvites />
 		</DashLayout>
 	);
 };

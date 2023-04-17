@@ -28,6 +28,7 @@ export interface IUser {
 	email: string;
 	image: string;
 	emailVerified: null;
+	invites: IEvent[];
 }
 
 export interface IUserContext {
