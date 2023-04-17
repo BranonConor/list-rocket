@@ -22,7 +22,11 @@ export const AddCollaborator = (props) => {
 			if (emailValue === '') {
 				throw new Error();
 			}
-			const res = await axios.put(`/api/user`, {
+			const eventsRes = await axios.put(`/api/events`, {
+				eventId: currentEvent._id,
+				email: emailValue.toLowerCase(),
+			});
+			const userRes = await axios.put(`/api/user`, {
 				eventId: currentEvent._id,
 				email: emailValue.toLowerCase(),
 				action: 'invite',
@@ -51,6 +55,10 @@ export const AddCollaborator = (props) => {
 				} else if (error.message === 'user not found') {
 					toast.error(`${emailValue} doesn't have an account. 👀`, {
 						toastId: 'collaborator-not-found-toast',
+					});
+				} else if (error.message === 'user invite is pending') {
+					toast.error(`${emailValue} is pending ⏳`, {
+						toastId: 'unknown-error-toast',
 					});
 				} else {
 					toast.error(`Unknown error occured. 😵‍💫`, {

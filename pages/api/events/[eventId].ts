@@ -10,6 +10,7 @@ const eventApiRoutes = async (req, res) => {
 		const event = await Event.findById(req.query.eventId)
 			.populate('creator')
 			.populate('collaborators')
+			.populate('pendingCollaborators')
 			.populate({
 				path: 'lists',
 				populate: {

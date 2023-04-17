@@ -1,6 +1,7 @@
 import { User } from '../../../models/User';
 import { Event } from '../../../models/Event';
 import connectMongo from '../../../models/utils/connectMongo';
+import { ObjectId } from 'mongodb';
 
 const usersApiRoutes = async (req, res) => {
 	//mongoose code
@@ -23,21 +24,22 @@ const usersApiRoutes = async (req, res) => {
 			//grab the event from which the request was made
 			const event = await Event.findById(req.body.eventId);
 			//check for the user before doing anything else
-			const userExists = await event.collaborators.includes(user.email);
-			if (userExists) {
+			const alreadyInvited = await user.invites.includes(
+				new ObjectId(event)
+			);
+			if (alreadyInvited) {
 				res.status(404).send({
 					success: false,
-					error: { message: 'user already exists' },
+					error: { message: 'user invite is pending' },
 				});
 				return false;
 			} else {
-				if (user.invites) {
+				if (!!user.invites) {
 					await user.invites.push(event);
 				} else {
 					user.invites = [event];
 				}
 				await user.save();
-				console.log('User after adding invite: ', user);
 				return res.status(200).send();
 			}
 		}

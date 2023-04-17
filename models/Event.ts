@@ -20,6 +20,12 @@ const EventSchema = new Schema({
 			ref: 'lists',
 		},
 	],
+	pendingCollaborators: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'users',
+		},
+	],
 });
 
 export const Event =

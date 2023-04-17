@@ -13,6 +13,7 @@ export interface IEvent {
 	description: string;
 	creator: IUser;
 	collaborators: ICollaborator[];
+	pendingCollaborators: ICollaborator[];
 	lists: IList[];
 }
 export interface IEventContext {
