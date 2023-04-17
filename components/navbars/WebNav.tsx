@@ -11,7 +11,10 @@ export const WebNav = () => {
 	return (
 		<StyledWrapper>
 			<StyledBrand>
-				<StyledLogo src='/icons/logo.svg' alt='Light Logo' />
+				<StyledLogo
+					src='/icons/list-rocket-logo-dark.svg'
+					alt='Light Logo'
+				/>
 			</StyledBrand>
 			<StyledMenu>
 				<StyledList>
