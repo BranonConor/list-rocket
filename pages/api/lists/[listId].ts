@@ -1,9 +1,36 @@
 import connectMongo from '../../../models/utils/connectMongo';
 import { List, ListItem } from '../../../models/List';
+import { User } from '../../../models/User';
 
 const listApiRoutes = async (req, res) => {
 	//mongoose code
 	await connectMongo();
+
+	if (req.method === 'PUT') {
+		//find the user object we want to add as the resolver of this item
+		const user = await User.findOne({ email: req.body.data.userEmail });
+		if (!user) {
+			res.status(404).send({
+				success: false,
+				error: { message: 'user not found' },
+			});
+		} else {
+			//find this list
+			const listItem = await ListItem.findById(req.body.data.listItemId);
+			if (listItem.resolvedBy) {
+				res.status(404).send({
+					success: false,
+					error: { message: 'item already resolved' },
+				});
+				return false;
+			} else {
+				//proceed with updating the list item with the new resolver
+				listItem.resolvedBy = user;
+				await listItem.save();
+				return res.status(200).send();
+			}
+		}
+	}
 
 	if (req.method === 'DELETE') {
 		//Delete it from its respective list

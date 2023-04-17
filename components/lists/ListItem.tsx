@@ -6,19 +6,25 @@ import { useContext } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import { UserContext } from '../../contexts/UserContext';
+import { IUser } from '../../contexts/types';
+import { ProfilePhoto } from '../ProfilePhoto';
 
 interface Props {
 	name: string;
 	description: string;
 	link: string;
+	resolvedBy: IUser | null;
 	animationFactor: number;
 	id: string;
 	listId: string;
 }
 
 export const ListItem: React.FC<Props> = (props) => {
-	const { name, description, link, animationFactor, id, listId } = props;
+	const { name, description, link, resolvedBy, animationFactor, id, listId } =
+		props;
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
+	const { user } = useContext(UserContext);
 
 	const handleDelete = async (e) => {
 		e?.preventDefault();
@@ -45,8 +51,45 @@ export const ListItem: React.FC<Props> = (props) => {
 		alert('editing coming soon!');
 	};
 
-	const handleCheck = () => {
-		alert('checking tasks coming soon!');
+	const handleCheck = async () => {
+		try {
+			const res = await axios.put(`/api/lists/${id}`, {
+				data: {
+					listItemId: id,
+					userEmail: user?.email,
+				},
+			});
+			prepWorkspace(currentEvent._id);
+			toast.success('Successfully completed this item ✅', {
+				toastId: 'completed-list-item-toast',
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error('Something went wrong, sorry! 😵‍💫', {
+				toastId: 'completed-list-item-error-toast',
+			});
+		}
+	};
+
+	//TODO - adjust this to uncheck the resolvedBy user
+	const handleUncheck = async () => {
+		try {
+			const res = await axios.put(`/api/lists/${id}`, {
+				data: {
+					listItemId: id,
+					userEmail: user?.email,
+				},
+			});
+			prepWorkspace(currentEvent._id);
+			toast.success('Successfully completed this item ✅', {
+				toastId: 'completed-list-item-toast',
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error('Something went wrong, sorry! 😵‍💫', {
+				toastId: 'completed-list-item-error-toast',
+			});
+		}
 	};
 
 	return (
@@ -63,7 +106,8 @@ export const ListItem: React.FC<Props> = (props) => {
 				delay: 0.1 + 0.05 * animationFactor,
 				duration: 0.5,
 				type: 'spring',
-			}}>
+			}}
+			resolvedBy={true}>
 			<StyledContentWrapper>
 				<Title variant='heading4'>{name}</Title>
 				<Text variant='body2'>{description}</Text>
@@ -72,9 +116,27 @@ export const ListItem: React.FC<Props> = (props) => {
 				</a>
 			</StyledContentWrapper>
 			<StyledButtonContainer>
-				<StyledIconButton onClick={handleCheck}>
-					<img src='/icons/check-mark.svg' alt='Check Mark Icon' />
-				</StyledIconButton>
+				{resolvedBy ? (
+					<StyledPhotoButton onClick={handleUncheck}>
+						<ProfilePhoto
+							photo={resolvedBy.image}
+							dimensions='18px'
+						/>
+						<StyledCheckmarkWrapper>
+							<img
+								src='/icons/check-mark.svg'
+								alt='Check Mark Icon'
+							/>
+						</StyledCheckmarkWrapper>
+					</StyledPhotoButton>
+				) : (
+					<StyledIconButton onClick={handleCheck}>
+						<img
+							src='/icons/check-mark.svg'
+							alt='Check Mark Icon'
+						/>
+					</StyledIconButton>
+				)}
 				<StyledIconButton onClick={handleEdit}>
 					<img src='/icons/pencil.svg' alt='Edit Icon' />
 				</StyledIconButton>
@@ -86,8 +148,11 @@ export const ListItem: React.FC<Props> = (props) => {
 	);
 };
 
-const StyledCard = styled(motion.div)(
-	({ theme: { colors, shadows } }) => `
+interface ICardProps {
+	resolvedBy: boolean;
+}
+const StyledCard = styled(motion.div)<ICardProps>(
+	({ resolvedBy, theme: { colors, shadows } }) => `
 	position: relative;
     padding: 16px;
     border-radius: 5px;
@@ -97,6 +162,7 @@ const StyledCard = styled(motion.div)(
 	width: 100%;
 	box-sizing: border-box;
 	display: flex;
+	text-decoration: ${resolvedBy ? 'line-through' : 'none'};
 
 	&:hover {
 		box-shadow: ${shadows.standard};
@@ -109,6 +175,7 @@ const StyledCard = styled(motion.div)(
 
 	& a {
 		color: ${colors.link.default};
+		
 		&:hover {
 			color: ${colors.link.hover};
 		}
@@ -123,12 +190,6 @@ const StyledButtonContainer = styled.div`
 	align-items: center;
 	justify-content: flex-start;
 	padding-left: 16px;
-
-	img {
-		filter: grayscale(100%);
-		width: 14px;
-		height: 14px;
-	}
 `;
 const StyledIconButton = styled.button`
 	background: none;
@@ -147,6 +208,11 @@ const StyledIconButton = styled.button`
 		cursor: pointer;
 		transform: scale(1.25);
 	}
+	img {
+		filter: grayscale(100%);
+		width: 14px;
+		height: 14px;
+	}
 `;
 const StyledContentWrapper = styled.div(
 	({ theme: { colors } }) => `
@@ -155,3 +221,33 @@ const StyledContentWrapper = styled.div(
 	border-right: 1px solid ${colors.bgLight};
 `
 );
+const StyledPhotoButton = styled.button`
+	position: relative;
+	background: none;
+	border-radius: 5px;
+	box-sizing: border-box;
+	padding: 0;
+	outline: none;
+	border: none;
+	transition: 0.1s ease all;
+	height: 34px;
+	width: 100%;
+
+	&:hover {
+		box-shadow: none;
+		animation: none;
+		cursor: pointer;
+		transform: scale(1.25);
+	}
+`;
+const StyledCheckmarkWrapper = styled.div`
+	position: absolute;
+	top: 14px;
+	right: -4px;
+	z-index: 2;
+
+	img {
+		width: 14px;
+		height: 14px;
+	}
+`;
