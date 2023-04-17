@@ -25,6 +25,7 @@ export const AddCollaborator = (props) => {
 			const eventsRes = await axios.put(`/api/events`, {
 				eventId: currentEvent._id,
 				email: emailValue.toLowerCase(),
+				action: 'invite',
 			});
 			const userRes = await axios.put(`/api/user`, {
 				eventId: currentEvent._id,

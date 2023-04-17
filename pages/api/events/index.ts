@@ -50,7 +50,7 @@ const eventsApiRoutes = async (req, res) => {
 		}
 	}
 
-	if (req.method === 'PUT') {
+	if (req.method === 'PUT' && req.body.action === 'invite') {
 		//find the user object we want to add as a collaborator
 		const user = await User.findOne({ email: req.body.email });
 
@@ -83,6 +83,28 @@ const eventsApiRoutes = async (req, res) => {
 				await event.save();
 				return res.status(200).send();
 			}
+		}
+	}
+
+	if (req.method === 'PUT' && req.body.action === 'decline') {
+		//find the user object we want to add as a collaborator
+		const event = await Event.findById(req.body.eventId);
+		if (!event) {
+			res.status(404).send({
+				success: false,
+				error: { message: 'event not found' },
+			});
+		} else {
+			//find the invite and remove it from event's pendingCollab list
+			const newPendingCollaborators =
+				await event.pendingCollaborators.filter(
+					(user: any) => user.toString() !== req.body.user._id
+				);
+			console.log('Event before update: ', event);
+			event.pendingCollaborators = newPendingCollaborators;
+			console.log('Event after: ', event);
+			await event.save();
+			return res.status(200).send();
 		}
 	}
 };

@@ -15,24 +15,28 @@ import { SecondaryButton } from '../buttons/SecondaryButton';
 export const InviteCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
 	const { getAllEvents } = useContext(EventContext);
-	const { user } = useContext(UserContext);
+	const { user, getUserData } = useContext(UserContext);
 	const { prepWorkspace, currentEvent, clearWorkspace } =
 		useContext(WorkspaceContext);
 	const router = useRouter();
 
-	const handleDelete = async (e) => {
-		e?.preventDefault();
+	const handleDecline = async () => {
 		try {
-			const res = await axios.delete(`/api/events/${id}`, {
-				data: {
-					eventId: id,
-					user: user,
-				},
+			const eventRes = await axios.put(`/api/events`, {
+				eventId: id,
+				user: user,
+				action: 'decline',
 			});
-			getAllEvents();
+			const userRes = await axios.put(`/api/user`, {
+				eventId: id,
+				user: user,
+				action: 'decline',
+			});
+
+			getUserData();
 			currentEvent?._id === id && clearWorkspace();
-			toast.success('Successfully deleted your event 🗑', {
-				toastId: 'delete-event-toast',
+			toast.info('Invite declined 👋🏽', {
+				toastId: 'decline-event-invite-toast',
 			});
 		} catch (error) {
 			console.log(error);
@@ -42,7 +46,7 @@ export const InviteCard = (props) => {
 		}
 	};
 
-	const handleClick = async (e) => {
+	const handleAccept = async (e) => {
 		e?.preventDefault();
 		prepWorkspace(id);
 		router.push('/workspace');
@@ -64,12 +68,12 @@ export const InviteCard = (props) => {
 
 			<StyledButtonContainer>
 				<PrimaryButton
-					onClick={handleClick}
+					onClick={handleAccept}
 					content='Join event'
 					variant='small'
 				/>
 				<SecondaryButton
-					onClick={handleDelete}
+					onClick={handleDecline}
 					content='Decline'
 					variant='small'
 				/>
