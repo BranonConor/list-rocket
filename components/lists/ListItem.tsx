@@ -65,7 +65,7 @@ export const ListItem: React.FC<Props> = (props) => {
 				type: 'spring',
 			}}>
 			<StyledContentWrapper>
-				<StyledTitle variant='heading4'>{name}</StyledTitle>
+				<Title variant='heading4'>{name}</Title>
 				<Text variant='body2'>{description}</Text>
 				<a href={link} target='_blank' rel='noopenner noreferrer'>
 					See item
@@ -115,16 +115,13 @@ const StyledCard = styled(motion.div)(
 	}
 	`
 );
-const StyledTitle = styled(Title)`
-	width: 75%;
-`;
 const StyledButtonContainer = styled.div`
 	box-sizing: border-box;
 	transition: 0.1s ease all;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-start;
 	padding-left: 16px;
 
 	img {
@@ -141,6 +138,8 @@ const StyledIconButton = styled.button`
 	outline: none;
 	border: none;
 	transition: 0.1s ease all;
+	height: 34px;
+	width: 100%;
 
 	&:hover {
 		box-shadow: none;
