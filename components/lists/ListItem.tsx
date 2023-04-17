@@ -45,6 +45,10 @@ export const ListItem: React.FC<Props> = (props) => {
 		alert('editing coming soon!');
 	};
 
+	const handleCheck = () => {
+		alert('checking tasks coming soon!');
+	};
+
 	return (
 		<StyledCard
 			initial={{
@@ -60,18 +64,23 @@ export const ListItem: React.FC<Props> = (props) => {
 				duration: 0.5,
 				type: 'spring',
 			}}>
-			<StyledTitle variant='heading4'>{name}</StyledTitle>
-			<Text variant='body2'>{description}</Text>
-			<a href={link} target='_blank' rel='noopenner noreferrer'>
-				See item
-			</a>
+			<StyledContentWrapper>
+				<StyledTitle variant='heading4'>{name}</StyledTitle>
+				<Text variant='body2'>{description}</Text>
+				<a href={link} target='_blank' rel='noopenner noreferrer'>
+					See item
+				</a>
+			</StyledContentWrapper>
 			<StyledButtonContainer>
-				<StyledDeleteButton onClick={handleDelete}>
-					<img src='/icons/trash-red.svg' alt='Trash Icon' />
-				</StyledDeleteButton>
-				<StyledEditButton onClick={handleEdit}>
+				<StyledIconButton onClick={handleCheck}>
+					<img src='/icons/check-mark.svg' alt='Check Mark Icon' />
+				</StyledIconButton>
+				<StyledIconButton onClick={handleEdit}>
 					<img src='/icons/pencil.svg' alt='Edit Icon' />
-				</StyledEditButton>
+				</StyledIconButton>
+				<StyledIconButton onClick={handleDelete}>
+					<img src='/icons/trash-red.svg' alt='Trash Icon' />
+				</StyledIconButton>
 			</StyledButtonContainer>
 		</StyledCard>
 	);
@@ -87,6 +96,7 @@ const StyledCard = styled(motion.div)(
 	background: ${colors.white};
 	width: 100%;
 	box-sizing: border-box;
+	display: flex;
 
 	&:hover {
 		box-shadow: ${shadows.standard};
@@ -109,50 +119,40 @@ const StyledTitle = styled(Title)`
 	width: 75%;
 `;
 const StyledButtonContainer = styled.div`
-	position: absolute;
-	top: 12px;
-	right: 10px;
-	z-index: 2;
 	box-sizing: border-box;
 	transition: 0.1s ease all;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	padding-left: 16px;
 
 	img {
 		filter: grayscale(100%);
-		width: 18px;
-		height: 18px;
+		width: 14px;
+		height: 14px;
 	}
 `;
-const StyledDeleteButton = styled.button`
+const StyledIconButton = styled.button`
 	background: none;
 	border-radius: 5px;
 	box-sizing: border-box;
-	padding: 8px;
+	padding: 0;
 	outline: none;
 	border: none;
 	transition: 0.1s ease all;
-	height: 40px;
 
 	&:hover {
 		box-shadow: none;
 		animation: none;
 		cursor: pointer;
-		transform: scale(1.15);
+		transform: scale(1.25);
 	}
 `;
-const StyledEditButton = styled.button`
-	background: none;
-	border-radius: 5px;
-	box-sizing: border-box;
-	padding: 8px;
-	outline: none;
-	border: none;
-	transition: 0.1s ease all;
-	height: 40px;
-
-	&:hover {
-		box-shadow: none;
-		animation: none;
-		cursor: pointer;
-		transform: scale(1.15);
-	}
-`;
+const StyledContentWrapper = styled.div(
+	({ theme: { colors } }) => `
+	width: 100%;
+	padding-right: 16px;
+	border-right: 1px solid ${colors.bgLight};
+`
+);

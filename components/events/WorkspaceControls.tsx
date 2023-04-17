@@ -33,7 +33,7 @@ export const WorkspaceControls = () => {
 					</Text>
 
 					<StyledEventsWrapper>
-						{events.map((event, index: number) => {
+						{events?.map((event, index: number) => {
 							return (
 								<StyledChipWrapper
 									key={event._id}
@@ -93,7 +93,7 @@ export const WorkspaceControls = () => {
 							</StyledButton>
 						</StyledSpan>
 						<StyledDescription variant='body1'>
-							{currentEvent.description}
+							{currentEvent?.description}
 						</StyledDescription>
 						<StyledInfoCard>
 							<StyledP variant='body1'>Event Creator:</StyledP>
@@ -113,7 +113,7 @@ export const WorkspaceControls = () => {
 									type: 'spring',
 								}}>
 								<ProfilePhoto
-									photo={currentEvent.creator?.image}
+									photo={currentEvent?.creator?.image}
 									dimensions='35px'
 								/>
 							</StyledAvatar>

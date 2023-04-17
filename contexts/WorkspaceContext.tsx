@@ -13,10 +13,8 @@ export const WorkspaceProvider = (props) => {
 	const prepWorkspace = async (eventId: string) => {
 		//get the event and set it as the current event
 		const eventRes = await axios.get(`/api/events/${eventId}`);
-		setCurrentEvent(eventRes.data.data);
+		setCurrentEvent(eventRes?.data?.data);
 	};
-
-	console.log('Current Event: ', currentEvent);
 
 	const clearWorkspace = () => {
 		setCurrentEvent(null);
