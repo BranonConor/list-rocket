@@ -57,10 +57,11 @@ export const ListItem: React.FC<Props> = (props) => {
 				data: {
 					listItemId: id,
 					userEmail: user?.email,
+					action: 'check',
 				},
 			});
 			prepWorkspace(currentEvent._id);
-			toast.success('Successfully completed this item ✅', {
+			toast.success('Item completed 🚀', {
 				toastId: 'completed-list-item-toast',
 			});
 		} catch (error) {
@@ -77,17 +78,17 @@ export const ListItem: React.FC<Props> = (props) => {
 			const res = await axios.put(`/api/lists/${id}`, {
 				data: {
 					listItemId: id,
-					userEmail: user?.email,
+					action: 'uncheck',
 				},
 			});
 			prepWorkspace(currentEvent._id);
-			toast.success('Successfully completed this item ✅', {
-				toastId: 'completed-list-item-toast',
+			toast.success('Item restored ✨', {
+				toastId: 'restored-list-item-toast',
 			});
 		} catch (error) {
 			console.log(error);
 			toast.error('Something went wrong, sorry! 😵‍💫', {
-				toastId: 'completed-list-item-error-toast',
+				toastId: 'restored-list-item-error-toast',
 			});
 		}
 	};
@@ -107,7 +108,7 @@ export const ListItem: React.FC<Props> = (props) => {
 				duration: 0.5,
 				type: 'spring',
 			}}
-			resolvedBy={true}>
+			resolvedBy={!!resolvedBy}>
 			<StyledContentWrapper>
 				<Title variant='heading4'>{name}</Title>
 				<Text variant='body2'>{description}</Text>
@@ -117,14 +118,25 @@ export const ListItem: React.FC<Props> = (props) => {
 			</StyledContentWrapper>
 			<StyledButtonContainer>
 				{resolvedBy ? (
-					<StyledPhotoButton onClick={handleUncheck}>
+					<StyledPhotoButton
+						onClick={handleUncheck}
+						initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
+						animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
+						transition={{
+							duration: 0.125,
+							type: 'spring',
+						}}
+						whileHover={{
+							scale: 1.2,
+							transition: { duration: 0.1 },
+						}}>
 						<ProfilePhoto
 							photo={resolvedBy.image}
 							dimensions='18px'
 						/>
 						<StyledCheckmarkWrapper>
 							<img
-								src='/icons/check-mark.svg'
+								src='/icons/check-mark-success.svg'
 								alt='Check Mark Icon'
 							/>
 						</StyledCheckmarkWrapper>
@@ -163,6 +175,10 @@ const StyledCard = styled(motion.div)<ICardProps>(
 	box-sizing: border-box;
 	display: flex;
 	text-decoration: ${resolvedBy ? 'line-through' : 'none'};
+	
+	p, h4, div a {
+		color: ${resolvedBy ? colors.font.body2 : colors.body};
+	}
 
 	&:hover {
 		box-shadow: ${shadows.standard};
@@ -200,7 +216,7 @@ const StyledIconButton = styled.button`
 	border: none;
 	transition: 0.1s ease all;
 	height: 34px;
-	width: 100%;
+	width: 18px;
 
 	&:hover {
 		box-shadow: none;
@@ -221,7 +237,7 @@ const StyledContentWrapper = styled.div(
 	border-right: 1px solid ${colors.bgLight};
 `
 );
-const StyledPhotoButton = styled.button`
+const StyledPhotoButton = styled(motion.button)`
 	position: relative;
 	background: none;
 	border-radius: 5px;
@@ -237,7 +253,6 @@ const StyledPhotoButton = styled.button`
 		box-shadow: none;
 		animation: none;
 		cursor: pointer;
-		transform: scale(1.25);
 	}
 `;
 const StyledCheckmarkWrapper = styled.div`
