@@ -27,7 +27,7 @@ const StyledFooter = styled.div(
 	font-size: 12px;
 	background: white;
 	padding: 8px 0;
-	border-top: 2px solid ${colors.bgLight};
+	border-top: 3px solid ${colors.bgLight};
 
 	@media only screen and (max-width: 768px) {
 		display: none;
