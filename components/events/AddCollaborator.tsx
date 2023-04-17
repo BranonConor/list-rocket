@@ -22,9 +22,10 @@ export const AddCollaborator = (props) => {
 			if (emailValue === '') {
 				throw new Error();
 			}
-			const res = await axios.put(`/api/events`, {
+			const res = await axios.put(`/api/user`, {
 				eventId: currentEvent._id,
 				email: emailValue.toLowerCase(),
+				action: 'invite',
 			});
 
 			setEmailValue('');
