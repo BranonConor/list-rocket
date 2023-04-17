@@ -47,9 +47,29 @@ export const InviteCard = (props) => {
 	};
 
 	const handleAccept = async (e) => {
-		e?.preventDefault();
-		prepWorkspace(id);
-		router.push('/workspace');
+		try {
+			const eventRes = await axios.put(`/api/events`, {
+				eventId: id,
+				user: user,
+				action: 'accept',
+			});
+			const userRes = await axios.put(`/api/user`, {
+				eventId: id,
+				user: user,
+				action: 'accept',
+			});
+
+			getUserData();
+			currentEvent?._id === id && clearWorkspace();
+			toast.success('Invite accepted 🤘🏽', {
+				toastId: 'accept-event-invite-toast',
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error('Something went wrong, sorry! 😵‍💫', {
+				toastId: 'accept-event-invite-error-toast',
+			});
+		}
 	};
 
 	return (

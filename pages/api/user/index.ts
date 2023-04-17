@@ -50,7 +50,7 @@ const usersApiRoutes = async (req, res) => {
 		}
 	}
 
-	if (req.method === 'PUT' && req.body.action === 'decline') {
+	if (req.method === 'PUT' && req.body.action === 'accept') {
 		//find the user object we want to add as a collaborator
 		const user = await User.findOne({ email: req.body.user.email });
 		if (!user) {
@@ -64,6 +64,9 @@ const usersApiRoutes = async (req, res) => {
 				(invite: any) => invite.toString() !== req.body.eventId
 			);
 			user.invites = newUserInvites;
+			//add the event to the users official events list
+			const event = await Event.findById(req.body.eventId);
+			await user.events.push(event);
 			await user.save();
 			return res.status(200).send();
 		}
