@@ -21,5 +21,7 @@ const UserSchema = new Schema({
 	],
 });
 
-export const User =
-	mongoose.models.users || mongoose.model('users', UserSchema);
+const getUserModel = () => mongoose.model('users', UserSchema);
+export const User = (mongoose.models.users || getUserModel()) as ReturnType<
+	typeof getUserModel
+>;

@@ -29,9 +29,7 @@ const usersApiRoutes = async (req, res) => {
 			//grab the event from which the request was made
 			const event = await Event.findById(req.body.eventId);
 			//check for the user before doing anything else
-			const alreadyInvited = await user.invites.includes(
-				new ObjectId(event)
-			);
+			const alreadyInvited = await user.invites.includes(event._id);
 			if (alreadyInvited) {
 				res.status(404).send({
 					success: false,
@@ -40,9 +38,9 @@ const usersApiRoutes = async (req, res) => {
 				return false;
 			} else {
 				if (!!user.invites) {
-					await user.invites.push(event);
+					await user.invites.push(event._id);
 				} else {
-					user.invites = [event];
+					user.invites = [event._id];
 				}
 				await user.save();
 				return res.status(200).send();
@@ -85,7 +83,7 @@ const usersApiRoutes = async (req, res) => {
 			user.invites = newUserInvites;
 			//add the event to the users official events list
 			const event = await Event.findById(req.body.eventId);
-			await user.events.push(event);
+			await user.events.push(event._id);
 			await user.save();
 			return res.status(200).send();
 		}

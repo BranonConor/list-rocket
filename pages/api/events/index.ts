@@ -33,17 +33,17 @@ const eventsApiRoutes = async (req, res) => {
 			const creatorList = await new List({
 				creator: req.body.user,
 			});
-			newEvent.lists = [creatorList];
+			newEvent.lists = [creatorList._id];
 			//Add this event to the creator's list of events
 			const creator = await User.findById(req.body.user._id);
-			await creator.events.push(newEvent);
+			await creator.events.push(newEvent._id);
 			//Add this creator to the event as well
-			newEvent.creator = creator;
+			newEvent.creator = creator._id;
 			//Save everything
 			await creatorList.save();
 			await newEvent.save();
 			await creator.save();
-			res.send(newEvent.status);
+			res.status(200).send(newEvent);
 		} catch (error) {
 			console.log(error);
 			res.status(500).send('Internal Server Error');
@@ -63,9 +63,11 @@ const eventsApiRoutes = async (req, res) => {
 			//find the event this request comes from
 			const event = await Event.findById(req.body.eventId);
 			//check for the user before doing anything else
-			const userIsCollaborator = await event.collaborators.includes(user);
+			const userIsCollaborator = await event.collaborators.includes(
+				user._id
+			);
 			const userIsPendingCollaborator = event.pendingCollaborators
-				? await event.pendingCollaborators?.includes(user)
+				? await event.pendingCollaborators?.includes(user._id)
 				: false;
 			if (userIsCollaborator || userIsPendingCollaborator) {
 				res.status(404).send({
@@ -76,9 +78,9 @@ const eventsApiRoutes = async (req, res) => {
 			} else {
 				//proceed with updating the event with the new pending collaborator
 				if (event.pendingCollaborators) {
-					await event.pendingCollaborators.push(user);
+					await event.pendingCollaborators.push(user._id);
 				} else {
-					event.pendingCollaborators = [user];
+					event.pendingCollaborators = [user._id];
 				}
 				await event.save();
 				return res.status(200).send();
