@@ -11,8 +11,7 @@ const ListItemSchema = new Schema({
 	},
 });
 
-export const ListItem =
-	mongoose.models.listitems || mongoose.model('listitems', ListItemSchema);
+export const ListItem = mongoose.model('listitems', ListItemSchema);
 
 const ListSchema = new Schema({
 	creator: {
@@ -27,5 +26,4 @@ const ListSchema = new Schema({
 	],
 });
 
-export const List =
-	mongoose.models.lists || mongoose.model('lists', ListSchema);
+export const List = mongoose.model('lists', ListSchema);

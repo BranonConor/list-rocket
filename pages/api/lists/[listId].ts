@@ -25,7 +25,7 @@ const listApiRoutes = async (req, res) => {
 				return false;
 			} else {
 				//proceed with updating the list item with the new resolver
-				listItem.resolvedBy = user;
+				listItem.resolvedBy = user._id;
 				await listItem.save();
 				return res.status(200).send();
 			}
