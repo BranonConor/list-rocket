@@ -15,7 +15,7 @@ const listsApiRoutes = async (req, res) => {
 			});
 		} else {
 			const newListItem = await new ListItem({ ...req.body.listItem });
-			list.items.push(newListItem);
+			list.items.push(newListItem._id);
 			newListItem.save();
 			list.save();
 			res.status(200).send();
