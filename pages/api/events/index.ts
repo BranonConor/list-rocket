@@ -33,7 +33,7 @@ const eventsApiRoutes = async (req, res) => {
 			const creatorList = await new List({
 				creator: req.body.user,
 			});
-			newEvent.lists = [creatorList];
+			newEvent.lists = [creatorList._id];
 			//Add this event to the creator's list of events
 			const creator = await User.findById(req.body.user._id);
 			await creator.events.push(newEvent._id);
