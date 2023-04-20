@@ -11,7 +11,9 @@ const ListItemSchema = new Schema({
 	},
 });
 
-export const ListItem = mongoose.model('listitems', ListItemSchema);
+const getListItemModel = () => mongoose.model('listitems', ListItemSchema);
+export const ListItem = (mongoose.models.listitems ||
+	getListItemModel()) as ReturnType<typeof getListItemModel>;
 
 const ListSchema = new Schema({
 	creator: {
@@ -26,4 +28,7 @@ const ListSchema = new Schema({
 	],
 });
 
-export const List = mongoose.model('lists', ListSchema);
+const getListModel = () => mongoose.model('lists', ListSchema);
+export const List = (mongoose.models.lists || getListModel()) as ReturnType<
+	typeof getListModel
+>;
