@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { motion } from 'framer-motion';
+import { UserContext } from '../../contexts/UserContext';
 
 interface IProps {
 	listId: string;
@@ -13,7 +14,8 @@ interface IProps {
 
 export const AddListItemForm: React.FC<IProps> = (props) => {
 	const { listId } = props;
-	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
+	const { currentEvent } = useContext(WorkspaceContext);
+	const { user } = useContext(UserContext);
 	const [isAddItemClicked, setIsAddItemClicked] = useState<boolean>(false);
 	const [name, setName] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
@@ -39,7 +41,12 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 				},
 				listId: listId,
 			});
-			prepWorkspace(currentEvent._id);
+			//ping Pusher channel
+			await axios.post('/api/pusher', {
+				event: currentEvent,
+				user: user,
+			});
+
 			toast.success(`Successfully added new list item! 👍🏽`, {
 				toastId: 'added-list-item-toast',
 			});

@@ -34,7 +34,7 @@ export const AddCollaborator = (props) => {
 			});
 
 			setEmailValue('');
-			prepWorkspace(currentEvent._id);
+			await axios.post('/api/pusher', { eventId: currentEvent?._id });
 			toast.success(
 				`Invited ${emailValue.toLowerCase()} to the event! 👍🏽`,
 				{

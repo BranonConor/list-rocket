@@ -2,9 +2,30 @@ import Head from 'next/head';
 import { ProductNav } from '../navbars/ProductNav';
 import styled from 'styled-components';
 import { Footer } from '../Footer';
+import { useContext, useEffect } from 'react';
+import Pusher from 'pusher-js';
+import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 
 export const DashLayout = ({ children }) => {
 	const siteTitle = 'A productivity tool for streamlining events';
+
+	//pusher code
+	const { prepWorkspace } = useContext(WorkspaceContext);
+	useEffect(() => {
+		const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+			cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+		});
+		//subscribe to the event channel
+		const channel = pusher.subscribe(`event-channel`);
+		//bind a function to the event-channel-update trigger, update UI
+		channel.bind(`event-channel-update`, (data) => {
+			prepWorkspace(data.event._id);
+		});
+		//unsubscribe to the event channel on cleanup
+		return () => {
+			pusher.unsubscribe(`event-channel`);
+		};
+	}, []);
 
 	return (
 		<StyledWrapper>
