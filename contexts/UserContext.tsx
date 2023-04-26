@@ -48,7 +48,7 @@ export const UserProvider = (props) => {
 			pusher.unsubscribe(`user-channel-${user?._id}`);
 			pusher.disconnect();
 		};
-	}, []);
+	}, [getUserData]);
 
 	return (
 		<UserContext.Provider value={{ user, getUserData }}>
