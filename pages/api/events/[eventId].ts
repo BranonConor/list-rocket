@@ -1,12 +1,18 @@
 import connectMongo from '../../../models/utils/connectMongo';
 import { Event } from '../../../models/Event';
 import { User } from '../../../models/User';
+import { List, ListItem } from '../../../models/List';
 
 const eventApiRoutes = async (req, res) => {
 	//mongoose code
 	await connectMongo();
 
 	if (req.method === 'GET') {
+		//FIXME: without this code, we get a 'MissingSchema' error: https://github.com/Automattic/mongoose/issues/12718
+		await List.find({});
+		await ListItem.find({});
+		await User.find({});
+
 		const event = await Event.findById(req.query.eventId)
 			.populate('creator')
 			.populate('collaborators')
