@@ -1,9 +1,8 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { IUser, IUserContext } from './types';
-import { EventContext } from './EventContext';
 import Pusher from 'pusher-js';
 
 export const UserContext = createContext<IUserContext | null>(null);
