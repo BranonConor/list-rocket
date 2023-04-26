@@ -19,8 +19,6 @@ export const UserList: React.FC<Props> = (props) => {
 	const { creator, items, id } = props;
 	const { user } = useContext(UserContext);
 
-	console.log('Items in this list: ', items);
-
 	return (
 		<StyledList
 			initial={{
