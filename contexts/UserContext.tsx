@@ -44,7 +44,6 @@ export const UserProvider = (props) => {
 		});
 		//unsubscribe to the user channel on cleanup
 		return () => {
-			pusher.unsubscribe(`user-channel-${user?._id}`);
 			pusher.disconnect();
 		};
 	}, [getUserData]);
