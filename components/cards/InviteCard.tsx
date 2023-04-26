@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { PrimaryButton } from '../buttons/PrimaryButton';
 import { useContext } from 'react';
-import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { useRouter } from 'next/router';
 import { Title } from '../typography/Title';
@@ -14,10 +13,8 @@ import { SecondaryButton } from '../buttons/SecondaryButton';
 
 export const InviteCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
-	const { getAllEvents } = useContext(EventContext);
-	const { user, getUserData } = useContext(UserContext);
-	const { prepWorkspace, currentEvent, clearWorkspace } =
-		useContext(WorkspaceContext);
+	const { user } = useContext(UserContext);
+	const { currentEvent, clearWorkspace } = useContext(WorkspaceContext);
 	const router = useRouter();
 
 	const handleDecline = async () => {
@@ -33,14 +30,20 @@ export const InviteCard = (props) => {
 				action: 'decline',
 			});
 
-			getUserData();
-			currentEvent?._id === id && clearWorkspace();
-
 			//ping Pusher channel
+			const event = await axios.get(`/api/events/${id}`);
 			await axios.post('/api/pusher', {
-				event: currentEvent,
+				event: event.data.data,
 				user: user,
+				action: 'user-invite',
 			});
+			await axios.post('/api/pusher', {
+				event: event.data.data,
+				user: user,
+				action: 'event-update',
+			});
+
+			currentEvent?._id === id && clearWorkspace();
 			toast.info('Invite declined 👋🏽', {
 				toastId: 'decline-event-invite-toast',
 			});
@@ -65,7 +68,14 @@ export const InviteCard = (props) => {
 				action: 'accept',
 			});
 
-			getUserData();
+			//ping Pusher channel
+			const event = await axios.get(`/api/events/${id}`);
+			await axios.post('/api/pusher', {
+				event: event,
+				user: user,
+				action: 'user-invite',
+			});
+
 			currentEvent?._id === id && clearWorkspace();
 			toast.success('Invite accepted 🤘🏽', {
 				toastId: 'accept-event-invite-toast',

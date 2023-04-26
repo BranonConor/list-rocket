@@ -40,6 +40,7 @@ export const ListItem: React.FC<Props> = (props) => {
 			await axios.post('/api/pusher', {
 				event: currentEvent,
 				user: user,
+				action: 'event-update',
 			});
 
 			toast.success('Successfully deleted your item 🗑', {
@@ -71,6 +72,7 @@ export const ListItem: React.FC<Props> = (props) => {
 			await axios.post('/api/pusher', {
 				event: currentEvent,
 				user: user,
+				action: 'event-update',
 			});
 
 			toast.success('Item completed 🚀', {
@@ -97,6 +99,7 @@ export const ListItem: React.FC<Props> = (props) => {
 			await axios.post('/api/pusher', {
 				event: currentEvent,
 				user: user,
+				action: 'event-update',
 			});
 
 			toast.info('Item restored ✨', {

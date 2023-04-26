@@ -46,6 +46,7 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 			await axios.post('/api/pusher', {
 				event: currentEvent,
 				user: user,
+				action: 'event-update',
 			});
 
 			toast.success(`Successfully added new list item! 👍🏽`, {

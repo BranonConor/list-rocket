@@ -41,6 +41,12 @@ export const AddCollaborator = (props) => {
 			await axios.post('/api/pusher', {
 				event: currentEvent,
 				user: user,
+				action: 'event-update',
+			});
+			await axios.post('/api/pusher', {
+				event: currentEvent,
+				userEmail: emailValue,
+				action: 'send-invite',
 			});
 
 			toast.success(

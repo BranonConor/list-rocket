@@ -2,9 +2,6 @@ import Head from 'next/head';
 import { ProductNav } from '../navbars/ProductNav';
 import styled from 'styled-components';
 import { Footer } from '../Footer';
-import { useContext, useEffect } from 'react';
-import Pusher from 'pusher-js';
-import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 
 export const DashLayout = ({ children }) => {
 	const siteTitle = 'A productivity tool for streamlining events';
