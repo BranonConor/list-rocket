@@ -27,6 +27,7 @@ export const Event: React.FC = () => {
 		//unsubscribe to the event channel on cleanup
 		return () => {
 			pusher.unsubscribe(`event-channel-${currentEvent?._id}`);
+			pusher.disconnect();
 		};
 	}, []);
 
