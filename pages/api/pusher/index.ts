@@ -4,7 +4,6 @@ import { User } from '../../../models/User';
 export default async function handler(req, res) {
 	//event routes
 	if (req.body.action === 'event-update') {
-		console.log('Event updated: ', req.body);
 		const response = await pusherClient.trigger(
 			`event-channel-${req.body.event._id}`,
 			`event-channel-update-${req.body.event._id}`,

@@ -28,7 +28,7 @@ export const Event: React.FC = () => {
 		return () => {
 			pusher.unsubscribe(`event-channel-${currentEvent?._id}`);
 		};
-	}, [currentEvent]);
+	}, []);
 
 	return (
 		<>

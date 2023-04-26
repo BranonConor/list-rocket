@@ -30,7 +30,7 @@ export const AllInvites = () => {
 		return () => {
 			pusher.unsubscribe(`user-channel-${user?._id}`);
 		};
-	}, [user, getUserData]);
+	}, []);
 
 	return (
 		<StyledWrapper>
