@@ -35,7 +35,14 @@ export const ListItem: React.FC<Props> = (props) => {
 					listItemId: id,
 				},
 			});
-			prepWorkspace(currentEvent._id);
+
+			//ping Pusher channel
+			await axios.post('/api/pusher', {
+				event: currentEvent,
+				user: user,
+				action: 'event-update',
+			});
+
 			toast.success('Successfully deleted your item 🗑', {
 				toastId: 'delete-list-item-toast',
 			});
@@ -60,7 +67,14 @@ export const ListItem: React.FC<Props> = (props) => {
 					action: 'check',
 				},
 			});
-			prepWorkspace(currentEvent._id);
+
+			//ping Pusher channel
+			await axios.post('/api/pusher', {
+				event: currentEvent,
+				user: user,
+				action: 'event-update',
+			});
+
 			toast.success('Item completed 🚀', {
 				toastId: 'completed-list-item-toast',
 			});
@@ -80,7 +94,14 @@ export const ListItem: React.FC<Props> = (props) => {
 					action: 'uncheck',
 				},
 			});
-			prepWorkspace(currentEvent._id);
+
+			//ping Pusher channel
+			await axios.post('/api/pusher', {
+				event: currentEvent,
+				user: user,
+				action: 'event-update',
+			});
+
 			toast.info('Item restored ✨', {
 				toastId: 'restored-list-item-toast',
 			});

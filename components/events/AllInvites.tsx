@@ -1,12 +1,36 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Title } from '../typography/Title';
 import { UserContext } from '../../contexts/UserContext';
 import { InviteCard } from '../cards/InviteCard';
+import Pusher from 'pusher-js';
+import { EventContext } from '../../contexts/EventContext';
 
 export const AllInvites = () => {
-	const { user } = useContext(UserContext);
+	const { user, getUserData } = useContext(UserContext);
+	const { getAllEvents } = useContext(EventContext);
+
+	//pusher code
+	useEffect(() => {
+		const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+			cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+		});
+		//subscribe to the event channel
+		const channel = pusher.subscribe(`user-channel-${user?._id}`);
+		//bind a function to the event-channel-update trigger, update UI
+		channel.bind(`user-channel-update-${user?._id}`, (data) => {
+			//refresh the invites list for only the user in question if logged in
+			if (data.user?._id === user?._id) {
+				getAllEvents();
+				getUserData();
+			}
+		});
+		//unsubscribe to the event channel on cleanup
+		return () => {
+			pusher.unsubscribe(`user-channel-${user?._id}`);
+		};
+	}, [user, getUserData]);
 
 	return (
 		<StyledWrapper>

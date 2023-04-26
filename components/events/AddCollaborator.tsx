@@ -7,9 +7,11 @@ import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Text } from '../typography/Text';
 import { toast } from 'react-toastify';
 import { SecondaryButton } from '../buttons/SecondaryButton';
+import { UserContext } from '../../contexts/UserContext';
 
 export const AddCollaborator = (props) => {
-	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
+	const { currentEvent } = useContext(WorkspaceContext);
+	const { user } = useContext(UserContext);
 	const [emailValue, setEmailValue] = useState('');
 	const [errorMessage, setErrorMessage] = useState(null);
 
@@ -34,7 +36,19 @@ export const AddCollaborator = (props) => {
 			});
 
 			setEmailValue('');
-			prepWorkspace(currentEvent._id);
+
+			//ping Pusher channel
+			await axios.post('/api/pusher', {
+				event: currentEvent,
+				user: user,
+				action: 'event-update',
+			});
+			await axios.post('/api/pusher', {
+				event: currentEvent,
+				userEmail: emailValue,
+				action: 'send-invite',
+			});
+
 			toast.success(
 				`Invited ${emailValue.toLowerCase()} to the event! 👍🏽`,
 				{

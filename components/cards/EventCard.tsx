@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 import { UserContext } from '../../contexts/UserContext';
 
 const EventCard = (props) => {
-	const { name, description, id, creator, animationFactor } = props;
+	const { name, description, id, animationFactor } = props;
 	const { getAllEvents } = useContext(EventContext);
 	const { user } = useContext(UserContext);
 	const { prepWorkspace, currentEvent, clearWorkspace } =
