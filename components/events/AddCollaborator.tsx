@@ -45,7 +45,7 @@ export const AddCollaborator = (props) => {
 			});
 			await axios.post('/api/pusher', {
 				event: currentEvent,
-				userEmail: emailValue,
+				userEmail: emailValue.toLowerCase(),
 				action: 'send-invite',
 			});
 
