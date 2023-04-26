@@ -41,6 +41,7 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 				},
 				listId: listId,
 			});
+
 			//ping Pusher channel
 			await axios.post('/api/pusher', {
 				event: currentEvent,

@@ -35,6 +35,12 @@ export const InviteCard = (props) => {
 
 			getUserData();
 			currentEvent?._id === id && clearWorkspace();
+
+			//ping Pusher channel
+			await axios.post('/api/pusher', {
+				event: currentEvent,
+				user: user,
+			});
 			toast.info('Invite declined 👋🏽', {
 				toastId: 'decline-event-invite-toast',
 			});

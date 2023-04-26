@@ -1,4 +1,3 @@
-import { CollaboratorsGrid } from '../components/lists/CollaboratorsGrid';
 import { DashLayout } from '../components/layouts/DashLayout';
 import Head from 'next/head';
 import { WorkspaceControls } from '../components/events/WorkspaceControls';
@@ -6,7 +5,7 @@ import styled from 'styled-components';
 import { WorkspaceContext } from '../contexts/WorkspaceContext';
 import { useContext } from 'react';
 import { Title } from '../components/typography/Title';
-import { UserList } from '../components/lists/UserList';
+import { Event } from '../components/events/Event';
 
 const Workspace = () => {
 	const { currentEvent } = useContext(WorkspaceContext);
@@ -23,19 +22,7 @@ const Workspace = () => {
 			{/* ---- WORKSPACE ---- */}
 			<StyledWorkspaceWrapper isEventActive={Boolean(currentEvent)}>
 				{currentEvent ? (
-					<>
-						<CollaboratorsGrid />
-						<StyledListWrapper>
-							{currentEvent.lists.map((list) => (
-								<UserList
-									creator={list.creator}
-									items={list.items}
-									id={list._id}
-									key={list._id}
-								/>
-							))}
-						</StyledListWrapper>
-					</>
+					<Event />
 				) : (
 					<StyledH3 variant='heading3'>LOAD AN EVENT</StyledH3>
 				)}
@@ -70,14 +57,3 @@ const StyledH3 = styled(Title)(
 	color: ${colors.bgLight}
 `
 );
-const StyledListWrapper = styled.div`
-	max-width: 700px;
-	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-gap: 16px;
-
-	@media only screen and (max-width: 768px) {
-		grid-template-columns: 1fr;
-	}
-`;
