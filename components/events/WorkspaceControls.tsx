@@ -26,7 +26,7 @@ export const WorkspaceControls = () => {
 		<StyledWrapper>
 			{/* ---- EVENT CONTROLS ---- */}
 			<StyledEventsContainer>
-				<StyledYourEventsWrapper>
+				<StyledYourEventsWrapper currentEvent={Boolean(currentEvent)}>
 					<Title variant='heading2'>Your Events</Title>
 					<Text variant='body1'>
 						Choose an event to load it into your workspace
@@ -142,8 +142,11 @@ export const WorkspaceControls = () => {
 const StyledWrapper = styled.div`
 	width: 100%;
 `;
-const StyledYourEventsWrapper = styled.div(
-	({ theme: { colors } }) => `
+interface StyledWrapperProps {
+	currentEvent: boolean;
+}
+const StyledYourEventsWrapper = styled.div<StyledWrapperProps>(
+	({ currentEvent, theme: { colors } }) => `
 	padding: 16px;
 	margin: 8px 0;
 	background: ${colors.bgLight};
@@ -154,6 +157,7 @@ const StyledYourEventsWrapper = styled.div(
 	@media only screen and (max-width: 768px) {
 		width: auto;
 		margin: 8px 0;
+		display: ${currentEvent ? 'none' : 'default'};
 	}
 `
 );
