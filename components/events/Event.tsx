@@ -64,16 +64,8 @@ export const Event: React.FC = () => {
 };
 
 const StyledListWrapper = styled.div`
-	max-width: 700px;
 	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-gap: 16px;
-
-	@media only screen and (max-width: 768px) {
-		grid-template-columns: 1fr;
-	}
+	display: flex;
+	overflow-x: auto;
+	padding: 0 0 16px 0;
 `;
-function prepWorkspace(_id: any) {
-	throw new Error('Function not implemented.');
-}

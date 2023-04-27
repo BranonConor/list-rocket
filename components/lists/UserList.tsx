@@ -75,6 +75,9 @@ export const UserList: React.FC<Props> = (props) => {
 const StyledListWrapper = styled(motion.div)`
 	height: auto;
 	max-height: 100%;
+	width: 300px;
+	min-width: 300px;
+	margin-right: 16px;
 `;
 const StyledList = styled(motion.div)(
 	({ theme: { colors } }) => `
