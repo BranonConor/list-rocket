@@ -24,12 +24,12 @@ export const AddCollaborator = (props) => {
 			if (emailValue === '') {
 				throw new Error();
 			}
-			const eventsRes = await axios.put(`/api/events`, {
+			await axios.put(`/api/events`, {
 				eventId: currentEvent._id,
 				email: emailValue.toLowerCase(),
 				action: 'invite',
 			});
-			const userRes = await axios.put(`/api/user`, {
+			await axios.put(`/api/user`, {
 				eventId: currentEvent._id,
 				email: emailValue.toLowerCase(),
 				action: 'invite',
@@ -145,7 +145,7 @@ const StyledForm = styled(motion.form)(
 	box-sizing: border-box;
 	height: calc(40px + 32px);
 	border-radius: 10px;
-	margin: 16px 0 32px 0;
+	margin: 16px 0;
 	background: ${colors.bgLight};
 
 	@media only screen and (max-width: 555px) {

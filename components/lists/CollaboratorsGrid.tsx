@@ -127,4 +127,8 @@ const StyledAddCollaboratorButton = styled.button`
 		cursor: pointer;
 		transform: scale(1.15);
 	}
+
+	img {
+		transform: translateY(-2px);
+	}
 `;

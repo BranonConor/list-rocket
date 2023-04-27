@@ -4,9 +4,19 @@ import { UserList } from '../lists/UserList';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import styled from 'styled-components';
 import Pusher from 'pusher-js';
+import { UserContext } from '../../contexts/UserContext';
 
 export const Event: React.FC = () => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
+	const { user } = useContext(UserContext);
+
+	const currentUserList = currentEvent.lists.filter(
+		(list) => list.creator.email === user.email
+	);
+	const yourList = currentUserList[0];
+	const otherLists = currentEvent.lists.filter(
+		(list) => list.creator.email !== user.email
+	);
 
 	//pusher code
 	//at this point, there should be a currentEvent so we shouldn't have to
@@ -26,7 +36,6 @@ export const Event: React.FC = () => {
 		});
 		//unsubscribe to the event channel on cleanup
 		return () => {
-			pusher.unsubscribe(`event-channel-${currentEvent?._id}`);
 			pusher.disconnect();
 		};
 	}, []);
@@ -35,7 +44,13 @@ export const Event: React.FC = () => {
 		<>
 			<CollaboratorsGrid />
 			<StyledListWrapper>
-				{currentEvent.lists.map((list) => (
+				<UserList
+					creator={yourList.creator}
+					items={yourList.items}
+					id={yourList._id}
+					key={yourList._id}
+				/>
+				{otherLists.map((list) => (
 					<UserList
 						creator={list.creator}
 						items={list.items}
@@ -49,16 +64,8 @@ export const Event: React.FC = () => {
 };
 
 const StyledListWrapper = styled.div`
-	max-width: 700px;
 	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-gap: 16px;
-
-	@media only screen and (max-width: 768px) {
-		grid-template-columns: 1fr;
-	}
+	display: flex;
+	overflow-x: auto;
+	padding: 0 0 16px 0;
 `;
-function prepWorkspace(_id: any) {
-	throw new Error('Function not implemented.');
-}

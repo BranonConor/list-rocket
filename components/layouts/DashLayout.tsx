@@ -66,7 +66,7 @@ const StyledMainSection = styled.div`
 	width: calc(100% - 75px);
 	height: 100%;
 	overflow-y: scroll;
-	padding: 32px 32px 64px 32px;
+	padding: 32px 32px 72px 32px;
 	box-sizing: border-box;
 	background: none;
 

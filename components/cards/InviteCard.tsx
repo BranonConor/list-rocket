@@ -14,17 +14,19 @@ import { SecondaryButton } from '../buttons/SecondaryButton';
 export const InviteCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
 	const { user } = useContext(UserContext);
-	const { currentEvent, clearWorkspace } = useContext(WorkspaceContext);
+	const { currentEvent, clearWorkspace, prepWorkspace } =
+		useContext(WorkspaceContext);
 	const router = useRouter();
 
 	const handleDecline = async () => {
 		try {
-			const eventRes = await axios.put(`/api/events`, {
+			//Decline user invite, update user and event
+			await axios.put(`/api/events`, {
 				eventId: id,
 				user: user,
 				action: 'decline',
 			});
-			const userRes = await axios.put(`/api/user`, {
+			await axios.put(`/api/user`, {
 				eventId: id,
 				user: user,
 				action: 'decline',
@@ -57,12 +59,13 @@ export const InviteCard = (props) => {
 
 	const handleAccept = async (e) => {
 		try {
-			const eventRes = await axios.put(`/api/events`, {
+			//Accept user invite, update user and event
+			await axios.put(`/api/events`, {
 				eventId: id,
 				user: user,
 				action: 'accept',
 			});
-			const userRes = await axios.put(`/api/user`, {
+			await axios.put(`/api/user`, {
 				eventId: id,
 				user: user,
 				action: 'accept',
@@ -71,9 +74,14 @@ export const InviteCard = (props) => {
 			//ping Pusher channel
 			const event = await axios.get(`/api/events/${id}`);
 			await axios.post('/api/pusher', {
-				event: event,
+				event: event.data.data,
 				user: user,
 				action: 'user-invite',
+			});
+			await axios.post('/api/pusher', {
+				event: event.data.data,
+				user: user,
+				action: 'event-update',
 			});
 
 			currentEvent?._id === id && clearWorkspace();

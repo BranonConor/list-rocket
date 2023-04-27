@@ -24,19 +24,38 @@ export const WorkspaceControls = () => {
 
 	return (
 		<StyledWrapper>
-			{/* ---- EVENT CONTROLS ---- */}
 			<StyledEventsContainer>
-				<StyledYourEventsWrapper currentEvent={Boolean(currentEvent)}>
-					<Title variant='heading2'>Your Events</Title>
-					<Text variant='body1'>
-						Choose an event to load it into your workspace
-					</Text>
-
-					<StyledEventsWrapper>
-						{events?.map((event, index: number) => {
-							return (
-								<StyledChipWrapper
-									key={event._id}
+				{currentEvent ? (
+					<StyledEventInfoContainer>
+						<StyledInfoWrapper
+							initial={{
+								top: -20,
+								opacity: 0,
+							}}
+							animate={{
+								top: 0,
+								opacity: 1,
+							}}
+							transition={{
+								duration: 0.25,
+								type: 'spring',
+							}}>
+							<StyledSpan>
+								<Title variant='heading2'>
+									Current Event: {currentEvent?.name}{' '}
+								</Title>
+								<StyledButton onClick={handleExitClick}>
+									<StyledImg src='/icons/x.svg' />
+								</StyledButton>
+							</StyledSpan>
+							<StyledDescription variant='body1'>
+								{currentEvent?.description}
+							</StyledDescription>
+							<StyledInfoCard>
+								<StyledP variant='body1'>
+									Event Creator:
+								</StyledP>
+								<StyledAvatar
 									initial={{
 										scale: 0,
 										opacity: 0,
@@ -48,93 +67,64 @@ export const WorkspaceControls = () => {
 										rotate: '0deg',
 									}}
 									transition={{
-										duration: 0.125 * (index + 0.5),
+										duration: 0.25,
 										type: 'spring',
 									}}>
-									<ChipButton
-										onClick={(e) =>
-											handleChipButtonClick(e, event._id)
-										}
-										content={event.name}
-										isActive={
-											currentEvent
-												? currentEvent._id === event._id
-												: null
-										}
+									<ProfilePhoto
+										photo={currentEvent?.creator?.image}
+										dimensions='35px'
 									/>
-								</StyledChipWrapper>
-							);
-						})}
-					</StyledEventsWrapper>
-				</StyledYourEventsWrapper>
-			</StyledEventsContainer>
-			{/* ---- EVENT INFORMATION ---- */}
-			<StyledEventInfoContainer>
-				{currentEvent ? (
-					<StyledInfoWrapper
-						initial={{
-							top: -20,
-							opacity: 0,
-						}}
-						animate={{
-							top: 0,
-							opacity: 1,
-						}}
-						transition={{
-							duration: 0.25,
-							type: 'spring',
-						}}>
-						<StyledSpan>
-							<Title variant='heading3'>
-								Currently working on: {currentEvent?.name}{' '}
-							</Title>
-							<StyledButton onClick={handleExitClick}>
-								<StyledImg src='/icons/x.svg' />
-							</StyledButton>
-						</StyledSpan>
-						<StyledDescription variant='body1'>
-							{currentEvent?.description}
-						</StyledDescription>
-						<StyledInfoCard>
-							<StyledP variant='body1'>Event Creator:</StyledP>
-							<StyledAvatar
-								initial={{
-									scale: 0,
-									opacity: 0,
-									rotate: '15deg',
-								}}
-								animate={{
-									scale: 1,
-									opacity: 1,
-									rotate: '0deg',
-								}}
-								transition={{
-									duration: 0.25,
-									type: 'spring',
-								}}>
-								<ProfilePhoto
-									photo={currentEvent?.creator?.image}
-									dimensions='35px'
-								/>
-							</StyledAvatar>
-						</StyledInfoCard>
-					</StyledInfoWrapper>
+								</StyledAvatar>
+							</StyledInfoCard>
+						</StyledInfoWrapper>
+					</StyledEventInfoContainer>
 				) : (
-					<motion.div
-						initial={{
-							opacity: 0,
-						}}
-						animate={{
-							opacity: 1,
-						}}
-						transition={{
-							duration: 1,
-							type: 'spring',
-						}}>
-						<Text variant='body1'>No event loaded... 👻</Text>
-					</motion.div>
+					<StyledYourEventsWrapper>
+						<Title variant='heading2'>Your Events</Title>
+						<Text variant='body1'>
+							Choose an event to load it into your workspace
+						</Text>
+						<StyledEventsWrapper>
+							{events?.map((event, index: number) => {
+								return (
+									<StyledChipWrapper
+										key={event._id}
+										initial={{
+											scale: 0,
+											opacity: 0,
+											rotate: '15deg',
+										}}
+										animate={{
+											scale: 1,
+											opacity: 1,
+											rotate: '0deg',
+										}}
+										transition={{
+											duration: 0.125 * (index + 0.5),
+											type: 'spring',
+										}}>
+										<ChipButton
+											onClick={(e) =>
+												handleChipButtonClick(
+													e,
+													event._id
+												)
+											}
+											content={event.name}
+											isActive={
+												currentEvent
+													? currentEvent._id ===
+													  event._id
+													: null
+											}
+										/>
+									</StyledChipWrapper>
+								);
+							})}
+						</StyledEventsWrapper>
+					</StyledYourEventsWrapper>
 				)}
-			</StyledEventInfoContainer>
+			</StyledEventsContainer>
 		</StyledWrapper>
 	);
 };
@@ -142,23 +132,16 @@ export const WorkspaceControls = () => {
 const StyledWrapper = styled.div`
 	width: 100%;
 `;
-interface StyledWrapperProps {
-	currentEvent: boolean;
-}
-const StyledYourEventsWrapper = styled.div<StyledWrapperProps>(
-	({ currentEvent, theme: { colors } }) => `
+
+const StyledYourEventsWrapper = styled.div(
+	({ theme: { colors } }) => `
+	box-sizing: border-box;
 	padding: 16px;
 	margin: 8px 0;
 	background: ${colors.bgLight};
 	border-radius: 10px;
 	width: 100%;
 	transition: 0.25s ease all;
-
-	@media only screen and (max-width: 768px) {
-		width: auto;
-		margin: 8px 0;
-		display: ${currentEvent ? 'none' : 'default'};
-	}
 `
 );
 const StyledEventsContainer = styled.div`
@@ -190,7 +173,7 @@ const StyledEventInfoContainer = styled.div(
 	border-radius: 10px;
 	padding: 16px;
 	box-sizing: border-box;
-	margin: 8px 16px 16px 0;
+	margin: 8px 0 16px 0;
 	width: 100%;
 	display: flex;
 	background: ${colors.bgLight};

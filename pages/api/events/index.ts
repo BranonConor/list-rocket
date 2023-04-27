@@ -109,7 +109,7 @@ const eventsApiRoutes = async (req, res) => {
 	}
 
 	if (req.method === 'PUT' && req.body.action === 'accept') {
-		//find the user object we want to add as a collaborator
+		//find the event
 		const event = await Event.findById(req.body.eventId);
 		if (!event) {
 			res.status(404).send({
@@ -123,9 +123,17 @@ const eventsApiRoutes = async (req, res) => {
 					(user: any) => user.toString() !== req.body.user._id
 				);
 			event.pendingCollaborators = newPendingCollaborators;
+
+			//Create a new list for this user and add it to the event
+			const userList = await new List({
+				creator: req.body.user._id,
+			});
+			event.lists.push(userList._id);
+
 			//push the user into the official collaborators list
-			await event.collaborators.push(req.body.user);
-			await event.save();
+			userList.save();
+			event.collaborators.push(req.body.user);
+			event.save();
 			return res.status(200).send();
 		}
 	}

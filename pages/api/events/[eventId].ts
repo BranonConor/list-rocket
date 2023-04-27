@@ -9,9 +9,9 @@ const eventApiRoutes = async (req, res) => {
 
 	if (req.method === 'GET') {
 		//FIXME: without this code, we get a 'MissingSchema' error: https://github.com/Automattic/mongoose/issues/12718
-		await List.find({});
-		await ListItem.find({});
-		await User.find({});
+		await List.findOne({});
+		await ListItem.findOne({});
+		await User.findOne({});
 
 		const event = await Event.findById(req.query.eventId)
 			.populate('creator')
