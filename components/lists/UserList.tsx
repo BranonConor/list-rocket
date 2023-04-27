@@ -30,7 +30,7 @@ export const UserList: React.FC<Props> = (props) => {
 				opacity: 1,
 			}}
 			transition={{
-				delay: 0.15,
+				delay: 0.1,
 				duration: 0.5,
 				type: 'spring',
 			}}>

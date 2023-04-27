@@ -7,7 +7,8 @@ import Pusher from 'pusher-js';
 
 export const Event: React.FC = () => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
-
+	console.log('Current Event: ', currentEvent.name);
+	console.log('Lists: ', currentEvent.lists);
 	//pusher code
 	//at this point, there should be a currentEvent so we shouldn't have to
 	//worry about null / undefined channel names
@@ -26,7 +27,6 @@ export const Event: React.FC = () => {
 		});
 		//unsubscribe to the event channel on cleanup
 		return () => {
-			pusher.unsubscribe(`event-channel-${currentEvent?._id}`);
 			pusher.disconnect();
 		};
 	}, []);

@@ -14,7 +14,8 @@ import { SecondaryButton } from '../buttons/SecondaryButton';
 export const InviteCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
 	const { user } = useContext(UserContext);
-	const { currentEvent, clearWorkspace } = useContext(WorkspaceContext);
+	const { currentEvent, clearWorkspace, prepWorkspace } =
+		useContext(WorkspaceContext);
 	const router = useRouter();
 
 	const handleDecline = async () => {
@@ -71,9 +72,14 @@ export const InviteCard = (props) => {
 			//ping Pusher channel
 			const event = await axios.get(`/api/events/${id}`);
 			await axios.post('/api/pusher', {
-				event: event,
+				event: event.data.data,
 				user: user,
 				action: 'user-invite',
+			});
+			await axios.post('/api/pusher', {
+				event: event.data.data,
+				user: user,
+				action: 'event-update',
 			});
 
 			currentEvent?._id === id && clearWorkspace();
