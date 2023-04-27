@@ -33,7 +33,7 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 			if (name === '' || description === '' || link === '') {
 				throw new Error();
 			}
-			const res = await axios.put(`/api/lists`, {
+			await axios.put(`/api/lists`, {
 				listItem: {
 					name: name,
 					description: description,

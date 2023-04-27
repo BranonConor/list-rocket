@@ -42,7 +42,7 @@ export const WorkspaceControls = () => {
 							}}>
 							<StyledSpan>
 								<Title variant='heading2'>
-									Currently working on: {currentEvent?.name}{' '}
+									Current Event: {currentEvent?.name}{' '}
 								</Title>
 								<StyledButton onClick={handleExitClick}>
 									<StyledImg src='/icons/x.svg' />
@@ -173,7 +173,7 @@ const StyledEventInfoContainer = styled.div(
 	border-radius: 10px;
 	padding: 16px;
 	box-sizing: border-box;
-	margin: 8px 16px 16px 0;
+	margin: 8px 0 16px 0;
 	width: 100%;
 	display: flex;
 	background: ${colors.bgLight};
