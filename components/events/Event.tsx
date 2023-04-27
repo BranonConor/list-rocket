@@ -4,11 +4,20 @@ import { UserList } from '../lists/UserList';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import styled from 'styled-components';
 import Pusher from 'pusher-js';
+import { UserContext } from '../../contexts/UserContext';
 
 export const Event: React.FC = () => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
-	console.log('Current Event: ', currentEvent.name);
-	console.log('Lists: ', currentEvent.lists);
+	const { user } = useContext(UserContext);
+
+	const currentUserList = currentEvent.lists.filter(
+		(list) => list.creator.email === user.email
+	);
+	const yourList = currentUserList[0];
+	const otherLists = currentEvent.lists.filter(
+		(list) => list.creator.email !== user.email
+	);
+
 	//pusher code
 	//at this point, there should be a currentEvent so we shouldn't have to
 	//worry about null / undefined channel names
@@ -35,7 +44,13 @@ export const Event: React.FC = () => {
 		<>
 			<CollaboratorsGrid />
 			<StyledListWrapper>
-				{currentEvent.lists.map((list) => (
+				<UserList
+					creator={yourList.creator}
+					items={yourList.items}
+					id={yourList._id}
+					key={yourList._id}
+				/>
+				{otherLists.map((list) => (
 					<UserList
 						creator={list.creator}
 						items={list.items}
