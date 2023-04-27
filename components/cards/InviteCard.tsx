@@ -20,12 +20,13 @@ export const InviteCard = (props) => {
 
 	const handleDecline = async () => {
 		try {
-			const eventRes = await axios.put(`/api/events`, {
+			//Decline user invite, update user and event
+			await axios.put(`/api/events`, {
 				eventId: id,
 				user: user,
 				action: 'decline',
 			});
-			const userRes = await axios.put(`/api/user`, {
+			await axios.put(`/api/user`, {
 				eventId: id,
 				user: user,
 				action: 'decline',
@@ -58,12 +59,13 @@ export const InviteCard = (props) => {
 
 	const handleAccept = async (e) => {
 		try {
-			const eventRes = await axios.put(`/api/events`, {
+			//Accept user invite, update user and event
+			await axios.put(`/api/events`, {
 				eventId: id,
 				user: user,
 				action: 'accept',
 			});
-			const userRes = await axios.put(`/api/user`, {
+			await axios.put(`/api/user`, {
 				eventId: id,
 				user: user,
 				action: 'accept',

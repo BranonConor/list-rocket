@@ -128,11 +128,12 @@ const eventsApiRoutes = async (req, res) => {
 			const userList = await new List({
 				creator: req.body.user._id,
 			});
-			await event.lists.push(userList._id);
+			event.lists.push(userList._id);
 
 			//push the user into the official collaborators list
-			await event.collaborators.push(req.body.user);
-			await event.save();
+			userList.save();
+			event.collaborators.push(req.body.user);
+			event.save();
 			return res.status(200).send();
 		}
 	}
