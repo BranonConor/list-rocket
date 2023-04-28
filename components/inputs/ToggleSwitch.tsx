@@ -5,15 +5,17 @@ interface IProps {
 	checked: boolean;
 }
 
-export const AnonymousToggle: React.FC<IProps> = (props) => {
+export const ToggleSwitch: React.FC<IProps> = (props) => {
 	const { handleChange, checked } = props;
 
 	return (
-		<>
+		<StyledSwitchWrapper>
+			<span>off</span>
 			<StyledLabel
 				htmlFor='anonymous-toggle'
 				onClick={handleChange}
-				checked={checked}>
+				checked={checked}
+				aria-label={checked ? 'on' : 'off'}>
 				<StyledSwitch checked={checked} />
 			</StyledLabel>
 			<StyledInput
@@ -22,10 +24,20 @@ export const AnonymousToggle: React.FC<IProps> = (props) => {
 				checked={checked}
 				onChange={handleChange}
 			/>
-		</>
+			<span>on</span>
+		</StyledSwitchWrapper>
 	);
 };
 
+const StyledSwitchWrapper = styled.div(
+	({ theme: { typography } }) => `
+	display: flex;
+	align-items: center;
+	text-transform: ${typography.textTransform.overline};
+	font-size: ${typography.size.overline};
+
+`
+);
 const StyledInput = styled.input`
 	display: none;
 `;
@@ -44,6 +56,7 @@ const StyledLabel = styled.label<StyledSpanProps>(
 	border-radius: 20px;
 	background: ${checked ? colors.success.bg : colors.error.bg};
 	padding: 2px;
+	margin: 0 8px;
     transition: 0.15s ease all;
 
 `
