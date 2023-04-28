@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { ToggleSwitch } from '../inputs/ToggleSwitch';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 export const EventControls = () => {
 	const [anonymousModeIsOn, setAnonymousModeIsOn] = useState(false);
@@ -11,7 +12,20 @@ export const EventControls = () => {
 	};
 
 	return (
-		<StyledEventControls>
+		<StyledEventControls
+			initial={{
+				top: -20,
+				opacity: 0,
+			}}
+			animate={{
+				top: 0,
+				opacity: 1,
+			}}
+			transition={{
+				duration: 0.25,
+				type: 'spring',
+				delay: 0.05,
+			}}>
 			<StyledRow>
 				<StyledAnonymousLabel>Anonymous Mode:</StyledAnonymousLabel>
 				<ToggleSwitch
@@ -23,8 +37,9 @@ export const EventControls = () => {
 	);
 };
 
-const StyledEventControls = styled.div(
+const StyledEventControls = styled(motion.div)(
 	({ theme: { colors } }) => `
+    position: relative;
 	padding: 16px;
     border-radius: 10px;
 	box-sizing: border-box;

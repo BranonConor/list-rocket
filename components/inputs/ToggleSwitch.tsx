@@ -36,6 +36,11 @@ const StyledSwitchWrapper = styled.div(
 	text-transform: ${typography.textTransform.overline};
 	font-size: ${typography.size.overline};
 
+	@media only screen and (max-width: 450px) {
+		& > span {
+			display: none;
+		}
+	}
 `
 );
 const StyledInput = styled.input`
