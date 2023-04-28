@@ -1,12 +1,13 @@
 import { ProfilePhoto } from '../ProfilePhoto';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Title } from '../typography/Title';
 import { Text } from '../typography/Text';
 import { ChipButton } from '../buttons/ChipButton';
+import { AnonymousToggle } from './AnonymousToggle';
 
 export const WorkspaceControls = () => {
 	const { events } = useContext(EventContext);
@@ -20,6 +21,11 @@ export const WorkspaceControls = () => {
 	const handleExitClick = async (e) => {
 		e?.preventDefault();
 		clearWorkspace();
+	};
+
+	const [toggleIsChecked, setToggleIsChecked] = useState(false);
+	const handleToggleChange = () => {
+		setToggleIsChecked(!toggleIsChecked);
 	};
 
 	return (
@@ -77,6 +83,12 @@ export const WorkspaceControls = () => {
 								</StyledAvatar>
 							</StyledInfoCard>
 						</StyledInfoWrapper>
+						<StyledEventControls>
+							<AnonymousToggle
+								handleChange={handleToggleChange}
+								checked={toggleIsChecked}
+							/>
+						</StyledEventControls>
 					</StyledEventInfoContainer>
 				) : (
 					<StyledYourEventsWrapper>
@@ -243,4 +255,10 @@ const StyledImg = styled.img`
 const StyledChipWrapper = styled(motion.div)`
 	margin: 8px 8px 16px 0;
 	min-height: 20px;
+`;
+const StyledEventControls = styled.div`
+	width: 25%:
+	height: 100%;
+	display: flex;
+	align-items: flex-start;
 `;

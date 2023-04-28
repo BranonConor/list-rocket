@@ -29,6 +29,16 @@ export const theme = {
 		primaryGradient: colors.horizon,
 		secondaryGradient: colors.atmosphere,
 		tertiaryGradient: colors.flame,
+		success: {
+			bg: colors.successBg,
+			text: colors.successText,
+			icon: colors.successIcon,
+		},
+		error: {
+			bg: colors.errorBg,
+			text: colors.errorText,
+			icon: colors.errorIcon,
+		},
 		button: {
 			defaultBg: colors.stellar,
 			hoverBg: colors.lightStellar,
