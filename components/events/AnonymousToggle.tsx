@@ -39,7 +39,7 @@ const StyledLabel = styled.label<StyledSpanProps>(
 	min-width: 40px;
 	max-width: 40px;
 	height: 16px;
-	border: 2px solid ${checked ? colors.success.text : colors.bgDark};
+	border: 2px solid ${checked ? colors.success.text : colors.error.text};
 	cursor: pointer;
 	border-radius: 20px;
 	background: ${checked ? colors.success.bg : colors.error.bg};
