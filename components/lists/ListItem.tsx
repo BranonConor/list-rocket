@@ -36,8 +36,8 @@ export const ListItem: React.FC<IProps> = (props) => {
 	const { user } = useContext(UserContext);
 
 	// calculate whether or not to show crossed off items
-	const obscureListItemState = isCurrentUser && anonymousModeIsOn;
-	const obscureResolvedBy = Boolean(resolvedBy) && obscureListItemState;
+	const itemIsObscured = isCurrentUser && anonymousModeIsOn;
+	const itemIsResolved = Boolean(resolvedBy);
 
 	const handleDelete = async (e) => {
 		e?.preventDefault();
@@ -141,7 +141,8 @@ export const ListItem: React.FC<IProps> = (props) => {
 				duration: 0.5,
 				type: 'spring',
 			}}
-			obscureListItemState={obscureListItemState}>
+			itemIsResolved={itemIsResolved}
+			itemIsObscured={itemIsObscured}>
 			<StyledContentWrapper>
 				<Title variant='heading4'>{name}</Title>
 				<Text variant='body2'>{description}</Text>
@@ -150,7 +151,14 @@ export const ListItem: React.FC<IProps> = (props) => {
 				</a>
 			</StyledContentWrapper>
 			<StyledButtonContainer>
-				{resolvedBy && !obscureResolvedBy ? (
+				{itemIsObscured || !itemIsResolved ? (
+					<StyledIconButton onClick={handleCheck}>
+						<img
+							src='/icons/check-mark.svg'
+							alt='Check Mark Icon'
+						/>
+					</StyledIconButton>
+				) : (
 					<StyledPhotoButton
 						onClick={handleUncheck}
 						initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
@@ -174,13 +182,6 @@ export const ListItem: React.FC<IProps> = (props) => {
 							/>
 						</StyledCheckmarkWrapper>
 					</StyledPhotoButton>
-				) : (
-					<StyledIconButton onClick={handleCheck}>
-						<img
-							src='/icons/check-mark.svg'
-							alt='Check Mark Icon'
-						/>
-					</StyledIconButton>
 				)}
 				<StyledIconButton onClick={handleEdit}>
 					<img src='/icons/pencil.svg' alt='Edit Icon' />
@@ -194,10 +195,11 @@ export const ListItem: React.FC<IProps> = (props) => {
 };
 
 interface ICardProps {
-	obscureListItemState: boolean;
+	itemIsObscured: boolean;
+	itemIsResolved: boolean;
 }
 const StyledCard = styled(motion.div)<ICardProps>(
-	({ obscureListItemState, theme: { colors, shadows } }) => `
+	({ itemIsObscured, itemIsResolved, theme: { colors, shadows } }) => `
 	position: relative;
     padding: 16px;
     border-radius: 5px;
@@ -207,13 +209,25 @@ const StyledCard = styled(motion.div)<ICardProps>(
 	width: 100%;
 	box-sizing: border-box;
 	display: flex;
-	text-decoration: ${obscureListItemState ? 'none' : 'line-through'};
+	text-decoration: ${
+		itemIsResolved ? (itemIsObscured ? 'none' : 'line-through') : 'none'
+	};
 	text-decoration-color: ${
-		obscureListItemState ? colors.body : colors.font.body2
+		itemIsResolved
+			? itemIsObscured
+				? colors.body
+				: colors.font.body2
+			: colors.body
 	};
 	
 	p, h4, div a {
-		color: ${obscureListItemState ? colors.body : colors.font.body2};
+		color: ${
+			itemIsResolved
+				? itemIsObscured
+					? colors.body
+					: colors.font.body2
+				: colors.body
+		};
 	}
 
 	&:hover {

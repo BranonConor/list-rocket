@@ -8,6 +8,7 @@ import { AddListItemForm } from './AddListItemForm';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { Text } from '../typography/Text';
+import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 
 interface Props {
 	creator: IUser;
@@ -18,6 +19,7 @@ interface Props {
 export const UserList: React.FC<Props> = (props) => {
 	const { creator, items, id } = props;
 	const { user } = useContext(UserContext);
+	const { anonymousModeIsOn } = useContext(WorkspaceContext);
 	const isCurrentUser = creator.email === user.email;
 
 	return (
@@ -36,14 +38,14 @@ export const UserList: React.FC<Props> = (props) => {
 				type: 'spring',
 			}}>
 			<StyledList>
-				<StyledTitle>
+				<StyledListTitle>
 					<ProfilePhoto photo={creator.image} dimensions='40px' />
 					<Title variant='heading3'>
 						{isCurrentUser
 							? 'Your List'
 							: `${creator.name.split(' ')[0]}'s List`}
 					</Title>
-				</StyledTitle>
+				</StyledListTitle>
 				<StyledContent>
 					<>
 						{items?.length ? (
@@ -93,7 +95,7 @@ const StyledList = styled(motion.div)(
 	border-radius: 10px;
 `
 );
-const StyledTitle = styled.div(
+const StyledListTitle = styled.div(
 	({ theme: { colors } }) => `
 	display: flex;
 	align-items: center;
@@ -119,4 +121,7 @@ const StyledListItem = styled.li`
 `;
 const StyledText = styled(Text)`
 	margin: 0 0 16px 0;
+`;
+const StyledAnonymousModeLabel = styled(Text)`
+	margin: 0 0 8px 0;
 `;
