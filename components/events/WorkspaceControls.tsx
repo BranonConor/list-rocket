@@ -7,6 +7,7 @@ import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Title } from '../typography/Title';
 import { Text } from '../typography/Text';
 import { ChipButton } from '../buttons/ChipButton';
+import { EventControls } from './EventControls';
 
 export const WorkspaceControls = () => {
 	const { events } = useContext(EventContext);
@@ -42,7 +43,7 @@ export const WorkspaceControls = () => {
 							}}>
 							<StyledSpan>
 								<Title variant='heading2'>
-									Current Event: {currentEvent?.name}{' '}
+									{currentEvent?.name}{' '}
 								</Title>
 								<StyledButton onClick={handleExitClick}>
 									<StyledImg src='/icons/x.svg' />
@@ -77,6 +78,7 @@ export const WorkspaceControls = () => {
 								</StyledAvatar>
 							</StyledInfoCard>
 						</StyledInfoWrapper>
+						<EventControls />
 					</StyledEventInfoContainer>
 				) : (
 					<StyledYourEventsWrapper>
@@ -147,7 +149,7 @@ const StyledYourEventsWrapper = styled.div(
 const StyledEventsContainer = styled.div`
 	border-radius: 10px;
 	box-sizing: border-box;
-	margin: 16px 16px 8px 0;
+	margin: 16px 16px 0 0;
 	width: 100%;
 	display: flex;
 
@@ -162,26 +164,36 @@ const StyledEventsWrapper = styled.div`
 	width: 100%;
 	height: auto;
 `;
-const StyledInfoWrapper = styled(motion.div)`
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	position: relative;
-`;
-const StyledEventInfoContainer = styled.div(
-	({ theme: { colors } }) => `
-	border-radius: 10px;
-	padding: 16px;
-	box-sizing: border-box;
+const StyledEventInfoContainer = styled.div`
 	margin: 8px 0 16px 0;
 	width: 100%;
 	display: flex;
-	background: ${colors.bgLight};
 	height: auto;
 
+	@media only screen and (max-width: 950px) {
+		flex-direction: column;
+	}
 	@media only screen and (max-width: 768px) {
 		width: 100%;
-		margin: 8px 0;
+	}
+`;
+const StyledInfoWrapper = styled(motion.div)(
+	({ theme: { colors } }) => `
+	display: flex;
+	flex-direction: column;
+	min-width: 70%;
+	position: relative;
+	border-radius: 10px;
+	box-sizing: border-box;
+	margin: 0 16px 0 0;
+	padding: 16px;
+	background: ${colors.bgLight};
+
+	@media only screen and (max-width: 1230px) {
+		min-width: 60%;
+	}
+	@media only screen and (max-width: 950px) {
+		margin: 16px 0;
 	}
 `
 );

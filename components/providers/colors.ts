@@ -16,4 +16,10 @@ export const colors = {
 	success: '#5A9F61',
 	warning: '#67521B',
 	metallicBlue: '#CBE0FF',
+	successBg: '#D6FADA',
+	successText: '#5A9F61',
+	successIcon: '#33C742',
+	errorBg: '#FFCECE',
+	errorText: '#8A2525',
+	errorIcon: '#E73939',
 };

@@ -10,7 +10,7 @@ import { UserContext } from '../../contexts/UserContext';
 import { IUser } from '../../contexts/types';
 import { ProfilePhoto } from '../ProfilePhoto';
 
-interface Props {
+interface IProps {
 	name: string;
 	description: string;
 	link: string;
@@ -18,13 +18,26 @@ interface Props {
 	animationFactor: number;
 	id: string;
 	listId: string;
+	isCurrentUser: boolean;
 }
 
-export const ListItem: React.FC<Props> = (props) => {
-	const { name, description, link, resolvedBy, animationFactor, id, listId } =
-		props;
-	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
+export const ListItem: React.FC<IProps> = (props) => {
+	const {
+		name,
+		description,
+		link,
+		resolvedBy,
+		animationFactor,
+		id,
+		listId,
+		isCurrentUser,
+	} = props;
+	const { currentEvent, anonymousModeIsOn } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
+
+	// calculate whether or not to show crossed off items
+	const obscureListItemState = isCurrentUser && anonymousModeIsOn;
+	const obscureResolvedBy = Boolean(resolvedBy) && obscureListItemState;
 
 	const handleDelete = async (e) => {
 		e?.preventDefault();
@@ -128,7 +141,7 @@ export const ListItem: React.FC<Props> = (props) => {
 				duration: 0.5,
 				type: 'spring',
 			}}
-			resolvedBy={!!resolvedBy}>
+			obscureListItemState={obscureListItemState}>
 			<StyledContentWrapper>
 				<Title variant='heading4'>{name}</Title>
 				<Text variant='body2'>{description}</Text>
@@ -137,7 +150,7 @@ export const ListItem: React.FC<Props> = (props) => {
 				</a>
 			</StyledContentWrapper>
 			<StyledButtonContainer>
-				{resolvedBy ? (
+				{resolvedBy && !obscureResolvedBy ? (
 					<StyledPhotoButton
 						onClick={handleUncheck}
 						initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
@@ -181,10 +194,10 @@ export const ListItem: React.FC<Props> = (props) => {
 };
 
 interface ICardProps {
-	resolvedBy: boolean;
+	obscureListItemState: boolean;
 }
 const StyledCard = styled(motion.div)<ICardProps>(
-	({ resolvedBy, theme: { colors, shadows } }) => `
+	({ obscureListItemState, theme: { colors, shadows } }) => `
 	position: relative;
     padding: 16px;
     border-radius: 5px;
@@ -194,11 +207,13 @@ const StyledCard = styled(motion.div)<ICardProps>(
 	width: 100%;
 	box-sizing: border-box;
 	display: flex;
-	text-decoration: ${resolvedBy ? 'line-through' : 'none'};
-	text-decoration-color: ${resolvedBy ? colors.font.body2 : colors.body};
+	text-decoration: ${obscureListItemState ? 'none' : 'line-through'};
+	text-decoration-color: ${
+		obscureListItemState ? colors.body : colors.font.body2
+	};
 	
 	p, h4, div a {
-		color: ${resolvedBy ? colors.font.body2 : colors.body};
+		color: ${obscureListItemState ? colors.body : colors.font.body2};
 	}
 
 	&:hover {
