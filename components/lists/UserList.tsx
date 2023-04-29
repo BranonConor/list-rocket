@@ -18,6 +18,7 @@ interface Props {
 export const UserList: React.FC<Props> = (props) => {
 	const { creator, items, id } = props;
 	const { user } = useContext(UserContext);
+	const isCurrentUser = creator.email === user.email;
 
 	return (
 		<StyledListWrapper
@@ -38,7 +39,7 @@ export const UserList: React.FC<Props> = (props) => {
 				<StyledTitle>
 					<ProfilePhoto photo={creator.image} dimensions='40px' />
 					<Title variant='heading3'>
-						{creator.email === user.email
+						{isCurrentUser
 							? 'Your List'
 							: `${creator.name.split(' ')[0]}'s List`}
 					</Title>
@@ -56,6 +57,7 @@ export const UserList: React.FC<Props> = (props) => {
 										animationFactor={index}
 										listId={id}
 										id={item._id}
+										isCurrentUser={isCurrentUser}
 									/>
 								</StyledListItem>
 							))

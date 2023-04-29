@@ -43,7 +43,7 @@ export const WorkspaceControls = () => {
 							}}>
 							<StyledSpan>
 								<Title variant='heading2'>
-									Current Event: {currentEvent?.name}{' '}
+									{currentEvent?.name}{' '}
 								</Title>
 								<StyledButton onClick={handleExitClick}>
 									<StyledImg src='/icons/x.svg' />

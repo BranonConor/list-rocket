@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 import { ToggleSwitch } from '../inputs/ToggleSwitch';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { motion } from 'framer-motion';
+import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 
 export const EventControls = () => {
-	const [anonymousModeIsOn, setAnonymousModeIsOn] = useState(false);
+	const { anonymousModeIsOn, setAnonymousModeIsOn } =
+		useContext(WorkspaceContext);
+
 	const [toggleIsChecked, setToggleIsChecked] = useState(false);
 	const handleToggleChange = () => {
 		setToggleIsChecked(!toggleIsChecked);
