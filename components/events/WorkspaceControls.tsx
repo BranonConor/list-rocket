@@ -189,8 +189,11 @@ const StyledInfoWrapper = styled(motion.div)(
 	padding: 16px;
 	background: ${colors.bgLight};
 
-	@media only screen and (max-width: 1230px) {
+	@media only screen and (max-width: 1330px) {
 		min-width: 60%;
+	}
+	@media only screen and (max-width: 1025px) {
+		min-width: 50%;
 	}
 	@media only screen and (max-width: 950px) {
 		margin: 16px 0;

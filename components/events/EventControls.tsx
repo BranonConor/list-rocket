@@ -30,7 +30,10 @@ export const EventControls = () => {
 				delay: 0.05,
 			}}>
 			<StyledRow>
-				<StyledAnonymousLabel>Anonymous Mode:</StyledAnonymousLabel>
+				<StyledAnonymousLabel>
+					<img src='/icons/hidden.svg' alt='' />
+					Anonymous Mode:
+				</StyledAnonymousLabel>
 				<ToggleSwitch
 					handleChange={handleToggleChange}
 					checked={toggleIsChecked}
@@ -59,6 +62,12 @@ const StyledEventControls = styled(motion.div)(
 const StyledAnonymousLabel = styled.span`
 	width: 100%;
 	margin-right: 16px;
+	display: flex;
+	align-items: center;
+
+	img {
+		margin: 0 8px 0 0;
+	}
 `;
 const StyledRow = styled.div`
 	display: flex;
