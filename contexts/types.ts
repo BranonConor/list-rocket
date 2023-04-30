@@ -11,6 +11,7 @@ export interface IEvent {
 	_id: string;
 	name: string;
 	description: string;
+	anonymousModeIsOn: boolean;
 	creator: IUser;
 	collaborators: ICollaborator[];
 	pendingCollaborators: ICollaborator[];
