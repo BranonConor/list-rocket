@@ -19,7 +19,7 @@ interface Props {
 export const UserList: React.FC<Props> = (props) => {
 	const { creator, items, id } = props;
 	const { user } = useContext(UserContext);
-	const { anonymousModeIsOn } = useContext(WorkspaceContext);
+	const { currentEvent } = useContext(WorkspaceContext);
 	const isCurrentUser = creator.email === user.email;
 
 	return (
@@ -40,11 +40,34 @@ export const UserList: React.FC<Props> = (props) => {
 			<StyledList>
 				<StyledListTitle>
 					<ProfilePhoto photo={creator.image} dimensions='40px' />
-					<Title variant='heading3'>
-						{isCurrentUser
-							? 'Your List'
-							: `${creator.name.split(' ')[0]}'s List`}
-					</Title>
+					<StyledTitle variant='heading3'>
+						{isCurrentUser ? (
+							<>
+								Your List
+								{currentEvent.anonymousModeIsOn && (
+									<motion.img
+										src='/icons/hidden.svg'
+										initial={{
+											scale: 0,
+											opacity: 0,
+											rotate: '15deg',
+										}}
+										animate={{
+											scale: 1,
+											opacity: 1,
+											rotate: '0deg',
+										}}
+										transition={{
+											duration: 0.25,
+											type: 'spring',
+										}}
+									/>
+								)}
+							</>
+						) : (
+							`${creator.name.split(' ')[0]}'s List`
+						)}
+					</StyledTitle>
 				</StyledListTitle>
 				<StyledContent>
 					<>
@@ -103,7 +126,7 @@ const StyledListTitle = styled.div(
 	justify-content: flex-start;
 	color: ${colors.textLight};
 
-	& img {
+	img {
 		margin: 0 16px 0 0;
 	}
 `
@@ -122,6 +145,14 @@ const StyledListItem = styled.li`
 const StyledText = styled(Text)`
 	margin: 0 0 16px 0;
 `;
-const StyledAnonymousModeLabel = styled(Text)`
-	margin: 0 0 8px 0;
+const StyledTitle = styled(Title)`
+	display: flex;
+	align-items: center;
+	position: relative;
+
+	img {
+		margin: 0 16px;
+		position: relative;
+		top: -2px;
+	}
 `;

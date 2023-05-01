@@ -11,6 +11,7 @@ export interface IEvent {
 	_id: string;
 	name: string;
 	description: string;
+	anonymousModeIsOn: boolean;
 	creator: IUser;
 	collaborators: ICollaborator[];
 	pendingCollaborators: ICollaborator[];
@@ -48,8 +49,6 @@ export interface IWorkspace {
 export interface IWorkspaceContext {
 	currentEvent: IEvent;
 	setCurrentEvent: Dispatch<SetStateAction<IEvent>>;
-	anonymousModeIsOn: boolean;
-	setAnonymousModeIsOn: Dispatch<SetStateAction<boolean>>;
 	prepWorkspace: (eventId: string) => Promise<void>;
 	clearWorkspace: () => void;
 }
