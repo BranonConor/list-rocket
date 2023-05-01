@@ -49,8 +49,6 @@ export interface IWorkspace {
 export interface IWorkspaceContext {
 	currentEvent: IEvent;
 	setCurrentEvent: Dispatch<SetStateAction<IEvent>>;
-	anonymousModeIsOn: boolean;
-	setAnonymousModeIsOn: Dispatch<SetStateAction<boolean>>;
 	prepWorkspace: (eventId: string) => Promise<void>;
 	clearWorkspace: () => void;
 }

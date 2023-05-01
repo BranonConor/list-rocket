@@ -32,11 +32,11 @@ export const ListItem: React.FC<IProps> = (props) => {
 		listId,
 		isCurrentUser,
 	} = props;
-	const { currentEvent, anonymousModeIsOn } = useContext(WorkspaceContext);
+	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
 
 	// calculate whether or not to show crossed off items
-	const itemIsObscured = isCurrentUser && anonymousModeIsOn;
+	const itemIsObscured = isCurrentUser && currentEvent.anonymousModeIsOn;
 	const itemIsResolved = Boolean(resolvedBy);
 
 	const handleDelete = async (e) => {

@@ -54,6 +54,13 @@ const eventApiRoutes = async (req, res) => {
 			data: deletedEvent,
 		});
 	}
+
+	if (req.method === 'PUT' && req.body.action === 'anonymous-mode-toggle') {
+		const event = await Event.findById(req.body.eventId);
+		event.anonymousModeIsOn = !event.anonymousModeIsOn;
+		event.save();
+		res.json({ status: 200, data: event });
+	}
 };
 
 export default eventApiRoutes;

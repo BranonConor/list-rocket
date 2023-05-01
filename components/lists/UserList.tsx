@@ -19,7 +19,7 @@ interface Props {
 export const UserList: React.FC<Props> = (props) => {
 	const { creator, items, id } = props;
 	const { user } = useContext(UserContext);
-	const { anonymousModeIsOn } = useContext(WorkspaceContext);
+	const { currentEvent } = useContext(WorkspaceContext);
 	const isCurrentUser = creator.email === user.email;
 
 	return (
@@ -44,7 +44,7 @@ export const UserList: React.FC<Props> = (props) => {
 						{isCurrentUser ? (
 							<>
 								Your List
-								{anonymousModeIsOn && (
+								{currentEvent.anonymousModeIsOn && (
 									<motion.img
 										src='/icons/hidden.svg'
 										initial={{
