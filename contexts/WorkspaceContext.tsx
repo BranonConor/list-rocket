@@ -20,6 +20,9 @@ export const WorkspaceProvider = (props) => {
 		setCurrentEvent(null);
 	};
 
+	//TODO - move Event Pusher connection code to this context, and have it
+	//rerender whenever prepWorkspace is called!
+
 	return (
 		<WorkspaceContext.Provider
 			value={{
