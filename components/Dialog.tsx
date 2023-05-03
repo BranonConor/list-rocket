@@ -43,10 +43,10 @@ export const Dialog: React.FC<IProps> = (props) => {
 				}}
 			/>
 			<StyledDialog
-				initial={{ scale: 0.75, opacity: 0, rotate: '15deg' }}
+				initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
 				animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
 				transition={{
-					duration: 0.15,
+					duration: 0.25,
 					type: 'spring',
 				}}>
 				<Title variant='heading2'>{title}</Title>
