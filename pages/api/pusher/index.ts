@@ -10,6 +10,7 @@ export default async function handler(req, res) {
 			{
 				event: req.body.event,
 				user: req.body.user,
+				subAction: req.body.subAction,
 			}
 		);
 
