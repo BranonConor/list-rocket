@@ -84,7 +84,7 @@ const StyledDialogOverlay = styled(motion.div)`
 	background: rgba(0, 0, 0, 0.5);
 `;
 const StyledDialog = styled(motion.div)(
-	({ theme: { colors } }) => `
+	({ theme: { colors, shadows } }) => `
     position: absolute;
 	z-index: 1;
 	width: 50%;
@@ -95,6 +95,7 @@ const StyledDialog = styled(motion.div)(
     border-radius: 10px;
     padding: 16px 32px 32px 32px;
     box-sizing: border-box;
+	box-shadow: ${shadows.standard};
 
 	@media only screen and (max-width: 768px) {
 		width: 75%;
