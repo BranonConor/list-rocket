@@ -1,18 +1,26 @@
 import styled from 'styled-components';
 import { ToggleSwitch } from '../inputs/ToggleSwitch';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../contexts/UserContext';
 import Pusher from 'pusher-js';
+import { Dialog } from '../Dialog';
+import { IEvent, IUser } from '../../contexts/types';
 
 export const EventControls = () => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
 
-	const handleToggleChange = async () => {
+	const [dialogIsOpen, setDialogIsOpen] = useState(false);
+
+	const handleChange = () => {
+		setDialogIsOpen(true);
+	};
+
+	const handleToggleChange = async (currentEvent: IEvent, user: IUser) => {
 		try {
 			await axios.put(`/api/events/${currentEvent._id}`, {
 				eventId: currentEvent._id,
@@ -33,6 +41,7 @@ export const EventControls = () => {
 				});
 			}
 
+			setDialogIsOpen(false);
 			//ping Pusher channel
 			await axios.post('/api/pusher', {
 				event: currentEvent,
@@ -113,10 +122,19 @@ export const EventControls = () => {
 					Anonymous Mode:
 				</StyledAnonymousLabel>
 				<ToggleSwitch
-					handleChange={handleToggleChange}
+					handleChange={handleChange}
 					checked={currentEvent.anonymousModeIsOn}
 				/>
 			</StyledRow>
+			{dialogIsOpen && (
+				<Dialog
+					title='Anonymous mode'
+					description='Are you sure you want to toggle Anonymous Mode for this event? When "ON", collaborators will not be able to see the status of their own items.'
+					cta={() => handleToggleChange(currentEvent, user)}
+					buttonText='Confirm'
+					setDialogIsOpen={setDialogIsOpen}
+				/>
+			)}
 		</StyledEventControls>
 	);
 };
