@@ -86,6 +86,7 @@ export const AllEvents: React.FC = () => {
 					cta={(e: any) => handleDelete(e, eventToDelete)}
 					buttonText='Delete'
 					setDialogIsOpen={setDeleteDialogIsOpen}
+					showCancelButton
 				/>
 			)}
 		</StyledWrapper>

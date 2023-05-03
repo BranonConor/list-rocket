@@ -133,6 +133,7 @@ export const EventControls = () => {
 					cta={() => handleToggleChange(currentEvent, user)}
 					buttonText='Confirm'
 					setDialogIsOpen={setDialogIsOpen}
+					showCancelButton
 				/>
 			)}
 		</StyledEventControls>
