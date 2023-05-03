@@ -14,7 +14,7 @@ const listsApiRoutes = async (req, res) => {
 				error: { message: 'list not found' },
 			});
 		} else {
-			const newListItem = await new ListItem({ ...req.body.listItem });
+			const newListItem = new ListItem({ ...req.body.listItem });
 			list.items.push(newListItem._id);
 			newListItem.save();
 			list.save();
