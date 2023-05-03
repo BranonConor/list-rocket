@@ -11,14 +11,15 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
 		<SessionProvider session={session}>
 			<ToastContainer
 				position='bottom-center'
-				autoClose={5000}
+				autoClose={4000}
 				hideProgressBar={false}
-				newestOnTop={false}
+				newestOnTop
 				closeOnClick
 				rtl={false}
 				pauseOnFocusLoss
 				draggable
 				pauseOnHover
+				limit={2}
 			/>
 			<StyledProvider>
 				<UserProvider>
