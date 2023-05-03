@@ -23,15 +23,16 @@ const eventsApiRoutes = async (req, res) => {
 	if (req.method === 'POST') {
 		try {
 			//Create a new event from req data
-			const newEvent = await new Event({ ...req.body.event });
+			const newEvent = new Event({ ...req.body.event });
 			newEvent.collaborators = [
 				{
 					...req.body.user,
 				},
 			];
 			//Create a new list and add it to the event
-			const creatorList = await new List({
+			const creatorList = new List({
 				creator: req.body.user,
+				event: newEvent._id,
 			});
 			newEvent.lists = [creatorList._id];
 			//Add this event to the creator's list of events
@@ -127,6 +128,7 @@ const eventsApiRoutes = async (req, res) => {
 			//Create a new list for this user and add it to the event
 			const userList = await new List({
 				creator: req.body.user._id,
+				event: req.body.eventId,
 			});
 			event.lists.push(userList._id);
 

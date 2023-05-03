@@ -36,13 +36,30 @@ const eventApiRoutes = async (req, res) => {
 	}
 
 	if (req.method === 'DELETE') {
-		//Delete it from the user's events array
-		const user = await User.findById(req.body.user._id);
-		const newUserEvents = await user.events.filter(
-			(event) => event._id.toString() !== req.body.eventId
-		);
-		user.events = newUserEvents;
-		await user.save();
+		//Delete it from all collaborators' events and invites arrays
+		const event = await Event.findById(req.body.eventId).populate({
+			path: 'collaborators',
+		});
+		event.collaborators.forEach(async (collaborator) => {
+			const user = await User.findById(collaborator._id);
+			const newUserEvents = user.events.filter(
+				(event) => event._id.toString() !== req.body.eventId
+			);
+			user.events = newUserEvents;
+			await user.save();
+		});
+		event.pendingCollaborators.forEach(async (collaborator) => {
+			const user = await User.findById(collaborator._id);
+			const newUserInvites = user.invites.filter(
+				(event) => event._id.toString() !== req.body.eventId
+			);
+			user.invites = newUserInvites;
+			await user.save();
+		});
+
+		//Delete any lists & listItems in the event
+		await ListItem.deleteMany({ event: req.body.eventId });
+		await List.deleteMany({ event: req.body.eventId });
 
 		//Delete the event
 		const deletedEvent = await Event.deleteOne({
