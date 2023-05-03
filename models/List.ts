@@ -9,6 +9,10 @@ const ListItemSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'users',
 	},
+	event: {
+		type: Schema.Types.ObjectId,
+		ref: 'events',
+	},
 });
 
 const getListItemModel = () => mongoose.model('listitems', ListItemSchema);
@@ -26,6 +30,10 @@ const ListSchema = new Schema({
 			ref: 'listitems',
 		},
 	],
+	event: {
+		type: Schema.Types.ObjectId,
+		ref: 'events',
+	},
 });
 
 const getListModel = () => mongoose.model('lists', ListSchema);

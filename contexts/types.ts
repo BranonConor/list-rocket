@@ -67,3 +67,9 @@ export interface IList {
 	creator: IUser;
 	items: IListItem[];
 }
+
+// DIALOG TYPES
+export interface IDialogContext {
+	dialogIsOpen: boolean;
+	setDialogIsOpen: Dispatch<SetStateAction<boolean>>;
+}

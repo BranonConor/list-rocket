@@ -1,50 +1,45 @@
-import axios from 'axios';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { PrimaryButton } from '../buttons/PrimaryButton';
-import { useContext } from 'react';
-import { EventContext } from '../../contexts/EventContext';
+import { Dispatch, SetStateAction, useContext } from 'react';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { useRouter } from 'next/router';
 import { Title } from '../typography/Title';
 import { Text } from '../typography/Text';
-import { toast } from 'react-toastify';
-import { UserContext } from '../../contexts/UserContext';
+import { IUser } from '../../contexts/types';
 
-const EventCard = (props) => {
-	const { name, description, id, animationFactor } = props;
-	const { getAllEvents } = useContext(EventContext);
-	const { user } = useContext(UserContext);
-	const { prepWorkspace, currentEvent, clearWorkspace } =
-		useContext(WorkspaceContext);
+interface IProps {
+	name: string;
+	description: string;
+	creator: IUser;
+	id: string;
+	animationFactor: number;
+	setDeleteDialogIsOpen: Dispatch<SetStateAction<boolean>>;
+	setEventToDelete: Dispatch<SetStateAction<{ id: string; name: string }>>;
+}
+
+export const EventCard: React.FC<IProps> = (props) => {
+	const {
+		name,
+		description,
+		id,
+		animationFactor,
+		setDeleteDialogIsOpen,
+		setEventToDelete,
+	} = props;
+	const { prepWorkspace } = useContext(WorkspaceContext);
+
 	const router = useRouter();
-
-	const handleDelete = async (e) => {
-		e?.preventDefault();
-		try {
-			const res = await axios.delete(`/api/events/${id}`, {
-				data: {
-					eventId: id,
-					user: user,
-				},
-			});
-			getAllEvents();
-			currentEvent?._id === id && clearWorkspace();
-			toast.success('Successfully deleted your event 🗑', {
-				toastId: 'delete-event-toast',
-			});
-		} catch (error) {
-			console.log(error);
-			toast.error('Something went wrong, sorry! 😵‍💫', {
-				toastId: 'error-delete-event-toast',
-			});
-		}
-	};
 
 	const handleClick = async (e) => {
 		e?.preventDefault();
 		prepWorkspace(id);
 		router.push('/workspace');
+	};
+
+	const handleDelete = () => {
+		setDeleteDialogIsOpen(true);
+		setEventToDelete({ id: id, name: name });
 	};
 
 	return (
@@ -73,8 +68,6 @@ const EventCard = (props) => {
 		</StyledCard>
 	);
 };
-
-export default EventCard;
 
 const StyledCard = styled(motion.div)(
 	({ theme: { colors } }) => `

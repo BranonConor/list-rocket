@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ToggleSwitch } from '../inputs/ToggleSwitch';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import axios from 'axios';
@@ -38,6 +38,7 @@ export const EventControls = () => {
 				event: currentEvent,
 				user: user,
 				action: 'event-update',
+				subAction: 'anonymous-mode-toggle',
 			});
 		} catch (error) {
 			console.log(error);
@@ -61,7 +62,10 @@ export const EventControls = () => {
 				prepWorkspace(currentEvent?._id);
 
 				//for everyone but the user that made the change, notify
-				if (data.user._id !== user._id) {
+				if (
+					data.user._id !== user._id &&
+					data.subAction === 'anonymous-mode-toggle'
+				) {
 					if (!data.event.anonymousModeIsOn) {
 						toast.info(
 							`A collaborator put the event in anonymous mode 🦸🏽‍♀️`,
