@@ -88,6 +88,7 @@ const StyledDialog = styled(motion.div)(
     position: absolute;
 	z-index: 1;
 	width: 50%;
+	max-width: 500px;
 	display: flex;
 	flex-direction: column;
     background: ${colors.white};
