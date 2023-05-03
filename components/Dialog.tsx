@@ -94,6 +94,13 @@ const StyledDialog = styled(motion.div)(
     border-radius: 10px;
     padding: 16px 32px 32px 32px;
     box-sizing: border-box;
+
+	@media only screen and (max-width: 768px) {
+		width: 75%;
+	}
+	@media only screen and (max-width: 500px) {
+		width: calc(100% - 32px);
+	}
 `
 );
 const StyledButtonGroup = styled.div`
