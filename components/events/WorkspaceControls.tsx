@@ -139,7 +139,7 @@ const StyledYourEventsWrapper = styled.div(
 	({ theme: { colors } }) => `
 	box-sizing: border-box;
 	padding: 16px;
-	margin: 8px 0;
+	margin: 0 0 16px 0;
 	background: ${colors.bgLight};
 	border-radius: 10px;
 	width: 100%;
@@ -165,7 +165,7 @@ const StyledEventsWrapper = styled.div`
 	height: auto;
 `;
 const StyledEventInfoContainer = styled.div`
-	margin: 8px 0 16px 0;
+	margin: 0 0 16px 0;
 	width: 100%;
 	display: flex;
 	height: auto;
@@ -196,7 +196,7 @@ const StyledInfoWrapper = styled(motion.div)(
 		min-width: 50%;
 	}
 	@media only screen and (max-width: 950px) {
-		margin: 16px 0;
+		margin: 0 0 16px 0;
 	}
 `
 );

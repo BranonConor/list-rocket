@@ -10,6 +10,8 @@ export default async function handler(req, res) {
 			{
 				event: req.body.event,
 				user: req.body.user,
+				//Many different components call this route to update the event. This
+				//subAction value helps specify where the call comes from
 				subAction: req.body.subAction,
 			}
 		);
