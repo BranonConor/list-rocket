@@ -41,7 +41,7 @@ export const Dialog: React.FC<IProps> = (props) => {
 					duration: 0.15,
 					type: 'spring',
 				}}>
-				<Title variant='heading1'>{title}</Title>
+				<Title variant='heading2'>{title}</Title>
 				<Text variant='body1'>{description}</Text>
 				<StyledButtonGroup>
 					<PrimaryButton
