@@ -9,13 +9,21 @@ import { SecondaryButton } from './buttons/SecondaryButton';
 interface IProps {
 	title: string;
 	description: string;
-	cta: (e: any) => Promise<void>;
+	cta?: (e: any) => Promise<void>;
 	buttonText: string;
 	setDialogIsOpen: Dispatch<SetStateAction<boolean>>;
+	showCancelButton?: boolean;
 }
 
 export const Dialog: React.FC<IProps> = (props) => {
-	const { cta, buttonText, title, description, setDialogIsOpen } = props;
+	const {
+		cta,
+		buttonText,
+		title,
+		description,
+		setDialogIsOpen,
+		showCancelButton,
+	} = props;
 
 	return (
 		<StyledDialogWrapper
@@ -47,13 +55,15 @@ export const Dialog: React.FC<IProps> = (props) => {
 					<PrimaryButton
 						variant='small'
 						content={buttonText}
-						onClick={cta}
+						onClick={cta ? cta : () => setDialogIsOpen(false)}
 					/>
-					<SecondaryButton
-						variant='small'
-						content='Cancel'
-						onClick={() => setDialogIsOpen(false)}
-					/>
+					{showCancelButton && (
+						<SecondaryButton
+							variant='small'
+							content='Cancel'
+							onClick={() => setDialogIsOpen(false)}
+						/>
+					)}
 				</StyledButtonGroup>
 			</StyledDialog>
 		</StyledDialogWrapper>
@@ -84,16 +94,18 @@ const StyledDialogOverlay = styled(motion.div)`
 	background: rgba(0, 0, 0, 0.5);
 `;
 const StyledDialog = styled(motion.div)(
-	({ theme: { colors } }) => `
+	({ theme: { colors, shadows } }) => `
     position: absolute;
 	z-index: 1;
 	width: 50%;
+	max-width: 500px;
 	display: flex;
 	flex-direction: column;
     background: ${colors.white};
     border-radius: 10px;
     padding: 16px 32px 32px 32px;
     box-sizing: border-box;
+	box-shadow: ${shadows.standard};
 
 	@media only screen and (max-width: 768px) {
 		width: 75%;
@@ -110,7 +122,7 @@ const StyledButtonGroup = styled.div`
 	align-items: center;
 	margin: 24px 0 0 0;
 
-	button:first-of-type {
-		margin-right: 16px;
+	button:nth-of-type(2) {
+		margin-left: 16px;
 	}
 `;

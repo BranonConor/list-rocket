@@ -2,13 +2,14 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { Text } from '../typography/Text';
 import { Title } from '../typography/Title';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { UserContext } from '../../contexts/UserContext';
 import { IUser } from '../../contexts/types';
 import { ProfilePhoto } from '../ProfilePhoto';
+import { Dialog } from '../Dialog';
 
 interface IProps {
 	name: string;
@@ -34,6 +35,9 @@ export const ListItem: React.FC<IProps> = (props) => {
 	} = props;
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
+
+	//dialog state
+	const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
 	// calculate whether or not to show crossed off items
 	const itemIsObscured = isCurrentUser && currentEvent.anonymousModeIsOn;
@@ -127,70 +131,84 @@ export const ListItem: React.FC<IProps> = (props) => {
 	};
 
 	return (
-		<StyledCard
-			initial={{
-				top: -20,
-				opacity: 0,
-			}}
-			animate={{
-				top: 0,
-				opacity: 1,
-			}}
-			transition={{
-				delay: 0.1 + 0.05 * animationFactor,
-				duration: 0.5,
-				type: 'spring',
-			}}
-			itemIsResolved={itemIsResolved}
-			itemIsObscured={itemIsObscured}>
-			<StyledContentWrapper>
-				<Title variant='heading4'>{name}</Title>
-				<Text variant='body2'>{description}</Text>
-				<a href={link} target='_blank' rel='noopenner noreferrer'>
-					See item
-				</a>
-			</StyledContentWrapper>
-			<StyledButtonContainer>
-				{itemIsObscured || !itemIsResolved ? (
-					<StyledIconButton onClick={handleCheck}>
-						<img
-							src='/icons/check-mark.svg'
-							alt='Check Mark Icon'
-						/>
-					</StyledIconButton>
-				) : (
-					<StyledPhotoButton
-						onClick={handleUncheck}
-						initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
-						animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
-						transition={{
-							duration: 0.125,
-							type: 'spring',
-						}}
-						whileHover={{
-							scale: 1.2,
-							transition: { duration: 0.1 },
-						}}>
-						<ProfilePhoto
-							photo={resolvedBy.image}
-							dimensions='18px'
-						/>
-						<StyledCheckmarkWrapper>
+		<>
+			<StyledCard
+				initial={{
+					top: -20,
+					opacity: 0,
+				}}
+				animate={{
+					top: 0,
+					opacity: 1,
+				}}
+				transition={{
+					delay: 0.1 + 0.05 * animationFactor,
+					duration: 0.5,
+					type: 'spring',
+				}}
+				itemIsResolved={itemIsResolved}
+				itemIsObscured={itemIsObscured}>
+				<StyledContentWrapper>
+					<Title variant='heading4'>{name}</Title>
+					<Text variant='body2'>{description}</Text>
+					<a href={link} target='_blank' rel='noopenner noreferrer'>
+						See item
+					</a>
+				</StyledContentWrapper>
+				<StyledButtonContainer>
+					{itemIsObscured ? (
+						<StyledIconButton onClick={() => setDialogIsOpen(true)}>
+							<img src='/icons/hidden.svg' alt='Hidden item' />
+						</StyledIconButton>
+					) : itemIsResolved ? (
+						<StyledPhotoButton
+							onClick={handleUncheck}
+							initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
+							animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
+							transition={{
+								duration: 0.125,
+								type: 'spring',
+							}}
+							whileHover={{
+								scale: 1.2,
+								transition: { duration: 0.1 },
+							}}>
+							<ProfilePhoto
+								photo={resolvedBy.image}
+								dimensions='18px'
+							/>
+							<StyledCheckmarkWrapper>
+								<img
+									src='/icons/check-mark-success.svg'
+									alt='Check Mark Icon'
+								/>
+							</StyledCheckmarkWrapper>
+						</StyledPhotoButton>
+					) : (
+						<StyledIconButton onClick={handleCheck}>
 							<img
-								src='/icons/check-mark-success.svg'
+								src='/icons/check-mark.svg'
 								alt='Check Mark Icon'
 							/>
-						</StyledCheckmarkWrapper>
-					</StyledPhotoButton>
-				)}
-				<StyledIconButton onClick={handleEdit}>
-					<img src='/icons/pencil.svg' alt='Edit Icon' />
-				</StyledIconButton>
-				<StyledIconButton onClick={handleDelete}>
-					<img src='/icons/trash-red.svg' alt='Trash Icon' />
-				</StyledIconButton>
-			</StyledButtonContainer>
-		</StyledCard>
+						</StyledIconButton>
+					)}
+					<StyledIconButton onClick={handleEdit}>
+						<img src='/icons/pencil.svg' alt='Edit Icon' />
+					</StyledIconButton>
+					<StyledIconButton onClick={handleDelete}>
+						<img src='/icons/trash-red.svg' alt='Trash Icon' />
+					</StyledIconButton>
+				</StyledButtonContainer>
+			</StyledCard>
+			{dialogIsOpen && (
+				<Dialog
+					title='Anonymous mode'
+					description="This event is currently in Anonymous Mode. This means each user can see the status of everyone's list items except their own."
+					buttonText='Got it!'
+					setDialogIsOpen={setDialogIsOpen}
+				/>
+			)}
+		</>
 	);
 };
 
