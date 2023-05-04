@@ -5,10 +5,11 @@ import { Title } from '../typography/Title';
 import { IListItem, IUser } from '../../contexts/types';
 import { ListItem } from './ListItem';
 import { AddListItemForm } from './AddListItemForm';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { Text } from '../typography/Text';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import { EditListItemForm } from './EditListItemForm';
 
 interface Props {
 	creator: IUser;
@@ -19,8 +20,18 @@ interface Props {
 export const UserList: React.FC<Props> = (props) => {
 	const { creator, items, id } = props;
 	const { user } = useContext(UserContext);
-	const { currentEvent } = useContext(WorkspaceContext);
+	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
 	const isCurrentUser = creator.email === user.email;
+
+	//handling edits
+	const [currentItemBeingEdited, setCurrentItemBeingEdited] = useState<
+		string | null
+	>(null);
+
+	//when prepWorkspace is called, reset the edits
+	useEffect(() => {
+		setCurrentItemBeingEdited(null);
+	}, [prepWorkspace]);
 
 	return (
 		<StyledListWrapper
@@ -72,20 +83,37 @@ export const UserList: React.FC<Props> = (props) => {
 				<StyledContent>
 					<>
 						{items?.length ? (
-							items?.map((item, index) => (
-								<StyledListItem key={item.name}>
-									<ListItem
-										name={item.name}
-										description={item.description}
-										link={item.link}
-										resolvedBy={item.resolvedBy}
-										animationFactor={index}
-										listId={id}
-										id={item._id}
-										isCurrentUser={isCurrentUser}
-									/>
-								</StyledListItem>
-							))
+							items?.map((item, index) =>
+								item._id === currentItemBeingEdited ? (
+									<StyledListItem>
+										<EditListItemForm
+											listItemId={item._id}
+											setCurrentItemBeingEdited={
+												setCurrentItemBeingEdited
+											}
+											name={item.name}
+											description={item.description}
+											link={item.link}
+										/>
+									</StyledListItem>
+								) : (
+									<StyledListItem key={item.name}>
+										<ListItem
+											name={item.name}
+											description={item.description}
+											link={item.link}
+											resolvedBy={item.resolvedBy}
+											animationFactor={index}
+											listId={id}
+											id={item._id}
+											isCurrentUser={isCurrentUser}
+											setCurrentItemBeingEdited={
+												setCurrentItemBeingEdited
+											}
+										/>
+									</StyledListItem>
+								)
+							)
 						) : (
 							<StyledText variant='body1'>
 								Add your first items! ✍🏽
