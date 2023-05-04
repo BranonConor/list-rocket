@@ -2,12 +2,12 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { Text } from '../typography/Text';
 import { Title } from '../typography/Title';
-import { useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { UserContext } from '../../contexts/UserContext';
-import { IUser } from '../../contexts/types';
+import { IListItem, IUser } from '../../contexts/types';
 import { ProfilePhoto } from '../ProfilePhoto';
 import { Dialog } from '../Dialog';
 
@@ -20,6 +20,7 @@ interface IProps {
 	id: string;
 	listId: string;
 	isCurrentUser: boolean;
+	setCurrentItemBeingEdited: Dispatch<SetStateAction<string>>;
 }
 
 export const ListItem: React.FC<IProps> = (props) => {
@@ -32,6 +33,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 		id,
 		listId,
 		isCurrentUser,
+		setCurrentItemBeingEdited,
 	} = props;
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
@@ -72,7 +74,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 	};
 
 	const handleEdit = () => {
-		alert('editing coming soon!');
+		setCurrentItemBeingEdited(id);
 	};
 
 	const handleCheck = async () => {
