@@ -28,7 +28,11 @@ export const Hero = () => {
 				/>
 			</StyledContent>
 			<StyledGraphicWrapper>
-				<StyledGraphic src='/graphics/hero.svg' alt='' />
+				<StyledGraphic
+					src='/graphics/hero.svg'
+					alt=''
+					draggable={false}
+				/>
 			</StyledGraphicWrapper>
 		</StyledHeroSection>
 	);
