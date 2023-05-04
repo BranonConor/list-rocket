@@ -6,9 +6,25 @@ import { WorkspaceContext } from '../contexts/WorkspaceContext';
 import { useContext } from 'react';
 import { Title } from '../components/typography/Title';
 import { Event } from '../components/events/Event';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+import { LoadingLayout } from '../components/layouts/LoadingLayout';
 
 const Workspace = () => {
 	const { currentEvent } = useContext(WorkspaceContext);
+	const router = useRouter();
+	const { data: session, status } = useSession();
+
+	if (status === 'unauthenticated') {
+		toast.error('You must be logged in to access that page!', {
+			toastId: 'unauthenticated-route-toast',
+		});
+		router.push('/');
+	}
+	if (status === 'loading') {
+		return <LoadingLayout>Loading...</LoadingLayout>;
+	}
 
 	return (
 		<DashLayout>
@@ -33,10 +49,6 @@ const Workspace = () => {
 
 export default Workspace;
 
-// export async function getServerSideProps(ctx) {
-//   const cookie = ctx.req ? ctx.req.headers.cookie : undefined;
-//   return {props: {cookie: cookie}}
-// }
 interface StyledWorkspaceWrapperProps {
 	isEventActive: boolean;
 }

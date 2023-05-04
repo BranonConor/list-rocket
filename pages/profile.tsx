@@ -5,11 +5,14 @@ import { UserContext } from '../contexts/UserContext';
 import styled from 'styled-components';
 import { ProfilePhoto } from '../components/ProfilePhoto';
 import { motion } from 'framer-motion';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { PrimaryButton } from '../components/buttons/PrimaryButton';
 import { Title } from '../components/typography/Title';
 import { Text } from '../components/typography/Text';
 import { EventContext } from '../contexts/EventContext';
+import { toast } from 'react-toastify';
+import router from 'next/router';
+import { LoadingLayout } from '../components/layouts/LoadingLayout';
 
 const Profile = () => {
 	const { user } = useContext(UserContext);
@@ -21,6 +24,17 @@ const Profile = () => {
 			callbackUrl: `/`,
 		});
 	};
+
+	const { data: session, status } = useSession();
+	if (status === 'unauthenticated') {
+		toast.error('You must be logged in to access that page!', {
+			toastId: 'unauthenticated-route-toast',
+		});
+		router.push('/');
+	}
+	if (status === 'loading') {
+		return <LoadingLayout>Loading...</LoadingLayout>;
+	}
 
 	return (
 		<DashLayout>
