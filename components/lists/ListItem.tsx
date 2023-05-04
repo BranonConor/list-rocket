@@ -136,16 +136,13 @@ export const ListItem: React.FC<IProps> = (props) => {
 		<>
 			<StyledCard
 				initial={{
-					top: -20,
-					opacity: 0,
+					top: 10,
 				}}
 				animate={{
 					top: 0,
-					opacity: 1,
 				}}
 				transition={{
-					delay: 0.1 + 0.05 * animationFactor,
-					duration: 0.5,
+					duration: 0.2,
 					type: 'spring',
 				}}
 				itemIsResolved={itemIsResolved}
@@ -224,7 +221,6 @@ const StyledCard = styled(motion.div)<ICardProps>(
     padding: 16px;
     border-radius: 5px;
     margin: 0 0 16px 0;
-	transition: 0.10s ease all;
 	background: ${colors.white};
 	width: 100%;
 	box-sizing: border-box;
