@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import { Title } from './typography/Title';
 import { Text } from './typography/Text';
+import { motion } from 'framer-motion';
 
 export const Hero = () => {
 	const router = useRouter();
