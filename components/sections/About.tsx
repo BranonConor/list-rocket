@@ -17,7 +17,7 @@ export const About = () => {
 					<Text variant='body1'>
 						Ever tried planning something with a group using
 						existing to-do list apps or other disjointed solutions?
-						Yeah, us too - that's why we decided to build
+						Yeah, us too - that&apos;s why we decided to build
 						ListRocket!
 					</Text>
 					<Text variant='body1'>
