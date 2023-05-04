@@ -1,7 +1,7 @@
 import Head from 'next/head';
-import { Footer } from '../components/Footer';
 import { Hero } from '../components/Hero';
 import { WebLayout } from '../components/layouts/WebLayout';
+import { About } from '../components/sections/About';
 
 const Index = () => {
 	return (
@@ -13,6 +13,7 @@ const Index = () => {
 
 			<main>
 				<Hero />
+				<About />
 			</main>
 		</WebLayout>
 	);
