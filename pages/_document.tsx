@@ -42,7 +42,7 @@ export default function MyDocument() {
 					href='https://fonts.googleapis.com/css2?family=Lalezar&family=Poppins:wght@300;400&display=swap'
 					rel='stylesheet'
 				/>
-			</Head>{' '}
+			</Head>
 			<body>
 				<Main />
 				<NextScript />
