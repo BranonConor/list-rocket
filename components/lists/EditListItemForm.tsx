@@ -44,7 +44,7 @@ export const EditListItemForm: React.FC<IProps> = (props) => {
 
 		try {
 			event.preventDefault();
-			if (name === '' || description === '' || link === '') {
+			if (name === '' || description === '') {
 				throw new Error();
 			}
 			await axios.put(`/api/list-items`, {
@@ -67,7 +67,7 @@ export const EditListItemForm: React.FC<IProps> = (props) => {
 				toastId: 'updated-list-item-toast',
 			});
 		} catch (axiosError) {
-			if (name === '' || description === '' || link === '') {
+			if (name === '' || description === '') {
 				toast.error(`Please fill out all list item fields. 👀`, {
 					toastId: 'list-item-value-not-found-toast',
 				});
@@ -112,9 +112,8 @@ export const EditListItemForm: React.FC<IProps> = (props) => {
 				/>
 				<StyledInput
 					value={linkValue}
-					placeholder={link}
+					placeholder={link || 'Add a link'}
 					name='link'
-					required
 					onChange={(e) => setLinkValue(e.target.value)}
 				/>
 				<StyledButtonWrapper>

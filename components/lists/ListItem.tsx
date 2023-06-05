@@ -150,9 +150,14 @@ export const ListItem: React.FC<IProps> = (props) => {
 				<StyledContentWrapper>
 					<Title variant='heading4'>{name}</Title>
 					<Text variant='body2'>{description}</Text>
-					<a href={link} target='_blank' rel='noopenner noreferrer'>
-						See item
-					</a>
+					{link === '' ? null : (
+						<a
+							href={link}
+							target='_blank'
+							rel='noopenner noreferrer'>
+							See item
+						</a>
+					)}
 				</StyledContentWrapper>
 				<StyledButtonContainer>
 					{itemIsObscured ? (
@@ -331,4 +336,7 @@ const StyledCheckmarkWrapper = styled.div`
 		width: 14px;
 		height: 14px;
 	}
+`;
+const StyledDisabledLink = styled(Text)`
+	opacity: 0.4;
 `;

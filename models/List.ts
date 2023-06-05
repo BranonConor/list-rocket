@@ -16,6 +16,7 @@ const ListItemSchema = new Schema({
 });
 
 const getListItemModel = () => mongoose.model('listitems', ListItemSchema);
+
 export const ListItem = (mongoose.models.listitems ||
 	getListItemModel()) as ReturnType<typeof getListItemModel>;
 
