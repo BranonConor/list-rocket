@@ -30,8 +30,8 @@ export const Event: React.FC = () => {
 		//bind a function to the event-channel-update trigger, update UI
 		channel.bind(`event-channel-update-${currentEvent?._id}`, (data) => {
 			//refresh the workspace if a change occured in the event you're working on
-			if (currentEvent?._id === data.event?._id) {
-				prepWorkspace(data.event?._id);
+			if (currentEvent?._id === data.eventId) {
+				prepWorkspace(data.eventId);
 			}
 		});
 		//unsubscribe to the event channel on cleanup

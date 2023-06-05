@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { PrimaryButton } from '../buttons/PrimaryButton';
 import { useContext } from 'react';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
-import { useRouter } from 'next/router';
 import { Title } from '../typography/Title';
 import { Text } from '../typography/Text';
 import { toast } from 'react-toastify';
@@ -14,9 +13,7 @@ import { SecondaryButton } from '../buttons/SecondaryButton';
 export const InviteCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
 	const { user } = useContext(UserContext);
-	const { currentEvent, clearWorkspace, prepWorkspace } =
-		useContext(WorkspaceContext);
-	const router = useRouter();
+	const { currentEvent, clearWorkspace } = useContext(WorkspaceContext);
 
 	const handleDecline = async () => {
 		try {

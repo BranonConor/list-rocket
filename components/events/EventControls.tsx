@@ -67,7 +67,7 @@ export const EventControls = () => {
 		//bind a function to the event-channel-update trigger, update UI
 		channel.bind(`event-channel-update-${currentEvent?._id}`, (data) => {
 			//refresh the workspace if a change occured in the event you're working on
-			if (currentEvent?._id === data.event?._id) {
+			if (currentEvent?._id === data.eventId) {
 				prepWorkspace(currentEvent?._id);
 
 				//for everyone but the user that made the change, notify
@@ -75,7 +75,7 @@ export const EventControls = () => {
 					data.user._id !== user._id &&
 					data.subAction === 'anonymous-mode-toggle'
 				) {
-					if (!data.event.anonymousModeIsOn) {
+					if (!data.anonymousModeIsOn) {
 						toast.info(
 							`A collaborator put the event in anonymous mode 🦸🏽‍♀️`,
 							{
