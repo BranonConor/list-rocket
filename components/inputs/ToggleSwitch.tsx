@@ -10,7 +10,6 @@ export const ToggleSwitch: React.FC<IProps> = (props) => {
 
 	return (
 		<StyledSwitchWrapper>
-			<span>off</span>
 			<StyledLabel
 				htmlFor='anonymous-toggle'
 				onClick={handleChange}
@@ -24,7 +23,6 @@ export const ToggleSwitch: React.FC<IProps> = (props) => {
 				checked={checked}
 				onChange={handleChange}
 			/>
-			<span>on</span>
 		</StyledSwitchWrapper>
 	);
 };
@@ -61,9 +59,7 @@ const StyledLabel = styled.label<StyledSpanProps>(
 	border-radius: 20px;
 	background: ${checked ? colors.success.bg : colors.error.bg};
 	padding: 2px;
-	margin: 0 8px;
     transition: 0.15s ease all;
-
 `
 );
 const StyledSwitch = styled.span<StyledSpanProps>(

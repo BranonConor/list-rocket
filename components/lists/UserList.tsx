@@ -55,9 +55,9 @@ export const UserList: React.FC<Props> = (props) => {
 						{isCurrentUser ? (
 							<>
 								Your List
-								{currentEvent.anonymousModeIsOn && (
+								{currentEvent?.controls?.anonymousModeIsOn && (
 									<motion.img
-										src='/icons/hidden.svg'
+										src='/icons/eye-dark.svg'
 										initial={{
 											scale: 0,
 											opacity: 0,
@@ -80,12 +80,12 @@ export const UserList: React.FC<Props> = (props) => {
 						)}
 					</StyledTitle>
 				</StyledListTitle>
-				<StyledContent>
+				<StyledContent listHeight={currentEvent?.controls?.listHeight}>
 					<>
 						{items?.length ? (
 							items?.map((item, index) =>
 								item._id === currentItemBeingEdited ? (
-									<StyledListItem key={item.name}>
+									<StyledListItem key={item._id}>
 										<EditListItemForm
 											listItemId={item._id}
 											setCurrentItemBeingEdited={
@@ -97,7 +97,7 @@ export const UserList: React.FC<Props> = (props) => {
 										/>
 									</StyledListItem>
 								) : (
-									<StyledListItem key={item.name}>
+									<StyledListItem key={item._id}>
 										<ListItem
 											name={item.name}
 											description={item.description}
@@ -159,16 +159,39 @@ const StyledListTitle = styled.div(
 	}
 `
 );
-const StyledContent = styled.ul`
+interface IStyledContentProps {
+	listHeight: string;
+}
+enum LIST_HEIGHTS {
+	'Small' = '332px',
+	'Medium' = '532px',
+	'Large' = '732px',
+}
+const StyledContent = styled.ul<IStyledContentProps>(
+	({ listHeight }) => `
 	box-sizing: border-box;
 	width: 100%;
 	list-style: none;
 	padding: 0;
-	margin: 8px 0 0 0;
-`;
+	margin: 8px 0 16px 0;
+	max-height: ${LIST_HEIGHTS[listHeight] || '10000px'};
+	border-radius: 5px;
+	overflow-y: auto;
+	transition: ${LIST_HEIGHTS[listHeight] ? '0.4s' : '2s'} ease all;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+`
+);
 const StyledListItem = styled.li`
 	width: 100%;
 	box-sizing: border-box;
+	margin: 0 0 16px 0;
+
+	&:last-of-type {
+		margin: 0 0 0 0;
+	}
 `;
 const StyledText = styled(Text)`
 	margin: 0 0 16px 0;
@@ -182,5 +205,7 @@ const StyledTitle = styled(Title)`
 		margin: 0 16px;
 		position: relative;
 		top: -2px;
+		width: 20px;
+		height: 20px;
 	}
 `;

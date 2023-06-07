@@ -11,11 +11,14 @@ export interface IEvent {
 	_id: string;
 	name: string;
 	description: string;
-	anonymousModeIsOn: boolean;
 	creator: IUser;
 	collaborators: ICollaborator[];
 	pendingCollaborators: ICollaborator[];
 	lists: IList[];
+	controls: {
+		anonymousModeIsOn: boolean;
+		listHeight: 'Small' | 'Medium' | 'Large' | 'No limit';
+	};
 }
 export interface IEventContext {
 	events: IEvent[];

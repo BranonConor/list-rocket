@@ -9,15 +9,57 @@ import { UserContext } from '../../contexts/UserContext';
 import Pusher from 'pusher-js';
 import { Dialog } from '../Dialog';
 import { IEvent, IUser } from '../../contexts/types';
+import { Title } from '../typography/Title';
 
 export const EventControls = () => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
 
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
+	const [accordionIsOpen, setAccordionIsOpen] = useState(true);
+	const [listHeightValue, setListHeightValue] = useState(
+		currentEvent?.controls?.listHeight
+	);
 
 	const handleChange = () => {
 		setDialogIsOpen(true);
+	};
+
+	const handleAccordionClick = () => {
+		setAccordionIsOpen(!accordionIsOpen);
+	};
+
+	const handleListHeightChange = async (e) => {
+		setListHeightValue(e.target.value);
+
+		try {
+			await axios.put(`/api/events/${currentEvent._id}`, {
+				eventId: currentEvent._id,
+				action: 'list-height-change',
+				listHeight: e.target.value,
+			});
+
+			prepWorkspace(currentEvent._id);
+
+			// Reversing this logic creates the correct UI, since this toast call
+			// doesn't yet know of the new currentEvent state
+			toast.info(`List heights set to: ${e.target.value}`, {
+				toastId: `anonymous-mode-on-toast-${e.target.value}`,
+			});
+
+			// ping Pusher channel
+			await axios.post('/api/pusher', {
+				eventId: currentEvent?._id,
+				user: user,
+				action: 'event-update',
+				subAction: 'list-height-change',
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error(`Something went wrong 😵‍💫`, {
+				toastId: 'anonymous-mode-off-toast',
+			});
+		}
 	};
 
 	const handleToggleChange = async (currentEvent: IEvent, user: IUser) => {
@@ -31,7 +73,7 @@ export const EventControls = () => {
 
 			//Reversing this logic creates the correct UI, since this toast call
 			//doesn't yet know of the new currentEvent state
-			if (!currentEvent.anonymousModeIsOn) {
+			if (!currentEvent?.controls?.anonymousModeIsOn) {
 				toast.info(`Event is now in anonymous mode 🦸🏽‍♀️`, {
 					toastId: 'anonymous-mode-on-toast',
 				});
@@ -44,10 +86,11 @@ export const EventControls = () => {
 			setDialogIsOpen(false);
 			//ping Pusher channel
 			await axios.post('/api/pusher', {
-				event: currentEvent,
+				eventId: currentEvent?._id,
 				user: user,
 				action: 'event-update',
 				subAction: 'anonymous-mode-toggle',
+				anonymousModeIsOn: currentEvent?.controls?.anonymousModeIsOn,
 			});
 		} catch (error) {
 			console.log(error);
@@ -93,6 +136,16 @@ export const EventControls = () => {
 						);
 					}
 				}
+
+				//list height change
+				if (
+					data.user._id !== user._id &&
+					data.subAction === 'list-height-change'
+				) {
+					toast.info(`A collaborator updated the list heights`, {
+						toastId: 'list-height-change-from-other-client-toast',
+					});
+				}
 			}
 		});
 		//unsubscribe to the event channel on cleanup
@@ -103,6 +156,7 @@ export const EventControls = () => {
 
 	return (
 		<StyledEventControls
+			accordionIsOpen={accordionIsOpen}
 			initial={{
 				top: -20,
 				opacity: 0,
@@ -112,19 +166,39 @@ export const EventControls = () => {
 				opacity: 1,
 			}}
 			transition={{
-				duration: 0.25,
+				duration: 0.1,
 				type: 'spring',
 				delay: 0.05,
 			}}>
+			<StyledTitleRow
+				onClick={handleAccordionClick}
+				accordionIsOpen={accordionIsOpen}>
+				<StyledTitle variant='heading3'>Event Controls</StyledTitle>
+				<img src='/icons/chevron.svg' alt='' />
+			</StyledTitleRow>
 			<StyledRow>
 				<StyledAnonymousLabel>
-					<img src='/icons/hidden.svg' alt='' />
+					<StyledIcon src='/icons/eye-dark.svg' alt='' />
 					Anonymous Mode:
 				</StyledAnonymousLabel>
 				<ToggleSwitch
 					handleChange={handleChange}
-					checked={currentEvent.anonymousModeIsOn}
+					checked={currentEvent?.controls?.anonymousModeIsOn}
 				/>
+			</StyledRow>
+			<StyledRow>
+				<StyledAnonymousLabel>
+					<StyledIcon src='/icons/up-and-down.svg' alt='' />
+					List Height:
+				</StyledAnonymousLabel>
+				<StyledSselect
+					onChange={handleListHeightChange}
+					value={currentEvent?.controls?.listHeight}>
+					<option value='No limit'>No Limit</option>
+					<option value='Small'>Small</option>
+					<option value='Medium'>Medium</option>
+					<option value='Large'>Large</option>
+				</StyledSselect>
 			</StyledRow>
 			{dialogIsOpen && (
 				<Dialog
@@ -140,19 +214,28 @@ export const EventControls = () => {
 	);
 };
 
-const StyledEventControls = styled(motion.div)(
-	({ theme: { colors } }) => `
+interface IStyledEventControlsProps {
+	accordionIsOpen: boolean;
+}
+const StyledEventControls = styled(motion.div)<IStyledEventControlsProps>(
+	({ accordionIsOpen, theme: { colors } }) => `
     position: relative;
 	padding: 16px;
     border-radius: 10px;
 	box-sizing: border-box;
     background: ${colors.bgLight};
-	height: 100%;
+	height: ${accordionIsOpen ? '204px' : '70px'};
+	max-height: 100%;
 	width: 100%;
 	max-width: 100%;
 	display: flex;
-	align-items: center;
-	justify-content: flex-start;
+	flex-direction: column;
+	overflow: hidden;
+	transition: 0.1s ease all;
+
+	@media only screen and (max-width: 950px) {
+		height: ${accordionIsOpen ? '70px' : '172px'};
+	}
 `
 );
 
@@ -166,9 +249,56 @@ const StyledAnonymousLabel = styled.span`
 		margin: 0 8px 0 0;
 	}
 `;
+const StyledTitleRow = styled.button<IStyledEventControlsProps>(
+	({ accordionIsOpen }) => `
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 8px 0 16px 0;
+	width: 100%;
+	outline: none;
+	border: none;
+	cursor: pointer;
+	transition: 0.2s ease all;
+
+	img {
+		transform: ${accordionIsOpen ? 'rotate(180deg)' : 'rotate(0)'};
+		transition: 0.2s ease all;
+	}
+
+	@media only screen and (max-width: 950px) {
+		img {
+			transform: ${accordionIsOpen ? 'rotate(0deg)' : 'rotate(180deg)'};
+		}
+	}
+`
+);
 const StyledRow = styled.div`
 	display: flex;
 	align-items: center;
 	margin: 8px 0;
 	width: 100%;
+`;
+const StyledSselect = styled.select(
+	({ theme: { colors, typography } }) => `
+	width: auto;
+	font-family: ${typography.font.body1};
+	font-size: ${typography.font.caption};
+	border-radius: 100px;
+	padding: 2px 4px;
+	border: 2px solid ${colors.bgDark};
+	background: ${colors.chip.defaultBg};
+	cursor: pointer;
+
+	&:hover {
+		background: ${colors.chip.bgLight};
+	}
+`
+);
+const StyledIcon = styled.img`
+	width: 20px;
+	height: 20px;
+`;
+const StyledTitle = styled(Title)`
+	margin: 0;
 `;
