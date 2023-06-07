@@ -16,12 +16,17 @@ export const EventControls = () => {
 	const { user } = useContext(UserContext);
 
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
+	const [accordionIsOpen, setAccordionIsOpen] = useState(true);
 	const [listHeightValue, setListHeightValue] = useState(
 		currentEvent?.controls?.listHeight
 	);
 
 	const handleChange = () => {
 		setDialogIsOpen(true);
+	};
+
+	const handleAccordionClick = () => {
+		setAccordionIsOpen(!accordionIsOpen);
 	};
 
 	const handleListHeightChange = async (e) => {
@@ -151,6 +156,7 @@ export const EventControls = () => {
 
 	return (
 		<StyledEventControls
+			accordionIsOpen={accordionIsOpen}
 			initial={{
 				top: -20,
 				opacity: 0,
@@ -160,11 +166,16 @@ export const EventControls = () => {
 				opacity: 1,
 			}}
 			transition={{
-				duration: 0.25,
+				duration: 0.1,
 				type: 'spring',
 				delay: 0.05,
 			}}>
-			<Title variant='heading3'>Event Controls</Title>
+			<StyledTitleRow
+				onClick={handleAccordionClick}
+				accordionIsOpen={accordionIsOpen}>
+				<StyledTitle variant='heading3'>Event Controls</StyledTitle>
+				<img src='/icons/chevron.svg' alt='' />
+			</StyledTitleRow>
 			<StyledRow>
 				<StyledAnonymousLabel>
 					<StyledIcon src='/icons/eye-dark.svg' alt='' />
@@ -203,18 +214,28 @@ export const EventControls = () => {
 	);
 };
 
-const StyledEventControls = styled(motion.div)(
-	({ theme: { colors } }) => `
+interface IStyledEventControlsProps {
+	accordionIsOpen: boolean;
+}
+const StyledEventControls = styled(motion.div)<IStyledEventControlsProps>(
+	({ accordionIsOpen, theme: { colors } }) => `
     position: relative;
 	padding: 16px;
     border-radius: 10px;
 	box-sizing: border-box;
     background: ${colors.bgLight};
-	height: 100%;
+	height: ${accordionIsOpen ? '204px' : '70px'};
+	max-height: 100%;
 	width: 100%;
 	max-width: 100%;
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
+	transition: 0.1s ease all;
+
+	@media only screen and (max-width: 950px) {
+		height: ${accordionIsOpen ? '70px' : '172px'};
+	}
 `
 );
 
@@ -228,6 +249,30 @@ const StyledAnonymousLabel = styled.span`
 		margin: 0 8px 0 0;
 	}
 `;
+const StyledTitleRow = styled.button<IStyledEventControlsProps>(
+	({ accordionIsOpen }) => `
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 8px 0 16px 0;
+	width: 100%;
+	outline: none;
+	border: none;
+	cursor: pointer;
+	transition: 0.2s ease all;
+
+	img {
+		transform: ${accordionIsOpen ? 'rotate(180deg)' : 'rotate(0)'};
+		transition: 0.2s ease all;
+	}
+
+	@media only screen and (max-width: 950px) {
+		img {
+			transform: ${accordionIsOpen ? 'rotate(0deg)' : 'rotate(180deg)'};
+		}
+	}
+`
+);
 const StyledRow = styled.div`
 	display: flex;
 	align-items: center;
@@ -253,4 +298,7 @@ const StyledSselect = styled.select(
 const StyledIcon = styled.img`
 	width: 20px;
 	height: 20px;
+`;
+const StyledTitle = styled(Title)`
+	margin: 0;
 `;
