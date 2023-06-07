@@ -41,14 +41,13 @@ export const EventControls = () => {
 				toastId: `anonymous-mode-on-toast-${e.target.value}`,
 			});
 
-			// // ping Pusher channel
-			// await axios.post('/api/pusher', {
-			// 	eventId: currentEvent?._id,
-			// 	user: user,
-			// 	action: 'event-update',
-			// 	subAction: 'anonymous-mode-toggle',
-			// 	anonymousModeIsOn: currentEvent?.controls?.anonymousModeIsOn,
-			// });
+			// ping Pusher channel
+			await axios.post('/api/pusher', {
+				eventId: currentEvent?._id,
+				user: user,
+				action: 'event-update',
+				subAction: 'list-height-change',
+			});
 		} catch (error) {
 			console.log(error);
 			toast.error(`Something went wrong 😵‍💫`, {
@@ -131,6 +130,16 @@ export const EventControls = () => {
 						);
 					}
 				}
+
+				//list height change
+				if (
+					data.user._id !== user._id &&
+					data.subAction === 'list-height-change'
+				) {
+					toast.info(`A collaborator updated the max list heights`, {
+						toastId: 'list-height-change-from-other-client-toast',
+					});
+				}
 			}
 		});
 		//unsubscribe to the event channel on cleanup
@@ -167,7 +176,7 @@ export const EventControls = () => {
 			<StyledRow>
 				<StyledAnonymousLabel>
 					<img src='/icons/hidden.svg' alt='' />
-					List Max-height:
+					List Height:
 				</StyledAnonymousLabel>
 				<select
 					onChange={handleListHeightChange}

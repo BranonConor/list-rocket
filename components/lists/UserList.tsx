@@ -80,7 +80,7 @@ export const UserList: React.FC<Props> = (props) => {
 						)}
 					</StyledTitle>
 				</StyledListTitle>
-				<StyledContent>
+				<StyledContent listHeight={currentEvent?.controls?.listHeight}>
 					<>
 						{items?.length ? (
 							items?.map((item, index) =>
@@ -159,20 +159,32 @@ const StyledListTitle = styled.div(
 	}
 `
 );
-const StyledContent = styled.ul`
+interface IStyledContentProps {
+	listHeight: string;
+}
+enum LIST_HEIGHTS {
+	'Small' = '332px',
+	'Medium' = '532px',
+	'Large' = '732px',
+	'No Limit' = 'auto',
+}
+const StyledContent = styled.ul<IStyledContentProps>(
+	({ listHeight }) => `
 	box-sizing: border-box;
 	width: 100%;
 	list-style: none;
 	padding: 0;
 	margin: 8px 0 16px 0;
-	max-height: 632px;
+	max-height: ${LIST_HEIGHTS[listHeight]};
 	border-radius: 5px;
 	overflow-y: auto;
+	transition: 0.2s ease all;
 
 	&::-webkit-scrollbar {
 		display: none;
 	}
-`;
+`
+);
 const StyledListItem = styled.li`
 	width: 100%;
 	box-sizing: border-box;
