@@ -31,7 +31,7 @@ export const EventControls = () => {
 
 			//Reversing this logic creates the correct UI, since this toast call
 			//doesn't yet know of the new currentEvent state
-			if (!currentEvent.anonymousModeIsOn) {
+			if (!currentEvent?.controls?.anonymousModeIsOn) {
 				toast.info(`Event is now in anonymous mode 🦸🏽‍♀️`, {
 					toastId: 'anonymous-mode-on-toast',
 				});
@@ -44,10 +44,11 @@ export const EventControls = () => {
 			setDialogIsOpen(false);
 			//ping Pusher channel
 			await axios.post('/api/pusher', {
-				event: currentEvent,
+				eventId: currentEvent?._id,
 				user: user,
 				action: 'event-update',
 				subAction: 'anonymous-mode-toggle',
+				anonymousModeIsOn: currentEvent?.controls?.anonymousModeIsOn,
 			});
 		} catch (error) {
 			console.log(error);
@@ -123,7 +124,7 @@ export const EventControls = () => {
 				</StyledAnonymousLabel>
 				<ToggleSwitch
 					handleChange={handleChange}
-					checked={currentEvent.anonymousModeIsOn}
+					checked={currentEvent?.controls?.anonymousModeIsOn}
 				/>
 			</StyledRow>
 			{dialogIsOpen && (

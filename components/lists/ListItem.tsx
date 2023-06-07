@@ -42,7 +42,8 @@ export const ListItem: React.FC<IProps> = (props) => {
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
 	// calculate whether or not to show crossed off items
-	const itemIsObscured = isCurrentUser && currentEvent.anonymousModeIsOn;
+	const itemIsObscured =
+		isCurrentUser && currentEvent.controls.anonymousModeIsOn;
 	const itemIsResolved = Boolean(resolvedBy);
 
 	const handleDelete = async (e) => {
@@ -225,7 +226,6 @@ const StyledCard = styled(motion.div)<ICardProps>(
 	position: relative;
     padding: 16px;
     border-radius: 5px;
-    margin: 0 0 16px 0;
 	background: ${colors.white};
 	width: 100%;
 	box-sizing: border-box;

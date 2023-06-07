@@ -5,15 +5,15 @@ export default async function handler(req, res) {
 	//event routes
 	if (req.body.action === 'event-update') {
 		await pusherClient.trigger(
-			`event-channel-${req.body.event._id}`,
-			`event-channel-update-${req.body.event._id}`,
+			`event-channel-${req.body.eventId}`,
+			`event-channel-update-${req.body.eventId}`,
 			{
-				eventId: req.body.event._id,
+				eventId: req.body.eventId,
 				user: req.body.user,
 				//Many different components call this route to update the event. This
 				//subAction value helps specify where the call comes from
 				subAction: req.body.subAction,
-				anonymousModeIsOn: req.body.event.anonymousModeIsOn,
+				anonymousModeIsOn: req.body.anonymousModeIsOn,
 			}
 		);
 

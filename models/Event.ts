@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 const EventSchema = new Schema({
 	name: String,
 	description: String,
-	anonymousModeIsOn: Boolean,
 	creator: {
 		type: Schema.Types.ObjectId,
 		ref: 'users',
@@ -27,6 +26,10 @@ const EventSchema = new Schema({
 			ref: 'users',
 		},
 	],
+	controls: {
+		anonymousModeIsOn: Boolean,
+		listHeight: String,
+	},
 });
 
 const getModel = () => mongoose.model('events', EventSchema);

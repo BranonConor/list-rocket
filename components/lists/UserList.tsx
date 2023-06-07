@@ -55,7 +55,7 @@ export const UserList: React.FC<Props> = (props) => {
 						{isCurrentUser ? (
 							<>
 								Your List
-								{currentEvent.anonymousModeIsOn && (
+								{currentEvent?.controls?.anonymousModeIsOn && (
 									<motion.img
 										src='/icons/hidden.svg'
 										initial={{
@@ -164,11 +164,23 @@ const StyledContent = styled.ul`
 	width: 100%;
 	list-style: none;
 	padding: 0;
-	margin: 8px 0 0 0;
+	margin: 8px 0 16px 0;
+	max-height: 632px;
+	border-radius: 5px;
+	overflow-y: auto;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
 `;
 const StyledListItem = styled.li`
 	width: 100%;
 	box-sizing: border-box;
+	margin: 0 0 16px 0;
+
+	&:last-of-type {
+		margin: 0 0 0 0;
+	}
 `;
 const StyledText = styled(Text)`
 	margin: 0 0 16px 0;

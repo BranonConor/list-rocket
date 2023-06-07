@@ -74,7 +74,8 @@ const eventApiRoutes = async (req, res) => {
 
 	if (req.method === 'PUT' && req.body.action === 'anonymous-mode-toggle') {
 		const event = await Event.findById(req.body.eventId);
-		event.anonymousModeIsOn = !event.anonymousModeIsOn;
+		const value = event?.controls?.anonymousModeIsOn;
+		event.controls.anonymousModeIsOn = !value;
 		event.save();
 		res.json({ status: 200, data: event });
 	}
