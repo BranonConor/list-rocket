@@ -15,9 +15,46 @@ export const EventControls = () => {
 	const { user } = useContext(UserContext);
 
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
+	const [listHeightValue, setListHeightValue] = useState(
+		currentEvent?.controls?.listHeight
+	);
 
 	const handleChange = () => {
 		setDialogIsOpen(true);
+	};
+
+	const handleListHeightChange = async (e) => {
+		setListHeightValue(e.target.value);
+
+		try {
+			await axios.put(`/api/events/${currentEvent._id}`, {
+				eventId: currentEvent._id,
+				action: 'list-height-change',
+				listHeight: e.target.value,
+			});
+
+			prepWorkspace(currentEvent._id);
+
+			// Reversing this logic creates the correct UI, since this toast call
+			// doesn't yet know of the new currentEvent state
+			toast.info(`List heights set to: ${e.target.value}`, {
+				toastId: `anonymous-mode-on-toast-${e.target.value}`,
+			});
+
+			// // ping Pusher channel
+			// await axios.post('/api/pusher', {
+			// 	eventId: currentEvent?._id,
+			// 	user: user,
+			// 	action: 'event-update',
+			// 	subAction: 'anonymous-mode-toggle',
+			// 	anonymousModeIsOn: currentEvent?.controls?.anonymousModeIsOn,
+			// });
+		} catch (error) {
+			console.log(error);
+			toast.error(`Something went wrong 😵‍💫`, {
+				toastId: 'anonymous-mode-off-toast',
+			});
+		}
 	};
 
 	const handleToggleChange = async (currentEvent: IEvent, user: IUser) => {
@@ -127,6 +164,20 @@ export const EventControls = () => {
 					checked={currentEvent?.controls?.anonymousModeIsOn}
 				/>
 			</StyledRow>
+			<StyledRow>
+				<StyledAnonymousLabel>
+					<img src='/icons/hidden.svg' alt='' />
+					List Max-height:
+				</StyledAnonymousLabel>
+				<select
+					onChange={handleListHeightChange}
+					value={listHeightValue}>
+					<option value='No limit'>No Limit</option>
+					<option value='Small'>Small</option>
+					<option value='Medium'>Medium</option>
+					<option value='Large'>Large</option>
+				</select>
+			</StyledRow>
 			{dialogIsOpen && (
 				<Dialog
 					title='Anonymous mode'
@@ -152,8 +203,9 @@ const StyledEventControls = styled(motion.div)(
 	width: 100%;
 	max-width: 100%;
 	display: flex;
-	align-items: center;
-	justify-content: flex-start;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
 `
 );
 

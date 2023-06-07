@@ -17,7 +17,7 @@ export interface IEvent {
 	lists: IList[];
 	controls: {
 		anonymousModeIsOn: boolean;
-		listHeight: 'small' | 'medium' | 'large';
+		listHeight: 'Small' | 'Medium' | 'Large' | 'No limit';
 	};
 }
 export interface IEventContext {

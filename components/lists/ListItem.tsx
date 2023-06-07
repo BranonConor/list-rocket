@@ -29,7 +29,6 @@ export const ListItem: React.FC<IProps> = (props) => {
 		description,
 		link,
 		resolvedBy,
-		animationFactor,
 		id,
 		listId,
 		isCurrentUser,
@@ -43,7 +42,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 
 	// calculate whether or not to show crossed off items
 	const itemIsObscured =
-		isCurrentUser && currentEvent.controls.anonymousModeIsOn;
+		isCurrentUser && currentEvent?.controls?.anonymousModeIsOn;
 	const itemIsResolved = Boolean(resolvedBy);
 
 	const handleDelete = async (e) => {

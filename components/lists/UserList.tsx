@@ -85,7 +85,7 @@ export const UserList: React.FC<Props> = (props) => {
 						{items?.length ? (
 							items?.map((item, index) =>
 								item._id === currentItemBeingEdited ? (
-									<StyledListItem key={item.name}>
+									<StyledListItem key={item._id}>
 										<EditListItemForm
 											listItemId={item._id}
 											setCurrentItemBeingEdited={
@@ -97,7 +97,7 @@ export const UserList: React.FC<Props> = (props) => {
 										/>
 									</StyledListItem>
 								) : (
-									<StyledListItem key={item.name}>
+									<StyledListItem key={item._id}>
 										<ListItem
 											name={item.name}
 											description={item.description}

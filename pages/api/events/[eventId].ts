@@ -79,6 +79,13 @@ const eventApiRoutes = async (req, res) => {
 		event.save();
 		res.json({ status: 200, data: event });
 	}
+
+	if (req.method === 'PUT' && req.body.action === 'list-height-change') {
+		const event = await Event.findById(req.body.eventId);
+		event.controls.listHeight = req.body.listHeight;
+		event.save();
+		res.json({ status: 200, data: event });
+	}
 };
 
 export default eventApiRoutes;
