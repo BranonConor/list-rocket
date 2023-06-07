@@ -57,7 +57,7 @@ export const UserList: React.FC<Props> = (props) => {
 								Your List
 								{currentEvent?.controls?.anonymousModeIsOn && (
 									<motion.img
-										src='/icons/hidden.svg'
+										src='/icons/eye-dark.svg'
 										initial={{
 											scale: 0,
 											opacity: 0,
@@ -166,7 +166,6 @@ enum LIST_HEIGHTS {
 	'Small' = '332px',
 	'Medium' = '532px',
 	'Large' = '732px',
-	'No Limit' = 'auto',
 }
 const StyledContent = styled.ul<IStyledContentProps>(
 	({ listHeight }) => `
@@ -175,10 +174,10 @@ const StyledContent = styled.ul<IStyledContentProps>(
 	list-style: none;
 	padding: 0;
 	margin: 8px 0 16px 0;
-	max-height: ${LIST_HEIGHTS[listHeight]};
+	max-height: ${LIST_HEIGHTS[listHeight] || '10000px'};
 	border-radius: 5px;
 	overflow-y: auto;
-	transition: 0.2s ease all;
+	transition: ${LIST_HEIGHTS[listHeight] ? '0.4s' : '2s'} ease all;
 
 	&::-webkit-scrollbar {
 		display: none;
@@ -206,5 +205,7 @@ const StyledTitle = styled(Title)`
 		margin: 0 16px;
 		position: relative;
 		top: -2px;
+		width: 20px;
+		height: 20px;
 	}
 `;

@@ -9,6 +9,7 @@ import { UserContext } from '../../contexts/UserContext';
 import Pusher from 'pusher-js';
 import { Dialog } from '../Dialog';
 import { IEvent, IUser } from '../../contexts/types';
+import { Title } from '../typography/Title';
 
 export const EventControls = () => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
@@ -136,7 +137,7 @@ export const EventControls = () => {
 					data.user._id !== user._id &&
 					data.subAction === 'list-height-change'
 				) {
-					toast.info(`A collaborator updated the max list heights`, {
+					toast.info(`A collaborator updated the list heights`, {
 						toastId: 'list-height-change-from-other-client-toast',
 					});
 				}
@@ -163,9 +164,10 @@ export const EventControls = () => {
 				type: 'spring',
 				delay: 0.05,
 			}}>
+			<Title variant='heading3'>Event Controls</Title>
 			<StyledRow>
 				<StyledAnonymousLabel>
-					<img src='/icons/hidden.svg' alt='' />
+					<StyledIcon src='/icons/eye-dark.svg' alt='' />
 					Anonymous Mode:
 				</StyledAnonymousLabel>
 				<ToggleSwitch
@@ -175,17 +177,17 @@ export const EventControls = () => {
 			</StyledRow>
 			<StyledRow>
 				<StyledAnonymousLabel>
-					<img src='/icons/hidden.svg' alt='' />
+					<StyledIcon src='/icons/up-and-down.svg' alt='' />
 					List Height:
 				</StyledAnonymousLabel>
-				<select
+				<StyledSselect
 					onChange={handleListHeightChange}
-					value={listHeightValue}>
+					value={currentEvent?.controls?.listHeight}>
 					<option value='No limit'>No Limit</option>
 					<option value='Small'>Small</option>
 					<option value='Medium'>Medium</option>
 					<option value='Large'>Large</option>
-				</select>
+				</StyledSselect>
 			</StyledRow>
 			{dialogIsOpen && (
 				<Dialog
@@ -213,8 +215,6 @@ const StyledEventControls = styled(motion.div)(
 	max-width: 100%;
 	display: flex;
 	flex-direction: column;
-	align-items: flex-start;
-	justify-content: center;
 `
 );
 
@@ -233,4 +233,24 @@ const StyledRow = styled.div`
 	align-items: center;
 	margin: 8px 0;
 	width: 100%;
+`;
+const StyledSselect = styled.select(
+	({ theme: { colors, typography } }) => `
+	width: auto;
+	font-family: ${typography.font.body1};
+	font-size: ${typography.font.caption};
+	border-radius: 100px;
+	padding: 2px 4px;
+	border: 2px solid ${colors.bgDark};
+	background: ${colors.chip.defaultBg};
+	cursor: pointer;
+
+	&:hover {
+		background: ${colors.chip.bgLight};
+	}
+`
+);
+const StyledIcon = styled.img`
+	width: 20px;
+	height: 20px;
 `;
