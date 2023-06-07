@@ -21,6 +21,10 @@ export const EventControls = () => {
 		currentEvent?.controls?.listHeight
 	);
 
+	useEffect(() => {
+		setListHeightValue(currentEvent?.controls?.listHeight);
+	}, [prepWorkspace]);
+
 	const handleChange = () => {
 		setDialogIsOpen(true);
 	};
@@ -191,14 +195,14 @@ export const EventControls = () => {
 					<StyledIcon src='/icons/up-and-down.svg' alt='' />
 					List Height:
 				</StyledAnonymousLabel>
-				<StyledSselect
+				<StyledSelect
 					onChange={handleListHeightChange}
-					value={currentEvent?.controls?.listHeight}>
+					value={listHeightValue}>
 					<option value='No limit'>No Limit</option>
 					<option value='Small'>Small</option>
 					<option value='Medium'>Medium</option>
 					<option value='Large'>Large</option>
-				</StyledSselect>
+				</StyledSelect>
 			</StyledRow>
 			{dialogIsOpen && (
 				<Dialog
@@ -250,7 +254,7 @@ const StyledAnonymousLabel = styled.span`
 	}
 `;
 const StyledTitleRow = styled.button<IStyledEventControlsProps>(
-	({ accordionIsOpen }) => `
+	({ accordionIsOpen, theme: { colors } }) => `
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -260,6 +264,8 @@ const StyledTitleRow = styled.button<IStyledEventControlsProps>(
 	border: none;
 	cursor: pointer;
 	transition: 0.2s ease all;
+	color: ${colors.font.body};
+	background: transparent;
 
 	img {
 		transform: ${accordionIsOpen ? 'rotate(180deg)' : 'rotate(0)'};
@@ -279,11 +285,12 @@ const StyledRow = styled.div`
 	margin: 8px 0;
 	width: 100%;
 `;
-const StyledSselect = styled.select(
+const StyledSelect = styled.select(
 	({ theme: { colors, typography } }) => `
 	width: auto;
 	font-family: ${typography.font.body1};
-	font-size: ${typography.font.caption};
+	font-size: ${typography.size.caption};
+	color: ${colors.font.body};
 	border-radius: 100px;
 	padding: 2px 4px;
 	border: 2px solid ${colors.bgDark};
@@ -299,6 +306,9 @@ const StyledIcon = styled.img`
 	width: 20px;
 	height: 20px;
 `;
-const StyledTitle = styled(Title)`
+const StyledTitle = styled(Title)(
+	({ theme: { colors } }) => `
 	margin: 0;
-`;
+	color: ${colors.font.body};
+`
+);
