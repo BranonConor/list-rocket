@@ -224,6 +224,10 @@ const StyledInfoCard = styled.div(
 	border-radius: 10px;
 	height: 50px;
 	margin: 0 0 16px 0;
+
+	@media only screen and (max-width: 768px) {
+		display: none;
+	}
 `
 );
 
