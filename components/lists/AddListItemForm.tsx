@@ -45,7 +45,7 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 
 			//ping Pusher channel
 			await axios.post('/api/pusher', {
-				event: currentEvent,
+				eventId: currentEvent._id,
 				user: user,
 				action: 'event-update',
 			});

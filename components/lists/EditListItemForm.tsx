@@ -58,7 +58,7 @@ export const EditListItemForm: React.FC<IProps> = (props) => {
 
 			//ping Pusher channel, this will trigger a rerender in the UserList
 			await axios.post('/api/pusher', {
-				event: currentEvent,
+				eventId: currentEvent._id,
 				user: user,
 				action: 'event-update',
 			});

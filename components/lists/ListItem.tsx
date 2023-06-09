@@ -57,7 +57,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 
 			//ping Pusher channel
 			await axios.post('/api/pusher', {
-				event: currentEvent,
+				eventId: currentEvent._id,
 				user: user,
 				action: 'event-update',
 			});
@@ -89,7 +89,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 
 			//ping Pusher channel
 			await axios.post('/api/pusher', {
-				event: currentEvent,
+				eventId: currentEvent._id,
 				user: user,
 				action: 'event-update',
 			});
@@ -116,7 +116,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 
 			//ping Pusher channel
 			await axios.post('/api/pusher', {
-				event: currentEvent,
+				eventId: currentEvent._id,
 				user: user,
 				action: 'event-update',
 			});
