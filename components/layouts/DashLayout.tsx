@@ -2,7 +2,8 @@ import Head from 'next/head';
 import { ProductNav } from '../navbars/ProductNav';
 import styled from 'styled-components';
 import { Footer } from '../Footer';
-import { Popover, PopupButton, Widget } from '@typeform/embed-react';
+import { PopupButton } from '@typeform/embed-react';
+import styles from './DashLayout.module.css';
 
 export const DashLayout = ({ children }) => {
 	const siteTitle = 'A productivity tool for streamlining events';
@@ -35,13 +36,9 @@ export const DashLayout = ({ children }) => {
 				</StyledMainSection>
 			</StyledContainer>
 
-			<PopupButton
-				id='l5g8afqA'
-				style={{ fontSize: 20 }}
-				className='my-button'>
-				click to open form in popup
+			<PopupButton id='l5g8afqA' className={styles.TypeformButton}>
+				👋
 			</PopupButton>
-			<Popover id='l5g8afqA' buttonColor='#BB6BD9' customIcon='👋' />
 		</StyledWrapper>
 	);
 };
@@ -59,7 +56,7 @@ const StyledHeader = styled.header`
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
-		height: 64px;
+		height: 56px;
 		position: fixed;
 		bottom: 0;
 	}
@@ -82,5 +79,16 @@ const StyledMainSection = styled.div`
 	@media only screen and (max-width: 768px) {
 		width: 100%;
 		padding: 16px 16px 80px 16px;
+	}
+`;
+const StyledPopoverWrapper = styled.div`
+	@media only screen and (max-width: 950px) {
+		.TypeformButton {
+			.tf-v1-popover {
+				.tf-v1-popover-button {
+					background: black;
+				}
+			}
+		}
 	}
 `;
