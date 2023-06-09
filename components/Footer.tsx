@@ -4,7 +4,9 @@ export const Footer = () => {
 	return (
 		<StyledFooter>
 			App by
-			<StyledAnchor href='https://www.branon.dev' target='_blank'>
+			<StyledAnchor
+				href='https://liftoff-tech.vercel.app'
+				target='_blank'>
 				<StyledImage
 					src='icons/liftoff-logo.svg'
 					alt='Liftoff Technologies'

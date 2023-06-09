@@ -81,14 +81,3 @@ const StyledMainSection = styled.div`
 		padding: 16px 16px 80px 16px;
 	}
 `;
-const StyledPopoverWrapper = styled.div`
-	@media only screen and (max-width: 950px) {
-		.TypeformButton {
-			.tf-v1-popover {
-				.tf-v1-popover-button {
-					background: black;
-				}
-			}
-		}
-	}
-`;
