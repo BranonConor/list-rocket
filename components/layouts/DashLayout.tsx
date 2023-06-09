@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { ProductNav } from '../navbars/ProductNav';
 import styled from 'styled-components';
 import { Footer } from '../Footer';
+import { Popover, PopupButton, Widget } from '@typeform/embed-react';
 
 export const DashLayout = ({ children }) => {
 	const siteTitle = 'A productivity tool for streamlining events';
@@ -33,6 +34,14 @@ export const DashLayout = ({ children }) => {
 					<Footer />
 				</StyledMainSection>
 			</StyledContainer>
+
+			<PopupButton
+				id='l5g8afqA'
+				style={{ fontSize: 20 }}
+				className='my-button'>
+				click to open form in popup
+			</PopupButton>
+			<Popover id='l5g8afqA' buttonColor='#BB6BD9' customIcon='👋' />
 		</StyledWrapper>
 	);
 };
