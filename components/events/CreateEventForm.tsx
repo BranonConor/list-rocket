@@ -152,7 +152,6 @@ const StyledButtonWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	margin: 8px 0 0 0;
-	padding: 0 8px;
 
 	button:first-of-type {
 		margin-right: 8px;
