@@ -12,6 +12,7 @@ import { Dialog } from '../Dialog';
 import axios from 'axios';
 import { UserContext } from '../../contexts/UserContext';
 import { toast } from 'react-toastify';
+import { EditEventForm } from './EditEventForm';
 
 export const WorkspaceControls = () => {
 	const { events, getAllEvents } = useContext(EventContext);
@@ -25,6 +26,8 @@ export const WorkspaceControls = () => {
 		name: string;
 	} | null>(null);
 
+	const [eventIsBeingEdited, setEventIsBeingEdited] = useState(false);
+
 	const handleChipButtonClick = async (e, eventId) => {
 		e?.preventDefault();
 		prepWorkspace(eventId);
@@ -37,7 +40,9 @@ export const WorkspaceControls = () => {
 		setDeleteDialogIsOpen(true);
 		setEventToDelete({ id: currentEvent?._id, name: currentEvent?.name });
 	};
-
+	const handleEditEvent = () => {
+		setEventIsBeingEdited(true);
+	};
 	//Deleting an event
 	const handleDelete = async (
 		e: any,
@@ -71,46 +76,61 @@ export const WorkspaceControls = () => {
 			{currentEvent ? (
 				<StyledEventWrapper>
 					<StyledEventContent>
-						<StyledInfoWrapper
-							initial={{
-								top: -20,
-								opacity: 0,
-							}}
-							animate={{
-								top: 0,
-								opacity: 1,
-							}}
-							transition={{
-								duration: 0.25,
-								type: 'spring',
-							}}>
-							<StyledSpan>
-								<Title variant='heading2'>
-									{currentEvent?.name}
-								</Title>
-							</StyledSpan>
-							<StyledDescription variant='body1'>
-								{currentEvent?.description}
-							</StyledDescription>
-							<UserCard
-								text='Event Creator'
-								image={currentEvent?.creator?.image}
+						{eventIsBeingEdited ? (
+							<EditEventForm
+								eventId={currentEvent?._id}
+								name={currentEvent.name}
+								description={currentEvent.description}
+								setEventIsBeingEdited={setEventIsBeingEdited}
 							/>
-						</StyledInfoWrapper>
-						<StyledButtonContainer>
-							<StyledIconButton onClick={handleExitClick}>
-								<img src='/icons/x.svg' />
-							</StyledIconButton>
-							<StyledIconButton onClick={() => alert('click!')}>
-								<img src='/icons/pencil.svg' alt='Edit Icon' />
-							</StyledIconButton>
-							<StyledIconButton onClick={handleDeleteEventModal}>
-								<img
-									src='/icons/trash-red.svg'
-									alt='Trash Icon'
-								/>
-							</StyledIconButton>
-						</StyledButtonContainer>
+						) : (
+							<>
+								<StyledInfoWrapper
+									initial={{
+										top: -20,
+										opacity: 0,
+									}}
+									animate={{
+										top: 0,
+										opacity: 1,
+									}}
+									transition={{
+										duration: 0.25,
+										type: 'spring',
+									}}>
+									<StyledSpan>
+										<Title variant='heading2'>
+											{currentEvent?.name}
+										</Title>
+									</StyledSpan>
+									<StyledDescription variant='body1'>
+										{currentEvent?.description}
+									</StyledDescription>
+									<UserCard
+										text='Event Creator'
+										image={currentEvent?.creator?.image}
+									/>
+								</StyledInfoWrapper>
+								<StyledButtonContainer>
+									<StyledIconButton onClick={handleExitClick}>
+										<img src='/icons/x.svg' />
+									</StyledIconButton>
+									<StyledIconButton onClick={handleEditEvent}>
+										<img
+											src='/icons/pencil.svg'
+											alt='Edit Icon'
+										/>
+									</StyledIconButton>
+									<StyledIconButton
+										onClick={handleDeleteEventModal}>
+										<img
+											src='/icons/trash-red.svg'
+											alt='Trash Icon'
+										/>
+									</StyledIconButton>
+								</StyledButtonContainer>
+							</>
+						)}
 					</StyledEventContent>
 					<EventControls />
 					{deleteDialogIsOpen && (
