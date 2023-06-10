@@ -9,6 +9,8 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../contexts/UserContext';
 import { Dialog } from '../Dialog';
+import { CreateEventButton } from './CreateEventButton';
+import { CreateEventForm } from './CreateEventForm';
 
 export const AllEvents: React.FC = () => {
 	const { events, getAllEvents } = useContext(EventContext);
@@ -19,6 +21,8 @@ export const AllEvents: React.FC = () => {
 		id: string;
 		name: string;
 	} | null>(null);
+
+	const [userIsCreatingEvent, setUserIsCreatingEvent] = useState(false);
 
 	//Deleting an event
 	const handleDelete = async (
@@ -48,25 +52,43 @@ export const AllEvents: React.FC = () => {
 		}
 	};
 
+	const handleCreatEventClick = (event: any) => {
+		event.preventDefault();
+		setUserIsCreatingEvent(true);
+	};
+
 	return (
 		<StyledWrapper>
 			<Title variant='heading2'>Your Events</Title>
 			<StyledEventsContainer>
 				{events?.length ? (
-					events.map((event, index) => {
-						return (
-							<EventCard
-								name={event.name}
-								description={event.description}
-								creator={event.creator}
-								id={event._id}
-								key={event._id}
-								animationFactor={index}
-								setDeleteDialogIsOpen={setDeleteDialogIsOpen}
-								setEventToDelete={setEventToDelete}
+					<>
+						{events.map((event, index) => {
+							return (
+								<EventCard
+									name={event.name}
+									description={event.description}
+									creator={event.creator}
+									id={event._id}
+									key={event._id}
+									animationFactor={index}
+									setDeleteDialogIsOpen={
+										setDeleteDialogIsOpen
+									}
+									setEventToDelete={setEventToDelete}
+								/>
+							);
+						})}
+						{userIsCreatingEvent ? (
+							<CreateEventForm
+								setUserIsCreatingEvent={setUserIsCreatingEvent}
 							/>
-						);
-					})
+						) : (
+							<CreateEventButton
+								onClick={handleCreatEventClick}
+							/>
+						)}
+					</>
 				) : (
 					<motion.p
 						initial={{ opacity: 0 }}
@@ -96,7 +118,7 @@ export const AllEvents: React.FC = () => {
 const StyledWrapper = styled.div`
 	width: 100%;
 	height: auto;
-	padding: 16px 0;
+	margin: 0 0 16px 0;
 	box-sizing: border-box;
 `;
 const StyledEventsContainer = styled.div`
