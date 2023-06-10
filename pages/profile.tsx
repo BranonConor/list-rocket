@@ -44,7 +44,11 @@ const Profile = () => {
 			</Head>
 			<StyledMain>
 				<Title variant='heading1'>Your Profile</Title>
-				<ProfilePhoto photo={user?.image} dimensions='90px' />
+				<ProfilePhoto
+					photo={user?.image}
+					dimensions='100px'
+					hasBoxShadow={true}
+				/>
 				<StyledCard
 					initial={{ opacity: 0, width: '80%' }}
 					animate={{ opacity: 1, width: 'auto' }}
@@ -59,9 +63,11 @@ const Profile = () => {
 							duration: 2,
 							type: 'spring',
 						}}>
-						<Text variant='body1'>
-							<b>Logged in as:</b> {user?.name}
-						</Text>
+						<StyledText variant='body1'>
+							<img src='/icons/profile.svg' alt='' />
+							<b>User</b>
+						</StyledText>
+						<Text variant='overline'>{user?.name}</Text>
 					</StyledP>
 				</StyledCard>
 				<StyledCard
@@ -78,9 +84,11 @@ const Profile = () => {
 							duration: 2,
 							type: 'spring',
 						}}>
-						<Text variant='body1'>
-							<b>Email: </b> {user?.email}
-						</Text>
+						<StyledText variant='body1'>
+							<img src='/icons/email.svg' alt='' />
+							<b>Email: </b>
+						</StyledText>
+						<Text variant='overline'>{user?.email}</Text>
 					</StyledP>
 				</StyledCard>
 				<StyledCard
@@ -97,9 +105,11 @@ const Profile = () => {
 							duration: 2.5,
 							type: 'spring',
 						}}>
-						<Text variant='body1'>
-							<b>Total Events: </b> {events?.length}
-						</Text>
+						<StyledText variant='body1'>
+							<img src='/icons/data.svg' alt='' />
+							<b>Total Events: </b>
+						</StyledText>
+						<Text variant='overline'>{events?.length}</Text>
 					</StyledP>
 				</StyledCard>
 				<PrimaryButton
@@ -117,7 +127,7 @@ export default Profile;
 const StyledMain = styled.main`
 	width: 50%;
 
-	@media only screen and (max-width: 768px) {
+	@media only screen and (max-width: 1000px) {
 		width: 100%;
 	}
 `;
@@ -129,9 +139,31 @@ const StyledCard = styled(motion.div)(
 	padding: 16px;
 	border-radius: 10px;
 	margin: 16px 0;
+	overflow-x: auto;
+
+	@media only screen and (max-width: 600px) {
+		padding: 16px;
+	}
 `
 );
 const StyledP = styled(motion.p)`
 	padding: 0 8px 0 0;
+	margin: 0;
+
 	width: auto;
+
+	@media only screen and (max-width: 600px) {
+		padding: 0;
+	}
+`;
+const StyledText = styled(Text)`
+	display: flex;
+	align-items: center;
+	margin: 8px 0;
+
+	img {
+		margin-right: 8px;
+		width: 20px;
+		height: 20px;
+	}
 `;

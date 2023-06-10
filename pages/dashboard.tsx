@@ -57,7 +57,7 @@ const Dashboard = () => {
 								type: 'spring',
 							}}>
 							<Text variant='body1'>
-								Welcome, {user?.name}! ✌🏼
+								Welcome, {user?.name.split(' ')[0]}! ✌🏼
 							</Text>
 						</StyledP>
 					</StyledGreeting>
@@ -86,7 +86,7 @@ const StyledGreeting = styled(motion.div)(
 	@media only screen and (max-width: 768px) {
 		min-width: 100%;
 		width: 100%;
-		margin: 16px 0;
+		margin: 0 0 16px 0;
 	}
 `
 );

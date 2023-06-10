@@ -21,7 +21,10 @@ export const LoadingLayout = ({ children }) => {
 				<meta name='og:title' content={siteTitle} />
 				<meta name='twitter:card' content='summary_large_image' />
 			</Head>
-			<StyledMainSection>{children}</StyledMainSection>
+			<StyledMainSection>
+				<StyledImage src='/icons/rocket.svg' alt='rocket' />
+				{children}
+			</StyledMainSection>
 		</StyledLayout>
 	);
 };
@@ -34,7 +37,12 @@ const StyledMainSection = styled.div`
 	width: 100%;
 	height: 100vh;
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 	box-sizing: border-box;
+`;
+const StyledImage = styled.img`
+	width: 40px;
+	margin: 32px;
 `;

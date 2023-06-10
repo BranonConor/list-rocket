@@ -39,7 +39,7 @@ export const AllInvites = () => {
 							duration: 5,
 							type: 'spring',
 						}}>
-						You are all caught up! ⏳
+						You are all caught up! ✅
 					</motion.p>
 				)}
 			</StyledEventsContainer>
