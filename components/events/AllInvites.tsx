@@ -16,7 +16,7 @@ export const AllInvites = () => {
 
 	return (
 		<StyledWrapper>
-			<Title variant='heading3'>Pending Invites</Title>
+			<Title variant='heading2'>Pending Invites</Title>
 			<StyledEventsContainer>
 				{user?.invites?.length ? (
 					user?.invites?.map((event, index) => {

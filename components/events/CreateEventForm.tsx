@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 import { UserContext } from '../../contexts/UserContext';
 import { EventContext } from '../../contexts/EventContext';
-import { Title } from '../typography/Title';
 
 interface IProps {
 	setUserIsCreatingEvent: Dispatch<SetStateAction<boolean>>;
@@ -36,6 +35,7 @@ export const CreateEventForm: React.FC<IProps> = (props) => {
 
 			setNameValue('');
 			setDescriptionValue('');
+			setUserIsCreatingEvent(false);
 			getAllEvents();
 
 			toast.success('Successfully created your event ✨', {

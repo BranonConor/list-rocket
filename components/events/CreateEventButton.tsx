@@ -28,11 +28,19 @@ const StyledButton = styled.button(
     justify-content: center;
     align-items: center;
     transition: 0.15s ease all;
+
+    p {
+        margin-bottom: 0;
+    }
     
     &:hover {
         opacity: 0.75;
         box-shadow: ${shadows.standard};
         transform: translateY(-4px);
+    }
+
+    @media only screen and (max-width: 600px) {
+        min-height: 128px;
     }
 `
 );
