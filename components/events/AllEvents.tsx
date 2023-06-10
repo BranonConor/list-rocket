@@ -89,16 +89,12 @@ export const AllEvents: React.FC = () => {
 							/>
 						)}
 					</>
+				) : userIsCreatingEvent ? (
+					<CreateEventForm
+						setUserIsCreatingEvent={setUserIsCreatingEvent}
+					/>
 				) : (
-					<motion.p
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{
-							duration: 5,
-							type: 'spring',
-						}}>
-						Start your first event! ✨
-					</motion.p>
+					<CreateEventButton onClick={handleCreatEventClick} />
 				)}
 			</StyledEventsContainer>
 			{deleteDialogIsOpen && (

@@ -153,7 +153,9 @@ export const WorkspaceControls = () => {
 				<StyledYourEventsWrapper>
 					<Title variant='heading2'>Your Events</Title>
 					<Text variant='body1'>
-						Choose an event to load it into your workspace
+						{events.length
+							? 'Choose an event to load it into your workspace 👇'
+							: 'Head to your dashboard to create your first event! 👏'}
 					</Text>
 					<StyledEventsWrapper>
 						{events?.map((event, index: number) => {
