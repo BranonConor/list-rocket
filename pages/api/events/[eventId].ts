@@ -72,6 +72,17 @@ const eventApiRoutes = async (req, res) => {
 		});
 	}
 
+	/*------ EVENT UPDATES --------*/
+
+	if (req.method === 'PUT' && req.body.action === 'event-info-update') {
+		//find list item in question and update it
+		await Event.findOneAndUpdate(
+			{ _id: req.body.eventId },
+			{ ...req.body.data }
+		);
+		res.status(200).send();
+	}
+
 	if (req.method === 'PUT' && req.body.action === 'anonymous-mode-toggle') {
 		const event = await Event.findById(req.body.eventId);
 		const value = event?.controls?.anonymousModeIsOn;
