@@ -103,7 +103,7 @@ export const EditEventForm: React.FC<IProps> = (props) => {
 					name='title'
 					required
 					onChange={(e) => setDescriptionValue(e.target.value)}
-					rows={5}
+					rows={3}
 				/>
 				<StyledButtonWrapper>
 					<PrimaryButton
@@ -137,26 +137,26 @@ const StyledWrapper = styled(motion.div)(
 const StyledForm = styled.form`
 	width: 100%;
 `;
-const StyledTextArea = styled.textarea(
+const StyledTextInput = styled.input(
 	({ theme: { colors, typography } }) => `
 	width: 100%;
 	box-sizing: border-box;
-	padding: 4px 8px;
+	padding: 4px 8px 0 8px;
 	margin: 4px 0;
 	border: none;
-	font-family: ${typography.font.body1};
+    font-family: Lalezar;
+    font-size: ${typography.size.heading2};
     color: ${colors.font.body};
 `
 );
-const StyledTextInput = styled.input(
+const StyledTextArea = styled.textarea(
 	({ theme: { colors, typography } }) => `
 	width: 100%;
 	box-sizing: border-box;
 	padding: 8px;
 	margin: 4px 0;
 	border: none;
-    font-family: Lalezar;
-    font-size: ${typography.size.heading2};
+	font-family: ${typography.font.body1};
     color: ${colors.font.body};
 `
 );
