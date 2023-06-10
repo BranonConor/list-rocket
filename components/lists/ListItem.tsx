@@ -336,6 +336,3 @@ const StyledCheckmarkWrapper = styled.div`
 		height: 14px;
 	}
 `;
-const StyledDisabledLink = styled(Text)`
-	opacity: 0.4;
-`;
