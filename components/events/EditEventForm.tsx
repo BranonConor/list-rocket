@@ -45,7 +45,10 @@ export const EditEventForm: React.FC<IProps> = (props) => {
 					description: descriptionValue,
 				},
 				eventId: eventId,
+				action: 'event-info-update',
 			});
+
+			setEventIsBeingEdited(false);
 
 			//ping Pusher channel, this will trigger a rerender in the UserList
 			await axios.post('/api/pusher', {

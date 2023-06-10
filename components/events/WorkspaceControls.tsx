@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Title } from '../typography/Title';
@@ -70,6 +70,11 @@ export const WorkspaceControls = () => {
 			});
 		}
 	};
+
+	//Refresh all events list when exiting, which can help capture any event info updates that may have occurred
+	useEffect(() => {
+		getAllEvents();
+	}, [clearWorkspace]);
 
 	return (
 		<StyledWrapper>
