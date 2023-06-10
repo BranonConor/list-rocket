@@ -28,6 +28,7 @@ const StyledButton = styled.button(
     justify-content: center;
     align-items: center;
     transition: 0.15s ease all;
+    color: ${colors.font.body2};
 
     p {
         margin-bottom: 0;
