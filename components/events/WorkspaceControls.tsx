@@ -1,4 +1,3 @@
-import { ProfilePhoto } from '../ProfilePhoto';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useContext, useState } from 'react';
@@ -221,10 +220,10 @@ const StyledInfoWrapper = styled(motion.div)(
 	box-sizing: border-box;
 	background: ${colors.bgLight};
 	border-right: 1px solid rgba(0,0,0, 0.1);
-
+	padding: 0 16px 0 0;
 
 	@media only screen and (max-width: 1330px) {
-		min-width: 60%;
+		min-width: 50%;
 	}
 	@media only screen and (max-width: 1025px) {
 		min-width: 50%;
@@ -255,8 +254,8 @@ const StyledIconButton = styled.button`
 	outline: none;
 	border: none;
 	transition: 0.1s ease all;
-	height: 34px;
-	width: 18px;
+	height: 36px;
+	width: 20px;
 
 	&:hover {
 		box-shadow: none;
@@ -266,8 +265,8 @@ const StyledIconButton = styled.button`
 	}
 	img {
 		filter: grayscale(100%);
-		width: 14px;
-		height: 14px;
+		width: 16px;
+		height: 16px;
 	}
 `;
 const StyledButtonContainer = styled.div`
@@ -283,6 +282,7 @@ const StyledEventContent = styled.div(
 	({ theme: { colors } }) => `
 	display: flex;
 	min-width: 70%;
+	width: 100%;
 	position: relative;
 	border-radius: 10px;
 	box-sizing: border-box;
