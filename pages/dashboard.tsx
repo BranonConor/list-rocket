@@ -56,7 +56,7 @@ const Dashboard = () => {
 								duration: 1,
 								type: 'spring',
 							}}>
-							<Text variant='body1'>
+							<Text variant='overline'>
 								Welcome, {user?.name}! ✌🏼
 							</Text>
 						</StyledP>
@@ -94,7 +94,7 @@ const StyledGreeting = styled(motion.div)(
 
 const StyledP = styled(motion.p)`
 	display: flex;
-	padding: 0 8px;
+	padding: 0 16px;
 	box-sizing: border-box;
 	border-radius: 10px;
 `;

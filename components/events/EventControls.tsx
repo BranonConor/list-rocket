@@ -10,6 +10,7 @@ import Pusher from 'pusher-js';
 import { Dialog } from '../Dialog';
 import { IEvent, IUser } from '../../contexts/types';
 import { Title } from '../typography/Title';
+import { Text } from '../typography/Text';
 
 export const EventControls = () => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
@@ -181,20 +182,20 @@ export const EventControls = () => {
 				<img src='/icons/chevron.svg' alt='' />
 			</StyledTitleRow>
 			<StyledRow>
-				<StyledAnonymousLabel>
+				<StyledLabel variant='overline'>
 					<StyledIcon src='/icons/eye-dark.svg' alt='' />
 					Anonymous Mode:
-				</StyledAnonymousLabel>
+				</StyledLabel>
 				<ToggleSwitch
 					handleChange={handleChange}
 					checked={currentEvent?.controls?.anonymousModeIsOn}
 				/>
 			</StyledRow>
 			<StyledRow>
-				<StyledAnonymousLabel>
+				<StyledLabel variant='overline'>
 					<StyledIcon src='/icons/up-and-down.svg' alt='' />
 					List Height:
-				</StyledAnonymousLabel>
+				</StyledLabel>
 				<StyledSelect
 					onChange={handleListHeightChange}
 					value={listHeightValue}>
@@ -243,9 +244,9 @@ const StyledEventControls = styled(motion.div)<IStyledEventControlsProps>(
 `
 );
 
-const StyledAnonymousLabel = styled.span`
+const StyledLabel = styled(Text)`
 	width: 100%;
-	margin-right: 16px;
+	margin: 0 16px 0 0;
 	display: flex;
 	align-items: center;
 

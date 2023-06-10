@@ -30,7 +30,7 @@ export const UserCard: React.FC<IProps> = (props) => {
 				}}>
 				<ProfilePhoto photo={image} dimensions='35px' />
 			</StyledAvatar>
-			<StyledP variant='body1'>{text}</StyledP>
+			<StyledP variant='overline'>{text}</StyledP>
 		</StyledInfoCard>
 	);
 };
