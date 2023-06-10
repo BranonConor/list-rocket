@@ -31,44 +31,44 @@ export const EditEventForm: React.FC<IProps> = (props) => {
 	const handleSubmit = async (event: any) => {
 		//prevent unnecessary API calls
 		if (nameValue === name && descriptionValue === description) {
-			return;
-		}
-
-		try {
-			event.preventDefault();
-			if (name === '' || description === '') {
-				throw new Error();
-			}
-			await axios.put(`/api/events/${eventId}`, {
-				data: {
-					name: nameValue,
-					description: descriptionValue,
-				},
-				eventId: eventId,
-				action: 'event-info-update',
-			});
-
 			setEventIsBeingEdited(false);
-
-			//ping Pusher channel, this will trigger a rerender in the UserList
-			await axios.post('/api/pusher', {
-				eventId: currentEvent._id,
-				user: user,
-				action: 'event-update',
-			});
-
-			toast.success(`List item updated! 👍🏽`, {
-				toastId: 'updated-event-toast',
-			});
-		} catch (axiosError) {
-			if (name === '' || description === '') {
-				toast.error(`Please fill out all fields. 👀`, {
-					toastId: 'event-value-not-found-toast',
+		} else {
+			try {
+				event.preventDefault();
+				if (name === '' || description === '') {
+					throw new Error();
+				}
+				await axios.put(`/api/events/${eventId}`, {
+					data: {
+						name: nameValue,
+						description: descriptionValue,
+					},
+					eventId: eventId,
+					action: 'event-info-update',
 				});
-			} else {
-				toast.error('Something went wrong, sorry! 😵‍💫', {
-					toastId: 'error-updating-event-toast',
+
+				setEventIsBeingEdited(false);
+
+				//ping Pusher channel, this will trigger a rerender in the UserList
+				await axios.post('/api/pusher', {
+					eventId: currentEvent._id,
+					user: user,
+					action: 'event-update',
 				});
+
+				toast.success(`List item updated! 👍🏽`, {
+					toastId: 'updated-event-toast',
+				});
+			} catch (axiosError) {
+				if (name === '' || description === '') {
+					toast.error(`Please fill out all fields. 👀`, {
+						toastId: 'event-value-not-found-toast',
+					});
+				} else {
+					toast.error('Something went wrong, sorry! 😵‍💫', {
+						toastId: 'error-updating-event-toast',
+					});
+				}
 			}
 		}
 	};
