@@ -56,7 +56,7 @@ const Dashboard = () => {
 								duration: 1,
 								type: 'spring',
 							}}>
-							<Text variant='overline'>
+							<Text variant='body1'>
 								Welcome, {user?.name}! ✌🏼
 							</Text>
 						</StyledP>
