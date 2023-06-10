@@ -8,6 +8,7 @@ import { Title } from '../typography/Title';
 import { Text } from '../typography/Text';
 import { ChipButton } from '../buttons/ChipButton';
 import { EventControls } from './EventControls';
+import { UserCard } from '../cards/UserCard';
 
 export const WorkspaceControls = () => {
 	const { events } = useContext(EventContext);
@@ -52,31 +53,10 @@ export const WorkspaceControls = () => {
 							<StyledDescription variant='body1'>
 								{currentEvent?.description}
 							</StyledDescription>
-							<StyledInfoCard>
-								<StyledP variant='body1'>
-									Event Creator:
-								</StyledP>
-								<StyledAvatar
-									initial={{
-										scale: 0,
-										opacity: 0,
-										rotate: '15deg',
-									}}
-									animate={{
-										scale: 1,
-										opacity: 1,
-										rotate: '0deg',
-									}}
-									transition={{
-										duration: 0.25,
-										type: 'spring',
-									}}>
-									<ProfilePhoto
-										photo={currentEvent?.creator?.image}
-										dimensions='35px'
-									/>
-								</StyledAvatar>
-							</StyledInfoCard>
+							<UserCard
+								text='Event Creator'
+								image={currentEvent?.creator?.image}
+							/>
 						</StyledInfoWrapper>
 						<EventControls />
 					</StyledEventInfoContainer>
@@ -200,37 +180,9 @@ const StyledInfoWrapper = styled(motion.div)(
 	}
 `
 );
-const StyledAvatar = styled(motion.a)`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: auto;
-	border-radius: 10px;
-`;
-const StyledP = styled(Text)`
-	padding: 0 16px 0 0;
-`;
 const StyledDescription = styled(Text)`
 	margin: 0 0 16px 0;
 `;
-const StyledInfoCard = styled.div(
-	({ theme: { colors } }) => `
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 180px;
-	background: ${colors.card.darkBg};
-	color: white;
-	border-radius: 10px;
-	height: 50px;
-	margin: 0 0 16px 0;
-
-	@media only screen and (max-width: 768px) {
-		display: none;
-	}
-`
-);
-
 const StyledButton = styled.button`
 	display: flex;
 	align-items: center;
