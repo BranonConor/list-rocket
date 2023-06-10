@@ -42,6 +42,12 @@ export const EventCard: React.FC<IProps> = (props) => {
 		setEventToDelete({ id: id, name: name });
 	};
 
+	const maxChar = 100;
+	const truncatedDescription =
+		description.length > maxChar
+			? description.slice(0, maxChar).trim().concat('...')
+			: description;
+
 	return (
 		<StyledCard
 			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
@@ -52,7 +58,7 @@ export const EventCard: React.FC<IProps> = (props) => {
 			}}>
 			<div>
 				<Title variant='heading3'>{name}</Title>
-				<Text variant='body1'>{description}</Text>
+				<Text variant='body1'>{truncatedDescription}</Text>
 			</div>
 
 			<StyledButtonContainer>
