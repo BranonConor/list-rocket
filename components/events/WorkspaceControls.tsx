@@ -1,7 +1,7 @@
 import { ProfilePhoto } from '../ProfilePhoto';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Title } from '../typography/Title';
@@ -9,11 +9,22 @@ import { Text } from '../typography/Text';
 import { ChipButton } from '../buttons/ChipButton';
 import { EventControls } from './EventControls';
 import { UserCard } from '../cards/UserCard';
+import { Dialog } from '../Dialog';
+import axios from 'axios';
+import { UserContext } from '../../contexts/UserContext';
+import { toast } from 'react-toastify';
 
 export const WorkspaceControls = () => {
-	const { events } = useContext(EventContext);
+	const { events, getAllEvents } = useContext(EventContext);
 	const { currentEvent, prepWorkspace, clearWorkspace } =
 		useContext(WorkspaceContext);
+	const { user } = useContext(UserContext);
+
+	const [deleteDialogIsOpen, setDeleteDialogIsOpen] = useState(false);
+	const [eventToDelete, setEventToDelete] = useState<{
+		id: string;
+		name: string;
+	} | null>(null);
 
 	const handleChipButtonClick = async (e, eventId) => {
 		e?.preventDefault();
@@ -22,6 +33,38 @@ export const WorkspaceControls = () => {
 	const handleExitClick = async (e) => {
 		e?.preventDefault();
 		clearWorkspace();
+	};
+	const handleDeleteEventModal = () => {
+		setDeleteDialogIsOpen(true);
+		setEventToDelete({ id: currentEvent?._id, name: currentEvent?.name });
+	};
+
+	//Deleting an event
+	const handleDelete = async (
+		e: any,
+		event: { id: string; name: string }
+	) => {
+		e?.preventDefault();
+		try {
+			await axios.delete(`/api/events/${event.id}`, {
+				data: {
+					eventId: event.id,
+					user: user,
+				},
+			});
+			setEventToDelete(null);
+			setDeleteDialogIsOpen(false);
+			getAllEvents();
+			currentEvent?._id === event.id && clearWorkspace();
+			toast.success('Successfully deleted your event 🗑', {
+				toastId: 'delete-event-toast',
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error('Something went wrong, sorry! 😵‍💫', {
+				toastId: 'error-delete-event-toast',
+			});
+		}
 	};
 
 	return (
@@ -62,7 +105,7 @@ export const WorkspaceControls = () => {
 							<StyledIconButton onClick={() => alert('click!')}>
 								<img src='/icons/pencil.svg' alt='Edit Icon' />
 							</StyledIconButton>
-							<StyledIconButton onClick={() => alert('click!')}>
+							<StyledIconButton onClick={handleDeleteEventModal}>
 								<img
 									src='/icons/trash-red.svg'
 									alt='Trash Icon'
@@ -71,6 +114,16 @@ export const WorkspaceControls = () => {
 						</StyledButtonContainer>
 					</StyledEventContent>
 					<EventControls />
+					{deleteDialogIsOpen && (
+						<Dialog
+							title='Delete Event'
+							description={`Are you sure you want to delete ${eventToDelete?.name}?`}
+							cta={(e: any) => handleDelete(e, eventToDelete)}
+							buttonText='Delete'
+							setDialogIsOpen={setDeleteDialogIsOpen}
+							showCancelButton
+						/>
+					)}
 				</StyledEventWrapper>
 			) : (
 				<StyledYourEventsWrapper>
