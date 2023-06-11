@@ -21,7 +21,7 @@ export const UserList: React.FC<Props> = (props) => {
 	const { creator, items, id } = props;
 	const { user } = useContext(UserContext);
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
-	const isCurrentUser = creator.email === user.email;
+	const isCurrentUser = creator?.email === user?.email;
 
 	//handling edits
 	const [currentItemBeingEdited, setCurrentItemBeingEdited] = useState<
@@ -50,7 +50,10 @@ export const UserList: React.FC<Props> = (props) => {
 			}}>
 			<StyledList>
 				<StyledListTitle>
-					<ProfilePhoto photo={creator.image} dimensions='40px' />
+					<ProfilePhoto
+						photo={creator?.image || '/icons/user-x.svg'}
+						dimensions='40px'
+					/>
 					<StyledTitle variant='heading3'>
 						{isCurrentUser ? (
 							<>
@@ -76,7 +79,9 @@ export const UserList: React.FC<Props> = (props) => {
 								)}
 							</>
 						) : (
-							`${creator.name.split(' ')[0]}'s List`
+							`${
+								creator?.name.split(' ')[0] || 'Unknown User'
+							}'s List`
 						)}
 					</StyledTitle>
 				</StyledListTitle>
@@ -84,28 +89,28 @@ export const UserList: React.FC<Props> = (props) => {
 					<>
 						{items?.length ? (
 							items?.map((item, index) =>
-								item._id === currentItemBeingEdited ? (
-									<StyledListItem key={item._id}>
+								item?._id === currentItemBeingEdited ? (
+									<StyledListItem key={item?._id}>
 										<EditListItemForm
-											listItemId={item._id}
+											listItemId={item?._id}
 											setCurrentItemBeingEdited={
 												setCurrentItemBeingEdited
 											}
-											name={item.name}
-											description={item.description}
-											link={item.link}
+											name={item?.name}
+											description={item?.description}
+											link={item?.link}
 										/>
 									</StyledListItem>
 								) : (
-									<StyledListItem key={item._id}>
+									<StyledListItem key={item?._id}>
 										<ListItem
-											name={item.name}
-											description={item.description}
-											link={item.link}
-											resolvedBy={item.resolvedBy}
+											name={item?.name}
+											description={item?.description}
+											link={item?.link}
+											resolvedBy={item?.resolvedBy}
 											animationFactor={index}
 											listId={id}
-											id={item._id}
+											id={item?._id}
 											isCurrentUser={isCurrentUser}
 											setCurrentItemBeingEdited={
 												setCurrentItemBeingEdited
