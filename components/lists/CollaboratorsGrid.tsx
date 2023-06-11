@@ -20,6 +20,10 @@ export const CollaboratorsGrid = () => {
 	] = useState(false);
 	const [deleteCollaboratorDialogIsOpen, setDeleteCollaboratorDialogIsOpen] =
 		useState(false);
+	const [
+		blockCreatorDeletionDialogIsOpen,
+		setBlockCreatorDeletionDialogIsOpen,
+	] = useState(false);
 
 	const [userToDelete, setUserToDelete] = useState<{
 		id: string;
@@ -30,17 +34,23 @@ export const CollaboratorsGrid = () => {
 	const handleDelete = async (e: any, eventId: string, userId: string) => {
 		e?.preventDefault();
 		try {
+			//don't allow removal of the creator or the last collaborator
+
 			await axios.put(`/api/events/${eventId}`, {
-				data: {
-					eventId: eventId,
-					userId: userId,
-					action: 'remove-collaborator',
-				},
+				eventId: eventId,
+				userId: userId,
+				action: 'remove-collaborator',
 			});
+			await axios.put(`/api/user/${userId}`, {
+				eventId: currentEvent._id,
+				userId: userId,
+				action: 'remove-collaborator',
+			});
+
 			setEditCollaboratorsButtonIsClicked(false);
 			setDeleteCollaboratorDialogIsOpen(false);
 
-			//TODO - make it a pusher event
+			//TODO - make it a pusher event so everyone gets the update in real time
 			prepWorkspace(eventId);
 
 			toast.success('Collaborator removed 👋', {
@@ -96,11 +106,22 @@ export const CollaboratorsGrid = () => {
 										type: 'spring',
 									}}
 									onClick={() => {
-										setDeleteCollaboratorDialogIsOpen(true);
-										setUserToDelete({
-											id: collaborator._id,
-											name: collaborator.name,
-										});
+										if (
+											collaborator._id ===
+											currentEvent.creator._id
+										) {
+											setBlockCreatorDeletionDialogIsOpen(
+												true
+											);
+										} else {
+											setDeleteCollaboratorDialogIsOpen(
+												true
+											);
+											setUserToDelete({
+												id: collaborator._id,
+												name: collaborator.name,
+											});
+										}
 									}}>
 									<img
 										src='/icons/trash-red.svg'
@@ -111,6 +132,8 @@ export const CollaboratorsGrid = () => {
 						</StyledAvatar>
 					);
 				})}
+
+				{/* ---- PENDING COLLABORATORS ----- */}
 				{currentEvent.pendingCollaborators?.map((collaborator) => {
 					return (
 						<StyledPendingAvatar
@@ -152,6 +175,8 @@ export const CollaboratorsGrid = () => {
 						</StyledPendingAvatar>
 					);
 				})}
+
+				{/* ---- COLLABORATORS CONTROLS BUTTONS ----- */}
 				{!isAddCollaboratorButtonClicked && (
 					<>
 						{editCollaboratorsButtonIsClicked ? (
@@ -228,6 +253,14 @@ export const CollaboratorsGrid = () => {
 					buttonText='Remove'
 					setDialogIsOpen={setDeleteCollaboratorDialogIsOpen}
 					showCancelButton
+				/>
+			)}
+			{blockCreatorDeletionDialogIsOpen && (
+				<Dialog
+					title='Cannot Remove Event Creator'
+					description="Sorry, you can't remove the event creator from the event!"
+					buttonText='Got it!'
+					setDialogIsOpen={setBlockCreatorDeletionDialogIsOpen}
 				/>
 			)}
 		</StyledGrid>

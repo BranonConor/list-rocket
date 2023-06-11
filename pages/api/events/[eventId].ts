@@ -97,6 +97,69 @@ const eventApiRoutes = async (req, res) => {
 		event.save();
 		res.json({ status: 200, data: event });
 	}
+
+	if (req.method === 'PUT' && req.body.action === 'remove-collaborator') {
+		//find the user object we want to remove as a collaborator
+		const user = await User.findById(req.body.userId);
+
+		if (!user) {
+			res.status(404).send({
+				success: false,
+				error: { message: 'user not found' },
+			});
+		} else {
+			//find the event this request comes from
+			const event = await Event.findById(req.body.eventId);
+
+			//check for the user before doing anything else
+			const userIsCollaborator = event.collaborators.includes(user._id);
+			const userIsPendingCollaborator = event.pendingCollaborators
+				? event.pendingCollaborators?.includes(user._id)
+				: false;
+
+			if (userIsCollaborator) {
+				//remove them from the event collaborators list
+				const newCollaborators = event.collaborators.filter(
+					(user) => user._id.toString() !== req.body.userId
+				);
+				event.collaborators = newCollaborators;
+				//delete any lists & listItems in the event for this user
+				const userList = await List.findOne({
+					event: event._id.toString(),
+					creator: user._id.toString(),
+				});
+				await ListItem.deleteMany({
+					event: event._id.toString(),
+					list: userList._id.toString(),
+				});
+				await List.findOneAndDelete({
+					event: event._id.toString(),
+					creator: user._id.toString(),
+				});
+
+				//cleanup the event lists
+				const newEventLists = event.lists.filter(
+					(list) => list._id.toString() !== userList._id.toString()
+				);
+				event.lists = newEventLists;
+			} else if (userIsPendingCollaborator) {
+				const newPendingCollaborators =
+					event.pendingCollaborators.filter(
+						(user) => user._id.toString() !== req.body.userId
+					);
+				event.pendingCollaborators = newPendingCollaborators;
+			} else {
+				res.status(404).send({
+					success: false,
+					error: { message: 'user not found in this event' },
+				});
+			}
+
+			//save everything
+			await event.save();
+			return res.status(200).send();
+		}
+	}
 };
 
 export default eventApiRoutes;

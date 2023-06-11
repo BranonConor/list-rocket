@@ -5,6 +5,10 @@ const ListItemSchema = new Schema({
 	name: String,
 	description: String,
 	link: String,
+	list: {
+		type: Schema.Types.ObjectId,
+		ref: 'lists',
+	},
 	resolvedBy: {
 		type: Schema.Types.ObjectId,
 		ref: 'users',
