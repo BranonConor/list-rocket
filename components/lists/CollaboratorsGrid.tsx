@@ -5,11 +5,75 @@ import { ProfilePhoto } from '../ProfilePhoto';
 import { AddCollaborator } from '../events/AddCollaborator';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Title } from '../typography/Title';
+import { Dialog } from '../Dialog';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const CollaboratorsGrid = () => {
-	const { currentEvent } = useContext(WorkspaceContext);
+	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
 	const [isAddCollaboratorButtonClicked, setIsAddCollaboratorButtonClicked] =
 		useState(false);
+	const [
+		editCollaboratorsButtonIsClicked,
+		setEditCollaboratorsButtonIsClicked,
+	] = useState(false);
+	const [deleteCollaboratorDialogIsOpen, setDeleteCollaboratorDialogIsOpen] =
+		useState(false);
+	const [
+		blockCreatorDeletionDialogIsOpen,
+		setBlockCreatorDeletionDialogIsOpen,
+	] = useState(false);
+
+	const [userToDelete, setUserToDelete] = useState<{
+		id: string;
+		name: string;
+	} | null>(null);
+
+	//Removing a collaborator from an event
+	const handleDelete = async (e: any, eventId: string, userId: string) => {
+		e?.preventDefault();
+		try {
+			//don't allow removal of the creator or the last collaborator
+
+			await axios.put(`/api/events/${eventId}`, {
+				eventId: eventId,
+				userId: userId,
+				action: 'remove-collaborator',
+			});
+			await axios.put(`/api/user/${userId}`, {
+				eventId: currentEvent._id,
+				userId: userId,
+				action: 'remove-collaborator',
+			});
+
+			//ping Pusher channel
+			const collaborator = await axios.get(`/api/user?=${userId}`);
+			await axios.post('/api/pusher', {
+				eventId: currentEvent._id,
+				user: collaborator,
+				action: 'event-update',
+			});
+			await axios.post('/api/pusher', {
+				userId: userId,
+				action: 'remove-collaborator',
+			});
+
+			setEditCollaboratorsButtonIsClicked(false);
+			setDeleteCollaboratorDialogIsOpen(false);
+
+			//TODO - make it a pusher event so everyone gets the update in real time
+			prepWorkspace(eventId);
+
+			toast.success('Collaborator removed 👋', {
+				toastId: 'remove-collaborator-toast',
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error('Something went wrong, sorry! 😵‍💫', {
+				toastId: 'error-delete-event-toast',
+			});
+		}
+	};
 
 	return (
 		<StyledGrid
@@ -30,30 +94,154 @@ export const CollaboratorsGrid = () => {
 				<StyledH2 variant='heading3'>Collaborators:</StyledH2>
 				{currentEvent.collaborators?.map((collaborator) => {
 					return (
-						<StyledButton key={collaborator._id}>
+						<StyledAvatar
+							key={collaborator._id}
+							isInEditMode={editCollaboratorsButtonIsClicked}>
 							<ProfilePhoto
 								photo={collaborator.image}
 								dimensions='40px'
 							/>
-						</StyledButton>
+							{editCollaboratorsButtonIsClicked && (
+								<StyledDeleteCollaboratorButton
+									initial={{
+										top: -10,
+										opacity: 0,
+									}}
+									animate={{
+										top: 26,
+										opacity: 1,
+									}}
+									transition={{
+										delay: 0.1,
+										duration: 0.5,
+										type: 'spring',
+									}}
+									onClick={() => {
+										if (
+											collaborator._id ===
+											currentEvent.creator._id
+										) {
+											setBlockCreatorDeletionDialogIsOpen(
+												true
+											);
+										} else {
+											setDeleteCollaboratorDialogIsOpen(
+												true
+											);
+											setUserToDelete({
+												id: collaborator._id,
+												name: collaborator.name,
+											});
+										}
+									}}>
+									<img
+										src='/icons/trash-red.svg'
+										alt='remove collaborator'
+									/>
+								</StyledDeleteCollaboratorButton>
+							)}
+						</StyledAvatar>
 					);
 				})}
+
+				{/* ---- PENDING COLLABORATORS ----- */}
 				{currentEvent.pendingCollaborators?.map((collaborator) => {
 					return (
-						<StyledPendingButton key={collaborator._id}>
+						<StyledPendingAvatar
+							key={collaborator._id}
+							isInEditMode={editCollaboratorsButtonIsClicked}>
 							<ProfilePhoto
 								photo={collaborator.image}
 								dimensions='40px'
 							/>
 							<StyledPendingDot />
-						</StyledPendingButton>
+							{editCollaboratorsButtonIsClicked && (
+								<StyledDeleteCollaboratorButton
+									initial={{
+										top: -10,
+										opacity: 0,
+									}}
+									animate={{
+										top: 26,
+										opacity: 1,
+									}}
+									transition={{
+										delay: 0.1,
+										duration: 0.5,
+										type: 'spring',
+									}}
+									onClick={() => {
+										setDeleteCollaboratorDialogIsOpen(true);
+										setUserToDelete({
+											id: collaborator._id,
+											name: collaborator.name,
+										});
+									}}>
+									<img
+										src='/icons/trash-red.svg'
+										alt='remove collaborator'
+									/>
+								</StyledDeleteCollaboratorButton>
+							)}
+						</StyledPendingAvatar>
 					);
 				})}
+
+				{/* ---- COLLABORATORS CONTROLS BUTTONS ----- */}
 				{!isAddCollaboratorButtonClicked && (
-					<StyledAddCollaboratorButton
-						onClick={() => setIsAddCollaboratorButtonClicked(true)}>
-						<img src='/icons/add.svg' alt='Add Collaborator' />
-					</StyledAddCollaboratorButton>
+					<>
+						{editCollaboratorsButtonIsClicked ? (
+							<StyledCollaboratorControlsButton
+								isInEditMode={editCollaboratorsButtonIsClicked}
+								onClick={() =>
+									setEditCollaboratorsButtonIsClicked(
+										!editCollaboratorsButtonIsClicked
+									)
+								}>
+								{' '}
+								<img
+									src='/icons/x.svg'
+									alt='Add Collaborator'
+									draggable={false}
+								/>
+							</StyledCollaboratorControlsButton>
+						) : (
+							<>
+								<StyledCollaboratorControlsButton
+									isInEditMode={
+										editCollaboratorsButtonIsClicked
+									}
+									onClick={() => {
+										setIsAddCollaboratorButtonClicked(true);
+										setEditCollaboratorsButtonIsClicked(
+											false
+										);
+									}}>
+									<img
+										src='/icons/add.svg'
+										alt='Add Collaborator'
+										draggable={false}
+									/>
+								</StyledCollaboratorControlsButton>
+								<StyledCollaboratorControlsButton
+									isInEditMode={
+										editCollaboratorsButtonIsClicked
+									}
+									onClick={() => {
+										setEditCollaboratorsButtonIsClicked(
+											!editCollaboratorsButtonIsClicked
+										);
+										setUserToDelete(null);
+									}}>
+									<img
+										src='/icons/pencil.svg'
+										alt='Add Collaborator'
+										draggable={false}
+									/>
+								</StyledCollaboratorControlsButton>
+							</>
+						)}
+					</>
 				)}
 			</StyledCollaboratorsWrapper>
 			{isAddCollaboratorButtonClicked && (
@@ -64,6 +252,26 @@ export const CollaboratorsGrid = () => {
 					setIsAddCollaboratorButtonClicked={
 						setIsAddCollaboratorButtonClicked
 					}
+				/>
+			)}
+			{deleteCollaboratorDialogIsOpen && (
+				<Dialog
+					title='Remove Collaborator'
+					description={`Are you sure you want to remove ${userToDelete?.name} from the event? All their list data will be lost.`}
+					cta={(e: any) =>
+						handleDelete(e, currentEvent?._id, userToDelete?.id)
+					}
+					buttonText='Remove'
+					setDialogIsOpen={setDeleteCollaboratorDialogIsOpen}
+					showCancelButton
+				/>
+			)}
+			{blockCreatorDeletionDialogIsOpen && (
+				<Dialog
+					title='Cannot Remove Event Creator'
+					description="Sorry, you can't remove the event creator from the event!"
+					buttonText='Got it!'
+					setDialogIsOpen={setBlockCreatorDeletionDialogIsOpen}
 				/>
 			)}
 		</StyledGrid>
@@ -79,6 +287,12 @@ const StyledCollaboratorsWrapper = styled(motion.div)`
 	align-items: center;
 	width: 100%;
 	margin: 16px 0 16px 0;
+
+	&:hover {
+		button {
+			filter: grayscale(0%);
+		}
+	}
 `;
 const StyledH2 = styled(Title)`
 	margin: 0 16px 0 0;
@@ -87,59 +301,80 @@ const StyledH2 = styled(Title)`
 		margin: 0 8px 0 0;
 	}
 `;
-const StyledButton = styled.button`
+
+interface IStyledAvatarProps {
+	isInEditMode: boolean;
+}
+const StyledAvatar = styled.div<IStyledAvatarProps>(
+	({ isInEditMode }) => `
 	outline: none;
 	border: none;
 	background: none;
 	transition: 0.15s ease all;
-	padding: 0 4px;
+	padding:  ${isInEditMode ? '0 8px' : '0 4px'};
+	box-sizing: border-box;
+	position: relative;
+	cursor: pointer;
 
 	&:hover {
-		cursor: pointer;
-
-		img {
-			transform: scale(1.1);
-		}
+		transform: scale(1.1);
 	}
-`;
-const StyledPendingButton = styled.button`
+
+	img {
+		filter: ${isInEditMode ? 'grayscale(100%)' : 'none'};
+		transform: ${isInEditMode ? 'scale(1.2)' : 'none'};
+	}
+`
+);
+const StyledPendingAvatar = styled.div<IStyledAvatarProps>(
+	({ isInEditMode }) => `
 	outline: none;
 	border: none;
 	background: none;
 	transition: 0.15s ease all;
-	padding: 0 4px;
+	box-sizing: border-box;
+	padding:  ${isInEditMode ? '0 8px' : '0 4px'};
 	position: relative;
 	cursor: pointer;
 
 	img {
-		opacity: 0.4;
+		opacity: ${isInEditMode ? '1' : '0.4'};
 	}
 
 	&:hover {
 		transform: scale(1.1);
 	}
-`;
-const StyledAddCollaboratorButton = styled.button`
-	padding: 8px;
+
+	img {
+		filter: ${isInEditMode ? 'grayscale(100%)' : 'none'};
+		transform: ${isInEditMode ? 'scale(1.2)' : 'none'};
+	}
+`
+);
+const StyledCollaboratorControlsButton = styled.button<IStyledAvatarProps>(
+	({ isInEditMode }) => `
 	margin: 0;
-	height: 40px;
-	width: 40px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	border: none;
 	background: none;
 	transition: 0.15s ease all;
+	filter: ${isInEditMode ? 'grayscale(0%)' : 'grayscale(100%)'};
+	padding: 0 0 0 12px;
+	transform: translateY(-2px);
 
 	&:hover {
 		cursor: pointer;
-		transform: scale(1.15);
+		transform: scale(1.15) translateY(-2px);
 	}
 
 	img {
-		transform: translateY(-2px);
+		width: 16px;
+		height: 16px;
 	}
-`;
+`
+);
 const StyledPendingDot = styled.div`
 	position: absolute;
 	bottom: 2px;
@@ -150,3 +385,26 @@ const StyledPendingDot = styled.div`
 	border-radius: 100%;
 	border: 3px solid white;
 `;
+const StyledDeleteCollaboratorButton = styled(motion.button)(
+	({ theme: { shadows } }) => `
+	border: none;
+	outline: none;
+	background: none;
+	position: absolute;
+	left: 10px;
+	z-index: 10;
+	width: 14px;
+	height: 14px;
+	cursor: pointer;
+
+	img {
+		width: 16px;
+		height: 16px;
+		filter: grayscale(0%);
+		background: rgba(250, 250, 250, 1);
+		box-shadow: ${shadows.standard};
+		border-radius: 100%;
+		padding: 4px;
+	}
+`
+);

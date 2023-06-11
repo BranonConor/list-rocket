@@ -44,4 +44,16 @@ export default async function handler(req, res) {
 
 		res.json({ message: 'completed' });
 	}
+	if (req.body.action === 'remove-collaborator') {
+		const user = await User.findById(req.body.userId);
+		await pusherClient.trigger(
+			`user-channel-${user._id}`,
+			`user-channel-update-${user._id}`,
+			{
+				user: user,
+			}
+		);
+
+		res.json({ message: 'completed' });
+	}
 }

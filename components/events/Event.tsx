@@ -45,17 +45,17 @@ export const Event: React.FC = () => {
 			<CollaboratorsGrid />
 			<StyledListWrapper>
 				<UserList
-					creator={yourList.creator}
-					items={yourList.items}
-					id={yourList._id}
-					key={yourList._id}
+					creator={yourList?.creator}
+					items={yourList?.items}
+					id={yourList?._id}
+					key={yourList?._id}
 				/>
 				{otherLists.map((list) => (
 					<UserList
-						creator={list.creator}
-						items={list.items}
-						id={list._id}
-						key={list._id}
+						creator={list?.creator}
+						items={list?.items}
+						id={list?._id}
+						key={list?._id}
 					/>
 				))}
 			</StyledListWrapper>

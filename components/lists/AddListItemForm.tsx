@@ -39,6 +39,7 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 					description: description,
 					link: link,
 					event: currentEvent._id,
+					list: listId,
 				},
 				listId: listId,
 			});
