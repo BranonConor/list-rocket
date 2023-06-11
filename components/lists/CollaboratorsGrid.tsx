@@ -10,8 +10,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 export const CollaboratorsGrid = () => {
-	const { currentEvent, clearWorkspace, prepWorkspace } =
-		useContext(WorkspaceContext);
+	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
 	const [isAddCollaboratorButtonClicked, setIsAddCollaboratorButtonClicked] =
 		useState(false);
 	const [
@@ -45,6 +44,14 @@ export const CollaboratorsGrid = () => {
 				eventId: currentEvent._id,
 				userId: userId,
 				action: 'remove-collaborator',
+			});
+
+			//ping Pusher channel
+			const collaborator = await axios.get(`/api/user?=${userId}`);
+			await axios.post('/api/pusher', {
+				eventId: currentEvent._id,
+				user: collaborator,
+				action: 'event-update',
 			});
 
 			setEditCollaboratorsButtonIsClicked(false);

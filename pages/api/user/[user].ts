@@ -26,15 +26,12 @@ const userApiRoutes = async (req, res) => {
 				const newEvents = user.events.filter(
 					(event) => event._id.toString() !== req.body.eventId
 				);
-				console.log('New User Events: ', newEvents);
 				user.events = newEvents;
 			} else if (user.invites.includes(req.body.eventId)) {
 				//remove the event from this user's events list
 				const newInvites = user.invites.filter(
 					(event) => event._id.toString() !== req.body.eventId
 				);
-				console.log('New User Invites: ', newInvites);
-
 				user.invites = newInvites;
 			} else {
 				res.status(404).send({
