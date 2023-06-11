@@ -259,7 +259,7 @@ const StyledTitleRow = styled.button<IStyledEventControlsProps>(
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	margin: 8px 0 16px 0;
+	padding: 8px 0 16px 0;
 	width: 100%;
 	outline: none;
 	border: none;
