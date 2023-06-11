@@ -10,6 +10,10 @@ export const CollaboratorsGrid = () => {
 	const { currentEvent } = useContext(WorkspaceContext);
 	const [isAddCollaboratorButtonClicked, setIsAddCollaboratorButtonClicked] =
 		useState(false);
+	const [
+		editCollaboratorsButtonIsClicked,
+		setEditCollaboratorsButtonIsClicked,
+	] = useState(false);
 
 	return (
 		<StyledGrid
@@ -30,7 +34,9 @@ export const CollaboratorsGrid = () => {
 				<StyledH2 variant='heading3'>Collaborators:</StyledH2>
 				{currentEvent.collaborators?.map((collaborator) => {
 					return (
-						<StyledButton key={collaborator._id}>
+						<StyledButton
+							key={collaborator._id}
+							isInEditMode={editCollaboratorsButtonIsClicked}>
 							<ProfilePhoto
 								photo={collaborator.image}
 								dimensions='40px'
@@ -40,7 +46,9 @@ export const CollaboratorsGrid = () => {
 				})}
 				{currentEvent.pendingCollaborators?.map((collaborator) => {
 					return (
-						<StyledPendingButton key={collaborator._id}>
+						<StyledPendingButton
+							key={collaborator._id}
+							isInEditMode={editCollaboratorsButtonIsClicked}>
 							<ProfilePhoto
 								photo={collaborator.image}
 								dimensions='40px'
@@ -50,10 +58,51 @@ export const CollaboratorsGrid = () => {
 					);
 				})}
 				{!isAddCollaboratorButtonClicked && (
-					<StyledAddCollaboratorButton
-						onClick={() => setIsAddCollaboratorButtonClicked(true)}>
-						<img src='/icons/add.svg' alt='Add Collaborator' />
-					</StyledAddCollaboratorButton>
+					<>
+						{editCollaboratorsButtonIsClicked ? (
+							<StyledCollaboratorControlsButton
+								onClick={() =>
+									setEditCollaboratorsButtonIsClicked(
+										!editCollaboratorsButtonIsClicked
+									)
+								}>
+								{' '}
+								<img
+									src='/icons/x.svg'
+									alt='Add Collaborator'
+									draggable={false}
+								/>
+							</StyledCollaboratorControlsButton>
+						) : (
+							<>
+								<StyledCollaboratorControlsButton
+									onClick={() => {
+										setIsAddCollaboratorButtonClicked(true);
+										setEditCollaboratorsButtonIsClicked(
+											false
+										);
+									}}>
+									<img
+										src='/icons/add.svg'
+										alt='Add Collaborator'
+										draggable={false}
+									/>
+								</StyledCollaboratorControlsButton>
+								<StyledCollaboratorControlsButton
+									onClick={() =>
+										setEditCollaboratorsButtonIsClicked(
+											!editCollaboratorsButtonIsClicked
+										)
+									}>
+									<img
+										src='/icons/pencil.svg'
+										alt='Add Collaborator'
+										draggable={false}
+									/>
+								</StyledCollaboratorControlsButton>
+							</>
+						)}
+					</>
 				)}
 			</StyledCollaboratorsWrapper>
 			{isAddCollaboratorButtonClicked && (
@@ -79,6 +128,12 @@ const StyledCollaboratorsWrapper = styled(motion.div)`
 	align-items: center;
 	width: 100%;
 	margin: 16px 0 16px 0;
+
+	&:hover {
+		button {
+			filter: grayscale(0%);
+		}
+	}
 `;
 const StyledH2 = styled(Title)`
 	margin: 0 16px 0 0;
@@ -87,27 +142,36 @@ const StyledH2 = styled(Title)`
 		margin: 0 8px 0 0;
 	}
 `;
-const StyledButton = styled.button`
+
+interface IStyledButtonProps {
+	isInEditMode: boolean;
+}
+const StyledButton = styled.button<IStyledButtonProps>(
+	({ isInEditMode }) => `
 	outline: none;
 	border: none;
 	background: none;
 	transition: 0.15s ease all;
 	padding: 0 4px;
+	cursor: pointer;
 
 	&:hover {
-		cursor: pointer;
-
-		img {
-			transform: scale(1.1);
-		}
+		transform: scale(1.1);
 	}
-`;
-const StyledPendingButton = styled.button`
+
+	img {
+		filter: ${isInEditMode ? 'grayscale(100%)' : 'none'};
+		transform: ${isInEditMode ? 'scale(1.2)' : 'none'};
+	}
+`
+);
+const StyledPendingButton = styled.button<IStyledButtonProps>(
+	({ isInEditMode }) => `
 	outline: none;
 	border: none;
 	background: none;
 	transition: 0.15s ease all;
-	padding: 0 4px;
+	padding:  ${isInEditMode ? '0 8px' : '0 4px'};
 	position: relative;
 	cursor: pointer;
 
@@ -118,26 +182,33 @@ const StyledPendingButton = styled.button`
 	&:hover {
 		transform: scale(1.1);
 	}
-`;
-const StyledAddCollaboratorButton = styled.button`
-	padding: 8px;
+
+	img {
+		filter: ${isInEditMode ? 'grayscale(100%)' : 'none'};
+		transform: ${isInEditMode ? 'scale(1.2)' : 'none'};
+	}
+`
+);
+const StyledCollaboratorControlsButton = styled.button`
 	margin: 0;
-	height: 40px;
-	width: 40px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	border: none;
 	background: none;
 	transition: 0.15s ease all;
+	filter: grayscale(100%);
+	padding: 0 0 0 12px;
+	transform: translateY(-2px);
 
 	&:hover {
 		cursor: pointer;
-		transform: scale(1.15);
+		transform: scale(1.15) translateY(-2px);
 	}
 
 	img {
-		transform: translateY(-2px);
+		width: 16px;
+		height: 16px;
 	}
 `;
 const StyledPendingDot = styled.div`
