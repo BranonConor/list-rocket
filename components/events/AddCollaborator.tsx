@@ -39,12 +39,11 @@ export const AddCollaborator = (props) => {
 
 			//ping Pusher channel
 			await axios.post('/api/pusher', {
-				event: currentEvent,
+				eventId: currentEvent._id,
 				user: user,
 				action: 'event-update',
 			});
 			await axios.post('/api/pusher', {
-				event: currentEvent,
 				userEmail: emailValue.toLowerCase(),
 				action: 'send-invite',
 			});
@@ -192,15 +191,13 @@ const StyledSubmitButton = styled(PrimaryButton)`
 	margin: 0 8px 0 16px;
 
 	@media only screen and (max-width: 555px) {
-		width: 100%;
-		margin: 8px 0;
+		margin: 8px 8px 0 0;
 	}
 `;
 const StyledCancelButton = styled(SecondaryButton)`
 	margin: 0 8px 0 8px;
 
 	@media only screen and (max-width: 555px) {
-		width: 100%;
-		margin: 8px 0;
+		margin: 8px 0 0 0;
 	}
 `;

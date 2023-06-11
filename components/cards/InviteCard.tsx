@@ -71,12 +71,11 @@ export const InviteCard = (props) => {
 			//ping Pusher channel
 			const event = await axios.get(`/api/events/${id}`);
 			await axios.post('/api/pusher', {
-				event: event.data.data,
 				user: user,
 				action: 'user-invite',
 			});
 			await axios.post('/api/pusher', {
-				event: event.data.data,
+				eventId: event.data.data._id,
 				user: user,
 				action: 'event-update',
 			});
@@ -93,6 +92,12 @@ export const InviteCard = (props) => {
 		}
 	};
 
+	const maxChar = 100;
+	const truncatedDescription =
+		description.length > maxChar
+			? description.slice(0, maxChar).trim().concat('...')
+			: description;
+
 	return (
 		<StyledCard
 			initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
@@ -103,7 +108,7 @@ export const InviteCard = (props) => {
 			}}>
 			<div>
 				<Title variant='heading4'>{name}</Title>
-				<Text variant='body1'>{description}</Text>
+				<Text variant='body1'>{truncatedDescription}</Text>
 				<Text variant='body1'>Creator: {creator.name}</Text>
 			</div>
 

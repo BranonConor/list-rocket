@@ -45,6 +45,7 @@ export const CollaboratorsGrid = () => {
 								photo={collaborator.image}
 								dimensions='40px'
 							/>
+							<StyledPendingDot />
 						</StyledPendingButton>
 					);
 				})}
@@ -81,12 +82,17 @@ const StyledCollaboratorsWrapper = styled(motion.div)`
 `;
 const StyledH2 = styled(Title)`
 	margin: 0 16px 0 0;
+
+	@media only screen and (max-width: 768px) {
+		margin: 0 8px 0 0;
+	}
 `;
 const StyledButton = styled.button`
 	outline: none;
 	border: none;
 	background: none;
 	transition: 0.15s ease all;
+	padding: 0 4px;
 
 	&:hover {
 		cursor: pointer;
@@ -101,14 +107,16 @@ const StyledPendingButton = styled.button`
 	border: none;
 	background: none;
 	transition: 0.15s ease all;
-	opacity: 0.6;
+	padding: 0 4px;
+	position: relative;
+	cursor: pointer;
+
+	img {
+		opacity: 0.4;
+	}
 
 	&:hover {
-		cursor: pointer;
-
-		img {
-			transform: scale(1.1);
-		}
+		transform: scale(1.1);
 	}
 `;
 const StyledAddCollaboratorButton = styled.button`
@@ -131,4 +139,14 @@ const StyledAddCollaboratorButton = styled.button`
 	img {
 		transform: translateY(-2px);
 	}
+`;
+const StyledPendingDot = styled.div`
+	position: absolute;
+	bottom: 2px;
+	right: 2px;
+	width: 8px;
+	height: 8px;
+	background: #decd32;
+	border-radius: 100%;
+	border: 3px solid white;
 `;
