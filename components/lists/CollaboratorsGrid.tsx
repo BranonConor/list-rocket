@@ -53,6 +53,10 @@ export const CollaboratorsGrid = () => {
 				user: collaborator,
 				action: 'event-update',
 			});
+			await axios.post('/api/pusher', {
+				userId: userId,
+				action: 'remove-collaborator',
+			});
 
 			setEditCollaboratorsButtonIsClicked(false);
 			setDeleteCollaboratorDialogIsOpen(false);

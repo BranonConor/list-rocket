@@ -1,7 +1,7 @@
 import { EventCard } from '../cards/EventCard';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { Title } from '../typography/Title';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
@@ -56,6 +56,10 @@ export const AllEvents: React.FC = () => {
 		event.preventDefault();
 		setUserIsCreatingEvent(true);
 	};
+
+	useEffect(() => {
+		getAllEvents();
+	}, []);
 
 	return (
 		<StyledWrapper>

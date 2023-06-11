@@ -34,9 +34,9 @@ export const UserProvider = (props) => {
 			cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
 		});
 		//subscribe to the user channel
-		const channel = pusher.subscribe(`user-channel-${user?._id}`);
+		const invitesChannel = pusher.subscribe(`user-channel-${user?._id}`);
 		//bind a function to the user-channel-update trigger, update UI
-		channel.bind(`user-channel-update-${user?._id}`, (data) => {
+		invitesChannel.bind(`user-channel-update-${user?._id}`, (data) => {
 			//refresh the invites list for only the user in question if logged in
 			if (data.user?._id === user?._id) {
 				getUserData();
