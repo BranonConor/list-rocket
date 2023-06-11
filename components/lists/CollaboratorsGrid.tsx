@@ -82,6 +82,19 @@ export const CollaboratorsGrid = () => {
 							/>
 							{editCollaboratorsButtonIsClicked && (
 								<StyledDeleteCollaboratorButton
+									initial={{
+										top: -10,
+										opacity: 0,
+									}}
+									animate={{
+										top: 26,
+										opacity: 1,
+									}}
+									transition={{
+										delay: 0.1,
+										duration: 0.5,
+										type: 'spring',
+									}}
 									onClick={() => {
 										setDeleteCollaboratorDialogIsOpen(true);
 										setUserToDelete({
@@ -89,7 +102,10 @@ export const CollaboratorsGrid = () => {
 											name: collaborator.name,
 										});
 									}}>
-									<img src='/icons/trash-red.svg' alt='' />
+									<img
+										src='/icons/trash-red.svg'
+										alt='remove collaborator'
+									/>
 								</StyledDeleteCollaboratorButton>
 							)}
 						</StyledAvatar>
@@ -107,6 +123,19 @@ export const CollaboratorsGrid = () => {
 							<StyledPendingDot />
 							{editCollaboratorsButtonIsClicked && (
 								<StyledDeleteCollaboratorButton
+									initial={{
+										top: -10,
+										opacity: 0,
+									}}
+									animate={{
+										top: 26,
+										opacity: 1,
+									}}
+									transition={{
+										delay: 0.1,
+										duration: 0.5,
+										type: 'spring',
+									}}
 									onClick={() => {
 										setDeleteCollaboratorDialogIsOpen(true);
 										setUserToDelete({
@@ -114,7 +143,10 @@ export const CollaboratorsGrid = () => {
 											name: collaborator.name,
 										});
 									}}>
-									<img src='/icons/trash-red.svg' alt='' />
+									<img
+										src='/icons/trash-red.svg'
+										alt='remove collaborator'
+									/>
 								</StyledDeleteCollaboratorButton>
 							)}
 						</StyledPendingAvatar>
@@ -188,12 +220,12 @@ export const CollaboratorsGrid = () => {
 			)}
 			{deleteCollaboratorDialogIsOpen && (
 				<Dialog
-					title='Delete Event'
+					title='Remove Collaborator'
 					description={`Are you sure you want to remove ${userToDelete?.name} from the event? All their list data will be lost.`}
 					cta={(e: any) =>
 						handleDelete(e, currentEvent?._id, userToDelete?.id)
 					}
-					buttonText='Delete'
+					buttonText='Remove'
 					setDialogIsOpen={setDeleteCollaboratorDialogIsOpen}
 					showCancelButton
 				/>
@@ -309,12 +341,12 @@ const StyledPendingDot = styled.div`
 	border-radius: 100%;
 	border: 3px solid white;
 `;
-const StyledDeleteCollaboratorButton = styled.button`
+const StyledDeleteCollaboratorButton = styled(motion.button)(
+	({ theme: { shadows } }) => `
 	border: none;
 	outline: none;
 	background: none;
 	position: absolute;
-	top: 6px;
 	left: 10px;
 	z-index: 10;
 	width: 14px;
@@ -325,8 +357,10 @@ const StyledDeleteCollaboratorButton = styled.button`
 		width: 16px;
 		height: 16px;
 		filter: grayscale(0%);
-		background: rgba(250, 250, 250, 0.85);
+		background: rgba(250, 250, 250, 1);
+		box-shadow: ${shadows.standard};
 		border-radius: 100%;
 		padding: 4px;
 	}
-`;
+`
+);
