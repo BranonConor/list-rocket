@@ -56,13 +56,15 @@ export const WebLayout = ({ children }) => {
 								<StyledTitle variant='heading4'>
 									Resources
 								</StyledTitle>
-								<Link href='/'>Give Feedback</Link>
+								<Link href='https://cp7p1hyg8bp.typeform.com/to/l5g8afqA'>
+									🤝 Give Feedback
+								</Link>
 							</StyledColumn>
 							<StyledColumn>
 								<StyledTitle variant='heading4'>
 									Use Cases
 								</StyledTitle>
-								<Link href='/'>Coming Soon!</Link>
+								<Link href='/'>👀 Coming Soon!</Link>
 							</StyledColumn>
 						</StyledGrid>
 					</StyledWrapper>
