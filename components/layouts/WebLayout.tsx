@@ -38,11 +38,15 @@ export const WebLayout = ({ children }) => {
 					<StyledWrapper>
 						<StyledGrid>
 							<StyledColumn>
-								<StyledLink href='/'>
-									<StyledLogo
-										src='/icons/liftoff-logo-light.svg'
-										alt='Liftoff Technologies, LLC'
-									/>
+								<StyledLink href='https://liftoff-tech.vercel.app'>
+									<a
+										target='_blank'
+										rel='noopener noreferrer'>
+										<StyledLogo
+											src='/icons/liftoff-logo-light.svg'
+											alt='Liftoff Technologies, LLC'
+										/>
+									</a>
 								</StyledLink>
 								<Text variant='body2'>App by LIFTOFF</Text>
 							</StyledColumn>
@@ -151,7 +155,10 @@ const StyledLogo = styled.img`
 `;
 const StyledLink = styled(Link)`
 	color: white;
-	cursor: pointer;
+
+	a {
+		cursor: pointer;
+	}
 `;
 const StyledTitle = styled(Title)`
 	margin-top: 0;
