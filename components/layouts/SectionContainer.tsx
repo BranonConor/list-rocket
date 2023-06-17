@@ -17,11 +17,11 @@ const StyledWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	justify-content: center;
-	padding: 0 32px;
+	padding: 64px 0;
 	box-sizing: border-box;
 
 	@media only screen and (max-width: 600px) {
-		padding: 0 16px;
+		padding: 32px 0;
 	}
 `;
 const StyledSectionContainer = styled.div`

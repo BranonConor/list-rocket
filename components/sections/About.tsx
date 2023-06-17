@@ -6,82 +6,74 @@ import { Text } from '../typography/Text';
 export const About = () => {
 	return (
 		<SectionContainer>
-			<StyledWrapper>
-				<StyledGraphicWrapper>
-					<StyledGraphic src='/graphics/about.svg' alt='' />
-				</StyledGraphicWrapper>
-				<StyledContentWrapper>
-					<Title variant='heading2'>
-						Everything, everyone, all in one place.
-					</Title>
-					<Text variant='body1'>
-						Ever tried planning something with a group using
-						existing to-do list apps or other disjointed solutions?
-						Yeah, us too - that&apos;s why we decided to build
-						ListRocket!
-					</Text>
-					<Text variant='body1'>
-						ListRocket combines traditional to-do lists with
-						real-time collaborative group features, all in one
-						space. Instead of trying to organize an event across
-						group chats and random apps, why not work with everyone
-						all in one workspace?
-					</Text>
-				</StyledContentWrapper>
-			</StyledWrapper>
+			<StyledContentWrapper>
+				<StyledTitle variant='heading2'>
+					Everything, everyone, all in one place.
+				</StyledTitle>
+				<StyledText variant='body1'>
+					Planning something with friends and family is hard.
+					Scattered to-do list apps or other disjointed solutions
+					don&apos;t make it any easier.
+				</StyledText>
+				<Text variant='body1'>
+					ListRocket combines traditional to-do lists with real-time
+					collaborative group features, all in one space. Instead of
+					trying to organize an event across group chats and random
+					apps, why not work with everyone all in one workspace?
+				</Text>
+				<StyledImageWrapper>
+					<StyledImage src='/assets/workspace.png' />
+				</StyledImageWrapper>
+			</StyledContentWrapper>
 		</SectionContainer>
 	);
 };
-const StyledWrapper = styled.div`
-	display: flex;
-	min-height: 400px;
-	align-items: center;
-	padding: 64px 0;
 
-	@media only screen and (max-width: 900px) {
-		flex-direction: column;
-	}
-`;
 const StyledContentWrapper = styled.div`
-	width: 50%;
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: flex-start;
-
-	@media only screen and (max-width: 1200px) {
+	padding: @media only screen and (max-width: 1200px) {
 		width: 60%;
 	}
 	@media only screen and (max-width: 900px) {
 		width: 100%;
 	}
 `;
-const StyledGraphicWrapper = styled.div`
-	width: 50%;
+const StyledTitle = styled(Title)`
+	text-align: center;
+	width: 100%;
+
+	@media only screen and (max-width: 600px) {
+		text-align: left;
+	}
+`;
+const StyledText = styled(Text)(
+	({ theme: { colors } }) => `
+	font-style: italic;
+	border-left: 4px solid ${colors.button.defaultBg};
+	padding-left: 8px;
+	font-weight: bold;
+	`
+);
+const StyledImageWrapper = styled.div`
+	width: 100%;
 	display: flex;
 	justify-content: center;
-
-	@media only screen and (max-width: 1200px) {
-		width: 40%;
-	}
-	@media only screen and (max-width: 1100px) {
-		justify-content: flex-start;
-	}
-	@media only screen and (max-width: 900px) {
-		width: 100%;
-		padding: 0 0 24px 0;
-	}
+	padding: 16px 0;
+	position: relative;
+	z-index: 1;
 `;
-const StyledGraphic = styled.img`
-	width: 60%;
 
-	@media only screen and (max-width: 1100px) {
-		width: 75%;
-	}
-	@media only screen and (max-width: 900px) {
-		width: 140px;
-	}
-	@media only screen and (max-width: 400px) {
-		width: 100px;
-	}
-`;
+const StyledImage = styled.img(
+	({ theme: { shadows } }) => `
+	width: 100%;
+	max-width: 900px;
+	box-shadow: ${shadows.standard};
+	border-radius: 20px;
+	position: relative;
+	z-index: 1;
+`
+);
