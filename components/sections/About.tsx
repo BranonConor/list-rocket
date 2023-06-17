@@ -21,6 +21,9 @@ export const About = () => {
 					trying to organize an event across group chats and random
 					apps, why not work with everyone all in one workspace?
 				</Text>
+				<StyledImageWrapper>
+					<StyledImage src='/assets/workspace.png' />
+				</StyledImageWrapper>
 			</StyledContentWrapper>
 		</SectionContainer>
 	);
@@ -42,6 +45,10 @@ const StyledContentWrapper = styled.div`
 const StyledTitle = styled(Title)`
 	text-align: center;
 	width: 100%;
+
+	@media only screen and (max-width: 600px) {
+		text-align: left;
+	}
 `;
 const StyledText = styled(Text)(
 	({ theme: { colors } }) => `
@@ -50,4 +57,23 @@ const StyledText = styled(Text)(
 	padding-left: 8px;
 	font-weight: bold;
 	`
+);
+const StyledImageWrapper = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	padding: 16px 0;
+	position: relative;
+	z-index: 1;
+`;
+
+const StyledImage = styled.img(
+	({ theme: { shadows } }) => `
+	width: 100%;
+	max-width: 900px;
+	box-shadow: ${shadows.standard};
+	border-radius: 20px;
+	position: relative;
+	z-index: 1;
+`
 );
