@@ -27,7 +27,9 @@ export const WebLayout = ({ children }) => {
 				<StyledHeader>
 					<WebNav />
 				</StyledHeader>
-				<StyledMainSection>{children}</StyledMainSection>
+				<StyledMainSection>
+					<StyledWrapper>{children}</StyledWrapper>
+				</StyledMainSection>
 			</StyledContainer>
 		</StyledLayout>
 	);
@@ -49,5 +51,20 @@ const StyledMainSection = styled.div`
 	height: 100vh;
 	padding: 75px 0 0 0;
 	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
 `;
 const StyledHeader = styled.header``;
+const StyledWrapper = styled.div`
+	width: 100%;
+	max-width: 1440px;
+	padding: 32px;
+	box-sizing: border-box;
+	overflow-x: hidden;
+
+	@media only screen and (max-width: 768px) {
+		padding: 16px;
+	}
+`;

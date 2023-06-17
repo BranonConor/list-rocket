@@ -33,6 +33,23 @@ export const Hero = () => {
 					src='/graphics/hero.svg'
 					alt=''
 					draggable={false}
+					initial={{ opacity: 0, translateY: 20 }}
+					animate={{ opacity: 1, translateY: 0 }}
+					transition={{
+						duration: 0.75,
+						type: 'spring',
+					}}
+				/>
+				<StyledListsGraphic
+					src='/graphics/lists.svg'
+					alt=''
+					draggable={false}
+					initial={{ opacity: 0, translateY: 50 }}
+					animate={{ opacity: 1, translateY: 0 }}
+					transition={{
+						duration: 1,
+						type: 'spring',
+					}}
 				/>
 			</StyledGraphicWrapper>
 		</StyledHeroSection>
@@ -45,6 +62,7 @@ const StyledHeroSection = styled.div`
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	grid-gap: 32px;
+	border-radius: 20px;
 	overflow: hidden;
 
 	@media only screen and (max-width: 1200px) {
@@ -90,10 +108,11 @@ const StyledGraphicWrapper = styled.div`
 	justify-content: flex-end;
 	position: relative;
 `;
-const StyledGraphic = styled.img`
+const StyledGraphic = styled(motion.img)`
 	width: 90%;
 	position: absolute;
 	bottom: -150px;
+	z-index: 1;
 
 	@media only screen and (max-width: 1200px) {
 		width: 130%;
@@ -106,4 +125,10 @@ const StyledGraphic = styled.img`
 	@media only screen and (max-width: 600px) {
 		width: 70%;
 	}
+`;
+const StyledListsGraphic = styled(motion.img)`
+	position: absolute;
+	top: -100px;
+	right: 32px;
+	z-index: 0;
 `;
