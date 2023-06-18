@@ -26,7 +26,7 @@ export const theme = {
 		white: colors.white,
 		bgLight: colors.rocketSteel,
 		bgDark: colors.deepSpace,
-		primaryGradient: colors.horizon,
+		primaryGradient: colors.supernova,
 		secondaryGradient: colors.atmosphere,
 		tertiaryGradient: colors.flame,
 		success: {

@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { Hero } from '../components/sections/Hero';
 import { WebLayout } from '../components/layouts/WebLayout';
 import { About } from '../components/sections/About';
+import { Features } from '../components/sections/Features';
 
 const Index = () => {
 	return (
@@ -14,6 +15,7 @@ const Index = () => {
 			<main>
 				<Hero />
 				<About />
+				<Features />
 			</main>
 		</WebLayout>
 	);

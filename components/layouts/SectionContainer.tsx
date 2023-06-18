@@ -17,7 +17,7 @@ const StyledWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	justify-content: center;
-	padding: 64px 0;
+	padding: 64px 0 32px 0;
 	box-sizing: border-box;
 
 	@media only screen and (max-width: 600px) {
@@ -25,6 +25,5 @@ const StyledWrapper = styled.div`
 	}
 `;
 const StyledSectionContainer = styled.div`
-	max-width: 1100px;
 	width: 100%;
 `;

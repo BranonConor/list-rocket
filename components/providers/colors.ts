@@ -1,5 +1,7 @@
 export const colors = {
 	flame: 'linear-gradient(90deg, #EB5757 0%, #FF00A8 51.56%, #FF9900 94.79%)',
+	supernova:
+		'linear-gradient(133.4deg, #EB5757 0%, #FF00A8 0.01%, #FF9900 95.83%)',
 	horizon:
 		'linear-gradient(180deg, #071D3F 54.69%, #0071A2 86.98%, #0092D1 99.99%, #00B2FF 100%)',
 	deepSpace: '#071D3F',
