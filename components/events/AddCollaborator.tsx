@@ -85,16 +85,15 @@ export const AddCollaborator = (props) => {
 
 	return (
 		<StyledFormWrapper>
-			<StyledForm
-				onSubmit={handleSubmit}
-				initial={{ top: -200, opacity: 0 }}
-				animate={{ top: 0, opacity: 1 }}
-				transition={{
-					duration: 0.25,
-					type: 'spring',
-				}}>
+			<StyledForm onSubmit={handleSubmit}>
 				<label htmlFor='email'></label>
 				<StyledInput
+					initial={{ left: -8, opacity: 0 }}
+					animate={{ left: 0, opacity: 1 }}
+					transition={{
+						duration: 0.25,
+						type: 'spring',
+					}}
 					type='text'
 					name='email'
 					id='email'
@@ -103,21 +102,37 @@ export const AddCollaborator = (props) => {
 					onChange={handleEmail}
 				/>
 				<StyledButtonWrapper>
-					<StyledSubmitButton
-						variant='small'
-						type='submit'
-						content='Submit'
-					/>
-					<StyledCancelButton
-						content='Cancel'
-						variant='small'
-						type='button'
-						onClick={(e) => {
-							e?.preventDefault();
-							setEmailValue('');
-							props.setIsAddCollaboratorButtonClicked(false);
-						}}
-					/>
+					<StyledButtonMotionWrapper
+						initial={{ left: -12, opacity: 0 }}
+						animate={{ left: 0, opacity: 1 }}
+						transition={{
+							duration: 0.35,
+							type: 'spring',
+						}}>
+						<StyledSubmitButton
+							variant='small'
+							type='submit'
+							content='Submit'
+						/>
+					</StyledButtonMotionWrapper>
+					<StyledButtonMotionWrapper
+						initial={{ left: -16, opacity: 0 }}
+						animate={{ left: 0, opacity: 1 }}
+						transition={{
+							duration: 0.45,
+							type: 'spring',
+						}}>
+						<StyledCancelButton
+							content='Cancel'
+							variant='small'
+							type='button'
+							onClick={(e) => {
+								e?.preventDefault();
+								setEmailValue('');
+								props.setIsAddCollaboratorButtonClicked(false);
+							}}
+						/>
+					</StyledButtonMotionWrapper>
 				</StyledButtonWrapper>
 			</StyledForm>
 			{errorMessage && (
@@ -131,33 +146,37 @@ export const AddCollaborator = (props) => {
 
 const StyledFormWrapper = styled.div`
 	display: block;
+	width: 500px;
 `;
 
-const StyledForm = styled(motion.form)(
-	({ theme: { colors } }) => `
-	max-height: 64px;
-	max-width: 500px;
+const StyledForm = styled(motion.form)`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 8px 16px;
+	margin-left: 16px;
 	box-sizing: border-box;
-	height: calc(40px + 32px);
 	border-radius: 10px;
-	margin: 16px 0;
-	background: ${colors.bgLight};
+
+	@media only screen and (max-width: 865px) {
+		margin-left: 0;
+		margin-top: 8px;
+	}
 
 	@media only screen and (max-width: 555px) {
 		flex-direction: column;
-		padding: 16px;
 		height: auto;
 		max-height: 100%;
+		margin: 8px 0 0 0;
 	}
-`
-);
-const StyledInput = styled.input(
-	({ theme: { typography } }) => `
+
+	@media only screen and (max-width: 768px) {
+		margin: 0 8px 0 0;
+	}
+`;
+const StyledInput = styled(motion.input)(
+	({ theme: { typography, shadows } }) => `
 	width: 100%;
+	max-width: 100%;
 	box-sizing: border-box;
 	border-radius: 5px;
 	padding: 8px;
@@ -167,6 +186,8 @@ const StyledInput = styled.input(
 	font-family: Poppins;
 	font-size: ${typography.size.body2};
 	padding: 4px 8px;
+	box-shadow: ${shadows.standard};
+	position: relative;
 
 	@media only screen and (max-width: 555px) {
 		width: 100%;
@@ -189,6 +210,7 @@ const StyledButtonWrapper = styled.div`
 `;
 const StyledSubmitButton = styled(PrimaryButton)`
 	margin: 0 8px 0 16px;
+	position: relative;
 
 	@media only screen and (max-width: 555px) {
 		margin: 8px 8px 0 0;
@@ -196,8 +218,12 @@ const StyledSubmitButton = styled(PrimaryButton)`
 `;
 const StyledCancelButton = styled(SecondaryButton)`
 	margin: 0 8px 0 8px;
+	position: relative;
 
 	@media only screen and (max-width: 555px) {
 		margin: 8px 0 0 0;
 	}
+`;
+const StyledButtonMotionWrapper = styled(motion.div)`
+	position: relative;
 `;
