@@ -52,7 +52,7 @@ export const UserList: React.FC<Props> = (props) => {
 				<StyledListTitle>
 					<ProfilePhoto
 						photo={creator?.image || '/icons/user-x.svg'}
-						dimensions='40px'
+						dimensions='24px'
 					/>
 					<StyledTitle variant='heading3'>
 						{isCurrentUser ? (
@@ -160,7 +160,8 @@ const StyledListTitle = styled.div(
 	color: ${colors.textLight};
 
 	img {
-		margin: 0 16px 0 0;
+		margin: 0 8px 0 0;
+		transform: translateY(-2px);
 	}
 `
 );
@@ -205,6 +206,7 @@ const StyledTitle = styled(Title)`
 	display: flex;
 	align-items: center;
 	position: relative;
+	margin: 8px 0px;
 
 	img {
 		margin: 0 16px;

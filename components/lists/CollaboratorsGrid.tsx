@@ -99,16 +99,16 @@ export const CollaboratorsGrid = () => {
 							isInEditMode={editCollaboratorsButtonIsClicked}>
 							<ProfilePhoto
 								photo={collaborator.image}
-								dimensions='40px'
+								dimensions='24px'
 							/>
 							{editCollaboratorsButtonIsClicked && (
 								<StyledDeleteCollaboratorButton
 									initial={{
-										top: -10,
+										top: -8,
 										opacity: 0,
 									}}
 									animate={{
-										top: 26,
+										top: 16,
 										opacity: 1,
 									}}
 									transition={{
@@ -152,17 +152,17 @@ export const CollaboratorsGrid = () => {
 							isInEditMode={editCollaboratorsButtonIsClicked}>
 							<ProfilePhoto
 								photo={collaborator.image}
-								dimensions='40px'
+								dimensions='24px'
 							/>
 							<StyledPendingDot />
 							{editCollaboratorsButtonIsClicked && (
 								<StyledDeleteCollaboratorButton
 									initial={{
-										top: -10,
+										top: -8,
 										opacity: 0,
 									}}
 									animate={{
-										top: 26,
+										top: 16,
 										opacity: 1,
 									}}
 									transition={{
@@ -186,6 +186,17 @@ export const CollaboratorsGrid = () => {
 						</StyledPendingAvatar>
 					);
 				})}
+
+				{isAddCollaboratorButtonClicked && (
+					<AddCollaborator
+						isAddCollaboratorButtonClicked={
+							isAddCollaboratorButtonClicked
+						}
+						setIsAddCollaboratorButtonClicked={
+							setIsAddCollaboratorButtonClicked
+						}
+					/>
+				)}
 
 				{/* ---- COLLABORATORS CONTROLS BUTTONS ----- */}
 				{!isAddCollaboratorButtonClicked && (
@@ -244,16 +255,6 @@ export const CollaboratorsGrid = () => {
 					</>
 				)}
 			</StyledCollaboratorsWrapper>
-			{isAddCollaboratorButtonClicked && (
-				<AddCollaborator
-					isAddCollaboratorButtonClicked={
-						isAddCollaboratorButtonClicked
-					}
-					setIsAddCollaboratorButtonClicked={
-						setIsAddCollaboratorButtonClicked
-					}
-				/>
-			)}
 			{deleteCollaboratorDialogIsOpen && (
 				<Dialog
 					title='Remove Collaborator'
@@ -286,7 +287,8 @@ const StyledCollaboratorsWrapper = styled(motion.div)`
 	flex-wrap: wrap;
 	align-items: center;
 	width: 100%;
-	margin: 16px 0 16px 0;
+	min-height: 40px;
+	margin: 0 0 16px 0;
 
 	&:hover {
 		button {
@@ -296,6 +298,9 @@ const StyledCollaboratorsWrapper = styled(motion.div)`
 `;
 const StyledH2 = styled(Title)`
 	margin: 0 16px 0 0;
+	min-height: 40px;
+	display: flex;
+	align-items: center;
 
 	@media only screen and (max-width: 768px) {
 		margin: 0 8px 0 0;
@@ -315,6 +320,8 @@ const StyledAvatar = styled.div<IStyledAvatarProps>(
 	box-sizing: border-box;
 	position: relative;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
 
 	&:hover {
 		transform: scale(1.1);
@@ -336,6 +343,8 @@ const StyledPendingAvatar = styled.div<IStyledAvatarProps>(
 	padding:  ${isInEditMode ? '0 8px' : '0 4px'};
 	position: relative;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
 
 	img {
 		opacity: ${isInEditMode ? '1' : '0.4'};
@@ -347,7 +356,7 @@ const StyledPendingAvatar = styled.div<IStyledAvatarProps>(
 
 	img {
 		filter: ${isInEditMode ? 'grayscale(100%)' : 'none'};
-		transform: ${isInEditMode ? 'scale(1.2)' : 'none'};
+		transform: ${isInEditMode ? 'scale(1.25)' : 'none'};
 	}
 `
 );
@@ -362,7 +371,6 @@ const StyledCollaboratorControlsButton = styled.button<IStyledAvatarProps>(
 	transition: 0.15s ease all;
 	filter: ${isInEditMode ? 'grayscale(0%)' : 'grayscale(100%)'};
 	padding: 0 0 0 12px;
-	transform: translateY(-2px);
 
 	&:hover {
 		cursor: pointer;
@@ -377,7 +385,7 @@ const StyledCollaboratorControlsButton = styled.button<IStyledAvatarProps>(
 );
 const StyledPendingDot = styled.div`
 	position: absolute;
-	bottom: 2px;
+	bottom: -4px;
 	right: 2px;
 	width: 8px;
 	height: 8px;
@@ -391,15 +399,13 @@ const StyledDeleteCollaboratorButton = styled(motion.button)(
 	outline: none;
 	background: none;
 	position: absolute;
-	left: 10px;
+	left: 4px;
 	z-index: 10;
-	width: 14px;
-	height: 14px;
 	cursor: pointer;
 
 	img {
-		width: 16px;
-		height: 16px;
+		width: 12px;
+		height: 12px;
 		filter: grayscale(0%);
 		background: rgba(250, 250, 250, 1);
 		box-shadow: ${shadows.standard};

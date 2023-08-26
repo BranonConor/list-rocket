@@ -57,18 +57,18 @@ export const InviteCard = (props) => {
 	const handleAccept = async (e) => {
 		try {
 			//Accept user invite, update user and event
-			await axios.put(`/api/events`, {
-				eventId: id,
+			await axios.put(`/api/events/${id}`, {
 				user: user,
-				action: 'accept',
+				action: 'accept-invite',
 			});
-			await axios.put(`/api/user`, {
+			await axios.put(`/api/user/${user._id}`, {
 				eventId: id,
 				user: user,
-				action: 'accept',
+				action: 'accept-invite',
 			});
 
 			//ping Pusher channel
+			//the current event may be different from the event to update for the invite
 			const event = await axios.get(`/api/events/${id}`);
 			await axios.post('/api/pusher', {
 				user: user,
