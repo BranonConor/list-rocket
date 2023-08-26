@@ -28,7 +28,7 @@ export const UserCard: React.FC<IProps> = (props) => {
 					duration: 0.25,
 					type: 'spring',
 				}}>
-				<ProfilePhoto photo={image} dimensions='35px' />
+				<ProfilePhoto photo={image} dimensions='24px' />
 			</StyledAvatar>
 			<StyledP variant='overline'>{text}</StyledP>
 		</StyledInfoCard>
@@ -49,7 +49,7 @@ const StyledInfoCard = styled.div(
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 180px;
+	width: 158px;
 	background: ${colors.white};
 	border-radius: 5px;
 	height: 50px;

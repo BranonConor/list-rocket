@@ -343,6 +343,8 @@ const StyledPendingAvatar = styled.div<IStyledAvatarProps>(
 	padding:  ${isInEditMode ? '0 8px' : '0 4px'};
 	position: relative;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
 
 	img {
 		opacity: ${isInEditMode ? '1' : '0.4'};
@@ -383,7 +385,7 @@ const StyledCollaboratorControlsButton = styled.button<IStyledAvatarProps>(
 );
 const StyledPendingDot = styled.div`
 	position: absolute;
-	bottom: 2px;
+	bottom: -4px;
 	right: 2px;
 	width: 8px;
 	height: 8px;
