@@ -57,10 +57,9 @@ export const InviteCard = (props) => {
 	const handleAccept = async (e) => {
 		try {
 			//Accept user invite, update user and event
-			await axios.put(`/api/events`, {
-				eventId: id,
+			await axios.put(`/api/events/${id}`, {
 				user: user,
-				action: 'accept',
+				action: 'accept-invite',
 			});
 			await axios.put(`/api/user`, {
 				eventId: id,
