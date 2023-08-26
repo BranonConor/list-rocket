@@ -85,7 +85,14 @@ export const AddCollaborator = (props) => {
 
 	return (
 		<StyledFormWrapper>
-			<StyledForm onSubmit={handleSubmit}>
+			<StyledForm
+				onSubmit={handleSubmit}
+				initial={{ left: -16, opacity: 0 }}
+				animate={{ left: 0, opacity: 1 }}
+				transition={{
+					duration: 0.5,
+					type: 'spring',
+				}}>
 				<label htmlFor='email'></label>
 				<StyledInput
 					initial={{ left: -8, opacity: 0 }}
