@@ -178,20 +178,12 @@ const eventApiRoutes = async (req, res) => {
 			} else {
 				//find the user and remove them from event's pendingCollab list
 				const newPendingCollaborators =
-					await event.pendingCollaborators.filter(
+					event.pendingCollaborators.filter(
 						(user: any) => user.toString() !== req.body.user._id
 					);
 				event.pendingCollaborators = newPendingCollaborators;
 
-				//Create a new list for this user and add it to the event
-				const userList = await new List({
-					creator: req.body.user._id,
-					event: req.query.eventId,
-				});
-				event.lists.push(userList._id);
-
 				//push the user into the official collaborators list
-				userList.save();
 				event.collaborators.push(req.body.user);
 				event.save();
 				return res.status(200).send();

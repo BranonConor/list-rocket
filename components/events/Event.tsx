@@ -81,6 +81,7 @@ const StyledEmptyEventWrapper = styled.div(
 );
 const StyledH3 = styled(Title)(
 	({ theme: { colors } }) => `
-	color: ${colors.bgLight}
+	color: ${colors.bgDark};
+	opacity: 0.15;
 `
 );
