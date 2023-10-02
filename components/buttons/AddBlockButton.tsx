@@ -14,8 +14,8 @@ export const AddBlockButton: React.FC<
 
 const StyledButton = styled.button(
 	({ theme: { shadows } }) => `
-	width: 50px;
-	height: 50px;
+	width: 40px;
+	height: 40px;
 	border-radius: 100%; 
     box-shadow: ${shadows.standard};
     border: none;

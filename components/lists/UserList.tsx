@@ -50,10 +50,13 @@ export const UserList: React.FC<Props> = (props) => {
 			}}>
 			<StyledList>
 				<StyledListTitle>
-					<ProfilePhoto
-						photo={creator?.image || '/icons/user-x.svg'}
-						dimensions='24px'
-					/>
+					<StyledButton>
+						<ProfilePhoto
+							photo={creator?.image || '/assets/user.svg'}
+							dimensions='24px'
+							hasBoxShadow
+						/>
+					</StyledButton>
 					<StyledTitle variant='heading3'>
 						{isCurrentUser ? (
 							<>
@@ -159,10 +162,6 @@ const StyledListTitle = styled.div(
 	justify-content: flex-start;
 	color: ${colors.textLight};
 
-	img {
-		margin: 0 8px 0 0;
-		transform: translateY(-2px);
-	}
 `
 );
 interface IStyledContentProps {
@@ -216,3 +215,48 @@ const StyledTitle = styled(Title)`
 		height: 20px;
 	}
 `;
+const StyledButton = styled.button(
+	({ theme: { colors } }) => `
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 100%;
+	padding: 4px;
+	box-sizing: border-box;
+	margin: 0 8px 0 0;
+	transition: 0.15s ease all;
+	position: relative;
+	transform: translateY(-2px);
+
+	img {
+		margin: 0;
+		z-index: 1;
+	}
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: 2;
+		left: 2;
+		width: 32px;
+		height: 32px;
+		padding: 2px;
+		background: ${colors.chip.defaultBg};
+		opacity: 0;
+		transform: scale(0);
+		transition: 0.10s ease all;
+		border-radius: 100%;
+		z-index: 0;
+	}
+
+	&:hover {
+		cursor: pointer;
+
+		&::before {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+`
+);
