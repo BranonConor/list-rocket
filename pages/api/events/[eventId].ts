@@ -101,6 +101,20 @@ const eventApiRoutes = async (req, res) => {
 			res.status(200).send();
 		}
 
+		// ---- EVENT BLOCK UPDATES ----
+		if (req.body.action === 'create-list') {
+			const newList = new List();
+			newList.items = [];
+			newList.event = req.body.eventId;
+
+			const event = await Event.findById(req.body.eventId);
+			event.lists.push(newList.id);
+			newList.save();
+			event.save();
+
+			res.json({ status: 200, data: { event: event, newList: newList } });
+		}
+
 		// ---- COLLABORATOR UPDATES ----
 		if (req.body.action === 'remove-collaborator') {
 			//find the user object we want to remove as a collaborator

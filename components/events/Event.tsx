@@ -1,15 +1,51 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { CollaboratorsGrid } from '../lists/CollaboratorsGrid';
 import { UserList } from '../lists/UserList';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import styled from 'styled-components';
 import Pusher from 'pusher-js';
 import { Title } from '../typography/Title';
+import { Text } from '../typography/Text';
+import { AddBlockButton } from '../buttons/AddBlockButton';
+import { Dialog } from '../Dialog';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import { UserContext } from '../../contexts/UserContext';
 
 export const Event: React.FC = () => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
+	const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
+	const { user } = useContext(UserContext);
 
 	const lists = currentEvent.lists;
+
+	const handleAddListBlock = async () => {
+		setBlockModalIsOpen(false);
+
+		try {
+			//Accept user invite, update user and event
+			await axios.put(`/api/events/${currentEvent._id}`, {
+				eventId: currentEvent._id,
+				user: user,
+				action: 'create-list',
+			});
+
+			//ping Pusher channel
+			await axios.post('/api/pusher', {
+				eventId: currentEvent._id,
+				user: user,
+				action: 'event-update',
+			});
+			toast.success('List Created 🤘🏽', {
+				toastId: 'list-created-toast',
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error('Something went wrong, sorry! 😵‍💫', {
+				toastId: 'list-created-error-toast',
+			});
+		}
+	};
 
 	//pusher code
 	//at this point, there should be a currentEvent so we shouldn't have to
@@ -55,6 +91,41 @@ export const Event: React.FC = () => {
 					</StyledH3>
 				</StyledEmptyEventWrapper>
 			)}
+			<StyledButtonWrapper>
+				<AddBlockButton onClick={() => setBlockModalIsOpen(true)} />
+			</StyledButtonWrapper>
+			{blockModalIsOpen && (
+				<Dialog
+					maxWidth='80%'
+					title='✨ Add Event Blocks'
+					description={
+						'Customize your event by adding the blocks you need!'
+					}
+					buttonText={'Cancel'}
+					setDialogIsOpen={setBlockModalIsOpen}>
+					<StyledBlockSelection>
+						<StyledCard onClick={handleAddListBlock}>
+							<Title variant='heading3'>List</Title>
+							<Text variant='body2'>
+								Lists can be assigned a user and be filled with
+								various types of nifty List Items
+							</Text>
+						</StyledCard>
+						<StyledCard>
+							<Title variant='heading3'>Poll</Title>
+							<Text variant='body2'>Coming soon! 👀</Text>
+						</StyledCard>
+						<StyledCard>
+							<Title variant='heading3'>Chats</Title>
+							<Text variant='body2'>Coming soon! 👀</Text>
+						</StyledCard>
+						<StyledCard>
+							<Title variant='heading3'>Announcements</Title>
+							<Text variant='body2'>Coming soon! 👀</Text>
+						</StyledCard>
+					</StyledBlockSelection>
+				</Dialog>
+			)}
 		</StyledEventWrapper>
 	);
 };
@@ -62,6 +133,7 @@ export const Event: React.FC = () => {
 const StyledEventWrapper = styled.div`
 	width: 100%;
 	height: 100%;
+	position: relative;
 `;
 const StyledListWrapper = styled.div`
 	width: 100%;
@@ -83,5 +155,39 @@ const StyledH3 = styled(Title)(
 	({ theme: { colors } }) => `
 	color: ${colors.bgDark};
 	opacity: 0.15;
+`
+);
+const StyledButtonWrapper = styled.div`
+	position: absolute;
+	top: 0;
+	right: 0;
+`;
+const StyledBlockSelection = styled.div(
+	({ theme: { colors } }) => `
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	grid-gap: 16px;
+	color: ${colors.font.body2};
+	padding: 32px 0;
+`
+);
+const StyledCard = styled.div(
+	({ theme: { colors, shadows } }) => `
+	width: 100%;
+	background: ${colors.bgLight};
+	color: ${colors.font.body};
+	border-radius: 8px;
+	padding: 16px;
+	box-sizing: border-box;
+	transition: 0.15s ease all;
+
+	&:hover {
+		box-shadow: ${shadows.standard};
+		background: white;
+		transform: translateY(-3px);
+		cursor: pointer;
+	}
 `
 );
