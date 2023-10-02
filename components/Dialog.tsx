@@ -47,8 +47,8 @@ export const Dialog: React.FC<IProps> = (props) => {
 			/>
 			<StyledDialog
 				maxWidth={maxWidth}
-				initial={{ scale: 0.7, opacity: 0, rotate: '10deg' }}
-				animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
+				initial={{ scale: 0.7, opacity: 0 }}
+				animate={{ scale: 1, opacity: 1 }}
 				transition={{
 					duration: 0.25,
 					type: 'spring',

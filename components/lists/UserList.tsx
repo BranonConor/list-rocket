@@ -78,10 +78,10 @@ export const UserList: React.FC<Props> = (props) => {
 									/>
 								)}
 							</>
+						) : creator ? (
+							`${creator?.name.split(' ')[0]}'s List`
 						) : (
-							`${
-								creator?.name.split(' ')[0] || 'Unknown User'
-							}'s List`
+							'Unassigned List'
 						)}
 					</StyledTitle>
 				</StyledListTitle>
