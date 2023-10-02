@@ -1,7 +1,6 @@
 import connectMongo from '../../../models/utils/connectMongo';
 import { Event } from '../../../models/Event';
 import { User } from '../../../models/User';
-import { List } from '../../../models/List';
 
 const eventsApiRoutes = async (req, res) => {
 	//mongoose code
@@ -29,19 +28,12 @@ const eventsApiRoutes = async (req, res) => {
 					...req.body.user,
 				},
 			];
-			//Create a new list and add it to the event
-			const creatorList = new List({
-				creator: req.body.user,
-				event: newEvent._id,
-			});
-			newEvent.lists = [creatorList._id];
 			//Add this event to the creator's list of events
 			const creator = await User.findById(req.body.user._id);
 			await creator.events.push(newEvent._id);
 			//Add this creator to the event as well
 			newEvent.creator = creator._id;
 			//Save everything
-			await creatorList.save();
 			await newEvent.save();
 			await creator.save();
 			res.status(200).send(newEvent);

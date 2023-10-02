@@ -4,19 +4,12 @@ import { UserList } from '../lists/UserList';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import styled from 'styled-components';
 import Pusher from 'pusher-js';
-import { UserContext } from '../../contexts/UserContext';
+import { Title } from '../typography/Title';
 
 export const Event: React.FC = () => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
-	const { user } = useContext(UserContext);
 
-	const currentUserList = currentEvent.lists.filter(
-		(list) => list.creator.email === user.email
-	);
-	const yourList = currentUserList[0];
-	const otherLists = currentEvent.lists.filter(
-		(list) => list.creator.email !== user.email
-	);
+	const lists = currentEvent.lists;
 
 	//pusher code
 	//at this point, there should be a currentEvent so we shouldn't have to
@@ -41,31 +34,53 @@ export const Event: React.FC = () => {
 	}, []);
 
 	return (
-		<>
+		<StyledEventWrapper>
 			<CollaboratorsGrid />
 			<StyledListWrapper>
-				<UserList
-					creator={yourList?.creator}
-					items={yourList?.items}
-					id={yourList?._id}
-					key={yourList?._id}
-				/>
-				{otherLists.map((list) => (
-					<UserList
-						creator={list?.creator}
-						items={list?.items}
-						id={list?._id}
-						key={list?._id}
-					/>
-				))}
+				{lists.map((list) => {
+					return (
+						<UserList
+							creator={list?.creator}
+							items={list?.items}
+							id={list?._id}
+							key={list?._id}
+						/>
+					);
+				})}
 			</StyledListWrapper>
-		</>
+			{!lists.length && (
+				<StyledEmptyEventWrapper>
+					<StyledH3 variant='heading3'>
+						NO EVENT BLOCKS ADDED
+					</StyledH3>
+				</StyledEmptyEventWrapper>
+			)}
+		</StyledEventWrapper>
 	);
 };
 
+const StyledEventWrapper = styled.div`
+	width: 100%;
+	height: 100%;
+`;
 const StyledListWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	overflow-x: auto;
 	padding: 0 0 16px 0;
 `;
+const StyledEmptyEventWrapper = styled.div(
+	({ theme: { colors } }) => `
+	width: 100%;
+	height: 100px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: ${colors.font.body2};
+`
+);
+const StyledH3 = styled(Title)(
+	({ theme: { colors } }) => `
+	color: ${colors.bgLight}
+`
+);
