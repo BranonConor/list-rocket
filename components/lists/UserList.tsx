@@ -10,11 +10,12 @@ import { UserContext } from '../../contexts/UserContext';
 import { Text } from '../typography/Text';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { EditListItemForm } from './EditListItemForm';
+import { ListUserSelector } from './ListUserSelection';
 
 interface Props {
 	creator: IUser;
 	items: IListItem[];
-	id: string;
+	id: string; // the ID of the list
 }
 
 export const UserList: React.FC<Props> = (props) => {
@@ -22,6 +23,9 @@ export const UserList: React.FC<Props> = (props) => {
 	const { user } = useContext(UserContext);
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
 	const isCurrentUser = creator?.email === user?.email;
+	const [isUserSelectorOpen, setIsUserSelectorOpen] = useState(false);
+
+	console.log(creator);
 
 	//handling edits
 	const [currentItemBeingEdited, setCurrentItemBeingEdited] = useState<
@@ -50,13 +54,23 @@ export const UserList: React.FC<Props> = (props) => {
 			}}>
 			<StyledList>
 				<StyledListTitle>
-					<StyledButton>
+					<StyledButton
+						onClick={() =>
+							setIsUserSelectorOpen(!isUserSelectorOpen)
+						}>
 						<ProfilePhoto
 							photo={creator?.image || '/assets/user.svg'}
 							dimensions='24px'
 							hasBoxShadow
 						/>
 					</StyledButton>
+					{isUserSelectorOpen && (
+						<ListUserSelector
+							users={currentEvent.collaborators}
+							listId={id}
+							setIsUserSelectorOpen={setIsUserSelectorOpen}
+						/>
+					)}
 					<StyledTitle variant='heading3'>
 						{isCurrentUser ? (
 							<>
@@ -156,6 +170,7 @@ const StyledList = styled(motion.div)(
 );
 const StyledListTitle = styled.div(
 	({ theme: { colors } }) => `
+	position: relative;
 	display: flex;
 	align-items: center;
 	width: 100%;

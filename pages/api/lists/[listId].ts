@@ -6,7 +6,21 @@ const listApiRoutes = async (req, res) => {
 	//mongoose code
 	await connectMongo();
 
-	if (req.method === 'PUT' && req.body.data.action === 'check') {
+	if (req.method === 'PUT' && req.body.action === 'assign-user-to-list') {
+		//look up the list
+		const list = await List.findById(req.body.listId);
+		//update the creator field
+		list.creator = req.body.user;
+		//save
+		list.save();
+
+		res.send({
+			status: 200,
+			data: list,
+		});
+	}
+
+	if (req.method === 'PUT' && req.body.action === 'check') {
 		//find the user object we want to add as the resolver of this item
 		const user = await User.findOne({ email: req.body.data.userEmail });
 		if (!user) {
@@ -32,7 +46,7 @@ const listApiRoutes = async (req, res) => {
 		}
 	}
 
-	if (req.method === 'PUT' && req.body.data.action === 'uncheck') {
+	if (req.method === 'PUT' && req.body.action === 'uncheck') {
 		//find this list
 		const listItem = await ListItem.findById(req.body.data.listItemId);
 		listItem.resolvedBy = null;

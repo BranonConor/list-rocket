@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
 import styled from 'styled-components';
 
 export const AddBlockButton: React.FC<

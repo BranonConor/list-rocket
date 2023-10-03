@@ -29,6 +29,9 @@ const ListSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'users',
 	},
+	customCreator: {
+		type: Schema.Types.String,
+	},
 	items: [
 		{
 			type: Schema.Types.ObjectId,

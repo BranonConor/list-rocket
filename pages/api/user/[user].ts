@@ -1,6 +1,7 @@
 import connectMongo from '../../../models/utils/connectMongo';
 import { User } from '../../../models/User';
 import { Event } from '../../../models/Event';
+import { List } from '../../../models/List';
 
 const userApiRoutes = async (req, res) => {
 	//mongoose code
