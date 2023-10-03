@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ICollaborator } from '../../contexts/types';
+import { ICollaborator, IUser } from '../../contexts/types';
 import { ProfilePhoto } from '../ProfilePhoto';
 import { motion } from 'framer-motion';
 import axios from 'axios';
@@ -11,12 +11,14 @@ interface IListUserSelectorProps {
 	users: ICollaborator[];
 	listId: string;
 	setIsUserSelectorOpen: Dispatch<SetStateAction<boolean>>;
+	setIsCustomUserInputOn: Dispatch<SetStateAction<boolean>>;
 }
 
 export const ListUserSelector: React.FC<IListUserSelectorProps> = ({
 	users,
 	listId,
 	setIsUserSelectorOpen,
+	setIsCustomUserInputOn,
 }) => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
 
@@ -50,6 +52,11 @@ export const ListUserSelector: React.FC<IListUserSelectorProps> = ({
 		}
 	};
 
+	const handleAddCustomUser = () => {
+		setIsCustomUserInputOn(true);
+		setIsUserSelectorOpen(false);
+	};
+
 	return (
 		<StyledWrapper
 			initial={{ opacity: 0, top: -8 }}
@@ -58,14 +65,14 @@ export const ListUserSelector: React.FC<IListUserSelectorProps> = ({
 				duration: 0.2,
 				type: 'spring',
 			}}>
-			{users.map((user) => {
+			{users.map((user, index) => {
 				return (
 					<StyledMotionWrapper
 						key={user._id}
 						initial={{ opacity: 0, top: -16 }}
 						animate={{ opacity: 1, top: 0 }}
 						transition={{
-							duration: 0.35,
+							duration: 0.25,
 							type: 'spring',
 						}}
 						onClick={() => handleClick(user)}>
@@ -74,7 +81,11 @@ export const ListUserSelector: React.FC<IListUserSelectorProps> = ({
 				);
 			})}
 			<StyledIconWrapper>
-				<StyledIcon id='add-user-icon' src='/icons/add-minimal.svg' />
+				<StyledIcon
+					id='add-user-icon'
+					src='/icons/add-minimal.svg'
+					onClick={handleAddCustomUser}
+				/>
 			</StyledIconWrapper>
 		</StyledWrapper>
 	);
@@ -111,6 +122,7 @@ const StyledMotionWrapper = styled(motion.div)(
 	margin: 0 0 8px 0;
     border-radius: 20px;
     padding: 4px;
+	position: relative;
 
     &:hover {
         cursor: pointer;

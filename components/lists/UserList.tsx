@@ -16,21 +16,31 @@ interface Props {
 	creator: IUser;
 	items: IListItem[];
 	id: string; // the ID of the list
+	customCreator?: string;
 }
 
 export const UserList: React.FC<Props> = (props) => {
-	const { creator, items, id } = props;
+	const { creator, items, id, customCreator } = props;
 	const { user } = useContext(UserContext);
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
 	const isCurrentUser = creator?.email === user?.email;
 	const [isUserSelectorOpen, setIsUserSelectorOpen] = useState(false);
-
-	console.log(creator);
+	const [isCustomUserInputOn, setIsCustomUserInputOn] = useState(false);
 
 	//handling edits
 	const [currentItemBeingEdited, setCurrentItemBeingEdited] = useState<
 		string | null
 	>(null);
+
+	let creatorName = isCurrentUser
+		? 'Your'
+		: creator
+		? `${creator?.name.split(' ')[0]}'s`
+		: 'Unassigned';
+
+	if (customCreator) {
+		creatorName = customCreator;
+	}
 
 	//when prepWorkspace is called, reset the edits
 	useEffect(() => {
@@ -54,27 +64,80 @@ export const UserList: React.FC<Props> = (props) => {
 			}}>
 			<StyledList>
 				<StyledListTitle>
-					<StyledButton
-						onClick={() =>
-							setIsUserSelectorOpen(!isUserSelectorOpen)
-						}>
-						<ProfilePhoto
-							photo={creator?.image || '/assets/user.svg'}
-							dimensions='24px'
-							hasBoxShadow
-						/>
-					</StyledButton>
+					{isCustomUserInputOn ? (
+						<StyledCloseButton
+							onClick={() => setIsCustomUserInputOn(false)}
+							initial={{
+								top: -20,
+								opacity: 0,
+							}}
+							animate={{
+								top: 0,
+								opacity: 1,
+							}}
+							transition={{
+								delay: 0,
+								duration: 0.15,
+								type: 'spring',
+							}}>
+							<img src='/icons/x.svg' />
+						</StyledCloseButton>
+					) : (
+						<StyledButton
+							onClick={() =>
+								setIsUserSelectorOpen(!isUserSelectorOpen)
+							}>
+							<ProfilePhoto
+								photo={creator?.image || '/assets/user.svg'}
+								dimensions='24px'
+								hasBoxShadow
+							/>
+						</StyledButton>
+					)}
 					{isUserSelectorOpen && (
 						<ListUserSelector
 							users={currentEvent.collaborators}
 							listId={id}
 							setIsUserSelectorOpen={setIsUserSelectorOpen}
+							setIsCustomUserInputOn={setIsCustomUserInputOn}
 						/>
 					)}
-					<StyledTitle variant='heading3'>
-						{isCurrentUser ? (
-							<>
-								Your List
+					<>
+						{isCustomUserInputOn ? (
+							<StyledForm>
+								<StyledInput
+									placeholder='Add a name'
+									initial={{
+										top: -20,
+										opacity: 0,
+									}}
+									animate={{
+										top: 0,
+										opacity: 1,
+									}}
+									transition={{
+										duration: 0.25,
+										type: 'spring',
+									}}></StyledInput>
+								<StyledSubmitButton
+									initial={{
+										top: -20,
+										opacity: 0,
+									}}
+									animate={{
+										top: 0,
+										opacity: 1,
+									}}
+									transition={{
+										duration: 0.35,
+										type: 'spring',
+									}}>
+									<img src='/icons/send.svg' />
+								</StyledSubmitButton>
+							</StyledForm>
+						) : (
+							<StyledTitle variant='heading3'>
+								{creatorName} List
 								{currentEvent?.controls?.anonymousModeIsOn && (
 									<motion.img
 										src='/icons/eye-dark.svg'
@@ -94,13 +157,9 @@ export const UserList: React.FC<Props> = (props) => {
 										}}
 									/>
 								)}
-							</>
-						) : creator ? (
-							`${creator?.name.split(' ')[0]}'s List`
-						) : (
-							'Unassigned List'
+							</StyledTitle>
 						)}
-					</StyledTitle>
+					</>
 				</StyledListTitle>
 				<StyledContent listHeight={currentEvent?.controls?.listHeight}>
 					<>
@@ -221,6 +280,7 @@ const StyledTitle = styled(Title)`
 	align-items: center;
 	position: relative;
 	margin: 8px 0px;
+	max-height: 40px;
 
 	img {
 		margin: 0 16px;
@@ -272,6 +332,92 @@ const StyledButton = styled.button(
 			opacity: 1;
 			transform: scale(1);
 		}
+	}
+`
+);
+const StyledForm = styled.form`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 0 8px 0;
+`;
+
+const StyledInput = styled(motion.input)(
+	({ theme: { shadows, typography, colors } }) => `
+	border: none;
+	border-radius: 20px;
+	padding: 8px;
+	box-sizing: border-box;
+	height: 30px;
+	box-shadow: ${shadows.standard};
+
+	font-size: ${typography.size.body2};
+	font-weight: ${typography.weight.body2};
+	font-family: 'Poppins';
+	line-height: ${typography.lineHeight.body2};
+	letter-spacing: ${typography.letterSpacing.body2};
+	margin: 0 8px 0 0;
+	position: relative;
+
+	&:focus {
+		outline: 4px solid ${colors.chip.defaultBg};
+	}
+	`
+);
+
+const StyledSubmitButton = styled(motion.button)(
+	({ theme: { shadows } }) => `
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	background: white;
+	border-radius: 100%;
+	padding: 0;
+	box-shadow: ${shadows.standard};
+	position: relative;
+
+	img {
+		padding: 0;
+		margin: 0 0;
+		top: 0;
+		width: 18px;
+		height: 18px;
+	}
+	
+	&:hover {
+		cursor: pointer;
+	}
+`
+);
+const StyledCloseButton = styled(motion.button)(
+	({ theme: { shadows } }) => `
+	position: relative;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	margin: 0 8px 0 0;
+	background: white;
+	border-radius: 100%;
+	padding: 0;
+	box-shadow: ${shadows.standard};
+	transform: translateY(-4px);
+
+	img {
+		padding: 0;
+		margin: 0 0;
+		top: 0;
+		width: 18px;
+		height: 18px;
+	}
+
+	&:hover {
+		cursor: pointer;
 	}
 `
 );
