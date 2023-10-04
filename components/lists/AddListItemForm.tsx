@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SecondaryButton } from '../buttons/SecondaryButton';
 import { PrimaryButton } from '../buttons/PrimaryButton';
@@ -10,10 +10,11 @@ import { UserContext } from '../../contexts/UserContext';
 
 interface IProps {
 	listId: string;
+	setDeleteListDialogIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export const AddListItemForm: React.FC<IProps> = (props) => {
-	const { listId } = props;
+	const { listId, setDeleteListDialogIsOpen } = props;
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
 	const [isAddItemClicked, setIsAddItemClicked] = useState<boolean>(false);
@@ -71,63 +72,74 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 		}
 	};
 
-	return isAddItemClicked ? (
-		<StyledWrapper
-			initial={{
-				scale: 0,
-				opacity: 0,
-				rotate: '15deg',
-			}}
-			animate={{
-				scale: 1,
-				opacity: 1,
-				rotate: '0deg',
-			}}
-			transition={{
-				duration: 0.125,
-				type: 'spring',
-			}}>
-			<StyledForm onSubmit={handleSubmit}>
-				<StyledInput
-					value={name}
-					placeholder='Add a title'
-					name='title'
-					required
-					onChange={(e) => setName(e.target.value)}
-				/>
-				<StyledInput
-					value={description}
-					placeholder='Add a description'
-					name='title'
-					required
-					onChange={(e) => setDescription(e.target.value)}
-				/>
-				<StyledInput
-					value={link}
-					placeholder='Add a link'
-					name='link'
-					onChange={(e) => setLink(e.target.value)}
-				/>
+	return (
+		<>
+			{isAddItemClicked ? (
+				<StyledWrapper
+					initial={{
+						scale: 0,
+						opacity: 0,
+						rotate: '15deg',
+					}}
+					animate={{
+						scale: 1,
+						opacity: 1,
+						rotate: '0deg',
+					}}
+					transition={{
+						duration: 0.125,
+						type: 'spring',
+					}}>
+					<StyledForm onSubmit={handleSubmit}>
+						<StyledInput
+							value={name}
+							placeholder='Add a title'
+							name='title'
+							required
+							onChange={(e) => setName(e.target.value)}
+						/>
+						<StyledInput
+							value={description}
+							placeholder='Add a description'
+							name='title'
+							required
+							onChange={(e) => setDescription(e.target.value)}
+						/>
+						<StyledInput
+							value={link}
+							placeholder='Add a link'
+							name='link'
+							onChange={(e) => setLink(e.target.value)}
+						/>
+						<StyledButtonWrapper>
+							<PrimaryButton
+								variant='small'
+								content='Submit'
+								type='submit'
+							/>
+							<SecondaryButton
+								variant='small'
+								content='Cancel'
+								onClick={handleCancelClick}
+							/>
+						</StyledButtonWrapper>
+					</StyledForm>
+				</StyledWrapper>
+			) : (
 				<StyledButtonWrapper>
-					<PrimaryButton
-						variant='small'
-						content='Submit'
-						type='submit'
-					/>
 					<SecondaryButton
-						variant='small'
-						content='Cancel'
-						onClick={handleCancelClick}
+						variant='fullSmall'
+						content='Add item'
+						onClick={handleAddItemClick}
 					/>
+					<StyledDeleteListButton
+						id='delete-list-button'
+						onClick={() => setDeleteListDialogIsOpen(true)}>
+						<StyledTrashIcon src='/icons/trash-red.svg' />
+					</StyledDeleteListButton>
 				</StyledButtonWrapper>
-			</StyledForm>
-		</StyledWrapper>
-	) : (
-		<SecondaryButton
-			variant='fullSmall'
-			content='Add item'
-			onClick={handleAddItemClick}
-		/>
+			)}
+		</>
 	);
 };
 const StyledWrapper = styled(motion.div)(
@@ -163,12 +175,34 @@ const StyledInput = styled.input(
 `
 );
 const StyledButtonWrapper = styled.div`
-	width: 100%;
+	max-width: 100%;
+	width: calc(100% - 24px - 8px);
 	display: flex;
 	margin: 8px 0 0 0;
-	padding: 0 8px;
 
 	button:first-of-type {
 		margin-right: 8px;
 	}
+`;
+const StyledDeleteListButton = styled.button`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 24px;
+	border-radius: 5px;
+	border: none;
+	filter: grayscale(100%);
+	transition: 0.15s ease all;
+
+	&:hover {
+		cursor: pointer;
+
+		img {
+			transform: scale(1.2);
+		}
+	}
+`;
+const StyledTrashIcon = styled.img`
+	width: 16px;
+	height: 16px;
 `;

@@ -5,7 +5,15 @@ import { Footer } from '../Footer';
 import { PopupButton } from '@typeform/embed-react';
 import styles from './DashLayout.module.css';
 
-export const DashLayout = ({ children }) => {
+interface DashLayoutProps {
+	isWorkspace?: boolean;
+	children?: React.ReactNode;
+}
+
+export const DashLayout: React.FC<DashLayoutProps> = ({
+	children,
+	isWorkspace = false,
+}) => {
 	const siteTitle = 'A productivity tool for streamlining events';
 
 	return (
@@ -36,9 +44,11 @@ export const DashLayout = ({ children }) => {
 				</StyledMainSection>
 			</StyledContainer>
 
-			<PopupButton id='l5g8afqA' className={styles.TypeformButton}>
-				👋
-			</PopupButton>
+			{!isWorkspace && (
+				<PopupButton id='l5g8afqA' className={styles.TypeformButton}>
+					👋
+				</PopupButton>
+			)}
 		</StyledWrapper>
 	);
 };

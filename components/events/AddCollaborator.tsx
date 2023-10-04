@@ -154,6 +154,7 @@ export const AddCollaborator = (props) => {
 const StyledFormWrapper = styled.div`
 	display: block;
 	width: 500px;
+	margin: 8px 0 0 0;
 `;
 
 const StyledForm = styled(motion.form)`

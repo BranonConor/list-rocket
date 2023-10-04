@@ -52,6 +52,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 				data: {
 					listId: listId,
 					listItemId: id,
+					action: 'delete-list-item',
 				},
 			});
 
@@ -83,8 +84,8 @@ export const ListItem: React.FC<IProps> = (props) => {
 				data: {
 					listItemId: id,
 					userEmail: user?.email,
-					action: 'check',
 				},
+				action: 'check',
 			});
 
 			//ping Pusher channel
@@ -110,8 +111,8 @@ export const ListItem: React.FC<IProps> = (props) => {
 			await axios.put(`/api/lists/${id}`, {
 				data: {
 					listItemId: id,
-					action: 'uncheck',
 				},
+				action: 'uncheck',
 			});
 
 			//ping Pusher channel

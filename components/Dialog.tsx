@@ -6,13 +6,14 @@ import { Title } from './typography/Title';
 import { Dispatch, SetStateAction } from 'react';
 import { SecondaryButton } from './buttons/SecondaryButton';
 
-interface IProps {
+interface IProps extends React.DialogHTMLAttributes<HTMLDivElement> {
 	title: string;
 	description: string;
 	cta?: (e: any) => Promise<void>;
 	buttonText: string;
 	setDialogIsOpen: Dispatch<SetStateAction<boolean>>;
 	showCancelButton?: boolean;
+	maxWidth?: string;
 }
 
 export const Dialog: React.FC<IProps> = (props) => {
@@ -23,6 +24,8 @@ export const Dialog: React.FC<IProps> = (props) => {
 		description,
 		setDialogIsOpen,
 		showCancelButton,
+		children,
+		maxWidth = '500px',
 	} = props;
 
 	return (
@@ -43,14 +46,16 @@ export const Dialog: React.FC<IProps> = (props) => {
 				}}
 			/>
 			<StyledDialog
-				initial={{ scale: 0, opacity: 0, rotate: '15deg' }}
-				animate={{ scale: 1, opacity: 1, rotate: '0deg' }}
+				maxWidth={maxWidth}
+				initial={{ scale: 0.7, opacity: 0 }}
+				animate={{ scale: 1, opacity: 1 }}
 				transition={{
 					duration: 0.25,
 					type: 'spring',
 				}}>
 				<Title variant='heading2'>{title}</Title>
 				<Text variant='body1'>{description}</Text>
+				{children}
 				<StyledButtonGroup>
 					<PrimaryButton
 						variant='small'
@@ -93,12 +98,15 @@ const StyledDialogOverlay = styled(motion.div)`
 	justify-content: center;
 	background: rgba(0, 0, 0, 0.5);
 `;
-const StyledDialog = styled(motion.div)(
-	({ theme: { colors, shadows } }) => `
+interface StyledDialogProps {
+	maxWidth: string;
+}
+const StyledDialog = styled(motion.div)<StyledDialogProps>(
+	({ maxWidth, theme: { colors, shadows } }) => `
     position: absolute;
 	z-index: 1;
-	width: 50%;
-	max-width: 500px;
+	width: 100%;
+	max-width: ${maxWidth};
 	display: flex;
 	flex-direction: column;
     background: ${colors.white};
@@ -110,8 +118,9 @@ const StyledDialog = styled(motion.div)(
 	@media only screen and (max-width: 768px) {
 		width: 75%;
 	}
-	@media only screen and (max-width: 500px) {
+	@media only screen and (max-width: 600px) {
 		width: calc(100% - 32px);
+		max-width: calc(100% - 32px);
 	}
 `
 );
