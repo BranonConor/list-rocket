@@ -143,7 +143,9 @@ const StyledEventWrapper = styled.div`
 `;
 const StyledListWrapper = styled.div`
 	width: 100%;
-	display: flex;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+	grid-gap: 16px;
 	overflow-x: auto;
 	padding: 0 0 16px 0;
 `;

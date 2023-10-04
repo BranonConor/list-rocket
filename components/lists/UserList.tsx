@@ -68,7 +68,7 @@ export const UserList: React.FC<Props> = (props) => {
 			setCustomNameInputValue('');
 
 			toast.success(`Assigned list 👍🏽`, {
-				toastId: 'assigned-list-to-custom-user-toast',
+				toastId: 'assigned-list-to-user-toast',
 			});
 		} catch (axiosError) {
 			if (customNameInputValue === '') {
@@ -77,7 +77,7 @@ export const UserList: React.FC<Props> = (props) => {
 				});
 			} else {
 				toast.error('Something went wrong, sorry! 😵‍💫', {
-					toastId: 'assigned-list-to-custom-user-error-toast',
+					toastId: 'assigned-list-to-user-error-toast',
 				});
 			}
 		}
@@ -262,7 +262,6 @@ const StyledListWrapper = styled(motion.div)`
 	max-height: 100%;
 	width: 300px;
 	min-width: 300px;
-	margin-right: 16px;
 `;
 const StyledList = styled(motion.div)(
 	({ theme: { colors } }) => `
