@@ -52,6 +52,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 				data: {
 					listId: listId,
 					listItemId: id,
+					action: 'delete-list-item',
 				},
 			});
 

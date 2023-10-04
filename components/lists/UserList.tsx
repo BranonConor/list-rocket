@@ -13,6 +13,7 @@ import { EditListItemForm } from './EditListItemForm';
 import { ListUserSelector } from './ListUserSelection';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { Dialog } from '../Dialog';
 
 interface Props {
 	creator: IUser;
@@ -29,6 +30,7 @@ export const UserList: React.FC<Props> = (props) => {
 	const [isUserSelectorOpen, setIsUserSelectorOpen] = useState(false);
 	const [isCustomUserInputOn, setIsCustomUserInputOn] = useState(false);
 	const [customNameInputValue, setCustomNameInputValue] = useState('');
+	const [deleteListDialogIsOpen, setDeleteListDialogIsOpen] = useState(false);
 
 	//handling edits
 	const [currentItemBeingEdited, setCurrentItemBeingEdited] = useState<
@@ -64,6 +66,7 @@ export const UserList: React.FC<Props> = (props) => {
 				action: 'event-update',
 			});
 
+			//reset the custom name input value and hide it
 			setIsCustomUserInputOn(false);
 			setCustomNameInputValue('');
 
@@ -80,6 +83,36 @@ export const UserList: React.FC<Props> = (props) => {
 					toastId: 'assigned-list-to-user-error-toast',
 				});
 			}
+		}
+	};
+
+	const handleDeleteList = async () => {
+		try {
+			//ping list API to delete the list and its items
+			await axios.delete(`/api/lists/${id}`, {
+				data: {
+					listId: id,
+					action: 'delete-list',
+				},
+			});
+			//ping the events API to update it by removing this list from its lists
+			await axios.put(`/api/events/${currentEvent._id}`, {
+				listId: id,
+				eventId: currentEvent._id,
+				action: 'delete-list',
+			});
+
+			setDeleteListDialogIsOpen(false);
+
+			toast.success(`Deleted List 🗑️`, {
+				toastId: 'delete-list-toast',
+			});
+
+			prepWorkspace(currentEvent._id);
+		} catch (error) {
+			toast.error('Something went wrong, sorry! 😵‍💫', {
+				toastId: 'delete-list-error-toast',
+			});
 		}
 	};
 
@@ -251,7 +284,22 @@ export const UserList: React.FC<Props> = (props) => {
 						)}
 					</>
 				</StyledContent>
-				<AddListItemForm listId={id} />
+				<AddListItemForm
+					listId={id}
+					setDeleteListDialogIsOpen={setDeleteListDialogIsOpen}
+				/>
+				{deleteListDialogIsOpen && (
+					<Dialog
+						title={'Delete List'}
+						description={
+							'Are you sure you want to delete this list? All the items in this list will be deleted as well, and cannot be recovered. '
+						}
+						buttonText={'Delete'}
+						setDialogIsOpen={setDeleteListDialogIsOpen}
+						showCancelButton
+						cta={handleDeleteList}
+					/>
+				)}
 			</StyledList>
 		</StyledListWrapper>
 	);

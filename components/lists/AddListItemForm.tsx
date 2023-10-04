@@ -1,4 +1,4 @@
-import { SetStateAction, useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SecondaryButton } from '../buttons/SecondaryButton';
 import { PrimaryButton } from '../buttons/PrimaryButton';
@@ -7,21 +7,20 @@ import { toast } from 'react-toastify';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { motion } from 'framer-motion';
 import { UserContext } from '../../contexts/UserContext';
-import { Dialog } from '../Dialog';
 
 interface IProps {
 	listId: string;
+	setDeleteListDialogIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export const AddListItemForm: React.FC<IProps> = (props) => {
-	const { listId } = props;
+	const { listId, setDeleteListDialogIsOpen } = props;
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
 	const [isAddItemClicked, setIsAddItemClicked] = useState<boolean>(false);
 	const [name, setName] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
 	const [link, setLink] = useState<string>('');
-	const [deleteListDialogIsOpen, setDeleteListDialogIsOpen] = useState(false);
 
 	const handleAddItemClick = () => {
 		setIsAddItemClicked(true);
@@ -73,80 +72,74 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 		}
 	};
 
-	return isAddItemClicked ? (
-		<StyledWrapper
-			initial={{
-				scale: 0,
-				opacity: 0,
-				rotate: '15deg',
-			}}
-			animate={{
-				scale: 1,
-				opacity: 1,
-				rotate: '0deg',
-			}}
-			transition={{
-				duration: 0.125,
-				type: 'spring',
-			}}>
-			<StyledForm onSubmit={handleSubmit}>
-				<StyledInput
-					value={name}
-					placeholder='Add a title'
-					name='title'
-					required
-					onChange={(e) => setName(e.target.value)}
-				/>
-				<StyledInput
-					value={description}
-					placeholder='Add a description'
-					name='title'
-					required
-					onChange={(e) => setDescription(e.target.value)}
-				/>
-				<StyledInput
-					value={link}
-					placeholder='Add a link'
-					name='link'
-					onChange={(e) => setLink(e.target.value)}
-				/>
+	return (
+		<>
+			{isAddItemClicked ? (
+				<StyledWrapper
+					initial={{
+						scale: 0,
+						opacity: 0,
+						rotate: '15deg',
+					}}
+					animate={{
+						scale: 1,
+						opacity: 1,
+						rotate: '0deg',
+					}}
+					transition={{
+						duration: 0.125,
+						type: 'spring',
+					}}>
+					<StyledForm onSubmit={handleSubmit}>
+						<StyledInput
+							value={name}
+							placeholder='Add a title'
+							name='title'
+							required
+							onChange={(e) => setName(e.target.value)}
+						/>
+						<StyledInput
+							value={description}
+							placeholder='Add a description'
+							name='title'
+							required
+							onChange={(e) => setDescription(e.target.value)}
+						/>
+						<StyledInput
+							value={link}
+							placeholder='Add a link'
+							name='link'
+							onChange={(e) => setLink(e.target.value)}
+						/>
+						<StyledButtonWrapper>
+							<PrimaryButton
+								variant='small'
+								content='Submit'
+								type='submit'
+							/>
+							<SecondaryButton
+								variant='small'
+								content='Cancel'
+								onClick={handleCancelClick}
+							/>
+						</StyledButtonWrapper>
+					</StyledForm>
+				</StyledWrapper>
+			) : (
 				<StyledButtonWrapper>
-					<PrimaryButton
-						variant='small'
-						content='Submit'
-						type='submit'
-					/>
 					<SecondaryButton
-						variant='small'
-						content='Cancel'
-						onClick={handleCancelClick}
+						variant='fullSmall'
+						content='Add item'
+						onClick={handleAddItemClick}
 					/>
+					<StyledDeleteListButton
+						id='delete-list-button'
+						onClick={() => setDeleteListDialogIsOpen(true)}>
+						<StyledTrashIcon src='/icons/trash-red.svg' />
+					</StyledDeleteListButton>
 				</StyledButtonWrapper>
-			</StyledForm>
-		</StyledWrapper>
-	) : (
-		<StyledButtonWrapper>
-			<SecondaryButton
-				variant='fullSmall'
-				content='Add item'
-				onClick={handleAddItemClick}
-			/>
-			<StyledDeleteListButton
-				id='delete-list-button'
-				onClick={() => setDeleteListDialogIsOpen(true)}>
-				<StyledTrashIcon src='/icons/trash-red.svg' />
-			</StyledDeleteListButton>
-			{deleteListDialogIsOpen && (
-				<Dialog
-					title={'Delete List'}
-					description={
-						'Are you sure you want to delete this list? All the items in this list will be deleted as well, and cannot be recovered. '
-					}
-					buttonText={'Delete'}
-					setDialogIsOpen={setDeleteListDialogIsOpen}
-				/>
 			)}
-		</StyledButtonWrapper>
+		</>
 	);
 };
 const StyledWrapper = styled(motion.div)(
@@ -191,8 +184,7 @@ const StyledButtonWrapper = styled.div`
 		margin-right: 8px;
 	}
 `;
-const StyledDeleteListButton = styled.button(
-	({ theme: { colors } }) => `
+const StyledDeleteListButton = styled.button`
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -204,13 +196,12 @@ const StyledDeleteListButton = styled.button(
 
 	&:hover {
 		cursor: pointer;
-		
+
 		img {
 			transform: scale(1.2);
 		}
 	}
-`
-);
+`;
 const StyledTrashIcon = styled.img`
 	width: 16px;
 	height: 16px;

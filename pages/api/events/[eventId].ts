@@ -74,9 +74,6 @@ const eventApiRoutes = async (req, res) => {
 
 	/*------ EVENT UPDATES --------*/
 
-	if (req.method === 'PUT' && req.body.action === 'list-height-change') {
-	}
-
 	// EVENT EDITS
 	if (req.method === 'PUT') {
 		// ---- EVENT UI CONFIGURATIONS ---
@@ -99,6 +96,18 @@ const eventApiRoutes = async (req, res) => {
 				{ ...req.body.data }
 			);
 			res.status(200).send();
+		}
+		if (req.body.action === 'delete-list') {
+			const event = await Event.findById(req.body.eventId);
+			console.log('Event Lists: ', event.lists);
+			//cleanup the event lists
+			const newEventLists = event.lists.filter(
+				(list) => list._id.toString() !== req.body.listId.toString()
+			);
+			event.lists = newEventLists;
+			console.log('Event lists after: ', event.lists);
+			event.save();
+			res.json({ status: 200, data: event });
 		}
 
 		// ---- EVENT BLOCK UPDATES ----
