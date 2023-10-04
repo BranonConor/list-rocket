@@ -262,6 +262,12 @@ const StyledListWrapper = styled(motion.div)`
 	max-height: 100%;
 	width: 300px;
 	min-width: 300px;
+
+	&:hover {
+		#delete-list-button {
+			filter: grayscale(0);
+		}
+	}
 `;
 const StyledList = styled(motion.div)(
 	({ theme: { colors } }) => `

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { SetStateAction, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SecondaryButton } from '../buttons/SecondaryButton';
 import { PrimaryButton } from '../buttons/PrimaryButton';
@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { motion } from 'framer-motion';
 import { UserContext } from '../../contexts/UserContext';
+import { Dialog } from '../Dialog';
 
 interface IProps {
 	listId: string;
@@ -20,6 +21,7 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 	const [name, setName] = useState<string>('');
 	const [description, setDescription] = useState<string>('');
 	const [link, setLink] = useState<string>('');
+	const [deleteListDialogIsOpen, setDeleteListDialogIsOpen] = useState(false);
 
 	const handleAddItemClick = () => {
 		setIsAddItemClicked(true);
@@ -123,11 +125,28 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 			</StyledForm>
 		</StyledWrapper>
 	) : (
-		<SecondaryButton
-			variant='fullSmall'
-			content='Add item'
-			onClick={handleAddItemClick}
-		/>
+		<StyledButtonWrapper>
+			<SecondaryButton
+				variant='fullSmall'
+				content='Add item'
+				onClick={handleAddItemClick}
+			/>
+			<StyledDeleteListButton
+				id='delete-list-button'
+				onClick={() => setDeleteListDialogIsOpen(true)}>
+				<StyledTrashIcon src='/icons/trash-red.svg' />
+			</StyledDeleteListButton>
+			{deleteListDialogIsOpen && (
+				<Dialog
+					title={'Delete List'}
+					description={
+						'Are you sure you want to delete this list? All the items in this list will be deleted as well, and cannot be recovered. '
+					}
+					buttonText={'Delete'}
+					setDialogIsOpen={setDeleteListDialogIsOpen}
+				/>
+			)}
+		</StyledButtonWrapper>
 	);
 };
 const StyledWrapper = styled(motion.div)(
@@ -163,12 +182,36 @@ const StyledInput = styled.input(
 `
 );
 const StyledButtonWrapper = styled.div`
-	width: 100%;
+	max-width: 100%;
+	width: calc(100% - 24px - 8px);
 	display: flex;
 	margin: 8px 0 0 0;
-	padding: 0 8px;
 
 	button:first-of-type {
 		margin-right: 8px;
 	}
+`;
+const StyledDeleteListButton = styled.button(
+	({ theme: { colors } }) => `
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 24px;
+	border-radius: 5px;
+	border: none;
+	filter: grayscale(100%);
+	transition: 0.15s ease all;
+
+	&:hover {
+		cursor: pointer;
+		
+		img {
+			transform: scale(1.2);
+		}
+	}
+`
+);
+const StyledTrashIcon = styled.img`
+	width: 16px;
+	height: 16px;
 `;
