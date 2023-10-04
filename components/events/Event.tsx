@@ -77,6 +77,7 @@ export const Event: React.FC = () => {
 					return (
 						<UserList
 							creator={list?.creator}
+							customCreator={list?.customCreator}
 							items={list?.items}
 							id={list?._id}
 							key={list?._id}
@@ -91,9 +92,6 @@ export const Event: React.FC = () => {
 					</StyledH3>
 				</StyledEmptyEventWrapper>
 			)}
-			<StyledButtonWrapper>
-				<AddBlockButton onClick={() => setBlockModalIsOpen(true)} />
-			</StyledButtonWrapper>
 			{blockModalIsOpen && (
 				<Dialog
 					maxWidth='80%'
@@ -105,27 +103,35 @@ export const Event: React.FC = () => {
 					setDialogIsOpen={setBlockModalIsOpen}>
 					<StyledBlockSelection>
 						<StyledCard onClick={handleAddListBlock}>
-							<Title variant='heading3'>List</Title>
+							<StyledTitle variant='heading3'>
+								<StyledIcon src='/icons/list.svg' />
+								List
+							</StyledTitle>
 							<Text variant='body2'>
 								Lists can be assigned a user and be filled with
 								various types of nifty List Items
 							</Text>
 						</StyledCard>
-						<StyledCard>
-							<Title variant='heading3'>Poll</Title>
+						<StyledComingSoonCard>
+							<StyledTitle variant='heading3'>Poll</StyledTitle>
 							<Text variant='body2'>Coming soon! 👀</Text>
-						</StyledCard>
-						<StyledCard>
-							<Title variant='heading3'>Chats</Title>
+						</StyledComingSoonCard>
+						<StyledComingSoonCard>
+							<StyledTitle variant='heading3'>Chats</StyledTitle>
 							<Text variant='body2'>Coming soon! 👀</Text>
-						</StyledCard>
-						<StyledCard>
-							<Title variant='heading3'>Announcements</Title>
+						</StyledComingSoonCard>
+						<StyledComingSoonCard>
+							<StyledTitle variant='heading3'>
+								Announcements
+							</StyledTitle>
 							<Text variant='body2'>Coming soon! 👀</Text>
-						</StyledCard>
+						</StyledComingSoonCard>
 					</StyledBlockSelection>
 				</Dialog>
 			)}
+			<StyledButtonWrapper>
+				<AddBlockButton onClick={() => setBlockModalIsOpen(true)} />
+			</StyledButtonWrapper>
 		</StyledEventWrapper>
 	);
 };
@@ -158,9 +164,13 @@ const StyledH3 = styled(Title)(
 `
 );
 const StyledButtonWrapper = styled.div`
-	position: absolute;
-	top: 0;
-	right: 0;
+	position: fixed;
+	right: 32px;
+	bottom: calc(40px + 16px);
+
+	@media only screen and (max-width: 768px) {
+		bottom: calc(64px + 16px);
+	}
 `;
 const StyledBlockSelection = styled.div(
 	({ theme: { colors } }) => `
@@ -171,6 +181,13 @@ const StyledBlockSelection = styled.div(
 	grid-gap: 16px;
 	color: ${colors.font.body2};
 	padding: 32px 0;
+	
+	@media only screen and (max-width: 768px) {
+		grid-template-columns: 1fr;
+		max-height: 300px;
+		overflow: auto;
+		padding: 8px 0;
+	}
 `
 );
 const StyledCard = styled.div(
@@ -189,5 +206,36 @@ const StyledCard = styled.div(
 		transform: translateY(-3px);
 		cursor: pointer;
 	}
+
+	@media only screen and (max-width: 768px) {
+		padding: 8px 16px;
+	}
 `
 );
+const StyledComingSoonCard = styled.div(
+	({ theme: { colors } }) => `
+	width: 100%;
+	background: ${colors.bgLight};
+	color: ${colors.font.body};
+	border-radius: 8px;
+	padding: 16px;
+	box-sizing: border-box;
+	transition: 0.15s ease all;
+	opacity: 0.5;
+
+	&:hover {
+		cursor: not-allowed;
+	}
+
+	@media only screen and (max-width: 768px) {
+		padding: 8px 16px;
+	}
+`
+);
+const StyledIcon = styled.img`
+	margin: 0 8px 0 0;
+`;
+const StyledTitle = styled(Title)`
+	display: flex;
+	align-items: center;
+`;

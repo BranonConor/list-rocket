@@ -11,6 +11,8 @@ import { Text } from '../typography/Text';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { EditListItemForm } from './EditListItemForm';
 import { ListUserSelector } from './ListUserSelection';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 interface Props {
 	creator: IUser;
@@ -26,6 +28,7 @@ export const UserList: React.FC<Props> = (props) => {
 	const isCurrentUser = creator?.email === user?.email;
 	const [isUserSelectorOpen, setIsUserSelectorOpen] = useState(false);
 	const [isCustomUserInputOn, setIsCustomUserInputOn] = useState(false);
+	const [customNameInputValue, setCustomNameInputValue] = useState('');
 
 	//handling edits
 	const [currentItemBeingEdited, setCurrentItemBeingEdited] = useState<
@@ -39,8 +42,46 @@ export const UserList: React.FC<Props> = (props) => {
 		: 'Unassigned';
 
 	if (customCreator) {
-		creatorName = customCreator;
+		creatorName = `${customCreator}'s`;
 	}
+
+	const handleSubmit = async (event: any) => {
+		try {
+			event.preventDefault();
+			if (customNameInputValue === '') {
+				throw new Error();
+			}
+			await axios.put(`/api/lists/${id}`, {
+				name: customNameInputValue,
+				listId: id,
+				action: 'add-custom-list-creator',
+			});
+
+			//ping Pusher channel
+			await axios.post('/api/pusher', {
+				eventId: currentEvent._id,
+				user: user,
+				action: 'event-update',
+			});
+
+			setIsCustomUserInputOn(false);
+			setCustomNameInputValue('');
+
+			toast.success(`Assigned list 👍🏽`, {
+				toastId: 'assigned-list-to-custom-user-toast',
+			});
+		} catch (axiosError) {
+			if (customNameInputValue === '') {
+				toast.error(`Please fill out all list item fields. 👀`, {
+					toastId: 'list-item-value-not-found-toast',
+				});
+			} else {
+				toast.error('Something went wrong, sorry! 😵‍💫', {
+					toastId: 'assigned-list-to-custom-user-error-toast',
+				});
+			}
+		}
+	};
 
 	//when prepWorkspace is called, reset the edits
 	useEffect(() => {
@@ -104,9 +145,16 @@ export const UserList: React.FC<Props> = (props) => {
 					)}
 					<>
 						{isCustomUserInputOn ? (
-							<StyledForm>
+							<StyledForm onSubmit={handleSubmit}>
 								<StyledInput
 									placeholder='Add a name'
+									type='text'
+									required
+									value={customNameInputValue}
+									onChange={(e) =>
+										setCustomNameInputValue(e.target.value)
+									}
+									name='name'
 									initial={{
 										top: -20,
 										opacity: 0,
@@ -120,6 +168,7 @@ export const UserList: React.FC<Props> = (props) => {
 										type: 'spring',
 									}}></StyledInput>
 								<StyledSubmitButton
+									type='submit'
 									initial={{
 										top: -20,
 										opacity: 0,

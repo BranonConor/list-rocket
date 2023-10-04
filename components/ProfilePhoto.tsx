@@ -27,5 +27,6 @@ const StyledImage = styled.img<IStyledImageProps>(
 	border-radius: 100%;
 	transition: 0.15s ease all;
 	box-shadow: ${hasBoxShadow ? shadows.standard : 'none'};
+	background: white;
 `
 );

@@ -9,8 +9,24 @@ const listApiRoutes = async (req, res) => {
 	if (req.method === 'PUT' && req.body.action === 'assign-user-to-list') {
 		//look up the list
 		const list = await List.findById(req.body.listId);
-		//update the creator field
+		//update the creator field, clear any custom creator values
 		list.creator = req.body.user;
+		list.customCreator = null;
+		//save
+		list.save();
+
+		res.send({
+			status: 200,
+			data: list,
+		});
+	}
+
+	if (req.method === 'PUT' && req.body.action === 'add-custom-list-creator') {
+		//look up the list
+		const list = await List.findById(req.body.listId);
+		//update the creator field, clear any collaborator creator values
+		list.customCreator = req.body.name;
+		list.creator = null;
 		//save
 		list.save();
 

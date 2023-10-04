@@ -27,7 +27,7 @@ const Workspace = () => {
 	}
 
 	return (
-		<DashLayout>
+		<DashLayout isWorkspace>
 			<Head>
 				<title>Home | List Rocket</title>
 				<link rel='icon' href='/favicon.ico' />

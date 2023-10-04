@@ -118,8 +118,9 @@ const StyledDialog = styled(motion.div)<StyledDialogProps>(
 	@media only screen and (max-width: 768px) {
 		width: 75%;
 	}
-	@media only screen and (max-width: 500px) {
+	@media only screen and (max-width: 600px) {
 		width: calc(100% - 32px);
+		max-width: calc(100% - 32px);
 	}
 `
 );
