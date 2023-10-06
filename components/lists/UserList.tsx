@@ -160,7 +160,19 @@ export const UserList: React.FC<Props> = (props) => {
 						<StyledButton
 							onClick={() =>
 								setIsUserSelectorOpen(!isUserSelectorOpen)
-							}>
+							}
+							initial={{
+								scale: 0,
+								opacity: 0,
+							}}
+							animate={{
+								scale: 1,
+								opacity: 1,
+							}}
+							transition={{
+								duration: 0.05,
+								type: 'spring',
+							}}>
 							<ProfilePhoto
 								photo={creator?.image || '/assets/user.svg'}
 								dimensions='24px'
@@ -306,10 +318,13 @@ export const UserList: React.FC<Props> = (props) => {
 };
 
 const StyledListWrapper = styled(motion.div)`
-	height: auto;
-	max-height: 100%;
 	width: 300px;
 	min-width: 300px;
+	margin: 0 0 16px 0;
+
+	&:last-of-type {
+		margin: 0 0 0 0;
+	}
 
 	&:hover {
 		#delete-list-button {
@@ -392,7 +407,7 @@ const StyledTitle = styled(Title)`
 		height: 20px;
 	}
 `;
-const StyledButton = styled.button(
+const StyledButton = styled(motion.button)(
 	({ theme: { colors } }) => `
 	border: none;
 	display: flex;
@@ -460,6 +475,7 @@ const StyledInput = styled(motion.input)(
 	letter-spacing: ${typography.letterSpacing.body2};
 	margin: 0 8px 0 0;
 	position: relative;
+	max-width: 150px;
 
 	&:focus {
 		outline: 4px solid ${colors.chip.defaultBg};

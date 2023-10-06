@@ -19,6 +19,25 @@ export const Event: React.FC = () => {
 
 	const lists = currentEvent.lists;
 
+	//This entire grid build is an abonimation and also a stroke of genius
+	const getGrid = (columnCount, lists) => {
+		const grid = [];
+		for (let i = 0; i < columnCount; i++) {
+			const items = [];
+			for (let j = i; j < lists.length; j += columnCount) {
+				if (lists[j]) {
+					items.push(lists[j]);
+				}
+			}
+			grid.push(items);
+		}
+		return grid;
+	};
+	const extraLargeGrid = getGrid(7, lists);
+	const desktopGrid = getGrid(5, lists);
+	const tabletGrid = getGrid(4, lists);
+	const mobileGrid = getGrid(3, lists);
+
 	const handleAddListBlock = async () => {
 		setBlockModalIsOpen(false);
 
@@ -72,19 +91,82 @@ export const Event: React.FC = () => {
 	return (
 		<StyledEventWrapper>
 			<CollaboratorsGrid />
-			<StyledListWrapper>
-				{lists.map((list) => {
+			<StyledGrid id='extra-large-grid'>
+				{extraLargeGrid.map((column, index) => {
 					return (
-						<UserList
-							creator={list?.creator}
-							customCreator={list?.customCreator}
-							items={list?.items}
-							id={list?._id}
-							key={list?._id}
-						/>
+						<StyledListWrapper key={index}>
+							{column.map((list) => {
+								return (
+									<UserList
+										creator={list?.creator}
+										customCreator={list?.customCreator}
+										items={list?.items}
+										id={list?._id}
+										key={list?._id}
+									/>
+								);
+							})}
+						</StyledListWrapper>
 					);
 				})}
-			</StyledListWrapper>
+			</StyledGrid>
+			<StyledGrid id='desktop-grid'>
+				{desktopGrid.map((column, index) => {
+					return (
+						<StyledListWrapper key={index}>
+							{column.map((list) => {
+								return (
+									<UserList
+										creator={list?.creator}
+										customCreator={list?.customCreator}
+										items={list?.items}
+										id={list?._id}
+										key={list?._id}
+									/>
+								);
+							})}
+						</StyledListWrapper>
+					);
+				})}
+			</StyledGrid>
+			<StyledGrid id='tablet-grid'>
+				{tabletGrid.map((column, index) => {
+					return (
+						<StyledListWrapper key={index}>
+							{column.map((list) => {
+								return (
+									<UserList
+										creator={list?.creator}
+										customCreator={list?.customCreator}
+										items={list?.items}
+										id={list?._id}
+										key={list?._id}
+									/>
+								);
+							})}
+						</StyledListWrapper>
+					);
+				})}
+			</StyledGrid>
+			<StyledGrid id='mobile-grid'>
+				{mobileGrid.map((column, index) => {
+					return (
+						<StyledListWrapper key={index}>
+							{column.map((list) => {
+								return (
+									<UserList
+										creator={list?.creator}
+										customCreator={list?.customCreator}
+										items={list?.items}
+										id={list?._id}
+										key={list?._id}
+									/>
+								);
+							})}
+						</StyledListWrapper>
+					);
+				})}
+			</StyledGrid>
 			{!lists.length && (
 				<StyledEmptyEventWrapper>
 					<StyledH3 variant='heading3'>
@@ -94,7 +176,7 @@ export const Event: React.FC = () => {
 			)}
 			{blockModalIsOpen && (
 				<Dialog
-					maxWidth='80%'
+					maxWidth='50%'
 					title='✨ Add Event Blocks'
 					description={
 						'Customize your event by adding the blocks you need!'
@@ -140,14 +222,81 @@ const StyledEventWrapper = styled.div`
 	width: 100%;
 	height: 100%;
 	position: relative;
+
+	#extra-large-grid {
+		display: grid;
+		grid-template-columns: repeat(7, 300px);
+	}
+	#desktop-grid {
+		display: none;
+		grid-template-columns: repeat(5, 300px);
+	}
+	#tablet-grid {
+		display: none;
+		grid-template-columns: repeat(4, 300px);
+	}
+	#mobile-grid {
+		display: none;
+		grid-template-columns: repeat(3, 300px);
+	}
+
+	@media only screen and (max-width: 1550px) {
+		#extra-large-grid {
+			display: none;
+		}
+		#desktop-grid {
+			display: grid;
+		}
+		#tablet-grid {
+			display: none;
+		}
+		#mobile-grid {
+			display: none;
+		}
+	}
+	@media only screen and (max-width: 1200px) {
+		#extra-large-grid {
+			display: none;
+		}
+		#desktop-grid {
+			display: none;
+		}
+		#tablet-grid {
+			display: grid;
+		}
+		#mobile-grid {
+			display: none;
+		}
+	}
+	@media only screen and (max-width: 800px) {
+		#extra-large-grid {
+			display: none;
+		}
+		#desktop-grid {
+			display: none;
+		}
+		#tablet-grid {
+			display: none;
+		}
+		#mobile-grid {
+			display: grid;
+		}
+	}
+`;
+const StyledGrid = styled.div`
+	display: grid;
+	grid-template-rows: 1fr;
+	grid-gap: 16px;
+	width: 100%;
+	overflow-x: auto;
+	padding: 0 0 16px 0;
 `;
 const StyledListWrapper = styled.div`
 	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-	grid-gap: 16px;
-	overflow-x: auto;
-	padding: 0 0 16px 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
 `;
 const StyledEmptyEventWrapper = styled.div(
 	({ theme: { colors } }) => `
@@ -168,10 +317,11 @@ const StyledH3 = styled(Title)(
 const StyledButtonWrapper = styled.div`
 	position: fixed;
 	right: 32px;
-	bottom: calc(40px + 16px);
+	bottom: 64px;
 
 	@media only screen and (max-width: 768px) {
-		bottom: calc(64px + 16px);
+		bottom: 70px;
+		right: 16px;
 	}
 `;
 const StyledBlockSelection = styled.div(
