@@ -222,7 +222,7 @@ interface ICardProps {
 	itemIsResolved: boolean;
 }
 const StyledCard = styled(motion.div)<ICardProps>(
-	({ itemIsObscured, itemIsResolved, theme: { colors, shadows } }) => `
+	({ itemIsObscured, itemIsResolved, theme: { colors } }) => `
 	position: relative;
     padding: 16px;
     border-radius: 5px;
@@ -230,6 +230,7 @@ const StyledCard = styled(motion.div)<ICardProps>(
 	width: 100%;
 	box-sizing: border-box;
 	display: flex;
+	transition: 0.05s ease all;
 	text-decoration: ${
 		itemIsResolved ? (itemIsObscured ? 'none' : 'line-through') : 'none'
 	};
@@ -252,7 +253,6 @@ const StyledCard = styled(motion.div)<ICardProps>(
 	}
 
 	&:hover {
-		box-shadow: ${shadows.standard};
 		transform: translateY(-2px);
 
 		img {

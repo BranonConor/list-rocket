@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Title } from '../typography/Title';
 import { IListItem, IUser } from '../../contexts/types';
 import { ListItem } from './ListItem';
-import { AddListItemForm } from './AddListItemForm';
+import { ListButtons } from './ListButtons';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { Text } from '../typography/Text';
@@ -296,7 +296,7 @@ export const UserList: React.FC<Props> = (props) => {
 						)}
 					</>
 				</StyledContent>
-				<AddListItemForm
+				<ListButtons
 					listId={id}
 					setDeleteListDialogIsOpen={setDeleteListDialogIsOpen}
 				/>
@@ -327,7 +327,8 @@ const StyledListWrapper = styled(motion.div)`
 	}
 
 	&:hover {
-		#delete-list-button {
+		#delete-list-button,
+		#add-new-item-button {
 			filter: grayscale(0);
 		}
 	}
@@ -373,6 +374,7 @@ const StyledContent = styled.ul<IStyledContentProps>(
 	max-height: ${LIST_HEIGHTS[listHeight] || '10000px'};
 	border-radius: 5px;
 	overflow-y: auto;
+	overflow-x: hidden;
 	transition: ${LIST_HEIGHTS[listHeight] ? '0.4s' : '2s'} ease all;
 
 	&::-webkit-scrollbar {
@@ -389,9 +391,7 @@ const StyledListItem = styled.li`
 		margin: 0 0 0 0;
 	}
 `;
-const StyledText = styled(Text)`
-	margin: 0 0 16px 0;
-`;
+const StyledText = styled(Text)``;
 const StyledTitle = styled(Title)`
 	display: flex;
 	align-items: center;
