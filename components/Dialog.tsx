@@ -115,6 +115,9 @@ const StyledDialog = styled(motion.div)<StyledDialogProps>(
     box-sizing: border-box;
 	box-shadow: ${shadows.standard};
 
+	@media only screen and (max-width: 1000px) {
+		max-width: 90%;
+	}
 	@media only screen and (max-width: 768px) {
 		width: 75%;
 	}

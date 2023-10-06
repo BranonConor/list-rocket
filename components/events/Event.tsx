@@ -176,7 +176,7 @@ export const Event: React.FC = () => {
 			)}
 			{blockModalIsOpen && (
 				<Dialog
-					maxWidth='80%'
+					maxWidth='50%'
 					title='✨ Add Event Blocks'
 					description={
 						'Customize your event by adding the blocks you need!'
@@ -317,10 +317,11 @@ const StyledH3 = styled(Title)(
 const StyledButtonWrapper = styled.div`
 	position: fixed;
 	right: 32px;
-	bottom: calc(40px + 16px);
+	bottom: 64px;
 
 	@media only screen and (max-width: 768px) {
-		bottom: calc(64px + 16px);
+		bottom: 70px;
+		right: 16px;
 	}
 `;
 const StyledBlockSelection = styled.div(

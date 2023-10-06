@@ -12,8 +12,8 @@ export const AddBlockButton: React.FC<
 
 const StyledButton = styled.button(
 	({ theme: { shadows } }) => `
-	width: 40px;
-	height: 40px;
+	width: 64px;
+	height: 64px;
 	border-radius: 100%; 
     box-shadow: ${shadows.standard};
     border: none;
@@ -27,6 +27,11 @@ const StyledButton = styled.button(
         cursor: pointer;
         transform: scale(1.1);
     }
+
+	@media only screen and (max-width: 768px) {
+		width: 56px;
+		height: 56px;
+	}
 `
 );
 const StyledIcon = styled.img`
