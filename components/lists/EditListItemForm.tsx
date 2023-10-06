@@ -82,17 +82,15 @@ export const EditListItemForm: React.FC<IProps> = (props) => {
 	return (
 		<StyledWrapper
 			initial={{
-				scale: 0,
-				opacity: 0,
-				rotate: '15deg',
+				scale: 0.75,
+				opacity: 0.5,
 			}}
 			animate={{
 				scale: 1,
 				opacity: 1,
-				rotate: '0deg',
 			}}
 			transition={{
-				duration: 0.125,
+				duration: 0.1,
 				type: 'spring',
 			}}>
 			<StyledForm onSubmit={handleSubmit}>
@@ -133,8 +131,7 @@ export const EditListItemForm: React.FC<IProps> = (props) => {
 		</StyledWrapper>
 	);
 };
-const StyledWrapper = styled(motion.div)(
-	({ theme: { shadows } }) => `
+const StyledWrapper = styled(motion.div)`
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -143,9 +140,7 @@ const StyledWrapper = styled(motion.div)(
 	padding: 16px 8px;
 	margin: 0 0 16px 0;
 	box-sizing: border-box;
-    box-shadow: ${shadows.standard};
-`
-);
+`;
 const StyledForm = styled.form`
 	width: 100%;
 `;
@@ -170,7 +165,7 @@ const StyledButtonWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	margin: 8px 0 0 0;
-	padding: 0 8px;
+	padding: 0 16px;
 
 	button:first-of-type {
 		margin-right: 8px;

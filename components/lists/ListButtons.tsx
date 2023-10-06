@@ -13,7 +13,7 @@ interface IProps {
 	setDeleteListDialogIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export const AddListItemForm: React.FC<IProps> = (props) => {
+export const ListButtons: React.FC<IProps> = (props) => {
 	const { listId, setDeleteListDialogIsOpen } = props;
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
@@ -111,7 +111,7 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 							name='link'
 							onChange={(e) => setLink(e.target.value)}
 						/>
-						<StyledButtonWrapper>
+						<StyledItemButtonsWrapper>
 							<PrimaryButton
 								variant='small'
 								content='Submit'
@@ -122,22 +122,22 @@ export const AddListItemForm: React.FC<IProps> = (props) => {
 								content='Cancel'
 								onClick={handleCancelClick}
 							/>
-						</StyledButtonWrapper>
+						</StyledItemButtonsWrapper>
 					</StyledForm>
 				</StyledWrapper>
 			) : (
-				<StyledButtonWrapper>
-					<SecondaryButton
-						variant='fullSmall'
-						content='Add item'
-						onClick={handleAddItemClick}
-					/>
-					<StyledDeleteListButton
+				<StyledListButtonsWrapper>
+					<StyledAddNewIconButton
+						id='add-new-item-button'
+						onClick={handleAddItemClick}>
+						<StyledIcon src='/icons/add.svg' />
+					</StyledAddNewIconButton>{' '}
+					<StyledErrorIconButton
 						id='delete-list-button'
 						onClick={() => setDeleteListDialogIsOpen(true)}>
-						<StyledTrashIcon src='/icons/trash-red.svg' />
-					</StyledDeleteListButton>
-				</StyledButtonWrapper>
+						<StyledIcon src='/icons/trash-red.svg' />
+					</StyledErrorIconButton>
+				</StyledListButtonsWrapper>
 			)}
 		</>
 	);
@@ -174,24 +174,35 @@ const StyledInput = styled.input(
 	}
 `
 );
-const StyledButtonWrapper = styled.div`
+const StyledListButtonsWrapper = styled.div`
+	width: 100%;
+	display: flex;
+
+	button:first-of-type {
+		margin: 0 8px 0 0;
+	}
+`;
+const StyledItemButtonsWrapper = styled.div`
 	max-width: 100%;
-	width: calc(100% - 24px - 8px);
+	width: calc(100% - 30px - 16px);
 	display: flex;
 	margin: 8px 0 0 0;
 
 	button:first-of-type {
-		margin-right: 8px;
+		margin: 0 8px;
 	}
 `;
-const StyledDeleteListButton = styled.button`
+const StyledAddNewIconButton = styled.button(
+	({ theme: { colors } }) => `
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	min-width: 24px;
+	width: 50%;
+	height: 30px;
 	border-radius: 5px;
-	border: none;
 	filter: grayscale(100%);
+	border: none;
+	background: ${colors.chip.defaultBg};
 	transition: 0.15s ease all;
 
 	&:hover {
@@ -201,8 +212,32 @@ const StyledDeleteListButton = styled.button`
 			transform: scale(1.2);
 		}
 	}
-`;
-const StyledTrashIcon = styled.img`
+`
+);
+const StyledErrorIconButton = styled.button(
+	({ theme: { colors } }) => `
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 50%;
+	height: 30px;
+	border-radius: 5px;
+	filter: grayscale(100%);
+	border: none;
+	transition: 0.15s ease all;
+	background: ${colors.error.bg};
+
+	&:hover {
+		cursor: pointer;
+
+		img {
+			transform: scale(1.2);
+		}
+	}
+`
+);
+const StyledIcon = styled.img`
 	width: 16px;
 	height: 16px;
+	transition: 0.15s ease all;
 `;
