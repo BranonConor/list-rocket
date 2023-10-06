@@ -475,7 +475,7 @@ const StyledInput = styled(motion.input)(
 	letter-spacing: ${typography.letterSpacing.body2};
 	margin: 0 8px 0 0;
 	position: relative;
-	max-width: 160px;
+	max-width: 150px;
 
 	&:focus {
 		outline: 4px solid ${colors.chip.defaultBg};
