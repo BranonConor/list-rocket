@@ -104,6 +104,13 @@ export const UserList: React.FC<Props> = (props) => {
 
 			setDeleteListDialogIsOpen(false);
 
+			//ping Pusher channel
+			await axios.post('/api/pusher', {
+				eventId: currentEvent._id,
+				user: user,
+				action: 'event-update',
+			});
+
 			toast.success(`Deleted List 🗑️`, {
 				toastId: 'delete-list-toast',
 			});
