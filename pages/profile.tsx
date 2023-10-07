@@ -49,69 +49,72 @@ const Profile = () => {
 					dimensions='100px'
 					hasBoxShadow={true}
 				/>
-				<StyledCard
-					initial={{ opacity: 0, width: '80%' }}
-					animate={{ opacity: 1, width: 'auto' }}
-					transition={{
-						duration: 0.75,
-						type: 'spring',
-					}}>
-					<StyledP
-						initial={{ opacity: 0, width: 'auto' }}
-						animate={{ opacity: 1, width: 'auto' }}
-						transition={{
-							duration: 2,
-							type: 'spring',
-						}}>
-						<StyledText variant='body1'>
-							<img src='/icons/profile.svg' alt='' />
-							<b>User</b>
-						</StyledText>
-						<Text variant='overline'>{user?.name}</Text>
-					</StyledP>
-				</StyledCard>
-				<StyledCard
-					initial={{ opacity: 0, width: '80%' }}
-					animate={{ opacity: 1, width: 'auto' }}
-					transition={{
-						duration: 1,
-						type: 'spring',
-					}}>
-					<StyledP
+				<StyledWrapper>
+					<StyledCard
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{
-							duration: 2,
+							duration: 0.75,
 							type: 'spring',
 						}}>
-						<StyledText variant='body1'>
-							<img src='/icons/email.svg' alt='' />
-							<b>Email: </b>
-						</StyledText>
-						<Text variant='overline'>{user?.email}</Text>
-					</StyledP>
-				</StyledCard>
-				<StyledCard
-					initial={{ opacity: 0, width: '80%' }}
-					animate={{ opacity: 1, width: 'auto' }}
-					transition={{
-						duration: 1.25,
-						type: 'spring',
-					}}>
-					<StyledP
+						<StyledP
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{
+								duration: 2,
+								type: 'spring',
+							}}>
+							<StyledText variant='body1'>
+								<img src='/icons/profile.svg' alt='' />
+								<b>User</b>
+							</StyledText>
+							<Text variant='overline'>{user?.name}</Text>
+						</StyledP>
+					</StyledCard>
+					<StyledCard
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{
-							duration: 2.5,
+							duration: 1,
 							type: 'spring',
 						}}>
-						<StyledText variant='body1'>
-							<img src='/icons/data.svg' alt='' />
-							<b>Total Events: </b>
-						</StyledText>
-						<Text variant='overline'>{events?.length}</Text>
-					</StyledP>
-				</StyledCard>
+						<StyledP
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{
+								duration: 2,
+								type: 'spring',
+							}}>
+							<StyledText variant='body1'>
+								<img src='/icons/email.svg' alt='' />
+								<b>Email: </b>
+							</StyledText>
+							<Text variant='overline'>{user?.email}</Text>
+						</StyledP>
+					</StyledCard>
+					<StyledCard
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{
+							duration: 1.25,
+							type: 'spring',
+						}}>
+						<StyledP
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{
+								duration: 2.5,
+								type: 'spring',
+							}}>
+							<StyledText variant='body1'>
+								<img src='/icons/data.svg' alt='' />
+								<b>Total Events: </b>
+							</StyledText>
+							<Text variant='overline'>{events?.length}</Text>
+						</StyledP>
+					</StyledCard>
+				</StyledWrapper>
+
 				<PrimaryButton
 					variant='large'
 					content='Log out'
@@ -125,21 +128,36 @@ const Profile = () => {
 export default Profile;
 
 const StyledMain = styled.main`
-	width: 50%;
-
-	@media only screen and (max-width: 1000px) {
-		width: 100%;
-	}
+	width: 100%;
 `;
-const StyledCard = styled(motion.div)(
+const StyledWrapper = styled.div(
 	({ theme: { colors } }) => `
+		background: ${colors.bgLight};
+		padding: 16px;
+		margin: 16px 0;
+		border-radius: 5px; 
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		grid-gap: 16px;
+
+		@media only screen and (max-width: 1200px) {
+			grid-template-columns: 1fr 1fr;
+		}
+		@media only screen and (max-width: 768px) {
+			grid-template-columns: 1fr;
+		}
+	`
+);
+const StyledCard = styled(motion.div)(
+	({ theme: { shadows } }) => `
 	display: flex;
 	align-items: center;
-	background: ${colors.bgLight};
+	background: white;
 	padding: 16px;
-	border-radius: 10px;
-	margin: 16px 0;
+	border-radius: 5px;
 	overflow-x: auto;
+	width: auto;
+	box-shadow: ${shadows.standard};
 
 	@media only screen and (max-width: 600px) {
 		padding: 16px;
@@ -149,8 +167,6 @@ const StyledCard = styled(motion.div)(
 const StyledP = styled(motion.p)`
 	padding: 0 8px 0 0;
 	margin: 0;
-
-	width: auto;
 
 	@media only screen and (max-width: 600px) {
 		padding: 0;

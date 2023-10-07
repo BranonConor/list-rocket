@@ -53,7 +53,6 @@ const StyledInfoCard = styled.div(
 	background: ${colors.white};
 	border-radius: 5px;
 	height: 50px;
-	margin: 0 0 16px 0;
     box-shadow: ${shadows.standard};
 
 	@media only screen and (max-width: 768px) {

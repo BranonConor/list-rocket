@@ -104,6 +104,13 @@ export const UserList: React.FC<Props> = (props) => {
 
 			setDeleteListDialogIsOpen(false);
 
+			//ping Pusher channel
+			await axios.post('/api/pusher', {
+				eventId: currentEvent._id,
+				user: user,
+				action: 'event-update',
+			});
+
 			toast.success(`Deleted List 🗑️`, {
 				toastId: 'delete-list-toast',
 			});
@@ -232,25 +239,26 @@ export const UserList: React.FC<Props> = (props) => {
 						) : (
 							<StyledTitle variant='heading3'>
 								{creatorName} List
-								{currentEvent?.controls?.anonymousModeIsOn && (
-									<motion.img
-										src='/icons/eye-dark.svg'
-										initial={{
-											scale: 0,
-											opacity: 0,
-											rotate: '15deg',
-										}}
-										animate={{
-											scale: 1,
-											opacity: 1,
-											rotate: '0deg',
-										}}
-										transition={{
-											duration: 0.25,
-											type: 'spring',
-										}}
-									/>
-								)}
+								{currentEvent?.controls?.anonymousModeIsOn &&
+									isCurrentUser && (
+										<motion.img
+											src='/icons/eye-dark.svg'
+											initial={{
+												scale: 0,
+												opacity: 0,
+												rotate: '15deg',
+											}}
+											animate={{
+												scale: 1,
+												opacity: 1,
+												rotate: '0deg',
+											}}
+											transition={{
+												duration: 0.25,
+												type: 'spring',
+											}}
+										/>
+									)}
 							</StyledTitle>
 						)}
 					</>
@@ -400,7 +408,7 @@ const StyledTitle = styled(Title)`
 	max-height: 40px;
 
 	img {
-		margin: 0 16px;
+		margin: 0 0 0 8px;
 		position: relative;
 		top: -2px;
 		width: 20px;
