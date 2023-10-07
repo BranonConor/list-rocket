@@ -32,6 +32,10 @@ export default function MyDocument() {
 	return (
 		<Html lang='en'>
 			<Head>
+				<meta
+					property='og:image'
+					content='https://www.listrocket.app/graphics/list-items.svg'
+				/>
 				<link rel='preconnect' href='https://fonts.googleapis.com' />
 				<link
 					rel='preconnect'

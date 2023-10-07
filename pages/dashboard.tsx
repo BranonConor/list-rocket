@@ -12,7 +12,6 @@ import { UserContext } from '../contexts/UserContext';
 import { Title } from '../components/typography/Title';
 import { Text } from '../components/typography/Text';
 import { toast } from 'react-toastify';
-import { CreateEventForm } from '../components/events/CreateEventForm';
 import 'react-toastify/dist/ReactToastify.css';
 import { AllInvites } from '../components/events/AllInvites';
 
