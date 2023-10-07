@@ -24,6 +24,10 @@ export const DashLayout: React.FC<DashLayoutProps> = ({
 					name='description'
 					content='A productivity tool for streamlining event planning.'
 				/>
+				<meta
+					property='og:image'
+					content='https://www.listrocket.app/graphics/list-items.svg'
+				/>
 				<meta name='og:title' content={siteTitle} />
 				<meta name='twitter:card' content='summary_large_image' />
 			</Head>

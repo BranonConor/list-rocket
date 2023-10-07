@@ -16,6 +16,10 @@ export const WebLayout = ({ children }) => {
 					name='description'
 					content='A productivity tool for streamlining events'
 				/>
+				<meta
+					property='og:image'
+					content='https://www.listrocket.app/graphics/list-items.svg'
+				/>
 				<meta name='og:title' content={siteTitle} />
 				<meta name='twitter:card' content='summary_large_image' />
 			</Head>
