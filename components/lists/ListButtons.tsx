@@ -130,8 +130,8 @@ export const ListButtons: React.FC<IProps> = (props) => {
 					<StyledAddNewIconButton
 						id='add-new-item-button'
 						onClick={handleAddItemClick}>
-						<StyledIcon src='/icons/add.svg' />
-					</StyledAddNewIconButton>{' '}
+						<StyledIcon src='/icons/add-dark.svg' />
+					</StyledAddNewIconButton>
 					<StyledErrorIconButton
 						id='delete-list-button'
 						onClick={() => setDeleteListDialogIsOpen(true)}>

@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { ToggleSwitch } from '../inputs/ToggleSwitch';
-import { useContext, useEffect, useState } from 'react';
+import {
+	Dispatch,
+	SetStateAction,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
 import { motion } from 'framer-motion';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import axios from 'axios';
@@ -9,18 +15,31 @@ import { UserContext } from '../../contexts/UserContext';
 import Pusher from 'pusher-js';
 import { Dialog } from '../Dialog';
 import { IEvent, IUser } from '../../contexts/types';
-import { Title } from '../typography/Title';
 import { Text } from '../typography/Text';
 
-export const EventControls = () => {
-	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
+import { EventContext } from '../../contexts/EventContext';
+
+interface IEventControlsProps {
+	setIsEventControlsDialogOpen: Dispatch<SetStateAction<boolean>>;
+}
+export const EventControls: React.FC<IEventControlsProps> = ({
+	setIsEventControlsDialogOpen,
+}) => {
+	const { currentEvent, prepWorkspace, clearWorkspace } =
+		useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
+	const { getAllEvents } = useContext(EventContext);
 
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
-	const [accordionIsOpen, setAccordionIsOpen] = useState(true);
 	const [listHeightValue, setListHeightValue] = useState(
 		currentEvent?.controls?.listHeight
 	);
+
+	const [deleteDialogIsOpen, setDeleteDialogIsOpen] = useState(false);
+	const [eventToDelete, setEventToDelete] = useState<{
+		id: string;
+		name: string;
+	} | null>(null);
 
 	useEffect(() => {
 		setListHeightValue(currentEvent?.controls?.listHeight);
@@ -30,8 +49,37 @@ export const EventControls = () => {
 		setDialogIsOpen(true);
 	};
 
-	const handleAccordionClick = () => {
-		setAccordionIsOpen(!accordionIsOpen);
+	const handleDeleteEventModal = () => {
+		setDeleteDialogIsOpen(true);
+		setEventToDelete({ id: currentEvent?._id, name: currentEvent?.name });
+	};
+	//Deleting an event
+	const handleDelete = async (
+		e: any,
+		event: { id: string; name: string }
+	) => {
+		e?.preventDefault();
+		try {
+			await axios.delete(`/api/events/${event.id}`, {
+				data: {
+					eventId: event.id,
+					user: user,
+				},
+			});
+			setEventToDelete(null);
+			setDeleteDialogIsOpen(false);
+			setIsEventControlsDialogOpen(false);
+			getAllEvents();
+			currentEvent?._id === event.id && clearWorkspace();
+			toast.success('Successfully deleted your event 🗑', {
+				toastId: 'delete-event-toast',
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error('Something went wrong, sorry! 😵‍💫', {
+				toastId: 'error-delete-event-toast',
+			});
+		}
 	};
 
 	const handleListHeightChange = async (e) => {
@@ -161,7 +209,6 @@ export const EventControls = () => {
 
 	return (
 		<StyledEventControls
-			accordionIsOpen={accordionIsOpen}
 			initial={{
 				top: -20,
 				opacity: 0,
@@ -173,14 +220,7 @@ export const EventControls = () => {
 			transition={{
 				duration: 0.1,
 				type: 'spring',
-				delay: 0.05,
 			}}>
-			<StyledTitleRow
-				onClick={handleAccordionClick}
-				accordionIsOpen={accordionIsOpen}>
-				<StyledTitle variant='heading3'>Event Controls</StyledTitle>
-				<img src='/icons/chevron.svg' alt='' />
-			</StyledTitleRow>
 			<StyledRow>
 				<StyledLabel variant='overline'>
 					<StyledIcon src='/icons/eye-dark.svg' alt='' />
@@ -205,6 +245,15 @@ export const EventControls = () => {
 					<option value='Large'>Large</option>
 				</StyledSelect>
 			</StyledRow>
+			<StyledRow>
+				<StyledLabel variant='overline'>
+					<StyledIcon src='/icons/trash-dark.svg' />
+					Delete Event:
+				</StyledLabel>
+				<StyledIconButton onClick={handleDeleteEventModal}>
+					<img src='/icons/trash-red.svg' alt='Trash' />
+				</StyledIconButton>
+			</StyledRow>
 			{dialogIsOpen && (
 				<Dialog
 					title='Anonymous mode'
@@ -215,32 +264,34 @@ export const EventControls = () => {
 					showCancelButton
 				/>
 			)}
+			{deleteDialogIsOpen && (
+				<Dialog
+					title='Delete Event'
+					description={`Are you sure you want to delete ${eventToDelete?.name}?`}
+					cta={(e: any) => handleDelete(e, eventToDelete)}
+					buttonText='Delete'
+					setDialogIsOpen={setDeleteDialogIsOpen}
+					showCancelButton
+				/>
+			)}
 		</StyledEventControls>
 	);
 };
 
-interface IStyledEventControlsProps {
-	accordionIsOpen: boolean;
-}
-const StyledEventControls = styled(motion.div)<IStyledEventControlsProps>(
-	({ accordionIsOpen, theme: { colors } }) => `
+const StyledEventControls = styled(motion.div)(
+	({ theme: { colors } }) => `
     position: relative;
 	padding: 16px;
     border-radius: 10px;
 	box-sizing: border-box;
     background: ${colors.bgLight};
-	height: ${accordionIsOpen ? '204px' : '70px'};
+	height: auto;
 	max-height: 100%;
 	width: 100%;
 	max-width: 100%;
 	display: flex;
 	flex-direction: column;
-	overflow: hidden;
 	transition: 0.1s ease all;
-
-	@media only screen and (max-width: 950px) {
-		height: ${accordionIsOpen ? '70px' : '172px'};
-	}
 `
 );
 
@@ -254,32 +305,6 @@ const StyledLabel = styled(Text)`
 		margin: 0 8px 0 0;
 	}
 `;
-const StyledTitleRow = styled.button<IStyledEventControlsProps>(
-	({ accordionIsOpen, theme: { colors } }) => `
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 8px 0 16px 0;
-	width: 100%;
-	outline: none;
-	border: none;
-	cursor: pointer;
-	transition: 0.2s ease all;
-	color: ${colors.font.body};
-	background: transparent;
-
-	img {
-		transform: ${accordionIsOpen ? 'rotate(180deg)' : 'rotate(0)'};
-		transition: 0.2s ease all;
-	}
-
-	@media only screen and (max-width: 950px) {
-		img {
-			transform: ${accordionIsOpen ? 'rotate(0deg)' : 'rotate(180deg)'};
-		}
-	}
-`
-);
 const StyledRow = styled.div`
 	display: flex;
 	align-items: center;
@@ -307,9 +332,27 @@ const StyledIcon = styled.img`
 	width: 20px;
 	height: 20px;
 `;
-const StyledTitle = styled(Title)(
-	({ theme: { colors } }) => `
-	margin: 0;
-	color: ${colors.font.body};
-`
-);
+const StyledIconButton = styled.button`
+	background: none;
+	border-radius: 5px;
+	box-sizing: border-box;
+	outline: none;
+	border: none;
+	transition: 0.1s ease all;
+	width: 20px;
+	height: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&:hover {
+		box-shadow: none;
+		animation: none;
+		cursor: pointer;
+		transform: scale(1.25);
+	}
+	img {
+		width: 16px;
+		height: 16px;
+	}
+`;

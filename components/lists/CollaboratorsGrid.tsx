@@ -209,7 +209,6 @@ export const CollaboratorsGrid = () => {
 										!editCollaboratorsButtonIsClicked
 									)
 								}>
-								{' '}
 								<img
 									src='/icons/x.svg'
 									alt='Add Collaborator'
@@ -370,7 +369,7 @@ const StyledCollaboratorControlsButton = styled.button<IStyledAvatarProps>(
 	background: none;
 	transition: 0.15s ease all;
 	filter: ${isInEditMode ? 'grayscale(0%)' : 'grayscale(100%)'};
-	padding: 0 0 0 12px;
+	padding: 0 4px;
 
 	&:hover {
 		cursor: pointer;

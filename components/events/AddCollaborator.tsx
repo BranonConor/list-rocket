@@ -101,7 +101,7 @@ export const AddCollaborator = (props) => {
 						duration: 0.25,
 						type: 'spring',
 					}}
-					type='text'
+					type='email'
 					name='email'
 					id='email'
 					placeholder='Add a user email'
@@ -154,14 +154,13 @@ export const AddCollaborator = (props) => {
 const StyledFormWrapper = styled.div`
 	display: block;
 	width: 500px;
-	margin: 8px 0 0 0;
 `;
 
 const StyledForm = styled(motion.form)`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-left: 16px;
+	margin-left: 8px;
 	box-sizing: border-box;
 	border-radius: 10px;
 
@@ -178,7 +177,7 @@ const StyledForm = styled(motion.form)`
 	}
 
 	@media only screen and (max-width: 768px) {
-		margin: 0 8px 0 0;
+		margin: 8px 8px 0 0;
 	}
 `;
 const StyledInput = styled(motion.input)(
@@ -187,7 +186,6 @@ const StyledInput = styled(motion.input)(
 	max-width: 100%;
 	box-sizing: border-box;
 	border-radius: 5px;
-	padding: 8px;
 	height: 40px;
 	outline: none;
 	border: none;

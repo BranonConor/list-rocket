@@ -91,88 +91,99 @@ export const Event: React.FC = () => {
 	return (
 		<StyledEventWrapper>
 			<CollaboratorsGrid />
-			<StyledGrid id='extra-large-grid'>
-				{extraLargeGrid.map((column, index) => {
-					return (
-						<StyledListWrapper key={index}>
-							{column.map((list) => {
-								return (
-									<UserList
-										creator={list?.creator}
-										customCreator={list?.customCreator}
-										items={list?.items}
-										id={list?._id}
-										key={list?._id}
-									/>
-								);
-							})}
-						</StyledListWrapper>
-					);
-				})}
-			</StyledGrid>
-			<StyledGrid id='desktop-grid'>
-				{desktopGrid.map((column, index) => {
-					return (
-						<StyledListWrapper key={index}>
-							{column.map((list) => {
-								return (
-									<UserList
-										creator={list?.creator}
-										customCreator={list?.customCreator}
-										items={list?.items}
-										id={list?._id}
-										key={list?._id}
-									/>
-								);
-							})}
-						</StyledListWrapper>
-					);
-				})}
-			</StyledGrid>
-			<StyledGrid id='tablet-grid'>
-				{tabletGrid.map((column, index) => {
-					return (
-						<StyledListWrapper key={index}>
-							{column.map((list) => {
-								return (
-									<UserList
-										creator={list?.creator}
-										customCreator={list?.customCreator}
-										items={list?.items}
-										id={list?._id}
-										key={list?._id}
-									/>
-								);
-							})}
-						</StyledListWrapper>
-					);
-				})}
-			</StyledGrid>
-			<StyledGrid id='mobile-grid'>
-				{mobileGrid.map((column, index) => {
-					return (
-						<StyledListWrapper key={index}>
-							{column.map((list) => {
-								return (
-									<UserList
-										creator={list?.creator}
-										customCreator={list?.customCreator}
-										items={list?.items}
-										id={list?._id}
-										key={list?._id}
-									/>
-								);
-							})}
-						</StyledListWrapper>
-					);
-				})}
-			</StyledGrid>
-			{!lists.length && (
+			{!lists.length ? (
 				<StyledEmptyEventWrapper>
 					<StyledH3 variant='heading3'>
 						NO EVENT BLOCKS ADDED
 					</StyledH3>
 				</StyledEmptyEventWrapper>
+			) : (
+				<>
+					<StyledGrid id='extra-large-grid'>
+						{extraLargeGrid.map((column, index) => {
+							return (
+								<StyledListWrapper key={index}>
+									{column.map((list) => {
+										return (
+											<UserList
+												creator={list?.creator}
+												customCreator={
+													list?.customCreator
+												}
+												items={list?.items}
+												id={list?._id}
+												key={list?._id}
+											/>
+										);
+									})}
+								</StyledListWrapper>
+							);
+						})}
+					</StyledGrid>
+					<StyledGrid id='desktop-grid'>
+						{desktopGrid.map((column, index) => {
+							return (
+								<StyledListWrapper key={index}>
+									{column.map((list) => {
+										return (
+											<UserList
+												creator={list?.creator}
+												customCreator={
+													list?.customCreator
+												}
+												items={list?.items}
+												id={list?._id}
+												key={list?._id}
+											/>
+										);
+									})}
+								</StyledListWrapper>
+							);
+						})}
+					</StyledGrid>
+					<StyledGrid id='tablet-grid'>
+						{tabletGrid.map((column, index) => {
+							return (
+								<StyledListWrapper key={index}>
+									{column.map((list) => {
+										return (
+											<UserList
+												creator={list?.creator}
+												customCreator={
+													list?.customCreator
+												}
+												items={list?.items}
+												id={list?._id}
+												key={list?._id}
+											/>
+										);
+									})}
+								</StyledListWrapper>
+							);
+						})}
+					</StyledGrid>
+					<StyledGrid id='mobile-grid'>
+						{mobileGrid.map((column, index) => {
+							return (
+								<StyledListWrapper key={index}>
+									{column.map((list) => {
+										return (
+											<UserList
+												creator={list?.creator}
+												customCreator={
+													list?.customCreator
+												}
+												items={list?.items}
+												id={list?._id}
+												key={list?._id}
+											/>
+										);
+									})}
+								</StyledListWrapper>
+							);
+						})}
+					</StyledGrid>
+				</>
 			)}
 			{blockModalIsOpen && (
 				<Dialog
