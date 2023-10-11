@@ -304,6 +304,7 @@ const StyledIconButton = styled.button`
 const StyledContentWrapper = styled.div(
 	({ theme: { colors } }) => `
 	width: 100%;
+	overflow: hidden;
 	padding-right: 16px;
 	border-right: 1px solid ${colors.bgLight};
 `

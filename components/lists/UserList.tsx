@@ -353,6 +353,7 @@ const StyledListWrapper = styled(motion.div)`
 
 	@media only screen and (max-width: 800px) {
 		width: 100%;
+		max-width: calc(100vw - 32px);
 	}
 `;
 const StyledList = styled(motion.div)(
