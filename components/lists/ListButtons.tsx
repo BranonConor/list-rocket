@@ -159,7 +159,6 @@ const StyledWrapper = styled(motion.div)<IStyledWrapperProps>(
 	box-sizing: border-box;
     box-shadow: ${shadows.standard};
 	height: ${isListCollapsed ? '0px' : '100%'};
-	transition: 0.2s ease all;
 	opacity: ${isListCollapsed ? '0' : '1'};
 `
 );
@@ -178,7 +177,7 @@ const StyledInput = styled.input(
 
 	&:first-of-type {
 		font-family: Lalezar;
-        font-size: ${typography.size.heading4};
+        font-size: ${typography.size.heading6};
         padding: 4px 8px;
 	}
 `

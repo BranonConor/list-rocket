@@ -149,7 +149,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 				itemIsResolved={itemIsResolved}
 				itemIsObscured={itemIsObscured}>
 				<StyledContentWrapper>
-					<Title variant='heading4'>{name}</Title>
+					<Title variant='heading6'>{name}</Title>
 					<Text variant='body2'>{description}</Text>
 					{link === '' ? null : (
 						<a

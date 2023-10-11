@@ -145,7 +145,7 @@ export const UserList: React.FC<Props> = (props) => {
 			}}
 			transition={{
 				delay: 0.1,
-				duration: 0.5,
+				duration: 0.25,
 				type: 'spring',
 			}}>
 			<StyledList>
@@ -243,7 +243,7 @@ export const UserList: React.FC<Props> = (props) => {
 							</StyledForm>
 						) : (
 							<StyledTitle
-								variant='heading4'
+								variant='heading5'
 								onClick={handleListClick}>
 								{creatorName} List
 								{currentEvent?.controls?.anonymousModeIsOn &&
@@ -350,6 +350,10 @@ const StyledListWrapper = styled(motion.div)`
 			filter: grayscale(0);
 		}
 	}
+
+	@media only screen and (max-width: 800px) {
+		width: 100%;
+	}
 `;
 const StyledList = styled(motion.div)(
 	({ theme: { colors } }) => `
@@ -378,7 +382,6 @@ const StyledListTitle = styled.div<IStyledContentProps>(
 	margin-bottom: ${isListCollapsed ? '0' : '8px'};
 	transition: 0.3s ease all;
 	background: ${colors.bgLight};
-	z-index: 2;
 `
 );
 enum LIST_HEIGHTS {

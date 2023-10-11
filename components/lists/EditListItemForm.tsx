@@ -156,7 +156,7 @@ const StyledInput = styled.input(
 
 	&:first-of-type {
 		font-family: Lalezar;
-        font-size: ${typography.size.heading4};
+        font-size: ${typography.size.heading6};
         padding: 4px 8px;
 	}
 `
