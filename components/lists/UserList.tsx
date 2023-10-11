@@ -31,6 +31,7 @@ export const UserList: React.FC<Props> = (props) => {
 	const [isCustomUserInputOn, setIsCustomUserInputOn] = useState(false);
 	const [customNameInputValue, setCustomNameInputValue] = useState('');
 	const [deleteListDialogIsOpen, setDeleteListDialogIsOpen] = useState(false);
+	const [isListCollapsed, setIsListCollapsed] = useState(false);
 
 	//handling edits
 	const [currentItemBeingEdited, setCurrentItemBeingEdited] = useState<
@@ -123,6 +124,10 @@ export const UserList: React.FC<Props> = (props) => {
 		}
 	};
 
+	const handleListClick = () => {
+		setIsListCollapsed(!isListCollapsed);
+	};
+
 	//when prepWorkspace is called, reset the edits
 	useEffect(() => {
 		setCurrentItemBeingEdited(null);
@@ -144,7 +149,7 @@ export const UserList: React.FC<Props> = (props) => {
 				type: 'spring',
 			}}>
 			<StyledList>
-				<StyledListTitle>
+				<StyledListTitle isListCollapsed={isListCollapsed}>
 					{isCustomUserInputOn ? (
 						<StyledCloseButton
 							onClick={() => setIsCustomUserInputOn(false)}
@@ -237,7 +242,9 @@ export const UserList: React.FC<Props> = (props) => {
 								</StyledSubmitButton>
 							</StyledForm>
 						) : (
-							<StyledTitle variant='heading3'>
+							<StyledTitle
+								variant='heading4'
+								onClick={handleListClick}>
 								{creatorName} List
 								{currentEvent?.controls?.anonymousModeIsOn &&
 									isCurrentUser && (
@@ -263,7 +270,9 @@ export const UserList: React.FC<Props> = (props) => {
 						)}
 					</>
 				</StyledListTitle>
-				<StyledContent listHeight={currentEvent?.controls?.listHeight}>
+				<StyledContent
+					listHeight={currentEvent?.controls?.listHeight}
+					isListCollapsed={isListCollapsed}>
 					<>
 						{items?.length ? (
 							items?.map((item, index) =>
@@ -307,6 +316,7 @@ export const UserList: React.FC<Props> = (props) => {
 				<ListButtons
 					listId={id}
 					setDeleteListDialogIsOpen={setDeleteListDialogIsOpen}
+					isListCollapsed={isListCollapsed}
 				/>
 				{deleteListDialogIsOpen && (
 					<Dialog
@@ -353,37 +363,42 @@ const StyledList = styled(motion.div)(
 	border-radius: 10px;
 `
 );
-const StyledListTitle = styled.div(
-	({ theme: { colors } }) => `
+interface IStyledContentProps {
+	listHeight?: string;
+	isListCollapsed?: boolean;
+}
+const StyledListTitle = styled.div<IStyledContentProps>(
+	({ isListCollapsed, theme: { colors } }) => `
 	position: relative;
 	display: flex;
 	align-items: center;
 	width: 100%;
 	justify-content: flex-start;
-	color: ${colors.textLight};
-
+	color: ${colors.font.body};
+	margin-bottom: ${isListCollapsed ? '0' : '8px'};
+	transition: 0.3s ease all;
+	background: ${colors.bgLight};
+	z-index: 2;
 `
 );
-interface IStyledContentProps {
-	listHeight: string;
-}
 enum LIST_HEIGHTS {
 	'Small' = '332px',
 	'Medium' = '532px',
 	'Large' = '732px',
 }
 const StyledContent = styled.ul<IStyledContentProps>(
-	({ listHeight }) => `
+	({ listHeight, isListCollapsed }) => `
 	box-sizing: border-box;
 	width: 100%;
 	list-style: none;
 	padding: 0;
-	margin: 8px 0 16px 0;
-	max-height: ${LIST_HEIGHTS[listHeight] || '10000px'};
+	margin: ${isListCollapsed ? '0px' : '8px 0 16px 0'};
+	max-height: ${isListCollapsed ? '0px' : LIST_HEIGHTS[listHeight] || '10000px'};
 	border-radius: 5px;
 	overflow-y: auto;
 	overflow-x: hidden;
 	transition: ${LIST_HEIGHTS[listHeight] ? '0.4s' : '2s'} ease all;
+	opacity: ${isListCollapsed ? '0' : '1'};
 
 	&::-webkit-scrollbar {
 		display: none;
@@ -404,8 +419,9 @@ const StyledTitle = styled(Title)`
 	display: flex;
 	align-items: center;
 	position: relative;
-	margin: 8px 0px;
+	margin: 0px;
 	max-height: 40px;
+	width: 100%;
 
 	img {
 		margin: 0 0 0 8px;
