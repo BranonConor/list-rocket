@@ -156,7 +156,7 @@ const StyledInput = styled.input(
 
 	&:first-of-type {
 		font-family: Lalezar;
-        font-size: ${typography.size.heading4};
+        font-size: ${typography.size.heading6};
         padding: 4px 8px;
 	}
 `
@@ -165,7 +165,7 @@ const StyledButtonWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	margin: 8px 0 0 0;
-	padding: 0 16px;
+	padding-left: 8px;
 
 	button:first-of-type {
 		margin-right: 8px;

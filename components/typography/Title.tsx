@@ -10,7 +10,7 @@ enum TITLE_COMPONENTS {
 	'subtitle1' = 'p',
 	'subtitle2' = 'p',
 }
-interface Props {
+interface Props extends React.ButtonHTMLAttributes<HTMLHeadingElement> {
 	children: ReactNode;
 	variant:
 		| 'heading1'

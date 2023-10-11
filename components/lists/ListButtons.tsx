@@ -11,10 +11,11 @@ import { UserContext } from '../../contexts/UserContext';
 interface IProps {
 	listId: string;
 	setDeleteListDialogIsOpen: Dispatch<SetStateAction<boolean>>;
+	isListCollapsed: boolean;
 }
 
 export const ListButtons: React.FC<IProps> = (props) => {
-	const { listId, setDeleteListDialogIsOpen } = props;
+	const { listId, setDeleteListDialogIsOpen, isListCollapsed } = props;
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
 	const [isAddItemClicked, setIsAddItemClicked] = useState<boolean>(false);
@@ -76,6 +77,7 @@ export const ListButtons: React.FC<IProps> = (props) => {
 		<>
 			{isAddItemClicked ? (
 				<StyledWrapper
+					isListCollapsed={isListCollapsed}
 					initial={{
 						scale: 0,
 						opacity: 0,
@@ -126,7 +128,7 @@ export const ListButtons: React.FC<IProps> = (props) => {
 					</StyledForm>
 				</StyledWrapper>
 			) : (
-				<StyledListButtonsWrapper>
+				<StyledListButtonsWrapper isListCollapsed={isListCollapsed}>
 					<StyledAddNewIconButton
 						id='add-new-item-button'
 						onClick={handleAddItemClick}>
@@ -142,9 +144,13 @@ export const ListButtons: React.FC<IProps> = (props) => {
 		</>
 	);
 };
-const StyledWrapper = styled(motion.div)(
-	({ theme: { shadows } }) => `
+interface IStyledWrapperProps {
+	isListCollapsed: boolean;
+}
+const StyledWrapper = styled(motion.div)<IStyledWrapperProps>(
+	({ isListCollapsed, theme: { shadows } }) => `
 	width: 100%;
+	overflow: hidden;
 	display: flex;
 	flex-direction: column;
 	background: white;
@@ -152,6 +158,8 @@ const StyledWrapper = styled(motion.div)(
 	padding: 16px 8px;
 	box-sizing: border-box;
     box-shadow: ${shadows.standard};
+	height: ${isListCollapsed ? '0px' : '100%'};
+	opacity: ${isListCollapsed ? '0' : '1'};
 `
 );
 const StyledForm = styled.form`
@@ -169,19 +177,25 @@ const StyledInput = styled.input(
 
 	&:first-of-type {
 		font-family: Lalezar;
-        font-size: ${typography.size.heading4};
+        font-size: ${typography.size.heading6};
         padding: 4px 8px;
 	}
 `
 );
-const StyledListButtonsWrapper = styled.div`
+const StyledListButtonsWrapper = styled.div<IStyledWrapperProps>(
+	({ isListCollapsed }) => `
 	width: 100%;
 	display: flex;
+	height: ${isListCollapsed ? '0px' : '100%'};
+	overflow: hidden;
+	transition: 0.2s ease all;
+	opacity: ${isListCollapsed ? '0' : '1'};
 
 	button:first-of-type {
 		margin: 0 8px 0 0;
 	}
-`;
+`
+);
 const StyledItemButtonsWrapper = styled.div`
 	max-width: 100%;
 	width: calc(100% - 30px - 16px);

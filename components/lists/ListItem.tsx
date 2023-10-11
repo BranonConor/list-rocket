@@ -149,7 +149,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 				itemIsResolved={itemIsResolved}
 				itemIsObscured={itemIsObscured}>
 				<StyledContentWrapper>
-					<Title variant='heading4'>{name}</Title>
+					<Title variant='heading6'>{name}</Title>
 					<Text variant='body2'>{description}</Text>
 					{link === '' ? null : (
 						<a
@@ -304,6 +304,7 @@ const StyledIconButton = styled.button`
 const StyledContentWrapper = styled.div(
 	({ theme: { colors } }) => `
 	width: 100%;
+	overflow: hidden;
 	padding-right: 16px;
 	border-right: 1px solid ${colors.bgLight};
 `

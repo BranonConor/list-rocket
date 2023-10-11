@@ -219,7 +219,7 @@ const StyledSubmitButton = styled(PrimaryButton)`
 	position: relative;
 
 	@media only screen and (max-width: 555px) {
-		margin: 8px 8px 0 0;
+		margin: 8px 16px 0 0;
 	}
 `;
 const StyledCancelButton = styled(SecondaryButton)`

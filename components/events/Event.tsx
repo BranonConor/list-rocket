@@ -36,7 +36,7 @@ export const Event: React.FC = () => {
 	const extraLargeGrid = getGrid(7, lists);
 	const desktopGrid = getGrid(5, lists);
 	const tabletGrid = getGrid(4, lists);
-	const mobileGrid = getGrid(3, lists);
+	const mobileGrid = getGrid(1, lists);
 
 	const handleAddListBlock = async () => {
 		setBlockModalIsOpen(false);
@@ -248,7 +248,7 @@ const StyledEventWrapper = styled.div`
 	}
 	#mobile-grid {
 		display: none;
-		grid-template-columns: repeat(3, 300px);
+		grid-template-columns: repeat(1, 1fr);
 	}
 
 	@media only screen and (max-width: 1550px) {
@@ -308,6 +308,10 @@ const StyledListWrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: flex-start;
+
+	@media only screen and (max-width: 800px) {
+		padding: 0 0 0 0;
+	}
 `;
 const StyledEmptyEventWrapper = styled.div(
 	({ theme: { colors } }) => `
@@ -329,6 +333,7 @@ const StyledButtonWrapper = styled.div`
 	position: fixed;
 	right: 32px;
 	bottom: 64px;
+	z-index: 5;
 
 	@media only screen and (max-width: 768px) {
 		bottom: 70px;
