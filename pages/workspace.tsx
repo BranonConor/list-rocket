@@ -62,11 +62,6 @@ const StyledWorkspaceWrapper = styled.div<StyledWorkspaceWrapperProps>(
 	flex-direction: column;
 	align-items: ${isEventActive ? 'flex-start' : 'center'};
 	justify-content: ${isEventActive ? 'flex-start' : 'center'};
-
-	@media only screen and (max-width: 800px) {
-		border: none;
-		padding: 0;
-	}
 `
 );
 const StyledH3 = styled(Title)(
