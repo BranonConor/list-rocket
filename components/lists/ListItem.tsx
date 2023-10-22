@@ -220,6 +220,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 interface ICardProps {
 	itemIsObscured: boolean;
 	itemIsResolved: boolean;
+	isListCollapsed?: boolean;
 }
 const StyledCard = styled(motion.div)<ICardProps>(
 	({ itemIsObscured, itemIsResolved, theme: { colors } }) => `
