@@ -248,7 +248,6 @@ const StyledEventWrapper = styled.div`
 	}
 	#mobile-grid {
 		display: none;
-		grid-template-columns: repeat(1, 1fr);
 	}
 
 	@media only screen and (max-width: 1550px) {
@@ -290,7 +289,7 @@ const StyledEventWrapper = styled.div`
 			display: none;
 		}
 		#mobile-grid {
-			display: grid;
+			display: flex;
 		}
 	}
 `;

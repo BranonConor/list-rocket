@@ -51,57 +51,48 @@ export const WorkspaceControls = () => {
 								setEventIsBeingEdited={setEventIsBeingEdited}
 							/>
 						) : (
-							<>
-								<StyledInfoWrapper
-									initial={{
-										top: -20,
-										opacity: 0,
-									}}
-									animate={{
-										top: 0,
-										opacity: 1,
-									}}
-									transition={{
-										duration: 0.25,
-										type: 'spring',
-									}}>
-									<StyledSpan>
-										<Title variant='heading2'>
-											{currentEvent?.name}
-										</Title>
-									</StyledSpan>
-									<StyledDescription variant='body1'>
-										{currentEvent?.description}
-									</StyledDescription>
+							<StyledInfoWrapper>
+								<StyledDescription variant='body1'>
+									{currentEvent?.description}
+								</StyledDescription>
+								<StyledCardAndButtonWrapper>
 									<UserCard
-										text='Event Creator'
+										text={`Created by ${
+											currentEvent?.creator.name.split(
+												' '
+											)[0]
+										}`}
 										image={currentEvent?.creator?.image}
 									/>
-								</StyledInfoWrapper>
-								<StyledButtonContainer>
-									<StyledIconButton onClick={handleExitClick}>
-										<img
-											src='/icons/x.svg'
-											alt='Exit event'
-										/>
-									</StyledIconButton>
-									<StyledIconButton onClick={handleEditEvent}>
-										<img
-											src='/icons/pencil.svg'
-											alt='Edit'
-										/>
-									</StyledIconButton>
-									<StyledIconButton
-										onClick={() =>
-											setIsEventControlsDialogOpen(true)
-										}>
-										<img
-											src='/icons/settings.svg'
-											alt='Settings'
-										/>
-									</StyledIconButton>
-								</StyledButtonContainer>
-							</>
+									<StyledButtonContainer>
+										<StyledIconButton
+											onClick={() =>
+												setIsEventControlsDialogOpen(
+													true
+												)
+											}>
+											<img
+												src='/icons/settings.svg'
+												alt='Settings'
+											/>
+										</StyledIconButton>
+										<StyledIconButton
+											onClick={handleEditEvent}>
+											<img
+												src='/icons/pencil.svg'
+												alt='Edit'
+											/>
+										</StyledIconButton>
+										<StyledIconButton
+											onClick={handleExitClick}>
+											<img
+												src='/icons/x.svg'
+												alt='Exit event'
+											/>
+										</StyledIconButton>
+									</StyledButtonContainer>
+								</StyledCardAndButtonWrapper>
+							</StyledInfoWrapper>
 						)}
 					</StyledEventContent>
 				</StyledEventWrapper>
@@ -151,7 +142,7 @@ export const WorkspaceControls = () => {
 			)}
 			{isEventControlsDialogOpen && (
 				<Dialog
-					maxWidth='50%'
+					maxWidth='40%'
 					title={'Event Controls'}
 					description={'Configure your event to your liking!'}
 					buttonText={'Done'}
@@ -207,34 +198,16 @@ const StyledEventWrapper = styled.div`
 		width: 100%;
 	}
 `;
-const StyledInfoWrapper = styled(motion.div)(
-	({ theme: { colors } }) => `
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	position: relative;
-	box-sizing: border-box;
-	background: ${colors.bgLight};
-	border-right: 1px solid rgba(0,0,0, 0.1);
-	padding: 0 16px 0 0;
-
-	@media only screen and (max-width: 1330px) {
-		min-width: 50%;
-	}
-	@media only screen and (max-width: 1025px) {
-		min-width: 50%;
-	}
-
-`
-);
 const StyledDescription = styled(Text)`
-	margin: 0 0 16px 0;
-`;
-const StyledSpan = styled.span`
+	max-width: fill-content;
+	margin: 0;
 	display: flex;
 	align-items: center;
-	width: 100%;
-	position: relative;
+
+	@media only screen and (max-width: 768px) {
+		height: 100%;
+		min-height: 100%;
+	}
 `;
 const StyledChipWrapper = styled(motion.div)`
 	margin: 8px 8px 16px 0;
@@ -249,7 +222,10 @@ const StyledIconButton = styled.button`
 	border: none;
 	transition: 0.1s ease all;
 	height: 36px;
-	width: 20px;
+	width: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
 	&:hover {
 		box-shadow: none;
@@ -262,16 +238,33 @@ const StyledIconButton = styled.button`
 		width: 16px;
 		height: 16px;
 	}
+
+	@media only screen and (max-width: 768px) {
+		width: auto;
+	}
 `;
-const StyledButtonContainer = styled.div`
+const StyledButtonContainer = styled.div(
+	({ theme: { colors, shadows } }) => `
 	box-sizing: border-box;
 	transition: 0.1s ease all;
 	display: flex;
-	flex-direction: column;
 	align-items: center;
-	justify-content: flex-start;
-	padding-left: 16px;
-`;
+	justify-content: space-between;
+	padding: 0 16px;
+	margin-left: 16px;
+	background: ${colors.white};
+	border-radius: 10px;
+	box-shadow: ${shadows.standard};
+	overflow: visible;
+
+	@media only screen and (max-width: 768px) {
+		flex-direction: column-reverse;
+		margin-left: 0px;
+		justify-content: flex-start;
+		padding: 0 8px;
+	}
+`
+);
 const StyledEventContent = styled.div(
 	({ theme: { colors } }) => `
 	display: flex;
@@ -281,6 +274,7 @@ const StyledEventContent = styled.div(
 	box-sizing: border-box;
 	padding: 16px;
 	background: ${colors.bgLight};
+	overflow: visible;
 
 	&:hover {
 		img {
@@ -294,5 +288,24 @@ const StyledEventContent = styled.div(
 	@media only screen and (max-width: 1025px) {
 		min-width: 50%;
 	}
+	@media only screen and (max-width: 768px) {
+		align-items: flex-start;
+	}
 `
 );
+const StyledCardAndButtonWrapper = styled.div`
+	display: flex;
+	width: auto;
+	min-width: fit-content;
+	margin-left: 16px;
+	max-height: 36px;
+
+	@media only screen and (max-width: 768px) {
+		max-height: 108px;
+	}
+`;
+const StyledInfoWrapper = styled.div`
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+`;

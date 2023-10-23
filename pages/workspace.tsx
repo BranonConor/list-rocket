@@ -32,8 +32,13 @@ const Workspace = () => {
 				<title>Home | List Rocket</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-
-			<Title variant='heading1'>Event Workspace</Title>
+			{currentEvent ? (
+				<StyledTitle variant='heading1'>
+					{currentEvent.name}
+				</StyledTitle>
+			) : (
+				<Title variant='heading1'>Event Workspace</Title>
+			)}
 			<WorkspaceControls />
 			{/* ---- WORKSPACE ---- */}
 			<StyledWorkspaceWrapper isEventActive={Boolean(currentEvent)}>
@@ -68,5 +73,22 @@ const StyledH3 = styled(Title)(
 	({ theme: { colors } }) => `
 	color: ${colors.bgDark};
 	opacity: 0.15;
+`
+);
+const StyledTitle = styled(Title)(
+	({ theme: { colors, typography, shadows } }) => `
+	@media only screen and (max-width: 768px) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 8px 16px 0px 16px;
+		background: ${colors.tertiaryGradient};
+		font-size: ${typography.size.heading2};
+		line-height: ${typography.lineHeight.heading2};
+		margin: 8px 0;
+		border-radius: 10px;
+		color: white;
+		box-shadow: ${shadows.standard};
+	}
 `
 );
