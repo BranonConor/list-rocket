@@ -373,7 +373,7 @@ interface IStyledContentProps {
 	isListCollapsed?: boolean;
 }
 const StyledListTitle = styled.div<IStyledContentProps>(
-	({ isListCollapsed, theme: { colors } }) => `
+	({ isListCollapsed, listHeight, theme: { colors } }) => `
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -381,13 +381,12 @@ const StyledListTitle = styled.div<IStyledContentProps>(
 	justify-content: flex-start;
 	color: ${colors.font.body};
 	margin-bottom: ${isListCollapsed ? '0' : '8px'};
-	transition: 0.3s ease all;
+	transition: 0.25s ease all;
 	background: ${colors.bgLight};
 `
 );
 enum LIST_HEIGHTS {
 	'Small' = '332px',
-	'Medium' = '532px',
 	'Large' = '732px',
 }
 const StyledContent = styled.ul<IStyledContentProps>(
@@ -397,11 +396,12 @@ const StyledContent = styled.ul<IStyledContentProps>(
 	list-style: none;
 	padding: 0;
 	margin: ${isListCollapsed ? '0px' : '8px 0 16px 0'};
-	max-height: ${isListCollapsed ? '0px' : LIST_HEIGHTS[listHeight] || '10000px'};
+	height: 100%;
+	max-height: ${isListCollapsed ? '0px' : LIST_HEIGHTS[listHeight]};
 	border-radius: 5px;
 	overflow-y: auto;
 	overflow-x: hidden;
-	transition: ${LIST_HEIGHTS[listHeight] ? '0.4s' : '2s'} ease all;
+	transition: 0.25s ease all;
 	opacity: ${isListCollapsed ? '0' : '1'};
 
 	&::-webkit-scrollbar {

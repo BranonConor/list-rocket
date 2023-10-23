@@ -239,9 +239,7 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 				<StyledSelect
 					onChange={handleListHeightChange}
 					value={listHeightValue}>
-					<option value='No limit'>No Limit</option>
 					<option value='Small'>Small</option>
-					<option value='Medium'>Medium</option>
 					<option value='Large'>Large</option>
 				</StyledSelect>
 			</StyledRow>

@@ -155,11 +155,10 @@ const StyledWrapper = styled(motion.div)<IStyledWrapperProps>(
 	flex-direction: column;
 	background: white;
 	border-radius: 5px;
-	padding: 16px 8px;
+	padding: ${isListCollapsed ? '0px' : '16px 8px'};
 	box-sizing: border-box;
     box-shadow: ${shadows.standard};
 	height: ${isListCollapsed ? '0px' : '100%'};
-	opacity: ${isListCollapsed ? '0' : '1'};
 `
 );
 const StyledForm = styled.form`
@@ -186,10 +185,11 @@ const StyledListButtonsWrapper = styled.div<IStyledWrapperProps>(
 	({ isListCollapsed }) => `
 	width: 100%;
 	display: flex;
-	height: ${isListCollapsed ? '0px' : '100%'};
-	overflow: hidden;
-	transition: 0.2s ease all;
+	height: ${isListCollapsed ? '0px' : '30px'};
+	max-height: 30px;
+	transition: 0.25s ease all;
 	opacity: ${isListCollapsed ? '0' : '1'};
+	overflow: hidden;
 
 	button:first-of-type {
 		margin: 0 8px 0 0;

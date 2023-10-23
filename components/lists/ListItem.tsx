@@ -220,6 +220,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 interface ICardProps {
 	itemIsObscured: boolean;
 	itemIsResolved: boolean;
+	isListCollapsed?: boolean;
 }
 const StyledCard = styled(motion.div)<ICardProps>(
 	({ itemIsObscured, itemIsResolved, theme: { colors } }) => `
@@ -271,7 +272,7 @@ const StyledCard = styled(motion.div)<ICardProps>(
 );
 const StyledButtonContainer = styled.div`
 	box-sizing: border-box;
-	transition: 0.1s ease all;
+	transition: 0.25s ease all;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

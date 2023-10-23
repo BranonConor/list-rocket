@@ -29,6 +29,9 @@ export const CreateEventForm: React.FC<IProps> = (props) => {
 				event: {
 					name: nameValue,
 					description: descriptionValue,
+					controls: {
+						listHeight: 'Large', // default to Large
+					},
 				},
 				user: user,
 			});
