@@ -64,10 +64,10 @@ const Profile = () => {
 								duration: 2,
 								type: 'spring',
 							}}>
-							<StyledText variant='body1'>
+							<StyledTitle variant='heading4'>
 								<img src='/icons/profile.svg' alt='' />
-								<b>User</b>
-							</StyledText>
+								User
+							</StyledTitle>
 							<Text variant='overline'>{user?.name}</Text>
 						</StyledP>
 					</StyledCard>
@@ -85,10 +85,10 @@ const Profile = () => {
 								duration: 2,
 								type: 'spring',
 							}}>
-							<StyledText variant='body1'>
+							<StyledTitle variant='heading4'>
 								<img src='/icons/email.svg' alt='' />
-								<b>Email: </b>
-							</StyledText>
+								Email:
+							</StyledTitle>
 							<Text variant='overline'>{user?.email}</Text>
 						</StyledP>
 					</StyledCard>
@@ -106,10 +106,10 @@ const Profile = () => {
 								duration: 2.5,
 								type: 'spring',
 							}}>
-							<StyledText variant='body1'>
+							<StyledTitle variant='heading4'>
 								<img src='/icons/data.svg' alt='' />
-								<b>Total Events: </b>
-							</StyledText>
+								Total Events:
+							</StyledTitle>
 							<Text variant='overline'>{events?.length}</Text>
 						</StyledP>
 					</StyledCard>
@@ -130,34 +130,30 @@ export default Profile;
 const StyledMain = styled.main`
 	width: 100%;
 `;
-const StyledWrapper = styled.div(
-	({ theme: { colors } }) => `
-		background: ${colors.bgLight};
-		padding: 16px;
-		margin: 16px 0;
-		border-radius: 5px; 
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
-		grid-gap: 16px;
+const StyledWrapper = styled.div`
+	margin: 16px 0;
+	border-radius: 5px;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-gap: 16px;
 
-		@media only screen and (max-width: 1200px) {
-			grid-template-columns: 1fr 1fr;
-		}
-		@media only screen and (max-width: 768px) {
-			grid-template-columns: 1fr;
-		}
-	`
-);
+	@media only screen and (max-width: 1200px) {
+		grid-template-columns: 1fr 1fr;
+	}
+	@media only screen and (max-width: 768px) {
+		grid-template-columns: 1fr;
+	}
+`;
+
 const StyledCard = styled(motion.div)(
-	({ theme: { shadows } }) => `
+	({ theme: { colors } }) => `
 	display: flex;
 	align-items: center;
-	background: white;
+	background: ${colors.bgLight};
 	padding: 16px;
 	border-radius: 5px;
 	overflow-x: auto;
 	width: auto;
-	box-shadow: ${shadows.standard};
 
 	@media only screen and (max-width: 600px) {
 		padding: 16px;
@@ -171,8 +167,12 @@ const StyledP = styled(motion.p)`
 	@media only screen and (max-width: 600px) {
 		padding: 0;
 	}
+
+	img {
+		transform: translateY(-2px);
+	}
 `;
-const StyledText = styled(Text)`
+const StyledTitle = styled(Title)`
 	display: flex;
 	align-items: center;
 	margin: 8px 0;
