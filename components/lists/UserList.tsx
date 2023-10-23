@@ -336,8 +336,8 @@ export const UserList: React.FC<Props> = (props) => {
 };
 
 const StyledListWrapper = styled(motion.div)`
-	width: 300px;
-	min-width: 300px;
+	min-width: 100%;
+	max-width: 100%;
 	margin: 0 0 16px 0;
 
 	&:last-of-type {
@@ -349,11 +349,6 @@ const StyledListWrapper = styled(motion.div)`
 		#add-new-item-button {
 			filter: grayscale(0);
 		}
-	}
-
-	@media only screen and (max-width: 800px) {
-		width: 100%;
-		max-width: calc(100vw - 68px);
 	}
 `;
 const StyledList = styled(motion.div)(
@@ -373,7 +368,7 @@ interface IStyledContentProps {
 	isListCollapsed?: boolean;
 }
 const StyledListTitle = styled.div<IStyledContentProps>(
-	({ isListCollapsed, listHeight, theme: { colors } }) => `
+	({ isListCollapsed, theme: { colors } }) => `
 	position: relative;
 	display: flex;
 	align-items: center;

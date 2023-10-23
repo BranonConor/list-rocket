@@ -49,14 +49,19 @@ const StyledInfoCard = styled.div(
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 158px;
-	background: ${colors.white};
-	border-radius: 5px;
-	height: 50px;
+	width: auto;
+	min-width: fit-content;
+	padding: 0px 8px;
+	background: ${colors.tertiaryGradient};
+	border-radius: 10px;
+	height: 40px;
     box-shadow: ${shadows.standard};
+	color: ${colors.white};
+	max-height: 36px;
 
-	@media only screen and (max-width: 768px) {
+	@media only screen and (max-width: 1050px) {
 		display: none;
+		height: 0px;
 	}
 `
 );
