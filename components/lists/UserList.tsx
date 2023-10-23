@@ -373,7 +373,7 @@ interface IStyledContentProps {
 	isListCollapsed?: boolean;
 }
 const StyledListTitle = styled.div<IStyledContentProps>(
-	({ isListCollapsed, theme: { colors } }) => `
+	({ isListCollapsed, listHeight, theme: { colors } }) => `
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -381,7 +381,7 @@ const StyledListTitle = styled.div<IStyledContentProps>(
 	justify-content: flex-start;
 	color: ${colors.font.body};
 	margin-bottom: ${isListCollapsed ? '0' : '8px'};
-	transition: 0.3s ease all;
+	transition: 0.25s ease all;
 	background: ${colors.bgLight};
 `
 );
@@ -401,7 +401,7 @@ const StyledContent = styled.ul<IStyledContentProps>(
 	border-radius: 5px;
 	overflow-y: auto;
 	overflow-x: hidden;
-	transition: 0.4s ease all;
+	transition: 0.25s ease all;
 	opacity: ${isListCollapsed ? '0' : '1'};
 
 	&::-webkit-scrollbar {

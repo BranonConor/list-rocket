@@ -187,7 +187,7 @@ const StyledListButtonsWrapper = styled.div<IStyledWrapperProps>(
 	display: flex;
 	height: ${isListCollapsed ? '0px' : '30px'};
 	max-height: 30px;
-	transition: 0.4s ease all;
+	transition: 0.25s ease all;
 	opacity: ${isListCollapsed ? '0' : '1'};
 	overflow: hidden;
 
