@@ -151,7 +151,7 @@ const StyledCard = styled(motion.div)(
 	align-items: center;
 	background: ${colors.bgLight};
 	padding: 16px;
-	border-radius: 5px;
+	border-radius: 10px;
 	overflow-x: auto;
 	width: auto;
 
