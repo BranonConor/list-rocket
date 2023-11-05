@@ -47,8 +47,14 @@ export const ListItem: React.FC<IProps> = (props) => {
 	const itemIsResolved = Boolean(resolvedBy);
 
 	//dndkit code
-	const { attributes, listeners, setNodeRef, transform, transition } =
-		useSortable({ id });
+	const {
+		attributes,
+		listeners,
+		setNodeRef,
+		transform,
+		transition,
+		isDragging,
+	} = useSortable({ id });
 	const style = {
 		transform: CSS.Transform.toString(transform),
 		transition,
@@ -158,7 +164,8 @@ export const ListItem: React.FC<IProps> = (props) => {
 				itemIsResolved={itemIsResolved}
 				itemIsObscured={itemIsObscured}
 				ref={setNodeRef}
-				style={style}>
+				style={style}
+				isDragging={isDragging}>
 				<StyledContentWrapper {...attributes} {...listeners}>
 					<Title variant='heading6'>{name}</Title>
 					<Text variant='body2'>{description}</Text>
@@ -232,13 +239,15 @@ interface ICardProps {
 	itemIsObscured: boolean;
 	itemIsResolved: boolean;
 	isListCollapsed?: boolean;
+	isDragging: boolean;
 }
 const StyledCard = styled(motion.div)<ICardProps>(
-	({ itemIsObscured, itemIsResolved, theme: { colors } }) => `
+	({ isDragging, itemIsObscured, itemIsResolved, theme: { colors } }) => `
 	position: relative;
     padding: 16px;
     border-radius: 5px;
 	background: ${colors.white};
+	border: ${isDragging ? `4px solid ${colors.chip.defaultBg}` : 'none'};
 	width: 100%;
 	box-sizing: border-box;
 	display: flex;
@@ -253,6 +262,7 @@ const StyledCard = styled(motion.div)<ICardProps>(
 				: colors.font.body2
 			: colors.body
 	};
+	z-index: ${isDragging ? '10' : '1'};
 	
 	p, h4, div a {
 		color: ${
