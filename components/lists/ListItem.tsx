@@ -243,6 +243,7 @@ const StyledCard = styled(motion.div)<ICardProps>(
 	box-sizing: border-box;
 	display: flex;
 	transition: 0.05s ease all;
+	touch-action: none;
 	text-decoration: ${
 		itemIsResolved ? (itemIsObscured ? 'none' : 'line-through') : 'none'
 	};
