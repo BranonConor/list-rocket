@@ -319,6 +319,7 @@ const StyledContentWrapper = styled.div(
 	overflow: hidden;
 	padding-right: 16px;
 	border-right: 1px solid ${colors.bgLight};
+	touch-action: none;
 `
 );
 const StyledPhotoButton = styled(motion.button)`
