@@ -14,6 +14,21 @@ import { ListUserSelector } from './ListUserSelection';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { Dialog } from '../Dialog';
+import {
+	DndContext,
+	closestCenter,
+	KeyboardSensor,
+	PointerSensor,
+	useSensor,
+	useSensors,
+} from '@dnd-kit/core';
+import {
+	arrayMove,
+	SortableContext,
+	sortableKeyboardCoordinates,
+	verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { restrictToFirstScrollableAncestor } from '@dnd-kit/modifiers';
 
 interface Props {
 	creator: IUser;
@@ -32,6 +47,16 @@ export const UserList: React.FC<Props> = (props) => {
 	const [customNameInputValue, setCustomNameInputValue] = useState('');
 	const [deleteListDialogIsOpen, setDeleteListDialogIsOpen] = useState(false);
 	const [isListCollapsed, setIsListCollapsed] = useState(false);
+
+	//dndkit code - keeps an arr of item ids that can change and update as you drag things around,
+	//it maps over that list and for any items that match that id it will render the item
+	const [listItems, setListItems] = useState(items.map((item) => item._id));
+	const sensors = useSensors(
+		useSensor(PointerSensor),
+		useSensor(KeyboardSensor, {
+			coordinateGetter: sortableKeyboardCoordinates,
+		})
+	);
 
 	//handling edits
 	const [currentItemBeingEdited, setCurrentItemBeingEdited] = useState<
@@ -128,90 +153,72 @@ export const UserList: React.FC<Props> = (props) => {
 		setIsListCollapsed(!isListCollapsed);
 	};
 
+	const handleDragEnd = async (event) => {
+		const { active, over } = event;
+
+		if (active.id !== over.id) {
+			const oldIndex = listItems.indexOf(active.id);
+			const newIndex = listItems.indexOf(over.id);
+			const newIdList = arrayMove(listItems, oldIndex, newIndex);
+			const newFullItemsList = newIdList.map((id) => {
+				const item = items.find((item) => item._id === id);
+				return item;
+			});
+
+			//update order in database for this list
+			try {
+				await axios.put(`api/lists/${id}`, {
+					listId: id,
+					newItems: newFullItemsList,
+					action: 'reorder-list',
+				});
+
+				setListItems(newIdList);
+			} catch (error) {
+				console.log(error);
+				toast.error('Something went wrong, sorry! 😵‍💫', {
+					toastId: 'reorder-list-error-toast',
+				});
+			}
+		}
+	};
+
 	//when prepWorkspace is called, reset the edits
 	useEffect(() => {
 		setCurrentItemBeingEdited(null);
+		setListItems(items.map((item) => item._id));
 	}, [prepWorkspace]);
 
 	return (
-		<StyledListWrapper
-			initial={{
-				top: -20,
-				opacity: 0,
-			}}
-			animate={{
-				top: 0,
-				opacity: 1,
-			}}
-			transition={{
-				delay: 0.1,
-				duration: 0.25,
-				type: 'spring',
-			}}>
-			<StyledList>
-				<StyledListTitle isListCollapsed={isListCollapsed}>
-					{isCustomUserInputOn ? (
-						<StyledCloseButton
-							onClick={() => setIsCustomUserInputOn(false)}
-							initial={{
-								top: -20,
-								opacity: 0,
-							}}
-							animate={{
-								top: 0,
-								opacity: 1,
-							}}
-							transition={{
-								delay: 0,
-								duration: 0.15,
-								type: 'spring',
-							}}>
-							<img src='/icons/x.svg' />
-						</StyledCloseButton>
-					) : (
-						<StyledButton
-							onClick={() =>
-								setIsUserSelectorOpen(!isUserSelectorOpen)
-							}
-							initial={{
-								scale: 0,
-								opacity: 0,
-							}}
-							animate={{
-								scale: 1,
-								opacity: 1,
-							}}
-							transition={{
-								duration: 0.05,
-								type: 'spring',
-							}}>
-							<ProfilePhoto
-								photo={creator?.image || '/assets/user.svg'}
-								dimensions='24px'
-								hasBoxShadow
-							/>
-						</StyledButton>
-					)}
-					{isUserSelectorOpen && (
-						<ListUserSelector
-							users={currentEvent.collaborators}
-							listId={id}
-							setIsUserSelectorOpen={setIsUserSelectorOpen}
-							setIsCustomUserInputOn={setIsCustomUserInputOn}
-						/>
-					)}
-					<>
-						{isCustomUserInputOn ? (
-							<StyledForm onSubmit={handleSubmit}>
-								<StyledInput
-									placeholder='Add a name'
-									type='text'
-									required
-									value={customNameInputValue}
-									onChange={(e) =>
-										setCustomNameInputValue(e.target.value)
+		<DndContext
+			sensors={sensors}
+			collisionDetection={closestCenter}
+			onDragEnd={handleDragEnd}
+			modifiers={[restrictToFirstScrollableAncestor]}>
+			<SortableContext
+				items={listItems}
+				strategy={verticalListSortingStrategy}>
+				<StyledListWrapper
+					initial={{
+						top: -20,
+						opacity: 0,
+					}}
+					animate={{
+						top: 0,
+						opacity: 1,
+					}}
+					transition={{
+						delay: 0.1,
+						duration: 0.25,
+						type: 'spring',
+					}}>
+					<StyledList>
+						<StyledListTitle isListCollapsed={isListCollapsed}>
+							{isCustomUserInputOn ? (
+								<StyledCloseButton
+									onClick={() =>
+										setIsCustomUserInputOn(false)
 									}
-									name='name'
 									initial={{
 										top: -20,
 										opacity: 0,
@@ -221,117 +228,203 @@ export const UserList: React.FC<Props> = (props) => {
 										opacity: 1,
 									}}
 									transition={{
-										duration: 0.25,
-										type: 'spring',
-									}}></StyledInput>
-								<StyledSubmitButton
-									type='submit'
-									initial={{
-										top: -20,
-										opacity: 0,
-									}}
-									animate={{
-										top: 0,
-										opacity: 1,
-									}}
-									transition={{
-										duration: 0.35,
+										delay: 0,
+										duration: 0.15,
 										type: 'spring',
 									}}>
-									<img src='/icons/send.svg' />
-								</StyledSubmitButton>
-							</StyledForm>
-						) : (
-							<StyledTitle
-								variant='heading5'
-								onClick={handleListClick}>
-								{creatorName} List
-								{currentEvent?.controls?.anonymousModeIsOn &&
-									isCurrentUser && (
-										<motion.img
-											src='/icons/eye-dark.svg'
+									<img src='/icons/x.svg' />
+								</StyledCloseButton>
+							) : (
+								<StyledButton
+									onClick={() =>
+										setIsUserSelectorOpen(
+											!isUserSelectorOpen
+										)
+									}
+									initial={{
+										scale: 0,
+										opacity: 0,
+									}}
+									animate={{
+										scale: 1,
+										opacity: 1,
+									}}
+									transition={{
+										duration: 0.05,
+										type: 'spring',
+									}}>
+									<ProfilePhoto
+										photo={
+											creator?.image || '/assets/user.svg'
+										}
+										dimensions='24px'
+										hasBoxShadow
+									/>
+								</StyledButton>
+							)}
+							{isUserSelectorOpen && (
+								<ListUserSelector
+									users={currentEvent.collaborators}
+									listId={id}
+									setIsUserSelectorOpen={
+										setIsUserSelectorOpen
+									}
+									setIsCustomUserInputOn={
+										setIsCustomUserInputOn
+									}
+								/>
+							)}
+							<>
+								{isCustomUserInputOn ? (
+									<StyledForm onSubmit={handleSubmit}>
+										<StyledInput
+											placeholder='Add a name'
+											type='text'
+											required
+											value={customNameInputValue}
+											onChange={(e) =>
+												setCustomNameInputValue(
+													e.target.value
+												)
+											}
+											name='name'
 											initial={{
-												scale: 0,
+												top: -20,
 												opacity: 0,
-												rotate: '15deg',
 											}}
 											animate={{
-												scale: 1,
+												top: 0,
 												opacity: 1,
-												rotate: '0deg',
 											}}
 											transition={{
 												duration: 0.25,
 												type: 'spring',
+											}}></StyledInput>
+										<StyledSubmitButton
+											type='submit'
+											initial={{
+												top: -20,
+												opacity: 0,
 											}}
-										/>
-									)}
-							</StyledTitle>
-						)}
-					</>
-				</StyledListTitle>
-				<StyledContent
-					listHeight={currentEvent?.controls?.listHeight}
-					isListCollapsed={isListCollapsed}>
-					<>
-						{items?.length ? (
-							items?.map((item, index) =>
-								item?._id === currentItemBeingEdited ? (
-									<StyledListItem key={item?._id}>
-										<EditListItemForm
-											listItemId={item?._id}
-											setCurrentItemBeingEdited={
-												setCurrentItemBeingEdited
-											}
-											name={item?.name}
-											description={item?.description}
-											link={item?.link}
-										/>
-									</StyledListItem>
+											animate={{
+												top: 0,
+												opacity: 1,
+											}}
+											transition={{
+												duration: 0.35,
+												type: 'spring',
+											}}>
+											<img src='/icons/send.svg' />
+										</StyledSubmitButton>
+									</StyledForm>
 								) : (
-									<StyledListItem key={item?._id}>
-										<ListItem
-											name={item?.name}
-											description={item?.description}
-											link={item?.link}
-											resolvedBy={item?.resolvedBy}
-											animationFactor={index}
-											listId={id}
-											id={item?._id}
-											isCurrentUser={isCurrentUser}
-											setCurrentItemBeingEdited={
-												setCurrentItemBeingEdited
-											}
-										/>
-									</StyledListItem>
-								)
-							)
-						) : (
-							<StyledText variant='body1'>
-								Add your first items! ✍🏽
-							</StyledText>
+									<StyledTitle
+										variant='heading5'
+										onClick={handleListClick}>
+										{creatorName} List
+										{currentEvent?.controls
+											?.anonymousModeIsOn &&
+											isCurrentUser && (
+												<motion.img
+													src='/icons/eye-dark.svg'
+													initial={{
+														scale: 0,
+														opacity: 0,
+														rotate: '15deg',
+													}}
+													animate={{
+														scale: 1,
+														opacity: 1,
+														rotate: '0deg',
+													}}
+													transition={{
+														duration: 0.25,
+														type: 'spring',
+													}}
+												/>
+											)}
+									</StyledTitle>
+								)}
+							</>
+						</StyledListTitle>
+						<StyledContent
+							listHeight={currentEvent?.controls?.listHeight}
+							isListCollapsed={isListCollapsed}>
+							<>
+								{items?.length ? (
+									listItems?.map((itemId, index) => {
+										const item = items.find(
+											(item) => item._id === itemId
+										);
+
+										return item?._id ===
+											currentItemBeingEdited ? (
+											<StyledListItem key={item?._id}>
+												<EditListItemForm
+													listItemId={item?._id}
+													setCurrentItemBeingEdited={
+														setCurrentItemBeingEdited
+													}
+													name={item?.name}
+													description={
+														item?.description
+													}
+													link={item?.link}
+												/>
+											</StyledListItem>
+										) : (
+											<StyledListItem key={item?._id}>
+												<ListItem
+													name={item?.name}
+													description={
+														item?.description
+													}
+													link={item?.link}
+													resolvedBy={
+														item?.resolvedBy
+													}
+													listId={id}
+													id={item?._id}
+													isCurrentUser={
+														isCurrentUser
+													}
+													setCurrentItemBeingEdited={
+														setCurrentItemBeingEdited
+													}
+												/>
+											</StyledListItem>
+										);
+									})
+								) : (
+									<StyledText variant='body1'>
+										Add your first items! ✍🏽
+									</StyledText>
+								)}
+							</>
+						</StyledContent>
+						<ListButtons
+							listId={id}
+							setDeleteListDialogIsOpen={
+								setDeleteListDialogIsOpen
+							}
+							isListCollapsed={isListCollapsed}
+						/>
+						{deleteListDialogIsOpen && (
+							<Dialog
+								title={'Delete List'}
+								description={
+									'Are you sure you want to delete this list? All the items in this list will be deleted as well, and cannot be recovered. '
+								}
+								buttonText={'Delete'}
+								setDialogIsOpen={setDeleteListDialogIsOpen}
+								showCancelButton
+								cta={handleDeleteList}
+							/>
 						)}
-					</>
-				</StyledContent>
-				<ListButtons
-					listId={id}
-					setDeleteListDialogIsOpen={setDeleteListDialogIsOpen}
-					isListCollapsed={isListCollapsed}
-				/>
-				{deleteListDialogIsOpen && (
-					<Dialog
-						title={'Delete List'}
-						description={
-							'Are you sure you want to delete this list? All the items in this list will be deleted as well, and cannot be recovered. '
-						}
-						buttonText={'Delete'}
-						setDialogIsOpen={setDeleteListDialogIsOpen}
-						showCancelButton
-						cta={handleDeleteList}
-					/>
-				)}
-			</StyledList>
-		</StyledListWrapper>
+					</StyledList>
+				</StyledListWrapper>
+			</SortableContext>
+		</DndContext>
 	);
 };
 

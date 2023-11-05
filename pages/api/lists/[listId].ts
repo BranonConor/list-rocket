@@ -70,6 +70,14 @@ const listApiRoutes = async (req, res) => {
 		return res.status(200).send();
 	}
 
+	if (req.method === 'PUT' && req.body.action === 'reorder-list') {
+		//find this list
+		const list = await List.findById(req.body.listId);
+		list.items = req.body.newItems;
+		await list.save();
+		return res.status(200).send();
+	}
+
 	if (req.method === 'DELETE') {
 		if (req.body.action === 'delete-list') {
 			//Delete all of its items
