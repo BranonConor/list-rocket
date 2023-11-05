@@ -21,6 +21,8 @@ import {
 	PointerSensor,
 	useSensor,
 	useSensors,
+	TouchSensor,
+	MouseSensor,
 } from '@dnd-kit/core';
 import {
 	arrayMove,
@@ -52,7 +54,10 @@ export const UserList: React.FC<Props> = (props) => {
 	//it maps over that list and for any items that match that id it will render the item
 	const [listItems, setListItems] = useState(items.map((item) => item._id));
 	const sensors = useSensors(
-		useSensor(PointerSensor, {
+		useSensor(MouseSensor, {
+			activationConstraint: { delay: 250, tolerance: 5 },
+		}),
+		useSensor(TouchSensor, {
 			activationConstraint: { delay: 250, tolerance: 5 },
 		}),
 		useSensor(KeyboardSensor, {
