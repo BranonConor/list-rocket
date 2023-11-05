@@ -56,7 +56,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 		isDragging,
 	} = useSortable({ id });
 	const style = {
-		transform: CSS.Transform.toString(transform),
+		transform: CSS.Translate.toString(transform),
 		transition,
 	};
 
