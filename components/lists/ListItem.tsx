@@ -12,7 +12,6 @@ import { ProfilePhoto } from '../ProfilePhoto';
 import { Dialog } from '../Dialog';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { NONAME } from 'dns';
 
 interface IProps {
 	name: string;
@@ -23,7 +22,6 @@ interface IProps {
 	listId: string;
 	isCurrentUser: boolean;
 	setCurrentItemBeingEdited: Dispatch<SetStateAction<string>>;
-	isDragging: boolean;
 }
 
 export const ListItem: React.FC<IProps> = (props) => {
