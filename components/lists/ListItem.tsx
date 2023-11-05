@@ -7,16 +7,17 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { UserContext } from '../../contexts/UserContext';
-import { IListItem, IUser } from '../../contexts/types';
+import { IUser } from '../../contexts/types';
 import { ProfilePhoto } from '../ProfilePhoto';
 import { Dialog } from '../Dialog';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface IProps {
 	name: string;
 	description: string;
 	link: string;
 	resolvedBy: IUser | null;
-	animationFactor: number;
 	id: string;
 	listId: string;
 	isCurrentUser: boolean;
@@ -44,6 +45,14 @@ export const ListItem: React.FC<IProps> = (props) => {
 	const itemIsObscured =
 		isCurrentUser && currentEvent?.controls?.anonymousModeIsOn;
 	const itemIsResolved = Boolean(resolvedBy);
+
+	//dndkit code
+	const { attributes, listeners, setNodeRef, transform, transition } =
+		useSortable({ id });
+	const style = {
+		transform: CSS.Transform.toString(transform),
+		transition,
+	};
 
 	const handleDelete = async (e) => {
 		e?.preventDefault();
@@ -147,8 +156,10 @@ export const ListItem: React.FC<IProps> = (props) => {
 					type: 'spring',
 				}}
 				itemIsResolved={itemIsResolved}
-				itemIsObscured={itemIsObscured}>
-				<StyledContentWrapper>
+				itemIsObscured={itemIsObscured}
+				ref={setNodeRef}
+				style={style}>
+				<StyledContentWrapper {...attributes} {...listeners}>
 					<Title variant='heading6'>{name}</Title>
 					<Text variant='body2'>{description}</Text>
 					{link === '' ? null : (
