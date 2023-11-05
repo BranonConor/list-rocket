@@ -12,6 +12,7 @@ import { ProfilePhoto } from '../ProfilePhoto';
 import { Dialog } from '../Dialog';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { NONAME } from 'dns';
 
 interface IProps {
 	name: string;
@@ -22,6 +23,7 @@ interface IProps {
 	listId: string;
 	isCurrentUser: boolean;
 	setCurrentItemBeingEdited: Dispatch<SetStateAction<string>>;
+	isDragging: boolean;
 }
 
 export const ListItem: React.FC<IProps> = (props) => {
@@ -47,8 +49,14 @@ export const ListItem: React.FC<IProps> = (props) => {
 	const itemIsResolved = Boolean(resolvedBy);
 
 	//dndkit code
-	const { attributes, listeners, setNodeRef, transform, transition } =
-		useSortable({ id });
+	const {
+		attributes,
+		listeners,
+		setNodeRef,
+		transform,
+		transition,
+		isDragging,
+	} = useSortable({ id });
 	const style = {
 		transform: CSS.Transform.toString(transform),
 		transition,
@@ -158,8 +166,12 @@ export const ListItem: React.FC<IProps> = (props) => {
 				itemIsResolved={itemIsResolved}
 				itemIsObscured={itemIsObscured}
 				ref={setNodeRef}
-				style={style}>
-				<StyledContentWrapper {...attributes} {...listeners}>
+				style={style}
+				isDragging={isDragging}>
+				<StyledContentWrapper
+					isDragging={isDragging}
+					{...attributes}
+					{...listeners}>
 					<Title variant='heading6'>{name}</Title>
 					<Text variant='body2'>{description}</Text>
 					{link === '' ? null : (
@@ -232,13 +244,15 @@ interface ICardProps {
 	itemIsObscured: boolean;
 	itemIsResolved: boolean;
 	isListCollapsed?: boolean;
+	isDragging: boolean;
 }
 const StyledCard = styled(motion.div)<ICardProps>(
-	({ itemIsObscured, itemIsResolved, theme: { colors } }) => `
+	({ isDragging, itemIsObscured, itemIsResolved, theme: { colors } }) => `
 	position: relative;
     padding: 16px;
     border-radius: 5px;
 	background: ${colors.white};
+	border: ${isDragging ? `4px solid ${colors.chip.defaultBg}` : 'none'};
 	width: 100%;
 	box-sizing: border-box;
 	display: flex;
@@ -253,6 +267,7 @@ const StyledCard = styled(motion.div)<ICardProps>(
 				: colors.font.body2
 			: colors.body
 	};
+	z-index: ${isDragging ? '10' : '1'};
 	
 	p, h4, div a {
 		color: ${
@@ -313,8 +328,11 @@ const StyledIconButton = styled.button`
 		height: 14px;
 	}
 `;
-const StyledContentWrapper = styled.div(
-	({ theme: { colors } }) => `
+interface IStyledContentWrapperProps {
+	isDragging: boolean;
+}
+const StyledContentWrapper = styled.div<IStyledContentWrapperProps>(
+	({ isDragging, theme: { colors } }) => `
 	width: 100%;
 	overflow: hidden;
 	padding-right: 16px;
