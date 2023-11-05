@@ -243,7 +243,6 @@ const StyledCard = styled(motion.div)<ICardProps>(
 	box-sizing: border-box;
 	display: flex;
 	transition: 0.05s ease all;
-	touch-action: none;
 	text-decoration: ${
 		itemIsResolved ? (itemIsObscured ? 'none' : 'line-through') : 'none'
 	};
@@ -320,6 +319,7 @@ const StyledContentWrapper = styled.div(
 	overflow: hidden;
 	padding-right: 16px;
 	border-right: 1px solid ${colors.bgLight};
+	touch-action: none;
 `
 );
 const StyledPhotoButton = styled(motion.button)`
