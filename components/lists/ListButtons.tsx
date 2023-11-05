@@ -32,7 +32,7 @@ export const ListButtons: React.FC<IProps> = (props) => {
 	const handleSubmit = async (event: any) => {
 		try {
 			event.preventDefault();
-			if (name === '' || description === '') {
+			if (name === '') {
 				throw new Error();
 			}
 			await axios.put(`/api/lists`, {
@@ -61,7 +61,7 @@ export const ListButtons: React.FC<IProps> = (props) => {
 			setLink('');
 			setIsAddItemClicked(false);
 		} catch (axiosError) {
-			if (name === '' || description === '') {
+			if (name === '') {
 				toast.error(`Please fill out all list item fields. 👀`, {
 					toastId: 'list-item-value-not-found-toast',
 				});
@@ -95,16 +95,15 @@ export const ListButtons: React.FC<IProps> = (props) => {
 					<StyledForm onSubmit={handleSubmit}>
 						<StyledInput
 							value={name}
-							placeholder='Add a title'
-							name='title'
+							placeholder='Add a title*'
+							name='name'
 							required
 							onChange={(e) => setName(e.target.value)}
 						/>
 						<StyledInput
 							value={description}
 							placeholder='Add a description'
-							name='title'
-							required
+							name='description'
 							onChange={(e) => setDescription(e.target.value)}
 						/>
 						<StyledInput
