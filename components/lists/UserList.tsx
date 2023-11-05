@@ -51,7 +51,6 @@ export const UserList: React.FC<Props> = (props) => {
 	//dndkit code - keeps an arr of item ids that can change and update as you drag things around,
 	//it maps over that list and for any items that match that id it will render the item
 	const [listItems, setListItems] = useState(items.map((item) => item._id));
-	const [isDragging, setIsDragging] = useState(false);
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
 			activationConstraint: { delay: 250, tolerance: 5 },
@@ -184,12 +183,6 @@ export const UserList: React.FC<Props> = (props) => {
 				});
 			}
 		}
-
-		setIsDragging(false);
-	};
-
-	const handleDragStart = () => {
-		setIsDragging(true);
 	};
 
 	//when prepWorkspace is called, reset the edits
@@ -203,8 +196,7 @@ export const UserList: React.FC<Props> = (props) => {
 			sensors={sensors}
 			collisionDetection={closestCenter}
 			onDragEnd={handleDragEnd}
-			modifiers={[restrictToFirstScrollableAncestor]}
-			onDragStart={handleDragStart}>
+			modifiers={[restrictToFirstScrollableAncestor]}>
 			<SortableContext
 				items={listItems}
 				strategy={verticalListSortingStrategy}>

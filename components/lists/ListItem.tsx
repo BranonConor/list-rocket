@@ -166,10 +166,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 				ref={setNodeRef}
 				style={style}
 				isDragging={isDragging}>
-				<StyledContentWrapper
-					isDragging={isDragging}
-					{...attributes}
-					{...listeners}>
+				<StyledContentWrapper {...attributes} {...listeners}>
 					<Title variant='heading6'>{name}</Title>
 					<Text variant='body2'>{description}</Text>
 					{link === '' ? null : (
@@ -326,11 +323,8 @@ const StyledIconButton = styled.button`
 		height: 14px;
 	}
 `;
-interface IStyledContentWrapperProps {
-	isDragging: boolean;
-}
-const StyledContentWrapper = styled.div<IStyledContentWrapperProps>(
-	({ isDragging, theme: { colors } }) => `
+const StyledContentWrapper = styled.div(
+	({ theme: { colors } }) => `
 	width: 100%;
 	overflow: hidden;
 	padding-right: 16px;
