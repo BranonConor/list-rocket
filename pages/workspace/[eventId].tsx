@@ -10,16 +10,14 @@ import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { LoadingLayout } from '../../components/layouts/LoadingLayout';
 import axios from 'axios';
-import { IEvent } from '../../contexts/types';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import { UserContext } from '../../contexts/UserContext';
 
 export const getServerSideProps = async ({ params }) => {
 	const { eventId } = params;
-	console.log('id: ', eventId);
 	const res = await axios.get(
 		`${process.env.NEXTAUTH_URL}/api/events/${eventId}`
 	);
-	await console.log(res);
 
 	return {
 		props: { event: res.data.data },
@@ -30,23 +28,38 @@ const EventPage = ({ event }) => {
 	const { data: session, status } = useSession();
 	const router = useRouter();
 
-	const { eventId } = router.query;
-	console.log(event);
-	// const [currentEvent, setCurrentEvent] = useState<IEvent | null>();
-	const { currentEvent, setCurrentEvent } = useContext(WorkspaceContext);
-	//get the event and set it as the current event
+	const { currentEvent, setCurrentEvent, clearWorkspace } =
+		useContext(WorkspaceContext);
+	//get the event and set it as the current event in context
 	useEffect(() => {
 		const getEvent = async () => {
 			setCurrentEvent(event);
 		};
 		getEvent();
 	}, []);
-
 	if (status === 'unauthenticated') {
 		toast.error('You must be logged in to access that page!', {
 			toastId: 'unauthenticated-route-toast',
 		});
 		router.push('/');
+	}
+
+	const { user } = useContext(UserContext);
+	if (currentEvent && user) {
+		let userHasEventAccess = false;
+		currentEvent?.collaborators.forEach((collaborator) => {
+			if (collaborator._id === user?._id) userHasEventAccess = true;
+		});
+		if (!userHasEventAccess) {
+			clearWorkspace();
+			toast.error(
+				'You must be invited to this event as a collaborator to access it.',
+				{
+					toastId: 'not-a-collaborator-toast',
+				}
+			);
+			router.push('/workspace');
+		}
 	}
 	if (status === 'loading') {
 		return <LoadingLayout>Loading...</LoadingLayout>;
@@ -62,7 +75,7 @@ const EventPage = ({ event }) => {
 
 			<WorkspaceControls />
 			{/* ---- WORKSPACE ---- */}
-			<StyledWorkspaceWrapper isEventActive={Boolean(currentEvent)}>
+			<StyledWorkspaceWrapper>
 				{currentEvent && <Event currentEvent={currentEvent} />}
 			</StyledWorkspaceWrapper>
 		</DashLayout>
@@ -71,19 +84,16 @@ const EventPage = ({ event }) => {
 
 export default EventPage;
 
-interface StyledWorkspaceWrapperProps {
-	isEventActive: boolean;
-}
-const StyledWorkspaceWrapper = styled.div<StyledWorkspaceWrapperProps>(
-	({ isEventActive, theme: { colors } }) => `
+const StyledWorkspaceWrapper = styled.div(
+	({ theme: { colors } }) => `
 	border: 2px dashed ${colors.bgLight};
 	border-radius: 10px;
 	padding: 16px;
 	min-height: 200px;
 	display: flex;
 	flex-direction: column;
-	align-items: ${isEventActive ? 'flex-start' : 'center'};
-	justify-content: ${isEventActive ? 'flex-start' : 'center'};
+	align-items: flex-start;
+	justify-content: flex-start;
 `
 );
 const StyledTitle = styled(Title)(

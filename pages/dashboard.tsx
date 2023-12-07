@@ -14,6 +14,7 @@ import { Text } from '../components/typography/Text';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AllInvites } from '../components/events/AllInvites';
+import { UserCard } from '../components/cards/UserCard';
 
 const Dashboard = () => {
 	const router = useRouter();
@@ -38,30 +39,20 @@ const Dashboard = () => {
 			</Head>
 
 			<Title variant='heading1'>Dashboard</Title>
-			<StyledDashWrapper>
-				<div>
-					<StyledGreeting
-						initial={{ opacity: 0, width: '80%' }}
-						animate={{ opacity: 1, width: '100%' }}
-						transition={{
-							duration: 1,
-							type: 'spring',
-						}}>
-						<ProfilePhoto photo={user?.image} dimensions='40px' />
-						<StyledP
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							transition={{
-								duration: 1,
-								type: 'spring',
-							}}>
-							<Text variant='body1'>
-								Welcome, {user?.name.split(' ')[0]}! ✌🏼
-							</Text>
-						</StyledP>
-					</StyledGreeting>
-				</div>
-			</StyledDashWrapper>
+			<div>
+				<StyledGreeting
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					transition={{
+						duration: 1,
+						type: 'spring',
+					}}>
+					<UserCard
+						text={`Welcome, ${user?.name.split(' ')[0]}! ✌🏼`}
+						image={user?.image}
+					/>
+				</StyledGreeting>
+			</div>
 			<AllEvents />
 			<AllInvites />
 		</DashLayout>
@@ -74,39 +65,22 @@ const StyledGreeting = styled(motion.div)(
 	({ theme: { colors } }) => `
 	display: flex;
 	align-items: center;
-	background: ${colors.tertiaryGradient};
 	color: ${colors.white};
 	border-radius: 10px;
 	box-sizing: border-box;
-	padding: 8px;
-	height: 60px;
-	margin: 0 0 16px 0;
-
+	margin: 0 0 32px 0;
+	width: 100%;
+	
 	@media only screen and (max-width: 768px) {
-		min-width: 100%;
-		width: 100%;
-		margin: 0 0 16px 0;
+		margin: -8px 0 16px 0;
+
+		div:first-of-type {
+			justify-content: flex-start;
+			box-sizing: border-box;
+			min-width: 100%;
+			width: 100%;
+			margin: 0 0 16px 0;
+		}
 	}
 `
 );
-
-const StyledP = styled(motion.p)`
-	display: flex;
-	padding: 0 16px;
-	box-sizing: border-box;
-	border-radius: 10px;
-`;
-
-const StyledDashWrapper = styled.div`
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-gap: 16px;
-
-	@media only screen and (max-width: 1600px) {
-		grid-template-columns: 1fr 1fr;
-	}
-
-	@media only screen and (max-width: 900px) {
-		grid-template-columns: 1fr;
-	}
-`;

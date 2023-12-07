@@ -58,10 +58,5 @@ const StyledInfoCard = styled.div(
     box-shadow: ${shadows.standard};
 	color: ${colors.white};
 	max-height: 36px;
-
-	@media only screen and (max-width: 1050px) {
-		display: none;
-		height: 0px;
-	}
 `
 );

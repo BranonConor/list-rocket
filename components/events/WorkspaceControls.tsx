@@ -302,6 +302,13 @@ const StyledCardAndButtonWrapper = styled.div`
 	margin-left: 16px;
 	max-height: 36px;
 
+	@media only screen and (max-width: 1050px) {
+		div:first-of-type {
+			display: none;
+			height: 0px;
+		}
+	}
+
 	@media only screen and (max-width: 768px) {
 		max-height: 108px;
 	}

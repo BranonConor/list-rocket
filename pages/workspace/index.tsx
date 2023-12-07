@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { useContext } from 'react';
 import { Title } from '../../components/typography/Title';
-import { Event } from '../../components/events/Event';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
