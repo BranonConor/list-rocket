@@ -79,6 +79,10 @@ const StyledAnchor = styled.a`
 	width: 100%;
 	display: flex;
 	justify-content: center;
+
+	&:hover {
+		cursor: pointer;
+	}
 `;
 const StyledMenu = styled.div`
 	width: 100%;

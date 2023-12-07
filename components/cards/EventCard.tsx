@@ -27,14 +27,11 @@ export const EventCard: React.FC<IProps> = (props) => {
 		setDeleteDialogIsOpen,
 		setEventToDelete,
 	} = props;
-	const { prepWorkspace } = useContext(WorkspaceContext);
-
 	const router = useRouter();
 
 	const handleClick = async (e) => {
 		e?.preventDefault();
-		prepWorkspace(id);
-		router.push('/workspace');
+		router.push(`/workspace/${id}`);
 	};
 
 	const handleDelete = () => {
@@ -68,7 +65,7 @@ export const EventCard: React.FC<IProps> = (props) => {
 					variant='small'
 				/>
 				<StyledDeleteButton onClick={handleDelete}>
-					<img src='/icons/trash-red.svg' alt='Trash Icon' />
+					<StyledImage src='/icons/trash-red.svg' alt='Trash Icon' />
 				</StyledDeleteButton>
 			</StyledButtonContainer>
 		</StyledCard>
@@ -88,6 +85,14 @@ const StyledCard = styled(motion.div)(
 	
 	&:hover {
 		transform: translateY(2px);
+
+		button {
+			filter: grayscale(0%);
+		}
+	}
+
+	h3 {
+		margin-top: 8px;
 	}
 `
 );
@@ -99,21 +104,29 @@ const StyledButtonContainer = styled.div`
 	width: 100%;
 `;
 
-const StyledDeleteButton = styled.button`
-	width: 50px;
-	background: none;
+const StyledDeleteButton = styled.button(
+	({ theme: { colors } }) => `
+	width: 40px;
+	height: 40px;
 	border-radius: 5px;
 	box-sizing: border-box;
-	padding: 8px;
 	outline: none;
 	border: none;
-	transition: 0.1s ease all;
-	height: 40px;
+	background: ${colors.error.bg};
+	filter: grayscale(100%);
+
 
 	&:hover {
-		box-shadow: none;
-		animation: none;
 		cursor: pointer;
-		transform: scale(1.15);
+
+		img {
+			transform: scale(1.15);
+		}
 	}
+`
+);
+const StyledImage = styled.img`
+	width: 16px;
+	height: 16px;
+	transition: 0.1s ease all;
 `;

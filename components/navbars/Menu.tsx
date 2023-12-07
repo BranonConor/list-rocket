@@ -1,23 +1,33 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useContext } from 'react';
+import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 
 export const Menu = () => {
 	const currentRoute = useRouter().pathname;
+	const { currentEvent } = useContext(WorkspaceContext);
 
 	return (
 		<StyledList>
 			<StyledListItem>
 				<Link href='/dashboard' passHref>
 					<StyledAnchor isActive={currentRoute === '/dashboard'}>
-						<img src='icons/grid.svg' alt='Dashboard' />
+						<img src='/icons/grid.svg' alt='Dashboard' />
 					</StyledAnchor>
 				</Link>
 			</StyledListItem>
 			<StyledListItem>
-				<Link href='/workspace' passHref>
-					<StyledAnchor isActive={currentRoute === '/workspace'}>
-						<img src='icons/pencil.svg' alt='Pencil icon' />
+				<Link
+					href={
+						currentEvent
+							? `/workspace/${currentEvent._id}`
+							: '/workspace'
+					}
+					passHref>
+					<StyledAnchor
+						isActive={currentRoute.includes('/workspace')}>
+						<img src='/icons/pencil.svg' alt='Pencil icon' />
 					</StyledAnchor>
 				</Link>
 			</StyledListItem>
