@@ -8,8 +8,17 @@ import { Title } from '../typography/Title';
 import { Dialog } from '../Dialog';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { IUser } from '../../contexts/types';
 
-export const CollaboratorsGrid = () => {
+interface ICollaboratorsGridProps {
+	collaborators: IUser[];
+	pendingCollaborators: IUser[];
+}
+
+export const CollaboratorsGrid: React.FC<ICollaboratorsGridProps> = ({
+	collaborators,
+	pendingCollaborators,
+}) => {
 	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
 	const [isAddCollaboratorButtonClicked, setIsAddCollaboratorButtonClicked] =
 		useState(false);
@@ -92,7 +101,7 @@ export const CollaboratorsGrid = () => {
 			}}>
 			<StyledCollaboratorsWrapper>
 				<StyledH2 variant='heading3'>Collaborators:</StyledH2>
-				{currentEvent.collaborators?.map((collaborator) => {
+				{collaborators?.map((collaborator) => {
 					return (
 						<StyledAvatar
 							key={collaborator._id}
@@ -145,7 +154,7 @@ export const CollaboratorsGrid = () => {
 				})}
 
 				{/* ---- PENDING COLLABORATORS ----- */}
-				{currentEvent.pendingCollaborators?.map((collaborator) => {
+				{pendingCollaborators?.map((collaborator) => {
 					return (
 						<StyledPendingAvatar
 							key={collaborator._id}

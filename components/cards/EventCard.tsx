@@ -27,14 +27,11 @@ export const EventCard: React.FC<IProps> = (props) => {
 		setDeleteDialogIsOpen,
 		setEventToDelete,
 	} = props;
-	const { prepWorkspace } = useContext(WorkspaceContext);
-
 	const router = useRouter();
 
 	const handleClick = async (e) => {
 		e?.preventDefault();
-		prepWorkspace(id);
-		router.push('/workspace');
+		router.push(`/workspace/${id}`);
 	};
 
 	const handleDelete = () => {

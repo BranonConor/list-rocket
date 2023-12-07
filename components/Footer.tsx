@@ -8,7 +8,7 @@ export const Footer = () => {
 				href='https://liftoff-tech.vercel.app'
 				target='_blank'>
 				<StyledImage
-					src='icons/liftoff-logo.svg'
+					src='/icons/liftoff-logo.svg'
 					alt='Liftoff Technologies'
 				/>
 			</StyledAnchor>

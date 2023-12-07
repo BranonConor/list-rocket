@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { SetStateAction, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Title } from '../typography/Title';
@@ -10,6 +10,7 @@ import { EventControls } from './EventControls';
 import { UserCard } from '../cards/UserCard';
 import { Dialog } from '../Dialog';
 import { EditEventForm } from './EditEventForm';
+import { useRouter } from 'next/router';
 
 export const WorkspaceControls = () => {
 	const { events, getAllEvents } = useContext(EventContext);
@@ -17,16 +18,17 @@ export const WorkspaceControls = () => {
 		useContext(WorkspaceContext);
 	const [isEventControlsDialogOpen, setIsEventControlsDialogOpen] =
 		useState(false);
-
+	const router = useRouter();
 	const [eventIsBeingEdited, setEventIsBeingEdited] = useState(false);
 
-	const handleChipButtonClick = async (e, eventId) => {
-		e?.preventDefault();
-		prepWorkspace(eventId);
+	const handleChipButtonClick = (e, eventId) => {
+		e.preventDefault();
+		router.push(`/workspace/${eventId}`);
 	};
 	const handleExitClick = async (e) => {
 		e?.preventDefault();
 		clearWorkspace();
+		router.push('/workspace');
 	};
 
 	const handleEditEvent = () => {

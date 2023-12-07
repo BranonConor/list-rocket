@@ -1,20 +1,46 @@
-import { DashLayout } from '../components/layouts/DashLayout';
+import { DashLayout } from '../../components/layouts/DashLayout';
 import Head from 'next/head';
-import { WorkspaceControls } from '../components/events/WorkspaceControls';
+import { WorkspaceControls } from '../../components/events/WorkspaceControls';
 import styled from 'styled-components';
-import { WorkspaceContext } from '../contexts/WorkspaceContext';
-import { useContext } from 'react';
-import { Title } from '../components/typography/Title';
-import { Event } from '../components/events/Event';
+import { useContext, useEffect, useState } from 'react';
+import { Title } from '../../components/typography/Title';
+import { Event } from '../../components/events/Event';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import { LoadingLayout } from '../components/layouts/LoadingLayout';
+import { LoadingLayout } from '../../components/layouts/LoadingLayout';
+import axios from 'axios';
+import { IEvent } from '../../contexts/types';
+import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 
-const Workspace = () => {
-	const { currentEvent } = useContext(WorkspaceContext);
-	const router = useRouter();
+export const getServerSideProps = async ({ params }) => {
+	const { eventId } = params;
+	console.log('id: ', eventId);
+	const res = await axios.get(
+		`${process.env.NEXTAUTH_URL}/api/events/${eventId}`
+	);
+	await console.log(res);
+
+	return {
+		props: { event: res.data.data },
+	};
+};
+
+const EventPage = ({ event }) => {
 	const { data: session, status } = useSession();
+	const router = useRouter();
+
+	const { eventId } = router.query;
+	console.log(event);
+	// const [currentEvent, setCurrentEvent] = useState<IEvent | null>();
+	const { currentEvent, setCurrentEvent } = useContext(WorkspaceContext);
+	//get the event and set it as the current event
+	useEffect(() => {
+		const getEvent = async () => {
+			setCurrentEvent(event);
+		};
+		getEvent();
+	}, []);
 
 	if (status === 'unauthenticated') {
 		toast.error('You must be logged in to access that page!', {
@@ -32,27 +58,18 @@ const Workspace = () => {
 				<title>Home | List Rocket</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			{currentEvent ? (
-				<StyledTitle variant='heading1'>
-					{currentEvent.name}
-				</StyledTitle>
-			) : (
-				<Title variant='heading1'>Event Workspace</Title>
-			)}
+			<StyledTitle variant='heading1'>{currentEvent?.name}</StyledTitle>
+
 			<WorkspaceControls />
 			{/* ---- WORKSPACE ---- */}
 			<StyledWorkspaceWrapper isEventActive={Boolean(currentEvent)}>
-				{currentEvent ? (
-					<Event />
-				) : (
-					<StyledH3 variant='heading3'>LOAD AN EVENT</StyledH3>
-				)}
+				{currentEvent && <Event currentEvent={currentEvent} />}
 			</StyledWorkspaceWrapper>
 		</DashLayout>
 	);
 };
 
-export default Workspace;
+export default EventPage;
 
 interface StyledWorkspaceWrapperProps {
 	isEventActive: boolean;
@@ -67,12 +84,6 @@ const StyledWorkspaceWrapper = styled.div<StyledWorkspaceWrapperProps>(
 	flex-direction: column;
 	align-items: ${isEventActive ? 'flex-start' : 'center'};
 	justify-content: ${isEventActive ? 'flex-start' : 'center'};
-`
-);
-const StyledH3 = styled(Title)(
-	({ theme: { colors } }) => `
-	color: ${colors.bgDark};
-	opacity: 0.15;
 `
 );
 const StyledTitle = styled(Title)(

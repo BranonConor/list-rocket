@@ -12,12 +12,16 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { UserContext } from '../../contexts/UserContext';
 
-export const Event: React.FC = () => {
-	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
+interface IEventProps {
+	currentEvent: any;
+}
+
+export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
+	const { prepWorkspace } = useContext(WorkspaceContext);
 	const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
 	const { user } = useContext(UserContext);
 
-	const lists = currentEvent.lists;
+	const { lists, collaborators, pendingCollaborators } = currentEvent;
 
 	//This entire grid build is an abonimation and also a stroke of genius
 	const getGrid = (columnCount, lists) => {
@@ -90,7 +94,10 @@ export const Event: React.FC = () => {
 
 	return (
 		<StyledEventWrapper>
-			<CollaboratorsGrid />
+			<CollaboratorsGrid
+				collaborators={collaborators}
+				pendingCollaborators={pendingCollaborators}
+			/>
 			{!lists.length ? (
 				<StyledEmptyEventWrapper>
 					<StyledH3 variant='heading3'>
