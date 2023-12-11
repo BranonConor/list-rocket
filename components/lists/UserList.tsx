@@ -174,7 +174,7 @@ export const UserList: React.FC<Props> = (props) => {
 
 			//update order in database for this list
 			try {
-				await axios.put(`api/lists/${id}`, {
+				await axios.put(`/api/lists/${id}`, {
 					listId: id,
 					newItems: newFullItemsList,
 					action: 'reorder-list',
