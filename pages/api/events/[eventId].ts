@@ -99,13 +99,11 @@ const eventApiRoutes = async (req, res) => {
 		}
 		if (req.body.action === 'delete-list') {
 			const event = await Event.findById(req.body.eventId);
-			console.log('Event Lists: ', event.lists);
 			//cleanup the event lists
 			const newEventLists = event.lists.filter(
 				(list) => list._id.toString() !== req.body.listId.toString()
 			);
 			event.lists = newEventLists;
-			console.log('Event lists after: ', event.lists);
 			event.save();
 			res.json({ status: 200, data: event });
 		}
@@ -152,26 +150,18 @@ const eventApiRoutes = async (req, res) => {
 						(user) => user._id.toString() !== req.body.userId
 					);
 					event.collaborators = newCollaborators;
-					//delete any lists & listItems in the event for this user
-					const userList = await List.findOne({
-						event: event._id.toString(),
-						creator: user._id.toString(),
+					//unassign any lists / items they're assigned to in the event
+					event.lists.forEach(async (list) => {
+						const foundList = await List.findById(list._id);
+						//if the list creator matches the user id, reset it
+						if (
+							foundList.creator?._id.toString() ===
+							req.body.userId
+						) {
+							foundList.creator = null;
+						}
+						foundList.save();
 					});
-					await ListItem.deleteMany({
-						event: event._id.toString(),
-						list: userList._id.toString(),
-					});
-					await List.findOneAndDelete({
-						event: event._id.toString(),
-						creator: user._id.toString(),
-					});
-
-					//cleanup the event lists
-					const newEventLists = event.lists.filter(
-						(list) =>
-							list._id.toString() !== userList._id.toString()
-					);
-					event.lists = newEventLists;
 				} else if (userIsPendingCollaborator) {
 					const newPendingCollaborators =
 						event.pendingCollaborators.filter(
