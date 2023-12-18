@@ -8,11 +8,6 @@ import { EventContext } from '../../contexts/EventContext';
 
 export const AllInvites = () => {
 	const { user } = useContext(UserContext);
-	const { getAllEvents } = useContext(EventContext);
-
-	useEffect(() => {
-		getAllEvents();
-	}, []);
 
 	return (
 		<StyledWrapper>

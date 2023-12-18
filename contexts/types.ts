@@ -22,7 +22,6 @@ export interface IEvent {
 }
 export interface IEventContext {
 	events: IEvent[];
-	getAllEvents: () => void;
 }
 
 // USER TYPES
@@ -37,7 +36,6 @@ export interface IUser {
 
 export interface IUserContext {
 	user: IUser;
-	getUserData: () => void;
 }
 
 // WORKSPACE TYPES

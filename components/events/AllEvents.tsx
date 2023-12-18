@@ -13,7 +13,7 @@ import { CreateEventButton } from './CreateEventButton';
 import { CreateEventForm } from './CreateEventForm';
 
 export const AllEvents: React.FC = () => {
-	const { events, getAllEvents } = useContext(EventContext);
+	const { events } = useContext(EventContext);
 	const { currentEvent, clearWorkspace } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
 	const [deleteDialogIsOpen, setDeleteDialogIsOpen] = useState(false);
@@ -39,7 +39,6 @@ export const AllEvents: React.FC = () => {
 			});
 			setEventToDelete(null);
 			setDeleteDialogIsOpen(false);
-			getAllEvents();
 			currentEvent?._id === event.id && clearWorkspace();
 			toast.success('Successfully deleted your event 🗑', {
 				toastId: 'delete-event-toast',
@@ -56,10 +55,6 @@ export const AllEvents: React.FC = () => {
 		event.preventDefault();
 		setUserIsCreatingEvent(true);
 	};
-
-	useEffect(() => {
-		getAllEvents();
-	}, []);
 
 	return (
 		<StyledWrapper>

@@ -2,6 +2,7 @@ import { createContext, useState } from 'react';
 
 import axios from 'axios';
 import { IEvent, IWorkspaceContext } from './types';
+import { useGetCurrentEventQuery } from '../pages/hooks/queries/useGetCurrentEventQuery';
 
 export const WorkspaceContext = createContext<IWorkspaceContext | null>(null);
 

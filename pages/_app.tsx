@@ -10,9 +10,13 @@ import { Analytics } from '@vercel/analytics/react';
 import { useEffect } from 'react';
 import * as gtag from '../lib/gtag';
 import { useRouter } from 'next/router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const App = ({ Component, pageProps: { session, ...pageProps } }) => {
 	const router = useRouter();
+	// Create a client
+	const queryClient = new QueryClient();
 
 	useEffect(() => {
 		const handleRouteChange = (url) => {
@@ -53,27 +57,30 @@ const App = ({ Component, pageProps: { session, ...pageProps } }) => {
 
 			{/* ----- App ----- */}
 			<SessionProvider session={session}>
-				<ToastContainer
-					position='bottom-center'
-					autoClose={4000}
-					hideProgressBar={false}
-					newestOnTop
-					closeOnClick
-					rtl={false}
-					pauseOnFocusLoss
-					draggable
-					pauseOnHover
-					limit={2}
-				/>
-				<StyledProvider>
-					<UserProvider>
-						<EventProvider>
-							<WorkspaceProvider>
-								<Component {...pageProps} />
-							</WorkspaceProvider>
-						</EventProvider>
-					</UserProvider>
-				</StyledProvider>
+				<QueryClientProvider client={queryClient}>
+					<ToastContainer
+						position='bottom-center'
+						autoClose={4000}
+						hideProgressBar={false}
+						newestOnTop
+						closeOnClick
+						rtl={false}
+						pauseOnFocusLoss
+						draggable
+						pauseOnHover
+						limit={2}
+					/>
+					<StyledProvider>
+						<UserProvider>
+							<EventProvider>
+								<WorkspaceProvider>
+									<Component {...pageProps} />
+									<ReactQueryDevtools initialIsOpen={false} />
+								</WorkspaceProvider>
+							</EventProvider>
+						</UserProvider>
+					</StyledProvider>
+				</QueryClientProvider>
 			</SessionProvider>
 		</>
 	);
