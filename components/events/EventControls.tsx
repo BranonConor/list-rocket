@@ -16,7 +16,6 @@ import Pusher from 'pusher-js';
 import { Dialog } from '../Dialog';
 import { IEvent, IUser } from '../../contexts/types';
 import { Text } from '../typography/Text';
-import { useGetCurrentEventQuery } from '../../hooks/queries/useGetCurrentEventQuery';
 
 interface IEventControlsProps {
 	setIsEventControlsDialogOpen: Dispatch<SetStateAction<boolean>>;

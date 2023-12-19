@@ -12,11 +12,26 @@ import { LoadingLayout } from '../../components/layouts/LoadingLayout';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { UserContext } from '../../contexts/UserContext';
 
-const EventPage = () => {
-	const { currentEvent, clearWorkspace } = useContext(WorkspaceContext);
+//get the id from the route params, pass it into the component
+export const getServerSideProps = async ({ params }) => {
+	const { eventId } = params;
+
+	return {
+		props: { event: eventId },
+	};
+};
+
+const EventPage = ({ event }) => {
+	const { currentEvent, prepWorkspace, clearWorkspace } =
+		useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
 	const { status } = useSession();
 	const router = useRouter();
+
+	//get the eventId and set the workspace context's currentId to it, it'll handle the data fetching and send it through in currentEvent
+	useEffect(() => {
+		prepWorkspace(event);
+	}, []);
 
 	if (status === 'unauthenticated') {
 		toast.error('You must be logged in to access that page!', {

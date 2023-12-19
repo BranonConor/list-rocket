@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 
 import { IEvent, IWorkspaceContext } from './types';
-import { useGetCurrentEventQuery } from '../hooks/queries/useGetCurrentEventQuery';
+import { useGetCurrentEventQuery } from '../pages/hooks/queries/useGetCurrentEventQuery';
 
 export const WorkspaceContext = createContext<IWorkspaceContext | null>(null);
 

@@ -1,9 +1,19 @@
-import { AnimationProps, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-export const SkeletonLoader = () => {
+interface ISkeletonProps {
+	width?: string;
+	height?: string;
+	shape?: 'circle' | 'rectangle';
+	margin?: string;
+}
+
+export const SkeletonLoader: React.FC<ISkeletonProps> = ({
+	shape = 'rectangle',
+	...otherProps
+}) => {
 	return (
-		<StyledCard>
+		<StyledCard shape={shape} {...otherProps}>
 			<StyledSkeleton
 				animate={{
 					x: ['-100%', '1000%'],
@@ -17,13 +27,13 @@ export const SkeletonLoader = () => {
 	);
 };
 
-const StyledCard = styled.div(
-	({ theme: { colors } }) => `
-    width: 100%;
+const StyledCard = styled.div<ISkeletonProps>(
+	({ width, height, shape, margin, theme: { colors } }) => `
+    width: ${width || '100%'};
+    height: ${height || '40px'};
     background: ${colors.bgLight};
-    height: 68px;
-    border-radius: 10px;
-    margin: 0 0 16px 0;
+    border-radius: ${shape === 'circle' ? '100%' : '10px'};
+    margin: ${margin || '0 0 16px 0'};
     overflow: hidden;
     position: relative;
 `
@@ -35,6 +45,6 @@ const StyledSkeleton = styled(motion.div)(
     background: ${colors.white};
     height: 100%;
     position: absolute;
-    opacity: 0.5;
+    opacity: 0.45;
 `
 );

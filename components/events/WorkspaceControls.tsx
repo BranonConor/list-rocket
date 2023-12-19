@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Title } from '../typography/Title';
@@ -15,7 +15,7 @@ import { SkeletonLoader } from '../layouts/SkeletonLoader';
 
 export const WorkspaceControls = () => {
 	const { events } = useContext(EventContext);
-	const { currentEvent, prepWorkspace, clearWorkspace, isFetching } =
+	const { currentEvent, clearWorkspace, isFetching, isLoading } =
 		useContext(WorkspaceContext);
 	const [isEventControlsDialogOpen, setIsEventControlsDialogOpen] =
 		useState(false);
@@ -24,7 +24,6 @@ export const WorkspaceControls = () => {
 
 	const handleChipButtonClick = (e, eventId) => {
 		e.preventDefault();
-		prepWorkspace(eventId);
 		router.push(`/workspace/${eventId}`);
 	};
 	const handleExitClick = async (e) => {
@@ -38,7 +37,11 @@ export const WorkspaceControls = () => {
 	};
 
 	if (isFetching) {
-		return <SkeletonLoader />;
+		return (
+			<StyledSkeletonWrapper>
+				<SkeletonLoader height='68px' />
+			</StyledSkeletonWrapper>
+		);
 	}
 
 	return (
@@ -319,4 +322,11 @@ const StyledInfoWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
+`;
+const StyledSkeletonWrapper = styled.div`
+	margin: 16px 0 0 0;
+
+	@media only screen and (max-width: 768px) {
+		margin: 16px 0;
+	}
 `;

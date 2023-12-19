@@ -11,13 +11,15 @@ import { Dialog } from '../Dialog';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { UserContext } from '../../contexts/UserContext';
+import { SkeletonLoader } from '../layouts/SkeletonLoader';
 
 interface IEventProps {
 	currentEvent: any;
 }
 
 export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
-	const { prepWorkspace } = useContext(WorkspaceContext);
+	const { prepWorkspace, isFetching, isLoading } =
+		useContext(WorkspaceContext);
 	const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
 	const { user } = useContext(UserContext);
 
@@ -91,6 +93,36 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 			pusher.disconnect();
 		};
 	}, []);
+
+	if (isLoading || isFetching) {
+		return (
+			<>
+				<StyledFlexWrapper>
+					<SkeletonLoader
+						width='128px'
+						height='24px'
+						margin='0 16px 16px 0'
+					/>
+					<SkeletonLoader
+						shape='circle'
+						width='24px'
+						height='24px'
+						margin='0 8px 16px 0'
+					/>
+					<SkeletonLoader
+						shape='circle'
+						width='24px'
+						height='24px'
+						margin='0 8px 16px 0'
+					/>
+					<SkeletonLoader shape='circle' width='24px' height='24px' />
+				</StyledFlexWrapper>
+				<SkeletonLoader />
+				<SkeletonLoader width='60%' />
+				<SkeletonLoader width='30%' />
+			</>
+		);
+	}
 
 	return (
 		<StyledEventWrapper>
@@ -412,4 +444,7 @@ const StyledIcon = styled.img`
 const StyledTitle = styled(Title)`
 	display: flex;
 	align-items: center;
+`;
+const StyledFlexWrapper = styled.div`
+	display: flex;
 `;
