@@ -28,7 +28,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 		const grid = [];
 		for (let i = 0; i < columnCount; i++) {
 			const items = [];
-			for (let j = i; j < lists.length; j += columnCount) {
+			for (let j = i; j < lists?.length; j += columnCount) {
 				if (lists[j]) {
 					items.push(lists[j]);
 				}
@@ -47,15 +47,15 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 
 		try {
 			//Accept user invite, update user and event
-			await axios.put(`/api/events/${currentEvent._id}`, {
-				eventId: currentEvent._id,
+			await axios.put(`/api/events/${currentEvent?._id}`, {
+				eventId: currentEvent?._id,
 				user: user,
 				action: 'create-list',
 			});
 
 			//ping Pusher channel
 			await axios.post('/api/pusher', {
-				eventId: currentEvent._id,
+				eventId: currentEvent?._id,
 				user: user,
 				action: 'event-update',
 			});
@@ -98,7 +98,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 				collaborators={collaborators}
 				pendingCollaborators={pendingCollaborators}
 			/>
-			{!lists.length ? (
+			{!lists?.length ? (
 				<StyledEmptyEventWrapper>
 					<StyledH3 variant='heading3'>
 						NO EVENT BLOCKS ADDED

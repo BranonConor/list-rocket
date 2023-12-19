@@ -1,3 +1,8 @@
+import {
+	QueryObserverResult,
+	RefetchOptions,
+	RefetchQueryFilters,
+} from '@tanstack/react-query';
 import { Dispatch, SetStateAction } from 'react';
 
 // EVENTS TYPES
@@ -51,7 +56,12 @@ export interface IWorkspaceContext {
 	currentEvent: IEvent;
 	setCurrentEvent: Dispatch<SetStateAction<IEvent>>;
 	prepWorkspace: (eventId: string) => Promise<void>;
+	refreshEvent: <TPageData>(
+		options?: RefetchOptions & RefetchQueryFilters<TPageData>
+	) => Promise<QueryObserverResult<any, unknown>>;
 	clearWorkspace: () => void;
+	isLoading: boolean;
+	isFetching: boolean;
 }
 
 // LIST TYPES

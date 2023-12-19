@@ -11,10 +11,11 @@ import { UserCard } from '../cards/UserCard';
 import { Dialog } from '../Dialog';
 import { EditEventForm } from './EditEventForm';
 import { useRouter } from 'next/router';
+import { SkeletonLoader } from '../layouts/SkeletonLoader';
 
 export const WorkspaceControls = () => {
-	const { events, getAllEvents } = useContext(EventContext);
-	const { currentEvent, prepWorkspace, clearWorkspace } =
+	const { events } = useContext(EventContext);
+	const { currentEvent, prepWorkspace, clearWorkspace, isFetching } =
 		useContext(WorkspaceContext);
 	const [isEventControlsDialogOpen, setIsEventControlsDialogOpen] =
 		useState(false);
@@ -23,6 +24,7 @@ export const WorkspaceControls = () => {
 
 	const handleChipButtonClick = (e, eventId) => {
 		e.preventDefault();
+		prepWorkspace(eventId);
 		router.push(`/workspace/${eventId}`);
 	};
 	const handleExitClick = async (e) => {
@@ -35,10 +37,9 @@ export const WorkspaceControls = () => {
 		setEventIsBeingEdited(true);
 	};
 
-	//Refresh all events list when exiting, which can help capture any event info updates that may have occurred
-	useEffect(() => {
-		getAllEvents();
-	}, [clearWorkspace]);
+	if (isFetching) {
+		return <SkeletonLoader />;
+	}
 
 	return (
 		<StyledWrapper>
@@ -48,8 +49,8 @@ export const WorkspaceControls = () => {
 						{eventIsBeingEdited ? (
 							<EditEventForm
 								eventId={currentEvent?._id}
-								name={currentEvent.name}
-								description={currentEvent.description}
+								name={currentEvent?.name}
+								description={currentEvent?.description}
 								setEventIsBeingEdited={setEventIsBeingEdited}
 							/>
 						) : (
@@ -60,7 +61,7 @@ export const WorkspaceControls = () => {
 								<StyledCardAndButtonWrapper>
 									<UserCard
 										text={`Created by ${
-											currentEvent?.creator.name.split(
+											currentEvent?.creator?.name?.split(
 												' '
 											)[0]
 										}`}
@@ -132,7 +133,8 @@ export const WorkspaceControls = () => {
 										content={event.name}
 										isActive={
 											currentEvent
-												? currentEvent._id === event._id
+												? currentEvent?._id ===
+												  event._id
 												: null
 										}
 									/>

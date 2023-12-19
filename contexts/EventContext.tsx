@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 import { UserContext } from './UserContext';
 import { IEvent, IEventContext } from './types';
-import { useGetAllEventsQuery } from '../pages/hooks/queries/useGetAllEventsQuery';
+import { useGetAllEventsQuery } from '../hooks/queries/useGetAllEventsQuery';
 
 export const EventContext = createContext<IEventContext | null>(null);
 

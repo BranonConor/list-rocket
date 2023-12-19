@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { IUser, IUserContext } from './types';
 import Pusher from 'pusher-js';
-import { useGetUserQuery } from '../pages/hooks/queries/useGetUserQuery';
+import { useGetUserQuery } from '../hooks/queries/useGetUserQuery';
 
 export const UserContext = createContext<IUserContext | null>(null);
 

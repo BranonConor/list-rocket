@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { PrimaryButton } from '../buttons/PrimaryButton';
 import axios from 'axios';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
-import { Text } from '../typography/Text';
 import { toast } from 'react-toastify';
 import { SecondaryButton } from '../buttons/SecondaryButton';
 import { UserContext } from '../../contexts/UserContext';
@@ -13,7 +12,6 @@ export const AddCollaborator = (props) => {
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
 	const [emailValue, setEmailValue] = useState('');
-	const [errorMessage, setErrorMessage] = useState(null);
 
 	const handleEmail = (event) => {
 		setEmailValue(event.target.value);
@@ -142,11 +140,6 @@ export const AddCollaborator = (props) => {
 					</StyledButtonMotionWrapper>
 				</StyledButtonWrapper>
 			</StyledForm>
-			{errorMessage && (
-				<StyledErrorText variant='caption'>
-					{errorMessage}
-				</StyledErrorText>
-			)}
 		</StyledFormWrapper>
 	);
 };
@@ -200,9 +193,6 @@ const StyledInput = styled(motion.input)(
 	}
 `
 );
-const StyledErrorText = styled(Text)`
-	color: red;
-`;
 const StyledButtonWrapper = styled.div`
 	width: 50%;
 	display: flex;

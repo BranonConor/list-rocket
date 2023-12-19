@@ -18,19 +18,20 @@ interface IProps {
 	setEventToDelete: Dispatch<SetStateAction<{ id: string; name: string }>>;
 }
 
-export const EventCard: React.FC<IProps> = (props) => {
-	const {
-		name,
-		description,
-		id,
-		animationFactor,
-		setDeleteDialogIsOpen,
-		setEventToDelete,
-	} = props;
+export const EventCard: React.FC<IProps> = ({
+	name,
+	description,
+	id,
+	animationFactor,
+	setDeleteDialogIsOpen,
+	setEventToDelete,
+}) => {
+	const { prepWorkspace } = useContext(WorkspaceContext);
 	const router = useRouter();
 
 	const handleClick = async (e) => {
 		e?.preventDefault();
+		prepWorkspace(id);
 		router.push(`/workspace/${id}`);
 	};
 

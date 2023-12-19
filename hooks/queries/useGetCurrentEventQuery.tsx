@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const getCurrentEvent = async (eventId: string) => {
 	const { data } = await axios.get(`/api/events/${eventId}`);
-	return data;
+	return data?.data;
 };
 
 export const useGetCurrentEventQuery = (eventId: string) => {

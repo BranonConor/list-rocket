@@ -9,34 +9,15 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { LoadingLayout } from '../../components/layouts/LoadingLayout';
-import axios from 'axios';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { UserContext } from '../../contexts/UserContext';
 
-export const getServerSideProps = async ({ params }) => {
-	const { eventId } = params;
-	const res = await axios.get(
-		`${process.env.NEXTAUTH_URL}/api/events/${eventId}`
-	);
-
-	return {
-		props: { event: res.data.data },
-	};
-};
-
-const EventPage = ({ event }) => {
-	const { data: session, status } = useSession();
+const EventPage = () => {
+	const { currentEvent, clearWorkspace } = useContext(WorkspaceContext);
+	const { user } = useContext(UserContext);
+	const { status } = useSession();
 	const router = useRouter();
 
-	const { currentEvent, setCurrentEvent, clearWorkspace } =
-		useContext(WorkspaceContext);
-	//get the event and set it as the current event in context
-	useEffect(() => {
-		const getEvent = async () => {
-			setCurrentEvent(event);
-		};
-		getEvent();
-	}, []);
 	if (status === 'unauthenticated') {
 		toast.error('You must be logged in to access that page!', {
 			toastId: 'unauthenticated-route-toast',
@@ -44,10 +25,9 @@ const EventPage = ({ event }) => {
 		router.push('/');
 	}
 
-	const { user } = useContext(UserContext);
 	if (currentEvent && user) {
 		let userHasEventAccess = false;
-		currentEvent?.collaborators.forEach((collaborator) => {
+		currentEvent?.collaborators?.forEach((collaborator) => {
 			if (collaborator._id === user?._id) userHasEventAccess = true;
 		});
 		if (!userHasEventAccess) {
