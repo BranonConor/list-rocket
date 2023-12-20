@@ -11,7 +11,5 @@ const getAllEvents = async (userId: string) => {
 };
 
 export const useGetAllEventsQuery = (userId: string) => {
-	return useQuery(['events'], () => getAllEvents(userId), {
-		enabled: !!userId,
-	});
+	return useQuery(['events'], () => getAllEvents(userId));
 };

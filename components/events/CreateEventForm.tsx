@@ -2,11 +2,12 @@ import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { SecondaryButton } from '../buttons/SecondaryButton';
 import { PrimaryButton } from '../buttons/PrimaryButton';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 import { UserContext } from '../../contexts/UserContext';
 import { EventContext } from '../../contexts/EventContext';
+import { useCreateEventMutation } from '../../hooks/mutations/useCreateEventMutation.tsx';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface IProps {
 	setUserIsCreatingEvent: Dispatch<SetStateAction<boolean>>;
@@ -18,6 +19,7 @@ export const CreateEventForm: React.FC<IProps> = (props) => {
 	const { user } = useContext(UserContext);
 	const [nameValue, setNameValue] = useState('');
 	const [descriptionValue, setDescriptionValue] = useState('');
+	const { mutate: createEvent } = useCreateEventMutation();
 
 	const handleSubmit = async (event) => {
 		try {
@@ -25,14 +27,10 @@ export const CreateEventForm: React.FC<IProps> = (props) => {
 			if (nameValue === '' || descriptionValue === '') {
 				throw new Error();
 			}
-			await axios.post(`/api/events`, {
-				event: {
-					name: nameValue,
-					description: descriptionValue,
-					controls: {
-						listHeight: 'Large', // default to Large
-					},
-				},
+
+			createEvent({
+				name: nameValue,
+				description: descriptionValue,
 				user: user,
 			});
 
@@ -112,7 +110,7 @@ export const CreateEventForm: React.FC<IProps> = (props) => {
 	);
 };
 const StyledWrapper = styled(motion.div)(
-	({ theme: { colors, shadows } }) => `
+	({ theme: { colors } }) => `
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;

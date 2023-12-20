@@ -22,8 +22,3 @@ const Index = () => {
 };
 
 export default Index;
-
-// export async function getServerSideProps(ctx) {
-//   const cookie = ctx.req ? ctx.req.headers.cookie : undefined;
-//   return {props: {cookie: cookie}}
-// }

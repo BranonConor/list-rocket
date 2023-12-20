@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 import { Title } from '../typography/Title';
 import { Text } from '../typography/Text';
 import { IUser } from '../../contexts/types';
+import { useQueryClient } from '@tanstack/react-query';
+import { SkeletonLoader } from '../layouts/SkeletonLoader';
 
 interface IProps {
 	name: string;
@@ -16,6 +18,7 @@ interface IProps {
 	animationFactor: number;
 	setDeleteDialogIsOpen: Dispatch<SetStateAction<boolean>>;
 	setEventToDelete: Dispatch<SetStateAction<{ id: string; name: string }>>;
+	isLoading?: boolean;
 }
 
 export const EventCard: React.FC<IProps> = ({
@@ -25,9 +28,11 @@ export const EventCard: React.FC<IProps> = ({
 	animationFactor,
 	setDeleteDialogIsOpen,
 	setEventToDelete,
+	isLoading = false,
 }) => {
 	const { prepWorkspace, isFetching } = useContext(WorkspaceContext);
 	const router = useRouter();
+	const queryClient = useQueryClient();
 
 	const handleClick = async (e) => {
 		e?.preventDefault();
@@ -36,6 +41,7 @@ export const EventCard: React.FC<IProps> = ({
 	};
 
 	const handleDelete = () => {
+		queryClient.invalidateQueries({ queryKey: ['events'] });
 		setDeleteDialogIsOpen(true);
 		setEventToDelete({ id: id, name: name });
 	};
@@ -54,23 +60,35 @@ export const EventCard: React.FC<IProps> = ({
 				duration: 0.125 * (animationFactor + 0.5),
 				type: 'spring',
 			}}>
-			<div>
-				<Title variant='heading3'>{name}</Title>
-				<Text variant='body1'>{truncatedDescription}</Text>
-			</div>
+			{isLoading ? (
+				<>
+					<SkeletonLoader width='40%' />
+					<SkeletonLoader />
+				</>
+			) : (
+				<>
+					<div>
+						<Title variant='heading3'>{name}</Title>
+						<Text variant='body1'>{truncatedDescription}</Text>
+					</div>
 
-			<StyledButtonContainer>
-				<PrimaryButton
-					disabled={isFetching}
-					isLoading={isFetching}
-					onClick={handleClick}
-					content='Enter event'
-					variant='small'
-				/>
-				<StyledDeleteButton onClick={handleDelete}>
-					<StyledImage src='/icons/trash-red.svg' alt='Trash Icon' />
-				</StyledDeleteButton>
-			</StyledButtonContainer>
+					<StyledButtonContainer>
+						<PrimaryButton
+							disabled={isFetching}
+							isLoading={isFetching}
+							onClick={handleClick}
+							content='Enter event'
+							variant='small'
+						/>
+						<StyledDeleteButton onClick={handleDelete}>
+							<StyledImage
+								src='/icons/trash-red.svg'
+								alt='Trash Icon'
+							/>
+						</StyledDeleteButton>
+					</StyledButtonContainer>
+				</>
+			)}
 		</StyledCard>
 	);
 };
@@ -105,6 +123,12 @@ const StyledButtonContainer = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	width: 100%;
+`;
+const StyledSkeletonButtonContainer = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 60%;
 `;
 
 const StyledDeleteButton = styled.button(

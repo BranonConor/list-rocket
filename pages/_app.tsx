@@ -13,10 +13,11 @@ import { useRouter } from 'next/router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
+// Create a client (outside of App or you'll be in for a world of hurt and pointless debugging)
+const queryClient = new QueryClient();
+
 const App = ({ Component, pageProps: { session, ...pageProps } }) => {
 	const router = useRouter();
-	// Create a client
-	const queryClient = new QueryClient();
 
 	useEffect(() => {
 		const handleRouteChange = (url) => {

@@ -30,6 +30,8 @@ export interface IEventContext {
 	refreshEvents: <TPageData>(
 		options?: RefetchOptions & RefetchQueryFilters<TPageData>
 	) => Promise<QueryObserverResult<any, unknown>>;
+	isLoading: boolean;
+	isFetching: boolean;
 }
 
 // USER TYPES

@@ -17,6 +17,7 @@ import { Dialog } from '../Dialog';
 import { IEvent, IUser } from '../../contexts/types';
 import { Text } from '../typography/Text';
 import { EventContext } from '../../contexts/EventContext';
+import { useDeleteEventMutation } from '../../hooks/mutations/useDeleteEventMutation';
 
 interface IEventControlsProps {
 	setIsEventControlsDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -28,6 +29,7 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 		useContext(WorkspaceContext);
 	const { refreshEvents } = useContext(EventContext);
 	const { user } = useContext(UserContext);
+	const { mutate: deleteEvent } = useDeleteEventMutation();
 
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
 	const [listHeightValue, setListHeightValue] = useState(
@@ -55,19 +57,17 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 	) => {
 		e?.preventDefault();
 		try {
-			await axios.delete(`/api/events/${event.id}`, {
-				data: {
-					eventId: event.id,
-					user: user,
-				},
+			deleteEvent({
+				eventId: event.id,
+				user: user,
 			});
+
 			setEventToDelete(null);
 			setDeleteDialogIsOpen(false);
 			setIsEventControlsDialogOpen(false);
 			//wipe the current event
 			currentEvent?._id === event.id && clearWorkspace();
-			//refresh the user's list of all events
-			refreshEvents();
+
 			toast.success('Successfully deleted your event 🗑', {
 				toastId: 'delete-event-toast',
 			});

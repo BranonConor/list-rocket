@@ -8,9 +8,12 @@ export const EventContext = createContext<IEventContext | null>(null);
 
 export const EventProvider = (props) => {
 	const { user } = useContext(UserContext);
-	const { data: eventsData, refetch: refreshEvents } = useGetAllEventsQuery(
-		user?._id
-	);
+	const {
+		data: eventsData,
+		refetch: refreshEvents,
+		isLoading,
+		isFetching,
+	} = useGetAllEventsQuery(user?._id);
 	const [events, setEvents] = useState<IEvent[]>(null);
 
 	useEffect(() => {
@@ -23,7 +26,8 @@ export const EventProvider = (props) => {
 	}, [user]);
 
 	return (
-		<EventContext.Provider value={{ events, refreshEvents }}>
+		<EventContext.Provider
+			value={{ events, refreshEvents, isLoading, isFetching }}>
 			{props.children}
 		</EventContext.Provider>
 	);
