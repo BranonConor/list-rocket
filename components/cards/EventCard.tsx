@@ -26,7 +26,7 @@ export const EventCard: React.FC<IProps> = ({
 	setDeleteDialogIsOpen,
 	setEventToDelete,
 }) => {
-	const { prepWorkspace } = useContext(WorkspaceContext);
+	const { prepWorkspace, isFetching } = useContext(WorkspaceContext);
 	const router = useRouter();
 
 	const handleClick = async (e) => {
@@ -61,6 +61,8 @@ export const EventCard: React.FC<IProps> = ({
 
 			<StyledButtonContainer>
 				<PrimaryButton
+					disabled={isFetching}
+					isLoading={isFetching}
 					onClick={handleClick}
 					content='Enter event'
 					variant='small'
