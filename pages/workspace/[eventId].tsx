@@ -22,7 +22,7 @@ export const getServerSideProps = async ({ params }) => {
 };
 
 const EventPage = ({ event }) => {
-	const { currentEvent, prepWorkspace, clearWorkspace } =
+	const { currentEvent, prepWorkspace, clearWorkspace, isLoading } =
 		useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
 	const { status } = useSession();

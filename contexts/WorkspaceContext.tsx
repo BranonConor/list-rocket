@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 
 import { IEvent, IWorkspaceContext } from './types';
-import { useGetCurrentEventQuery } from '../pages/hooks/queries/useGetCurrentEventQuery';
+import { useGetCurrentEventQuery } from '../hooks/queries/useGetCurrentEventQuery';
 
 export const WorkspaceContext = createContext<IWorkspaceContext | null>(null);
 
@@ -12,6 +12,8 @@ export const WorkspaceProvider = (props) => {
 		refetch: refreshEvent,
 		isLoading,
 		isFetching,
+		isRefetching,
+		isError,
 	} = useGetCurrentEventQuery(currentEventId);
 	const [currentEvent, setCurrentEvent] = useState<IEvent | null>(null);
 
@@ -42,6 +44,8 @@ export const WorkspaceProvider = (props) => {
 				clearWorkspace,
 				isLoading,
 				isFetching,
+				isRefetching,
+				isError,
 			}}>
 			{props.children}
 		</WorkspaceContext.Provider>

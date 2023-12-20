@@ -18,8 +18,7 @@ interface IEventProps {
 }
 
 export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
-	const { prepWorkspace, isFetching, isLoading } =
-		useContext(WorkspaceContext);
+	const { refreshEvent, isLoading } = useContext(WorkspaceContext);
 	const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
 	const { user } = useContext(UserContext);
 
@@ -55,6 +54,8 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 				action: 'create-list',
 			});
 
+			refreshEvent();
+
 			//ping Pusher channel
 			await axios.post('/api/pusher', {
 				eventId: currentEvent?._id,
@@ -73,8 +74,6 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 	};
 
 	//pusher code
-	//at this point, there should be a currentEvent so we shouldn't have to
-	//worry about null / undefined channel names
 	useEffect(() => {
 		const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
 			cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
@@ -85,7 +84,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 		channel.bind(`event-channel-update-${currentEvent?._id}`, (data) => {
 			//refresh the workspace if a change occured in the event you're working on
 			if (currentEvent?._id === data.eventId) {
-				prepWorkspace(data.eventId);
+				refreshEvent();
 			}
 		});
 		//unsubscribe to the event channel on cleanup
@@ -94,7 +93,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 		};
 	}, []);
 
-	if (isLoading || isFetching) {
+	if (isLoading) {
 		return (
 			<>
 				<StyledFlexWrapper>

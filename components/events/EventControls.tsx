@@ -16,6 +16,7 @@ import Pusher from 'pusher-js';
 import { Dialog } from '../Dialog';
 import { IEvent, IUser } from '../../contexts/types';
 import { Text } from '../typography/Text';
+import { EventContext } from '../../contexts/EventContext';
 
 interface IEventControlsProps {
 	setIsEventControlsDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -25,6 +26,7 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 }) => {
 	const { currentEvent, clearWorkspace, refreshEvent } =
 		useContext(WorkspaceContext);
+	const { refreshEvents } = useContext(EventContext);
 	const { user } = useContext(UserContext);
 
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
@@ -62,7 +64,10 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 			setEventToDelete(null);
 			setDeleteDialogIsOpen(false);
 			setIsEventControlsDialogOpen(false);
+			//wipe the current event
 			currentEvent?._id === event.id && clearWorkspace();
+			//refresh the user's list of all events
+			refreshEvents();
 			toast.success('Successfully deleted your event 🗑', {
 				toastId: 'delete-event-toast',
 			});

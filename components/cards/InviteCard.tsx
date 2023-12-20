@@ -9,11 +9,13 @@ import { Text } from '../typography/Text';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../contexts/UserContext';
 import { SecondaryButton } from '../buttons/SecondaryButton';
+import { EventContext } from '../../contexts/EventContext';
 
 export const InviteCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
 	const { user } = useContext(UserContext);
 	const { currentEvent, clearWorkspace } = useContext(WorkspaceContext);
+	const { refreshEvents } = useContext(EventContext);
 
 	const handleDecline = async () => {
 		try {
@@ -81,6 +83,7 @@ export const InviteCard = (props) => {
 			});
 
 			currentEvent?._id === id && clearWorkspace();
+			refreshEvents();
 			toast.success('Invite accepted 🤘🏽', {
 				toastId: 'accept-event-invite-toast',
 			});

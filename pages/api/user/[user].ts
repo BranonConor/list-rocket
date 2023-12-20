@@ -1,14 +1,15 @@
 import connectMongo from '../../../models/utils/connectMongo';
 import { User } from '../../../models/User';
 import { Event } from '../../../models/Event';
-import { List } from '../../../models/List';
 
 const userApiRoutes = async (req, res) => {
 	//mongoose code
 	await connectMongo();
 
 	if (req.method === 'GET') {
-		const user = await User.findById(req.query.id.trim());
+		const user = await User.findById(req.query.user).populate({
+			path: 'invites',
+		});
 		res.json({ status: 200, data: user });
 	}
 

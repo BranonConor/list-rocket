@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { IUser, IUserContext } from './types';
 import Pusher from 'pusher-js';
-import { useGetUserQuery } from '../pages/hooks/queries/useGetUserQuery';
+import { useGetUserByEmailQuery } from '../hooks/queries/useGetUserByEmailQuery';
 
 export const UserContext = createContext<IUserContext | null>(null);
 
@@ -11,7 +11,9 @@ export const UserProvider = (props) => {
 	//initialize empty user state
 	const [user, setUser] = useState<IUser>(null);
 	const { data: session, status } = useSession();
-	const { data } = useGetUserQuery(session?.user.email as string);
+	const { data, refetch: refreshUser } = useGetUserByEmailQuery(
+		session?.user.email as string
+	);
 
 	//when session status changes update the user state with the query data
 	useEffect(() => {
@@ -27,9 +29,9 @@ export const UserProvider = (props) => {
 		const invitesChannel = pusher.subscribe(`user-channel-${user?._id}`);
 		//bind a function to the user-channel-update trigger, update UI
 		invitesChannel.bind(`user-channel-update-${user?._id}`, (data) => {
-			//refresh the invites list for only the user in question if logged in
+			//refresh the invites list for only the user in question if they're logged in
 			if (data.user?._id === user?._id) {
-				// getUserData();
+				refreshUser();
 			}
 		});
 		//unsubscribe to the user channel on cleanup
@@ -39,7 +41,7 @@ export const UserProvider = (props) => {
 	}, [user]);
 
 	return (
-		<UserContext.Provider value={{ user }}>
+		<UserContext.Provider value={{ user, refreshUser }}>
 			{props.children}
 		</UserContext.Provider>
 	);

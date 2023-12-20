@@ -18,7 +18,6 @@ import {
 	DndContext,
 	closestCenter,
 	KeyboardSensor,
-	PointerSensor,
 	useSensor,
 	useSensors,
 	TouchSensor,
@@ -42,7 +41,7 @@ interface Props {
 export const UserList: React.FC<Props> = (props) => {
 	const { creator, items, id, customCreator } = props;
 	const { user } = useContext(UserContext);
-	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
+	const { currentEvent, refreshEvent } = useContext(WorkspaceContext);
 	const isCurrentUser = creator?.email === user?.email;
 	const [isUserSelectorOpen, setIsUserSelectorOpen] = useState(false);
 	const [isCustomUserInputOn, setIsCustomUserInputOn] = useState(false);
@@ -148,7 +147,7 @@ export const UserList: React.FC<Props> = (props) => {
 				toastId: 'delete-list-toast',
 			});
 
-			prepWorkspace(currentEvent._id);
+			refreshEvent();
 		} catch (error) {
 			toast.error('Something went wrong, sorry! 😵‍💫', {
 				toastId: 'delete-list-error-toast',
@@ -190,11 +189,11 @@ export const UserList: React.FC<Props> = (props) => {
 		}
 	};
 
-	//when prepWorkspace is called, reset the edits
+	//when refreshEvent is called, reset the edits
 	useEffect(() => {
 		setCurrentItemBeingEdited(null);
 		setListItems(items.map((item) => item._id));
-	}, [prepWorkspace]);
+	}, [refreshEvent]);
 
 	return (
 		<DndContext

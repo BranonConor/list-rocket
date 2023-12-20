@@ -1,7 +1,6 @@
 import { EventCard } from '../cards/EventCard';
-import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { Title } from '../typography/Title';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
@@ -51,7 +50,7 @@ export const AllEvents: React.FC = () => {
 		}
 	};
 
-	const handleCreatEventClick = (event: any) => {
+	const handleCreateEventClick = (event: any) => {
 		event.preventDefault();
 		setUserIsCreatingEvent(true);
 	};
@@ -84,7 +83,7 @@ export const AllEvents: React.FC = () => {
 							/>
 						) : (
 							<CreateEventButton
-								onClick={handleCreatEventClick}
+								onClick={handleCreateEventClick}
 							/>
 						)}
 					</>
@@ -93,7 +92,7 @@ export const AllEvents: React.FC = () => {
 						setUserIsCreatingEvent={setUserIsCreatingEvent}
 					/>
 				) : (
-					<CreateEventButton onClick={handleCreatEventClick} />
+					<CreateEventButton onClick={handleCreateEventClick} />
 				)}
 			</StyledEventsContainer>
 			{deleteDialogIsOpen && (

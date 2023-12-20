@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-const getUser = async (email: string) => {
+const getUserByEmail = async (email: string) => {
 	const { data } = await axios.get(`/api/user`, {
 		params: {
 			email,
@@ -10,8 +10,8 @@ const getUser = async (email: string) => {
 	return data;
 };
 
-export const useGetUserQuery = (email: string) => {
-	return useQuery(['user', email], () => getUser(email), {
+export const useGetUserByEmailQuery = (email: string) => {
+	return useQuery(['user', email], () => getUserByEmail(email), {
 		enabled: !!email,
 	});
 };

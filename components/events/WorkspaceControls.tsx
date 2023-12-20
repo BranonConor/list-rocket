@@ -15,7 +15,7 @@ import { SkeletonLoader } from '../layouts/SkeletonLoader';
 
 export const WorkspaceControls = () => {
 	const { events } = useContext(EventContext);
-	const { currentEvent, clearWorkspace, isFetching, isLoading } =
+	const { currentEvent, clearWorkspace, isLoading } =
 		useContext(WorkspaceContext);
 	const [isEventControlsDialogOpen, setIsEventControlsDialogOpen] =
 		useState(false);
@@ -36,7 +36,7 @@ export const WorkspaceControls = () => {
 		setEventIsBeingEdited(true);
 	};
 
-	if (isFetching) {
+	if (isLoading) {
 		return (
 			<StyledSkeletonWrapper>
 				<SkeletonLoader height='68px' />

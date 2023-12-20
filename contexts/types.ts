@@ -27,6 +27,9 @@ export interface IEvent {
 }
 export interface IEventContext {
 	events: IEvent[];
+	refreshEvents: <TPageData>(
+		options?: RefetchOptions & RefetchQueryFilters<TPageData>
+	) => Promise<QueryObserverResult<any, unknown>>;
 }
 
 // USER TYPES
@@ -41,6 +44,9 @@ export interface IUser {
 
 export interface IUserContext {
 	user: IUser;
+	refreshUser: <TPageData>(
+		options?: RefetchOptions & RefetchQueryFilters<TPageData>
+	) => Promise<QueryObserverResult<any, unknown>>;
 }
 
 // WORKSPACE TYPES
@@ -62,6 +68,8 @@ export interface IWorkspaceContext {
 	clearWorkspace: () => void;
 	isLoading: boolean;
 	isFetching: boolean;
+	isRefetching: boolean;
+	isError: boolean;
 }
 
 // LIST TYPES

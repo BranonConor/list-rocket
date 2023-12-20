@@ -14,7 +14,7 @@ interface IProps {
 
 export const CreateEventForm: React.FC<IProps> = (props) => {
 	const { setUserIsCreatingEvent } = props;
-	const { getAllEvents } = useContext(EventContext);
+	const { refreshEvents } = useContext(EventContext);
 	const { user } = useContext(UserContext);
 	const [nameValue, setNameValue] = useState('');
 	const [descriptionValue, setDescriptionValue] = useState('');
@@ -39,7 +39,7 @@ export const CreateEventForm: React.FC<IProps> = (props) => {
 			setNameValue('');
 			setDescriptionValue('');
 			setUserIsCreatingEvent(false);
-			getAllEvents();
+			refreshEvents();
 
 			toast.success('Successfully created your event ✨', {
 				toastId: 'created-event-toast',

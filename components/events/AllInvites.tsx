@@ -1,10 +1,9 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { Title } from '../typography/Title';
 import { UserContext } from '../../contexts/UserContext';
 import { InviteCard } from '../cards/InviteCard';
-import { EventContext } from '../../contexts/EventContext';
 
 export const AllInvites = () => {
 	const { user } = useContext(UserContext);
