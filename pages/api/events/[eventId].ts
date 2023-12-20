@@ -202,6 +202,25 @@ const eventApiRoutes = async (req, res) => {
 				return res.status(200).send();
 			}
 		}
+		if (req.body.action === 'decline-invite') {
+			//find the user object we want to add as a collaborator
+			const event = await Event.findById(req.query.eventId);
+			if (!event) {
+				res.status(404).send({
+					success: false,
+					error: { message: 'event not found' },
+				});
+			} else {
+				//find the invite and remove it from event's pendingCollab list
+				const newPendingCollaborators =
+					await event.pendingCollaborators.filter(
+						(user: any) => user.toString() !== req.body.user._id
+					);
+				event.pendingCollaborators = newPendingCollaborators;
+				await event.save();
+				return res.status(200).send();
+			}
+		}
 	}
 };
 

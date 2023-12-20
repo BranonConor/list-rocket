@@ -47,16 +47,11 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 		setBlockModalIsOpen(false);
 
 		try {
-			//Accept user invite, update user and event
 			await axios.put(`/api/events/${currentEvent?._id}`, {
 				eventId: currentEvent?._id,
 				user: user,
 				action: 'create-list',
 			});
-
-			refreshEvent();
-
-			//ping Pusher channel
 			await axios.post('/api/pusher', {
 				eventId: currentEvent?._id,
 				user: user,

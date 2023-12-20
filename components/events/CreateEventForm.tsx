@@ -7,7 +7,6 @@ import { motion } from 'framer-motion';
 import { UserContext } from '../../contexts/UserContext';
 import { EventContext } from '../../contexts/EventContext';
 import { useCreateEventMutation } from '../../hooks/mutations/useCreateEventMutation.tsx';
-import { useQueryClient } from '@tanstack/react-query';
 
 interface IProps {
 	setUserIsCreatingEvent: Dispatch<SetStateAction<boolean>>;

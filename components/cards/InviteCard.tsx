@@ -2,44 +2,41 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { PrimaryButton } from '../buttons/PrimaryButton';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Title } from '../typography/Title';
 import { Text } from '../typography/Text';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../contexts/UserContext';
 import { SecondaryButton } from '../buttons/SecondaryButton';
-import { EventContext } from '../../contexts/EventContext';
+import { useDeclineInviteMutation } from '../../hooks/mutations/useDeclineInviteMutation';
+import { useAcceptInviteMutation } from '../../hooks/mutations/useAcceptInviteMutation';
 
 export const InviteCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
 	const { user } = useContext(UserContext);
 	const { currentEvent, clearWorkspace } = useContext(WorkspaceContext);
-	const { refreshEvents } = useContext(EventContext);
+	const { mutate: declineInvite, isLoading: isLoadingDeclineInvite } =
+		useDeclineInviteMutation();
+	const { mutate: acceptInvite, isLoading: isLoadingAcceptInvite } =
+		useAcceptInviteMutation();
+	//prevent accidental multiple requests
+	const [isAcceptButtonDisabled, setIsAcceptButtonDisabled] = useState(false);
 
 	const handleDecline = async () => {
 		try {
 			//Decline user invite, update user and event
-			await axios.put(`/api/events`, {
-				eventId: id,
-				user: user,
-				action: 'decline',
-			});
-			await axios.put(`/api/user`, {
-				eventId: id,
-				user: user,
-				action: 'decline',
-			});
+			declineInvite({ eventId: id, user: user });
 
-			//ping Pusher channel
+			//ping Pusher channel to refresh the event and the collaborator client if they're logged in
+			//the current event may be different from the event to update for the invite
 			const event = await axios.get(`/api/events/${id}`);
 			await axios.post('/api/pusher', {
-				event: event.data.data,
 				user: user,
 				action: 'user-invite',
 			});
 			await axios.post('/api/pusher', {
-				event: event.data.data,
+				eventId: event.data.data._id,
 				user: user,
 				action: 'event-update',
 			});
@@ -56,17 +53,14 @@ export const InviteCard = (props) => {
 		}
 	};
 
-	const handleAccept = async (e) => {
+	const handleAccept = async () => {
+		setIsAcceptButtonDisabled(true);
+
 		try {
 			//Accept user invite, update user and event
-			await axios.put(`/api/events/${id}`, {
-				user: user,
-				action: 'accept-invite',
-			});
-			await axios.put(`/api/user/${user._id}`, {
+			acceptInvite({
 				eventId: id,
 				user: user,
-				action: 'accept-invite',
 			});
 
 			//ping Pusher channel
@@ -83,15 +77,16 @@ export const InviteCard = (props) => {
 			});
 
 			currentEvent?._id === id && clearWorkspace();
-			refreshEvents();
 			toast.success('Invite accepted 🤘🏽', {
 				toastId: 'accept-event-invite-toast',
 			});
+			setIsAcceptButtonDisabled(false);
 		} catch (error) {
 			console.log(error);
 			toast.error('Something went wrong, sorry! 😵‍💫', {
 				toastId: 'accept-event-invite-error-toast',
 			});
+			setIsAcceptButtonDisabled(false);
 		}
 	};
 
@@ -120,6 +115,8 @@ export const InviteCard = (props) => {
 					onClick={handleAccept}
 					content='Join event'
 					variant='small'
+					disabled={isAcceptButtonDisabled || isLoadingAcceptInvite}
+					isLoading={isAcceptButtonDisabled || isLoadingAcceptInvite}
 				/>
 				<SecondaryButton
 					onClick={handleDecline}

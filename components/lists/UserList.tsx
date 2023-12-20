@@ -578,9 +578,7 @@ const StyledForm = styled.form`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin: 0 0 8px 0;
 `;
-
 const StyledInput = styled(motion.input)(
 	({ theme: { shadows, typography, colors } }) => `
 	border: none;
@@ -646,7 +644,6 @@ const StyledCloseButton = styled(motion.button)(
 	border-radius: 100%;
 	padding: 0;
 	box-shadow: ${shadows.standard};
-	transform: translateY(-4px);
 
 	img {
 		padding: 0;

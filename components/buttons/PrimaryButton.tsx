@@ -47,11 +47,6 @@ export const PrimaryButton: React.FC<Props> = ({
 			{...otherProps}>
 			{icon && <Image src={icon} alt='' width='30' height='30' />}
 			{content}
-			{isLoading && (
-				<StyledText variant='overline' aria-label='loading'>
-					...
-				</StyledText>
-			)}
 		</StyledButton>
 	);
 };
@@ -80,7 +75,7 @@ const StyledButton = styled.button<StyleProps>(
 	align-items: center;
 	border-radius: 5px;
 	border: none;
-	color: ${isLoading ? 'transparent' : colors.white};
+	color: ${colors.white};
 	text-decoration: none;
 	outline: none;
 	transition: 0.10s ease all;
