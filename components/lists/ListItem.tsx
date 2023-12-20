@@ -12,6 +12,7 @@ import { ProfilePhoto } from '../ProfilePhoto';
 import { Dialog } from '../Dialog';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useDeleteListItemMutation } from '../../hooks/mutations/lists/useDeleteListItemMutation';
 
 interface IProps {
 	name: string;
@@ -22,6 +23,8 @@ interface IProps {
 	listId: string;
 	isCurrentUser: boolean;
 	setCurrentItemBeingEdited: Dispatch<SetStateAction<string>>;
+	listItems: string[];
+	setListItems: Dispatch<SetStateAction<string[]>>;
 }
 
 export const ListItem: React.FC<IProps> = (props) => {
@@ -34,9 +37,14 @@ export const ListItem: React.FC<IProps> = (props) => {
 		listId,
 		isCurrentUser,
 		setCurrentItemBeingEdited,
+		listItems,
+		setListItems,
 	} = props;
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
+	const { mutate: deleteListItem } = useDeleteListItemMutation(
+		currentEvent._id
+	);
 
 	//dialog state
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
@@ -63,13 +71,9 @@ export const ListItem: React.FC<IProps> = (props) => {
 	const handleDelete = async (e) => {
 		e?.preventDefault();
 		try {
-			await axios.delete(`/api/lists/${id}`, {
-				data: {
-					listId: listId,
-					listItemId: id,
-					action: 'delete-list-item',
-				},
-			});
+			deleteListItem({ listId: listId, listItemId: id });
+
+			setListItems(listItems.filter((item) => item !== id));
 
 			//ping Pusher channel
 			await axios.post('/api/pusher', {

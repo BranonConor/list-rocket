@@ -197,7 +197,7 @@ export const UserList: React.FC<Props> = ({
 	useEffect(() => {
 		setCurrentItemBeingEdited(null);
 		setListItems(items.map((item) => item._id));
-	}, [refreshEvent]);
+	}, [refreshEvent, items]);
 
 	return (
 		<DndContext
@@ -401,6 +401,8 @@ export const UserList: React.FC<Props> = ({
 													setCurrentItemBeingEdited={
 														setCurrentItemBeingEdited
 													}
+													setListItems={setListItems}
+													listItems={listItems}
 												/>
 											</StyledListItem>
 										);
