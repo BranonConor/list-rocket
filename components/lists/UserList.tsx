@@ -38,8 +38,12 @@ interface Props {
 	customCreator?: string;
 }
 
-export const UserList: React.FC<Props> = (props) => {
-	const { creator, items, id, customCreator } = props;
+export const UserList: React.FC<Props> = ({
+	creator,
+	items,
+	id,
+	customCreator,
+}) => {
 	const { user } = useContext(UserContext);
 	const { currentEvent, refreshEvent } = useContext(WorkspaceContext);
 	const isCurrentUser = creator?.email === user?.email;

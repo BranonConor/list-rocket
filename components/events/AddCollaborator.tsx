@@ -7,7 +7,7 @@ import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { toast } from 'react-toastify';
 import { SecondaryButton } from '../buttons/SecondaryButton';
 import { UserContext } from '../../contexts/UserContext';
-import { useInviteCollaboratorMutation } from '../../hooks/mutations/useInviteCollaboratorMutation';
+import { useInviteCollaboratorMutation } from '../../hooks/mutations/invitations/useInviteCollaboratorMutation';
 
 export const AddCollaborator = (props) => {
 	const { currentEvent } = useContext(WorkspaceContext);

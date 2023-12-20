@@ -16,8 +16,9 @@ import Pusher from 'pusher-js';
 import { Dialog } from '../Dialog';
 import { IEvent, IUser } from '../../contexts/types';
 import { Text } from '../typography/Text';
-import { EventContext } from '../../contexts/EventContext';
 import { useDeleteEventMutation } from '../../hooks/mutations/useDeleteEventMutation';
+import { useUpdateListHeightMutation } from '../../hooks/mutations/useUpdateListHeightMutation';
+import { useUpdateAnonymousModeMutation } from '../../hooks/mutations/useUpdateAnonymousModeMutation';
 
 interface IEventControlsProps {
 	setIsEventControlsDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -27,9 +28,10 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 }) => {
 	const { currentEvent, clearWorkspace, refreshEvent } =
 		useContext(WorkspaceContext);
-	const { refreshEvents } = useContext(EventContext);
 	const { user } = useContext(UserContext);
 	const { mutate: deleteEvent } = useDeleteEventMutation();
+	const { mutate: updateListHeight } = useUpdateListHeightMutation();
+	const { mutate: updateAnonymousMode } = useUpdateAnonymousModeMutation();
 
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
 	const [listHeightValue, setListHeightValue] = useState(
@@ -83,13 +85,10 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 		setListHeightValue(e.target.value);
 
 		try {
-			await axios.put(`/api/events/${currentEvent._id}`, {
+			updateListHeight({
 				eventId: currentEvent._id,
-				action: 'list-height-change',
 				listHeight: e.target.value,
 			});
-
-			refreshEvent();
 
 			// Reversing this logic creates the correct UI, since this toast call
 			// doesn't yet know of the new currentEvent state
@@ -114,10 +113,7 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 
 	const handleToggleChange = async (currentEvent: IEvent, user: IUser) => {
 		try {
-			await axios.put(`/api/events/${currentEvent._id}`, {
-				eventId: currentEvent._id,
-				action: 'anonymous-mode-toggle',
-			});
+			updateAnonymousMode({ eventId: currentEvent?._id });
 
 			//Reversing this logic creates the correct UI, since this toast call
 			//doesn't yet know of the new currentEvent state

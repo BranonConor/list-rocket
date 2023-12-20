@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { motion } from 'framer-motion';
 import { UserContext } from '../../contexts/UserContext';
+import { useEditEventMutation } from '../../hooks/mutations/useEditEventMutation';
 
 interface IProps {
 	eventId: string;
@@ -19,6 +20,7 @@ export const EditEventForm: React.FC<IProps> = (props) => {
 	const { eventId, name, description, setEventIsBeingEdited } = props;
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
+	const { mutate: editEvent } = useEditEventMutation();
 
 	const [nameValue, setNameValue] = useState(name);
 	const [descriptionValue, setDescriptionValue] = useState(description);
@@ -38,13 +40,11 @@ export const EditEventForm: React.FC<IProps> = (props) => {
 				if (name === '' || description === '') {
 					throw new Error();
 				}
-				await axios.put(`/api/events/${eventId}`, {
-					data: {
-						name: nameValue,
-						description: descriptionValue,
-					},
+
+				editEvent({
+					name: nameValue,
+					description: descriptionValue,
 					eventId: eventId,
-					action: 'event-info-update',
 				});
 
 				setEventIsBeingEdited(false);

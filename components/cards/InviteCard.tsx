@@ -9,8 +9,8 @@ import { Text } from '../typography/Text';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../contexts/UserContext';
 import { SecondaryButton } from '../buttons/SecondaryButton';
-import { useDeclineInviteMutation } from '../../hooks/mutations/useDeclineInviteMutation';
-import { useAcceptInviteMutation } from '../../hooks/mutations/useAcceptInviteMutation';
+import { useDeclineInviteMutation } from '../../hooks/mutations/invitations/useDeclineInviteMutation';
+import { useAcceptInviteMutation } from '../../hooks/mutations/invitations/useAcceptInviteMutation';
 
 export const InviteCard = (props) => {
 	const { name, description, id, creator, animationFactor } = props;
