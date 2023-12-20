@@ -78,15 +78,13 @@ export const EditEventForm: React.FC<IProps> = (props) => {
 			initial={{
 				scale: 0,
 				opacity: 0,
-				rotate: '15deg',
 			}}
 			animate={{
 				scale: 1,
 				opacity: 1,
-				rotate: '0deg',
 			}}
 			transition={{
-				duration: 0.125,
+				duration: 0.15,
 				type: 'spring',
 			}}>
 			<StyledForm onSubmit={handleSubmit}>
@@ -103,7 +101,7 @@ export const EditEventForm: React.FC<IProps> = (props) => {
 					name='title'
 					required
 					onChange={(e) => setDescriptionValue(e.target.value)}
-					rows={3}
+					rows={1}
 				/>
 				<StyledButtonWrapper>
 					<PrimaryButton
@@ -145,7 +143,7 @@ const StyledTextInput = styled.input(
 	margin: 4px 0;
 	border: none;
     font-family: Lalezar;
-    font-size: ${typography.size.heading2};
+    font-size: ${typography.size.heading5};
     color: ${colors.font.body};
 `
 );

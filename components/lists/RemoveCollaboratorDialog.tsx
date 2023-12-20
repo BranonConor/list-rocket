@@ -4,6 +4,7 @@ import { useGetUserQuery } from '../../hooks/queries/useGetUserQuery';
 import axios from 'axios';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { toast } from 'react-toastify';
+import { useRemoveCollaboratorMutation } from '../../hooks/mutations/invitations/useRemoveCollaboratorMutation';
 
 interface IRemoveCollaboratorDialogProps {
 	setDialogIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -22,6 +23,7 @@ export const RemoveCollaboratorDialog: React.FC<
 }) => {
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { data: collaborator } = useGetUserQuery(userToDelete?.id);
+	const { mutate: removeCollaborator } = useRemoveCollaboratorMutation();
 
 	//Removing a collaborator from an event
 	const handleDelete = async (e: any, eventId: string, userId: string) => {
@@ -29,15 +31,9 @@ export const RemoveCollaboratorDialog: React.FC<
 		try {
 			//don't allow removal of the creator or the last collaborator
 
-			await axios.put(`/api/events/${eventId}`, {
+			removeCollaborator({
 				eventId: eventId,
 				userId: userId,
-				action: 'remove-collaborator',
-			});
-			await axios.put(`/api/user/${userId}`, {
-				eventId: currentEvent._id,
-				userId: userId,
-				action: 'remove-collaborator',
 			});
 
 			//ping Pusher channel
