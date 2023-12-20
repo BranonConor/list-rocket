@@ -123,6 +123,43 @@ const eventApiRoutes = async (req, res) => {
 		}
 
 		// ---- COLLABORATOR UPDATES ----
+		if (req.body.action === 'invite') {
+			//find the user object we want to add as a collaborator
+			const user = await User.findOne({ email: req.body.email });
+
+			if (!user) {
+				res.status(404).send({
+					success: false,
+					error: { message: 'user not found' },
+				});
+			} else {
+				//find the event this request comes from
+				const event = await Event.findById(req.query.eventId);
+				//check for the user before doing anything else
+				const userIsCollaborator = await event.collaborators.includes(
+					user._id
+				);
+				const userIsPendingCollaborator = event.pendingCollaborators
+					? await event.pendingCollaborators?.includes(user._id)
+					: false;
+				if (userIsCollaborator || userIsPendingCollaborator) {
+					res.status(404).send({
+						success: false,
+						error: { message: 'user already exists' },
+					});
+					return false;
+				} else {
+					//proceed with updating the event with the new pending collaborator
+					if (event.pendingCollaborators) {
+						await event.pendingCollaborators.push(user._id);
+					} else {
+						event.pendingCollaborators = [user._id];
+					}
+					await event.save();
+					return res.status(200).send();
+				}
+			}
+		}
 		if (req.body.action === 'remove-collaborator') {
 			//find the user object we want to remove as a collaborator
 			const user = await User.findById(req.body.userId);

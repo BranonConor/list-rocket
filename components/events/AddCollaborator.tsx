@@ -7,11 +7,13 @@ import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { toast } from 'react-toastify';
 import { SecondaryButton } from '../buttons/SecondaryButton';
 import { UserContext } from '../../contexts/UserContext';
+import { useInviteCollaboratorMutation } from '../../hooks/mutations/useInviteCollaboratorMutation';
 
 export const AddCollaborator = (props) => {
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
 	const [emailValue, setEmailValue] = useState('');
+	const { mutate: inviteCollaborator } = useInviteCollaboratorMutation();
 
 	const handleEmail = (event) => {
 		setEmailValue(event.target.value);
@@ -22,15 +24,10 @@ export const AddCollaborator = (props) => {
 			if (emailValue === '') {
 				throw new Error();
 			}
-			await axios.put(`/api/events`, {
+
+			inviteCollaborator({
 				eventId: currentEvent._id,
 				email: emailValue.toLowerCase(),
-				action: 'invite',
-			});
-			await axios.put(`/api/user`, {
-				eventId: currentEvent._id,
-				email: emailValue.toLowerCase(),
-				action: 'invite',
 			});
 
 			setEmailValue('');
