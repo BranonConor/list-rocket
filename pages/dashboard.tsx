@@ -35,8 +35,15 @@ const Dashboard = () => {
 				<title>Dashboard | List Rocket</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-
-			<Title variant='heading1'>Dashboard</Title>
+			<StyledTitleWrapper
+				initial={{ opacity: 0, x: '32px' }}
+				animate={{ opacity: 1, x: '0' }}
+				transition={{
+					duration: 0.25,
+					type: 'spring',
+				}}>
+				<Title variant='heading1'>Dashboard</Title>
+			</StyledTitleWrapper>
 			<div>
 				<StyledGreeting
 					initial={{ opacity: 0 }}
@@ -82,3 +89,4 @@ const StyledGreeting = styled(motion.div)(
 	}
 `
 );
+const StyledTitleWrapper = styled(motion.div)``;

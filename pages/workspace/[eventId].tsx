@@ -11,6 +11,9 @@ import { toast } from 'react-toastify';
 import { LoadingLayout } from '../../components/layouts/LoadingLayout';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { UserContext } from '../../contexts/UserContext';
+import { EventDetails } from '../../components/events/EventDetails';
+import { SkeletonLoader } from '../../components/layouts/SkeletonLoader';
+import { motion } from 'framer-motion';
 
 //get the id from the route params, pass it into the component
 export const getServerSideProps = async ({ params }) => {
@@ -66,9 +69,23 @@ const EventPage = ({ event }) => {
 				<title>Home | List Rocket</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<StyledTitle variant='heading1'>{currentEvent?.name}</StyledTitle>
+			{isLoading ? (
+				<SkeletonLoader width='300px' margin='16px 0 24px 0' />
+			) : (
+				<StyledTitleWrapper
+					initial={{ opacity: 0, x: '32px' }}
+					animate={{ opacity: 1, x: '0' }}
+					transition={{
+						duration: 0.25,
+						type: 'spring',
+					}}>
+					<StyledTitle variant='heading1'>
+						{currentEvent?.name}
+					</StyledTitle>
+				</StyledTitleWrapper>
+			)}
 
-			<WorkspaceControls />
+			<EventDetails />
 			{/* ---- WORKSPACE ---- */}
 			<StyledWorkspaceWrapper>
 				{currentEvent && <Event currentEvent={currentEvent} />}
@@ -101,10 +118,11 @@ const StyledTitle = styled(Title)(
 		background: ${colors.tertiaryGradient};
 		font-size: ${typography.size.heading2};
 		line-height: ${typography.lineHeight.heading2};
-		margin: 8px 0;
+		margin: 0 0 16px 0;
 		border-radius: 10px;
 		color: white;
 		box-shadow: ${shadows.standard};
 	}
 `
 );
+const StyledTitleWrapper = styled(motion.div)``;

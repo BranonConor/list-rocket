@@ -20,9 +20,9 @@ export const WebNav = () => {
 				<StyledList>
 					{loggedIn && (
 						<StyledItem>
-							<a href='/dashboard'>
+							<StyledLink href='/dashboard'>
 								<StyledAnchor>Dashboard</StyledAnchor>
-							</a>
+							</StyledLink>
 						</StyledItem>
 					)}
 					<StyledItem>
