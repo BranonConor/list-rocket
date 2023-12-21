@@ -47,12 +47,12 @@ const listApiRoutes = async (req, res) => {
 		if (req.body.action === 'delete-list') {
 			//Delete all of its items
 			const deletedListItems = await ListItem.deleteMany({
-				list: req.body.listId,
+				list: req.query.listId,
 			});
 
 			//Delete the list itself
 			const deletedList = await List.deleteOne({
-				_id: req.body.listId,
+				_id: req.query.listId,
 			});
 
 			res.send({

@@ -98,7 +98,7 @@ const eventApiRoutes = async (req, res) => {
 			res.status(200).send();
 		}
 		if (req.body.action === 'delete-list') {
-			const event = await Event.findById(req.body.eventId);
+			const event = await Event.findById(req.query.eventId);
 			//cleanup the event lists
 			const newEventLists = event.lists.filter(
 				(list) => list._id.toString() !== req.body.listId.toString()

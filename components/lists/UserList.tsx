@@ -30,6 +30,9 @@ import {
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { restrictToFirstScrollableAncestor } from '@dnd-kit/modifiers';
+import { useAddCustomNameMutation } from '../../hooks/mutations/lists/useAddCustomNameMutation';
+import { useDeleteListMutation } from '../../hooks/mutations/lists/useDeleteListMutation';
+import { useReorderListMutation } from '../../hooks/mutations/lists/useReorderListMutation';
 
 interface Props {
 	creator: IUser;
@@ -46,6 +49,9 @@ export const UserList: React.FC<Props> = ({
 }) => {
 	const { user } = useContext(UserContext);
 	const { currentEvent, refreshEvent } = useContext(WorkspaceContext);
+	const { mutate: addCustomName } = useAddCustomNameMutation();
+	const { mutate: deleteList } = useDeleteListMutation();
+	const { mutate: reorderList } = useReorderListMutation();
 	const isCurrentUser = creator?.email === user?.email;
 	const [isUserSelectorOpen, setIsUserSelectorOpen] = useState(false);
 	const [isCustomUserInputOn, setIsCustomUserInputOn] = useState(false);
@@ -89,10 +95,9 @@ export const UserList: React.FC<Props> = ({
 			if (customNameInputValue === '') {
 				throw new Error();
 			}
-			await axios.put(`/api/lists/${id}`, {
+			addCustomName({
 				name: customNameInputValue,
 				listId: id,
-				action: 'add-custom-list-creator',
 			});
 
 			//ping Pusher channel
@@ -124,19 +129,7 @@ export const UserList: React.FC<Props> = ({
 
 	const handleDeleteList = async () => {
 		try {
-			//ping list API to delete the list and its items
-			await axios.delete(`/api/lists/${id}`, {
-				data: {
-					listId: id,
-					action: 'delete-list',
-				},
-			});
-			//ping the events API to update it by removing this list from its lists
-			await axios.put(`/api/events/${currentEvent._id}`, {
-				listId: id,
-				eventId: currentEvent._id,
-				action: 'delete-list',
-			});
+			deleteList({ listId: id, eventId: currentEvent._id });
 
 			setDeleteListDialogIsOpen(false);
 
@@ -177,13 +170,16 @@ export const UserList: React.FC<Props> = ({
 
 			//update order in database for this list
 			try {
-				await axios.put(`/api/lists/${id}`, {
-					listId: id,
-					newItems: newFullItemsList,
-					action: 'reorder-list',
-				});
+				reorderList({ listId: id, newItems: newFullItemsList });
 
 				setListItems(newIdList);
+
+				//ping Pusher channel
+				await axios.post('/api/pusher', {
+					eventId: currentEvent._id,
+					user: user,
+					action: 'event-update',
+				});
 			} catch (error) {
 				console.log(error);
 				toast.error('Something went wrong, sorry! 😵‍💫', {
