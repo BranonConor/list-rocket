@@ -11,13 +11,14 @@ import { Dialog } from '../Dialog';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { UserContext } from '../../contexts/UserContext';
+import { SkeletonLoader } from '../layouts/SkeletonLoader';
 
 interface IEventProps {
 	currentEvent: any;
 }
 
 export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
-	const { prepWorkspace } = useContext(WorkspaceContext);
+	const { refreshEvent, isLoading } = useContext(WorkspaceContext);
 	const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
 	const { user } = useContext(UserContext);
 
@@ -28,7 +29,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 		const grid = [];
 		for (let i = 0; i < columnCount; i++) {
 			const items = [];
-			for (let j = i; j < lists.length; j += columnCount) {
+			for (let j = i; j < lists?.length; j += columnCount) {
 				if (lists[j]) {
 					items.push(lists[j]);
 				}
@@ -46,16 +47,13 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 		setBlockModalIsOpen(false);
 
 		try {
-			//Accept user invite, update user and event
-			await axios.put(`/api/events/${currentEvent._id}`, {
-				eventId: currentEvent._id,
+			await axios.put(`/api/events/${currentEvent?._id}`, {
+				eventId: currentEvent?._id,
 				user: user,
 				action: 'create-list',
 			});
-
-			//ping Pusher channel
 			await axios.post('/api/pusher', {
-				eventId: currentEvent._id,
+				eventId: currentEvent?._id,
 				user: user,
 				action: 'event-update',
 			});
@@ -71,8 +69,6 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 	};
 
 	//pusher code
-	//at this point, there should be a currentEvent so we shouldn't have to
-	//worry about null / undefined channel names
 	useEffect(() => {
 		const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
 			cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
@@ -83,7 +79,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 		channel.bind(`event-channel-update-${currentEvent?._id}`, (data) => {
 			//refresh the workspace if a change occured in the event you're working on
 			if (currentEvent?._id === data.eventId) {
-				prepWorkspace(data.eventId);
+				refreshEvent();
 			}
 		});
 		//unsubscribe to the event channel on cleanup
@@ -92,13 +88,43 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 		};
 	}, []);
 
+	if (isLoading) {
+		return (
+			<>
+				<StyledFlexWrapper>
+					<SkeletonLoader
+						width='128px'
+						height='24px'
+						margin='0 16px 16px 0'
+					/>
+					<SkeletonLoader
+						shape='circle'
+						width='24px'
+						height='24px'
+						margin='0 8px 16px 0'
+					/>
+					<SkeletonLoader
+						shape='circle'
+						width='24px'
+						height='24px'
+						margin='0 8px 16px 0'
+					/>
+					<SkeletonLoader shape='circle' width='24px' height='24px' />
+				</StyledFlexWrapper>
+				<SkeletonLoader />
+				<SkeletonLoader width='60%' />
+				<SkeletonLoader width='30%' />
+			</>
+		);
+	}
+
 	return (
 		<StyledEventWrapper>
 			<CollaboratorsGrid
 				collaborators={collaborators}
 				pendingCollaborators={pendingCollaborators}
 			/>
-			{!lists.length ? (
+			{!lists?.length ? (
 				<StyledEmptyEventWrapper>
 					<StyledH3 variant='heading3'>
 						NO EVENT BLOCKS ADDED
@@ -412,4 +438,7 @@ const StyledIcon = styled.img`
 const StyledTitle = styled(Title)`
 	display: flex;
 	align-items: center;
+`;
+const StyledFlexWrapper = styled.div`
+	display: flex;
 `;

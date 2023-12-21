@@ -9,11 +9,12 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { LoadingLayout } from '../../components/layouts/LoadingLayout';
+import { motion } from 'framer-motion';
 
 const Workspace = () => {
 	const { currentEvent } = useContext(WorkspaceContext);
 	const router = useRouter();
-	const { data: session, status } = useSession();
+	const { status } = useSession();
 
 	if (currentEvent) {
 		router.push(`/workspace/${currentEvent._id}`);
@@ -34,7 +35,15 @@ const Workspace = () => {
 				<title>Home | List Rocket</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<Title variant='heading1'>Event Workspace</Title>
+			<StyledTitleWrapper
+				initial={{ opacity: 0, x: '32px' }}
+				animate={{ opacity: 1, x: '0' }}
+				transition={{
+					duration: 0.25,
+					type: 'spring',
+				}}>
+				<Title variant='heading1'>Event Workspace</Title>
+			</StyledTitleWrapper>
 			<WorkspaceControls />
 			{/* ---- WORKSPACE ---- */}
 			<StyledWorkspaceWrapper>
@@ -64,3 +73,4 @@ const StyledH3 = styled(Title)(
 	opacity: 0.15;
 `
 );
+const StyledTitleWrapper = styled(motion.div)``;

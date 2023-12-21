@@ -43,7 +43,15 @@ const Profile = () => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 			<StyledMain>
-				<Title variant='heading1'>Your Profile</Title>
+				<StyledTitleWrapper
+					initial={{ opacity: 0, x: '32px' }}
+					animate={{ opacity: 1, x: '0' }}
+					transition={{
+						duration: 0.25,
+						type: 'spring',
+					}}>
+					<Title variant='heading1'>Your Profile</Title>
+				</StyledTitleWrapper>
 				<ProfilePhoto
 					photo={user?.image}
 					dimensions='100px'
@@ -183,3 +191,4 @@ const StyledTitle = styled(Title)`
 		height: 20px;
 	}
 `;
+const StyledTitleWrapper = styled(motion.div)``;

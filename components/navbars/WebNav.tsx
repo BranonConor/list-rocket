@@ -18,13 +18,13 @@ export const WebNav = () => {
 			</StyledBrand>
 			<StyledMenu>
 				<StyledList>
-					<StyledItem>
-						{loggedIn && (
+					{loggedIn && (
+						<StyledItem>
 							<StyledLink href='/dashboard'>
 								<StyledAnchor>Dashboard</StyledAnchor>
 							</StyledLink>
-						)}
-					</StyledItem>
+						</StyledItem>
+					)}
 					<StyledItem>
 						{loggedIn ? (
 							<PrimaryButton

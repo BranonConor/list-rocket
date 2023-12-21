@@ -85,7 +85,7 @@ const eventApiRoutes = async (req, res) => {
 			res.json({ status: 200, data: event });
 		}
 		if (req.body.action === 'list-height-change') {
-			const event = await Event.findById(req.body.eventId);
+			const event = await Event.findById(req.query.eventId);
 			event.controls.listHeight = req.body.listHeight;
 			event.save();
 			res.json({ status: 200, data: event });
@@ -98,7 +98,7 @@ const eventApiRoutes = async (req, res) => {
 			res.status(200).send();
 		}
 		if (req.body.action === 'delete-list') {
-			const event = await Event.findById(req.body.eventId);
+			const event = await Event.findById(req.query.eventId);
 			//cleanup the event lists
 			const newEventLists = event.lists.filter(
 				(list) => list._id.toString() !== req.body.listId.toString()
@@ -123,6 +123,43 @@ const eventApiRoutes = async (req, res) => {
 		}
 
 		// ---- COLLABORATOR UPDATES ----
+		if (req.body.action === 'invite') {
+			//find the user object we want to add as a collaborator
+			const user = await User.findOne({ email: req.body.email });
+
+			if (!user) {
+				res.status(404).send({
+					success: false,
+					error: { message: 'user not found' },
+				});
+			} else {
+				//find the event this request comes from
+				const event = await Event.findById(req.query.eventId);
+				//check for the user before doing anything else
+				const userIsCollaborator = await event.collaborators.includes(
+					user._id
+				);
+				const userIsPendingCollaborator = event.pendingCollaborators
+					? await event.pendingCollaborators?.includes(user._id)
+					: false;
+				if (userIsCollaborator || userIsPendingCollaborator) {
+					res.status(404).send({
+						success: false,
+						error: { message: 'user already exists' },
+					});
+					return false;
+				} else {
+					//proceed with updating the event with the new pending collaborator
+					if (event.pendingCollaborators) {
+						await event.pendingCollaborators.push(user._id);
+					} else {
+						event.pendingCollaborators = [user._id];
+					}
+					await event.save();
+					return res.status(200).send();
+				}
+			}
+		}
 		if (req.body.action === 'remove-collaborator') {
 			//find the user object we want to remove as a collaborator
 			const user = await User.findById(req.body.userId);
@@ -199,6 +236,25 @@ const eventApiRoutes = async (req, res) => {
 				//push the user into the official collaborators list
 				event.collaborators.push(req.body.user);
 				event.save();
+				return res.status(200).send();
+			}
+		}
+		if (req.body.action === 'decline-invite') {
+			//find the user object we want to add as a collaborator
+			const event = await Event.findById(req.query.eventId);
+			if (!event) {
+				res.status(404).send({
+					success: false,
+					error: { message: 'event not found' },
+				});
+			} else {
+				//find the invite and remove it from event's pendingCollab list
+				const newPendingCollaborators =
+					await event.pendingCollaborators.filter(
+						(user: any) => user.toString() !== req.body.user._id
+					);
+				event.pendingCollaborators = newPendingCollaborators;
+				await event.save();
 				return res.status(200).send();
 			}
 		}

@@ -11,6 +11,7 @@ export const colors = {
 	black: '#000000',
 	white: '#FFFFFF',
 	rocketSteel: '#F2F2F2',
+	darkRocketSteel: '#929292',
 	siren: '#E73939',
 	lightSiren: '#ED6060',
 	smoke: '#39303B',

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Image from 'next/image';
+import { Text } from '../typography/Text';
 
 export enum BUTTON_WIDTH_VARIANTS {
 	'small' = '100px',
@@ -21,6 +22,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	type?: 'submit' | 'reset' | 'button';
 	margin?: string;
 	className?: string;
+	isLoading?: boolean;
 }
 
 export const PrimaryButton: React.FC<Props> = ({
@@ -30,15 +32,19 @@ export const PrimaryButton: React.FC<Props> = ({
 	type = 'button',
 	margin,
 	className,
+	disabled,
+	isLoading = false,
 	...otherProps
 }: Props) => {
 	return (
 		<StyledButton
-			{...otherProps}
+			disabled={disabled}
 			variant={variant}
 			type={type}
 			margin={margin}
-			className={className}>
+			isLoading={isLoading}
+			className={className}
+			{...otherProps}>
 			{icon && <Image src={icon} alt='' width='30' height='30' />}
 			{content}
 		</StyledButton>
@@ -47,12 +53,21 @@ export const PrimaryButton: React.FC<Props> = ({
 interface StyleProps {
 	variant: 'small' | 'large' | 'fullSmall' | 'fullLarge';
 	margin?: string;
+	disabled?: boolean;
+	isLoading?: boolean;
 }
 const StyledButton = styled.button<StyleProps>(
-	({ variant, margin, theme: { colors, typography } }) => `
+	({
+		variant,
+		isLoading,
+		margin,
+		disabled,
+		theme: { colors, typography },
+	}) => `
+	position: relative;
 	min-width: ${BUTTON_WIDTH_VARIANTS[variant]};
 	height: 40px;
-	background: ${colors.button.defaultBg};
+	background: ${disabled ? colors.button.disabledBg : colors.button.defaultBg};
 	padding: ${BUTTON_PADDING_VARIANTS[variant]};
 	box-sizing: border-box;
 	display: flex;
@@ -71,10 +86,23 @@ const StyledButton = styled.button<StyleProps>(
 	line-height: ${typography.lineHeight.button};
 	letter-spacing: ${typography.letterSpacing.button};
 	margin: ${margin};
-	
+	cursor: ${disabled ? 'not-allowed' : 'pointer'};
+
 	&:hover {
-		cursor: pointer;
-		background: ${colors.button.hoverBg};
+		background: ${disabled ? colors.button.disabledBg : colors.button.hoverBg};
 	}
 `
 );
+const StyledText = styled(Text)`
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+`;

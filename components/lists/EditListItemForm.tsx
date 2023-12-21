@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { motion } from 'framer-motion';
 import { UserContext } from '../../contexts/UserContext';
+import { useEditListItemMutation } from '../../hooks/mutations/lists/useEditListItemMutation';
 
 interface IProps {
 	listItemId: string;
@@ -21,6 +22,7 @@ export const EditListItemForm: React.FC<IProps> = (props) => {
 		props;
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
+	const { mutate: editListItem } = useEditListItemMutation();
 
 	const [nameValue, setNameValue] = useState(name);
 	const [descriptionValue, setDescriptionValue] = useState(description);
@@ -47,12 +49,10 @@ export const EditListItemForm: React.FC<IProps> = (props) => {
 			if (name === '') {
 				throw new Error();
 			}
-			await axios.put(`/api/list-items`, {
-				data: {
-					name: nameValue,
-					description: descriptionValue,
-					link: linkValue,
-				},
+			editListItem({
+				name: nameValue,
+				description: descriptionValue,
+				link: linkValue,
 				listItemId: listItemId,
 			});
 
@@ -62,6 +62,8 @@ export const EditListItemForm: React.FC<IProps> = (props) => {
 				user: user,
 				action: 'event-update',
 			});
+
+			setCurrentItemBeingEdited(null);
 
 			toast.success(`List item updated! 👍🏽`, {
 				toastId: 'updated-list-item-toast',

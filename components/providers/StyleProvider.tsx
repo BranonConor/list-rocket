@@ -48,6 +48,7 @@ export const theme = {
 			borderDark: colors.black,
 			bgRed: colors.siren,
 			bgRedLight: colors.lightSiren,
+			disabledBg: colors.darkRocketSteel,
 			secondary: {
 				defaultBg: 'transparent',
 				hoverBg: colors.deepSpace,

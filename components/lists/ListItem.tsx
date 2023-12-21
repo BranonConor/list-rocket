@@ -12,6 +12,9 @@ import { ProfilePhoto } from '../ProfilePhoto';
 import { Dialog } from '../Dialog';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { useDeleteListItemMutation } from '../../hooks/mutations/lists/useDeleteListItemMutation';
+import { useCheckListItemMutation } from '../../hooks/mutations/lists/useCheckListItemMutation';
+import { useUncheckListItemMutation } from '../../hooks/mutations/lists/useUncheckListItemMutation copy';
 
 interface IProps {
 	name: string;
@@ -22,6 +25,8 @@ interface IProps {
 	listId: string;
 	isCurrentUser: boolean;
 	setCurrentItemBeingEdited: Dispatch<SetStateAction<string>>;
+	listItems: string[];
+	setListItems: Dispatch<SetStateAction<string[]>>;
 }
 
 export const ListItem: React.FC<IProps> = (props) => {
@@ -34,9 +39,20 @@ export const ListItem: React.FC<IProps> = (props) => {
 		listId,
 		isCurrentUser,
 		setCurrentItemBeingEdited,
+		listItems,
+		setListItems,
 	} = props;
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
+	const { mutate: deleteListItem } = useDeleteListItemMutation(
+		currentEvent._id
+	);
+	const { mutate: checkListItem } = useCheckListItemMutation(
+		currentEvent._id
+	);
+	const { mutate: uncheckListItem } = useUncheckListItemMutation(
+		currentEvent._id
+	);
 
 	//dialog state
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
@@ -63,13 +79,9 @@ export const ListItem: React.FC<IProps> = (props) => {
 	const handleDelete = async (e) => {
 		e?.preventDefault();
 		try {
-			await axios.delete(`/api/lists/${id}`, {
-				data: {
-					listId: listId,
-					listItemId: id,
-					action: 'delete-list-item',
-				},
-			});
+			deleteListItem({ listId: listId, listItemId: id });
+
+			setListItems(listItems.filter((item) => item !== id));
 
 			//ping Pusher channel
 			await axios.post('/api/pusher', {
@@ -95,13 +107,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 
 	const handleCheck = async () => {
 		try {
-			await axios.put(`/api/lists/${id}`, {
-				data: {
-					listItemId: id,
-					userEmail: user?.email,
-				},
-				action: 'check',
-			});
+			checkListItem({ listItemId: id, email: user?.email });
 
 			//ping Pusher channel
 			await axios.post('/api/pusher', {
@@ -123,12 +129,7 @@ export const ListItem: React.FC<IProps> = (props) => {
 
 	const handleUncheck = async () => {
 		try {
-			await axios.put(`/api/lists/${id}`, {
-				data: {
-					listItemId: id,
-				},
-				action: 'uncheck',
-			});
+			uncheckListItem({ listItemId: id });
 
 			//ping Pusher channel
 			await axios.post('/api/pusher', {

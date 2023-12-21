@@ -9,34 +9,33 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { LoadingLayout } from '../../components/layouts/LoadingLayout';
-import axios from 'axios';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { UserContext } from '../../contexts/UserContext';
+import { EventDetails } from '../../components/events/EventDetails';
+import { SkeletonLoader } from '../../components/layouts/SkeletonLoader';
+import { motion } from 'framer-motion';
 
+//get the id from the route params, pass it into the component
 export const getServerSideProps = async ({ params }) => {
 	const { eventId } = params;
-	const res = await axios.get(
-		`${process.env.NEXTAUTH_URL}/api/events/${eventId}`
-	);
 
 	return {
-		props: { event: res.data.data },
+		props: { event: eventId },
 	};
 };
 
 const EventPage = ({ event }) => {
-	const { data: session, status } = useSession();
+	const { currentEvent, prepWorkspace, clearWorkspace, isLoading } =
+		useContext(WorkspaceContext);
+	const { user } = useContext(UserContext);
+	const { status } = useSession();
 	const router = useRouter();
 
-	const { currentEvent, setCurrentEvent, clearWorkspace } =
-		useContext(WorkspaceContext);
-	//get the event and set it as the current event in context
+	//get the eventId and set the workspace context's currentId to it, it'll handle the data fetching and send it through in currentEvent
 	useEffect(() => {
-		const getEvent = async () => {
-			setCurrentEvent(event);
-		};
-		getEvent();
+		prepWorkspace(event);
 	}, []);
+
 	if (status === 'unauthenticated') {
 		toast.error('You must be logged in to access that page!', {
 			toastId: 'unauthenticated-route-toast',
@@ -44,10 +43,9 @@ const EventPage = ({ event }) => {
 		router.push('/');
 	}
 
-	const { user } = useContext(UserContext);
 	if (currentEvent && user) {
 		let userHasEventAccess = false;
-		currentEvent?.collaborators.forEach((collaborator) => {
+		currentEvent?.collaborators?.forEach((collaborator) => {
 			if (collaborator._id === user?._id) userHasEventAccess = true;
 		});
 		if (!userHasEventAccess) {
@@ -71,9 +69,23 @@ const EventPage = ({ event }) => {
 				<title>Home | List Rocket</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-			<StyledTitle variant='heading1'>{currentEvent?.name}</StyledTitle>
+			{isLoading ? (
+				<SkeletonLoader width='300px' margin='16px 0 24px 0' />
+			) : (
+				<StyledTitleWrapper
+					initial={{ opacity: 0, x: '32px' }}
+					animate={{ opacity: 1, x: '0' }}
+					transition={{
+						duration: 0.25,
+						type: 'spring',
+					}}>
+					<StyledTitle variant='heading1'>
+						{currentEvent?.name}
+					</StyledTitle>
+				</StyledTitleWrapper>
+			)}
 
-			<WorkspaceControls />
+			<EventDetails />
 			{/* ---- WORKSPACE ---- */}
 			<StyledWorkspaceWrapper>
 				{currentEvent && <Event currentEvent={currentEvent} />}
@@ -106,10 +118,11 @@ const StyledTitle = styled(Title)(
 		background: ${colors.tertiaryGradient};
 		font-size: ${typography.size.heading2};
 		line-height: ${typography.lineHeight.heading2};
-		margin: 8px 0;
+		margin: 0 0 16px 0;
 		border-radius: 10px;
 		color: white;
 		box-shadow: ${shadows.standard};
 	}
 `
 );
+const StyledTitleWrapper = styled(motion.div)``;

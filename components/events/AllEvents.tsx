@@ -1,19 +1,18 @@
 import { EventCard } from '../cards/EventCard';
-import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { EventContext } from '../../contexts/EventContext';
 import { Title } from '../typography/Title';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../contexts/UserContext';
 import { Dialog } from '../Dialog';
 import { CreateEventButton } from './CreateEventButton';
 import { CreateEventForm } from './CreateEventForm';
+import { useDeleteEventMutation } from '../../hooks/mutations/useDeleteEventMutation';
 
 export const AllEvents: React.FC = () => {
-	const { events, getAllEvents } = useContext(EventContext);
+	const { events, isLoading: isLoadingEvents } = useContext(EventContext);
 	const { currentEvent, clearWorkspace } = useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
 	const [deleteDialogIsOpen, setDeleteDialogIsOpen] = useState(false);
@@ -23,6 +22,7 @@ export const AllEvents: React.FC = () => {
 	} | null>(null);
 
 	const [userIsCreatingEvent, setUserIsCreatingEvent] = useState(false);
+	const { mutate: deleteEvent, isLoading } = useDeleteEventMutation();
 
 	//Deleting an event
 	const handleDelete = async (
@@ -31,19 +31,17 @@ export const AllEvents: React.FC = () => {
 	) => {
 		e?.preventDefault();
 		try {
-			await axios.delete(`/api/events/${event.id}`, {
-				data: {
-					eventId: event.id,
-					user: user,
-				},
+			deleteEvent({
+				eventId: event.id,
+				user: user,
 			});
-			setEventToDelete(null);
+
 			setDeleteDialogIsOpen(false);
-			getAllEvents();
 			currentEvent?._id === event.id && clearWorkspace();
 			toast.success('Successfully deleted your event 🗑', {
 				toastId: 'delete-event-toast',
 			});
+			setEventToDelete(null);
 		} catch (error) {
 			console.log(error);
 			toast.error('Something went wrong, sorry! 😵‍💫', {
@@ -52,14 +50,10 @@ export const AllEvents: React.FC = () => {
 		}
 	};
 
-	const handleCreatEventClick = (event: any) => {
+	const handleCreateEventClick = (event: any) => {
 		event.preventDefault();
 		setUserIsCreatingEvent(true);
 	};
-
-	useEffect(() => {
-		getAllEvents();
-	}, []);
 
 	return (
 		<StyledWrapper>
@@ -80,6 +74,10 @@ export const AllEvents: React.FC = () => {
 										setDeleteDialogIsOpen
 									}
 									setEventToDelete={setEventToDelete}
+									isLoading={
+										(isLoading || isLoadingEvents) &&
+										event._id === eventToDelete?.id
+									}
 								/>
 							);
 						})}
@@ -89,7 +87,7 @@ export const AllEvents: React.FC = () => {
 							/>
 						) : (
 							<CreateEventButton
-								onClick={handleCreatEventClick}
+								onClick={handleCreateEventClick}
 							/>
 						)}
 					</>
@@ -98,7 +96,7 @@ export const AllEvents: React.FC = () => {
 						setUserIsCreatingEvent={setUserIsCreatingEvent}
 					/>
 				) : (
-					<CreateEventButton onClick={handleCreatEventClick} />
+					<CreateEventButton onClick={handleCreateEventClick} />
 				)}
 			</StyledEventsContainer>
 			{deleteDialogIsOpen && (

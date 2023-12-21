@@ -6,9 +6,8 @@ import { AddCollaborator } from '../events/AddCollaborator';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { Title } from '../typography/Title';
 import { Dialog } from '../Dialog';
-import axios from 'axios';
-import { toast } from 'react-toastify';
 import { IUser } from '../../contexts/types';
+import { RemoveCollaboratorDialog } from './RemoveCollaboratorDialog';
 
 interface ICollaboratorsGridProps {
 	collaborators: IUser[];
@@ -19,7 +18,7 @@ export const CollaboratorsGrid: React.FC<ICollaboratorsGridProps> = ({
 	collaborators,
 	pendingCollaborators,
 }) => {
-	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
+	const { currentEvent } = useContext(WorkspaceContext);
 	const [isAddCollaboratorButtonClicked, setIsAddCollaboratorButtonClicked] =
 		useState(false);
 	const [
@@ -37,52 +36,6 @@ export const CollaboratorsGrid: React.FC<ICollaboratorsGridProps> = ({
 		id: string;
 		name: string;
 	} | null>(null);
-
-	//Removing a collaborator from an event
-	const handleDelete = async (e: any, eventId: string, userId: string) => {
-		e?.preventDefault();
-		try {
-			//don't allow removal of the creator or the last collaborator
-
-			await axios.put(`/api/events/${eventId}`, {
-				eventId: eventId,
-				userId: userId,
-				action: 'remove-collaborator',
-			});
-			await axios.put(`/api/user/${userId}`, {
-				eventId: currentEvent._id,
-				userId: userId,
-				action: 'remove-collaborator',
-			});
-
-			//ping Pusher channel
-			const collaborator = await axios.get(`/api/user?=${userId}`);
-			await axios.post('/api/pusher', {
-				eventId: currentEvent._id,
-				user: collaborator,
-				action: 'event-update',
-			});
-			await axios.post('/api/pusher', {
-				userId: userId,
-				action: 'remove-collaborator',
-			});
-
-			setEditCollaboratorsButtonIsClicked(false);
-			setDeleteCollaboratorDialogIsOpen(false);
-
-			//TODO - make it a pusher event so everyone gets the update in real time
-			prepWorkspace(eventId);
-
-			toast.success('Collaborator removed 👋', {
-				toastId: 'remove-collaborator-toast',
-			});
-		} catch (error) {
-			console.log(error);
-			toast.error('Something went wrong, sorry! 😵‍💫', {
-				toastId: 'error-delete-event-toast',
-			});
-		}
-	};
 
 	return (
 		<StyledGrid
@@ -264,15 +217,15 @@ export const CollaboratorsGrid: React.FC<ICollaboratorsGridProps> = ({
 				)}
 			</StyledCollaboratorsWrapper>
 			{deleteCollaboratorDialogIsOpen && (
-				<Dialog
-					title='Remove Collaborator'
-					description={`Are you sure you want to remove ${userToDelete?.name} from the event? All their list data will be lost.`}
-					cta={(e: any) =>
-						handleDelete(e, currentEvent?._id, userToDelete?.id)
-					}
-					buttonText='Remove'
+				<RemoveCollaboratorDialog
 					setDialogIsOpen={setDeleteCollaboratorDialogIsOpen}
-					showCancelButton
+					setEditCollaboratorsButtonIsClicked={
+						setEditCollaboratorsButtonIsClicked
+					}
+					setDeleteCollaboratorDialogIsOpen={
+						setDeleteCollaboratorDialogIsOpen
+					}
+					userToDelete={userToDelete}
 				/>
 			)}
 			{blockCreatorDeletionDialogIsOpen && (

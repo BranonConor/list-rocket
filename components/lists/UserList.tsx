@@ -18,7 +18,6 @@ import {
 	DndContext,
 	closestCenter,
 	KeyboardSensor,
-	PointerSensor,
 	useSensor,
 	useSensors,
 	TouchSensor,
@@ -31,6 +30,9 @@ import {
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { restrictToFirstScrollableAncestor } from '@dnd-kit/modifiers';
+import { useAddCustomNameMutation } from '../../hooks/mutations/lists/useAddCustomNameMutation';
+import { useDeleteListMutation } from '../../hooks/mutations/lists/useDeleteListMutation';
+import { useReorderListMutation } from '../../hooks/mutations/lists/useReorderListMutation';
 
 interface Props {
 	creator: IUser;
@@ -39,10 +41,17 @@ interface Props {
 	customCreator?: string;
 }
 
-export const UserList: React.FC<Props> = (props) => {
-	const { creator, items, id, customCreator } = props;
+export const UserList: React.FC<Props> = ({
+	creator,
+	items,
+	id,
+	customCreator,
+}) => {
 	const { user } = useContext(UserContext);
-	const { currentEvent, prepWorkspace } = useContext(WorkspaceContext);
+	const { currentEvent, refreshEvent } = useContext(WorkspaceContext);
+	const { mutate: addCustomName } = useAddCustomNameMutation();
+	const { mutate: deleteList } = useDeleteListMutation();
+	const { mutate: reorderList } = useReorderListMutation();
 	const isCurrentUser = creator?.email === user?.email;
 	const [isUserSelectorOpen, setIsUserSelectorOpen] = useState(false);
 	const [isCustomUserInputOn, setIsCustomUserInputOn] = useState(false);
@@ -86,10 +95,9 @@ export const UserList: React.FC<Props> = (props) => {
 			if (customNameInputValue === '') {
 				throw new Error();
 			}
-			await axios.put(`/api/lists/${id}`, {
+			addCustomName({
 				name: customNameInputValue,
 				listId: id,
-				action: 'add-custom-list-creator',
 			});
 
 			//ping Pusher channel
@@ -121,19 +129,7 @@ export const UserList: React.FC<Props> = (props) => {
 
 	const handleDeleteList = async () => {
 		try {
-			//ping list API to delete the list and its items
-			await axios.delete(`/api/lists/${id}`, {
-				data: {
-					listId: id,
-					action: 'delete-list',
-				},
-			});
-			//ping the events API to update it by removing this list from its lists
-			await axios.put(`/api/events/${currentEvent._id}`, {
-				listId: id,
-				eventId: currentEvent._id,
-				action: 'delete-list',
-			});
+			deleteList({ listId: id, eventId: currentEvent._id });
 
 			setDeleteListDialogIsOpen(false);
 
@@ -148,7 +144,7 @@ export const UserList: React.FC<Props> = (props) => {
 				toastId: 'delete-list-toast',
 			});
 
-			prepWorkspace(currentEvent._id);
+			refreshEvent();
 		} catch (error) {
 			toast.error('Something went wrong, sorry! 😵‍💫', {
 				toastId: 'delete-list-error-toast',
@@ -174,13 +170,16 @@ export const UserList: React.FC<Props> = (props) => {
 
 			//update order in database for this list
 			try {
-				await axios.put(`/api/lists/${id}`, {
-					listId: id,
-					newItems: newFullItemsList,
-					action: 'reorder-list',
-				});
+				reorderList({ listId: id, newItems: newFullItemsList });
 
 				setListItems(newIdList);
+
+				//ping Pusher channel
+				await axios.post('/api/pusher', {
+					eventId: currentEvent._id,
+					user: user,
+					action: 'event-update',
+				});
 			} catch (error) {
 				console.log(error);
 				toast.error('Something went wrong, sorry! 😵‍💫', {
@@ -190,11 +189,11 @@ export const UserList: React.FC<Props> = (props) => {
 		}
 	};
 
-	//when prepWorkspace is called, reset the edits
+	//when refreshEvent is called, reset the edits
 	useEffect(() => {
 		setCurrentItemBeingEdited(null);
 		setListItems(items.map((item) => item._id));
-	}, [prepWorkspace]);
+	}, [refreshEvent, items]);
 
 	return (
 		<DndContext
@@ -398,6 +397,8 @@ export const UserList: React.FC<Props> = (props) => {
 													setCurrentItemBeingEdited={
 														setCurrentItemBeingEdited
 													}
+													setListItems={setListItems}
+													listItems={listItems}
 												/>
 											</StyledListItem>
 										);
@@ -579,9 +580,7 @@ const StyledForm = styled.form`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin: 0 0 8px 0;
 `;
-
 const StyledInput = styled(motion.input)(
 	({ theme: { shadows, typography, colors } }) => `
 	border: none;
@@ -647,7 +646,6 @@ const StyledCloseButton = styled(motion.button)(
 	border-radius: 100%;
 	padding: 0;
 	box-shadow: ${shadows.standard};
-	transform: translateY(-4px);
 
 	img {
 		padding: 0;

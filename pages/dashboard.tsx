@@ -2,7 +2,6 @@ import { AllEvents } from '../components/events/AllEvents';
 import { DashLayout } from '../components/layouts/DashLayout';
 import { LoadingLayout } from '../components/layouts/LoadingLayout';
 import Head from 'next/head';
-import { ProfilePhoto } from '../components/ProfilePhoto';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { useSession } from 'next-auth/react';
@@ -10,7 +9,6 @@ import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import { Title } from '../components/typography/Title';
-import { Text } from '../components/typography/Text';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AllInvites } from '../components/events/AllInvites';
@@ -37,8 +35,15 @@ const Dashboard = () => {
 				<title>Dashboard | List Rocket</title>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
-
-			<Title variant='heading1'>Dashboard</Title>
+			<StyledTitleWrapper
+				initial={{ opacity: 0, x: '32px' }}
+				animate={{ opacity: 1, x: '0' }}
+				transition={{
+					duration: 0.25,
+					type: 'spring',
+				}}>
+				<Title variant='heading1'>Dashboard</Title>
+			</StyledTitleWrapper>
 			<div>
 				<StyledGreeting
 					initial={{ opacity: 0 }}
@@ -84,3 +89,4 @@ const StyledGreeting = styled(motion.div)(
 	}
 `
 );
+const StyledTitleWrapper = styled(motion.div)``;

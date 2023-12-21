@@ -16,8 +16,9 @@ import Pusher from 'pusher-js';
 import { Dialog } from '../Dialog';
 import { IEvent, IUser } from '../../contexts/types';
 import { Text } from '../typography/Text';
-
-import { EventContext } from '../../contexts/EventContext';
+import { useDeleteEventMutation } from '../../hooks/mutations/useDeleteEventMutation';
+import { useUpdateListHeightMutation } from '../../hooks/mutations/useUpdateListHeightMutation';
+import { useUpdateAnonymousModeMutation } from '../../hooks/mutations/useUpdateAnonymousModeMutation';
 
 interface IEventControlsProps {
 	setIsEventControlsDialogOpen: Dispatch<SetStateAction<boolean>>;
@@ -25,10 +26,12 @@ interface IEventControlsProps {
 export const EventControls: React.FC<IEventControlsProps> = ({
 	setIsEventControlsDialogOpen,
 }) => {
-	const { currentEvent, prepWorkspace, clearWorkspace } =
+	const { currentEvent, clearWorkspace, refreshEvent } =
 		useContext(WorkspaceContext);
 	const { user } = useContext(UserContext);
-	const { getAllEvents } = useContext(EventContext);
+	const { mutate: deleteEvent } = useDeleteEventMutation();
+	const { mutate: updateListHeight } = useUpdateListHeightMutation();
+	const { mutate: updateAnonymousMode } = useUpdateAnonymousModeMutation();
 
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
 	const [listHeightValue, setListHeightValue] = useState(
@@ -40,10 +43,6 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 		id: string;
 		name: string;
 	} | null>(null);
-
-	useEffect(() => {
-		setListHeightValue(currentEvent?.controls?.listHeight);
-	}, [prepWorkspace]);
 
 	const handleChange = () => {
 		setDialogIsOpen(true);
@@ -60,17 +59,17 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 	) => {
 		e?.preventDefault();
 		try {
-			await axios.delete(`/api/events/${event.id}`, {
-				data: {
-					eventId: event.id,
-					user: user,
-				},
+			deleteEvent({
+				eventId: event.id,
+				user: user,
 			});
+
 			setEventToDelete(null);
 			setDeleteDialogIsOpen(false);
 			setIsEventControlsDialogOpen(false);
-			getAllEvents();
+			//wipe the current event
 			currentEvent?._id === event.id && clearWorkspace();
+
 			toast.success('Successfully deleted your event 🗑', {
 				toastId: 'delete-event-toast',
 			});
@@ -86,13 +85,10 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 		setListHeightValue(e.target.value);
 
 		try {
-			await axios.put(`/api/events/${currentEvent._id}`, {
+			updateListHeight({
 				eventId: currentEvent._id,
-				action: 'list-height-change',
 				listHeight: e.target.value,
 			});
-
-			prepWorkspace(currentEvent._id);
 
 			// Reversing this logic creates the correct UI, since this toast call
 			// doesn't yet know of the new currentEvent state
@@ -117,12 +113,7 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 
 	const handleToggleChange = async (currentEvent: IEvent, user: IUser) => {
 		try {
-			await axios.put(`/api/events/${currentEvent._id}`, {
-				eventId: currentEvent._id,
-				action: 'anonymous-mode-toggle',
-			});
-
-			prepWorkspace(currentEvent._id);
+			updateAnonymousMode({ eventId: currentEvent?._id });
 
 			//Reversing this logic creates the correct UI, since this toast call
 			//doesn't yet know of the new currentEvent state
@@ -164,7 +155,7 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 		channel.bind(`event-channel-update-${currentEvent?._id}`, (data) => {
 			//refresh the workspace if a change occured in the event you're working on
 			if (currentEvent?._id === data.eventId) {
-				prepWorkspace(currentEvent?._id);
+				refreshEvent();
 
 				//for everyone but the user that made the change, notify
 				if (
@@ -206,6 +197,11 @@ export const EventControls: React.FC<IEventControlsProps> = ({
 			pusher.disconnect();
 		};
 	}, []);
+
+	//Keep list height values fresh
+	useEffect(() => {
+		setListHeightValue(currentEvent?.controls?.listHeight);
+	}, [refreshEvent]);
 
 	return (
 		<StyledEventControls
