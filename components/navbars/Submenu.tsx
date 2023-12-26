@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import { toast } from 'react-toastify';
+import { Tooltip } from 'react-tooltip';
 
 export const Submenu = () => {
 	const handleClick = (e: any) => {
@@ -16,18 +17,24 @@ export const Submenu = () => {
 
 	return (
 		<StyledList>
-			<StyledListItem>
+			<StyledListItem data-tooltip-id='home' data-tooltip-content='Home'>
 				<Link href='/' passHref>
 					<StyledAnchor>
 						<img src='/icons/home.svg' alt='Home Icon' />
 					</StyledAnchor>
 				</Link>
 			</StyledListItem>
-			<StyledListItem>
+			<StyledListItem
+				data-tooltip-id='logout'
+				data-tooltip-content='Logout'>
 				<StyledButton onClick={handleClick}>
 					<img src='/icons/logout.svg' alt='Logout icon' />
 				</StyledButton>
 			</StyledListItem>
+			<StyledTooltipWrapper>
+				<Tooltip id='home' place='right' />
+				<Tooltip id='logout' place='right' />
+			</StyledTooltipWrapper>
 		</StyledList>
 	);
 };
@@ -106,3 +113,19 @@ const StyledButton = styled.button(
     }
     `
 );
+const StyledTooltipWrapper = styled.div`
+	.mobile {
+		display: none;
+	}
+	.desktop {
+		display: block;
+	}
+	@media only screen and (max-width: 768px) {
+		.mobile {
+			display: block;
+		}
+		.desktop {
+			display: none;
+		}
+	}
+`;

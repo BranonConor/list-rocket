@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import { Tooltip } from 'react-tooltip';
 
 export const Menu = () => {
 	const currentRoute = useRouter().pathname;
@@ -10,14 +11,18 @@ export const Menu = () => {
 
 	return (
 		<StyledList>
-			<StyledListItem>
+			<StyledListItem
+				data-tooltip-id='dashboard'
+				data-tooltip-content='Dashboard'>
 				<Link href='/dashboard' passHref>
 					<StyledAnchor isActive={currentRoute === '/dashboard'}>
 						<img src='/icons/grid.svg' alt='Dashboard' />
 					</StyledAnchor>
 				</Link>
 			</StyledListItem>
-			<StyledListItem>
+			<StyledListItem
+				data-tooltip-id='workspace'
+				data-tooltip-content='Workspace'>
 				<Link
 					href={
 						currentEvent
@@ -31,13 +36,27 @@ export const Menu = () => {
 					</StyledAnchor>
 				</Link>
 			</StyledListItem>
-			<StyledListItem>
+			<StyledListItem
+				data-tooltip-id='profile'
+				data-tooltip-content='Profile'>
 				<Link href='/profile' passHref>
 					<StyledAnchor isActive={currentRoute === '/profile'}>
 						<img src='/icons/user.svg' alt='user icon' />
 					</StyledAnchor>
 				</Link>
 			</StyledListItem>
+			<StyledTooltipWrapper>
+				<div className='mobile'>
+					<Tooltip id='dashboard' place='top' />
+					<Tooltip id='workspace' place='top' />
+					<Tooltip id='profile' place='top' />
+				</div>
+				<div className='desktop'>
+					<Tooltip id='dashboard' place='right' />
+					<Tooltip id='workspace' place='right' />
+					<Tooltip id='profile' place='right' />
+				</div>
+			</StyledTooltipWrapper>
 		</StyledList>
 	);
 };
@@ -82,7 +101,6 @@ const StyledAnchor = styled.a<IStyledAnchorProps>(
 	box-sizing: border-box;
 	position: relative;
 	top: 0;
-	z-index: 10;
 	width: 100%;
     height: 64px;
 	background: ${isActive && colors.bgLight};
@@ -106,3 +124,19 @@ const StyledAnchor = styled.a<IStyledAnchorProps>(
     }
     `
 );
+const StyledTooltipWrapper = styled.div`
+	.mobile {
+		display: none;
+	}
+	.desktop {
+		display: block;
+	}
+	@media only screen and (max-width: 768px) {
+		.mobile {
+			display: block;
+		}
+		.desktop {
+			display: none;
+		}
+	}
+`;

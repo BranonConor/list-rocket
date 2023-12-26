@@ -62,6 +62,9 @@ export const CollaboratorsGrid: React.FC<ICollaboratorsGridProps> = ({
 							<ProfilePhoto
 								photo={collaborator.image}
 								dimensions='24px'
+								showTooltip
+								tooltipContent={collaborator?.name}
+								tooltipId={collaborator._id}
 							/>
 							{editCollaboratorsButtonIsClicked && (
 								<StyledDeleteCollaboratorButton
@@ -115,6 +118,9 @@ export const CollaboratorsGrid: React.FC<ICollaboratorsGridProps> = ({
 							<ProfilePhoto
 								photo={collaborator.image}
 								dimensions='24px'
+								showTooltip
+								tooltipContent={collaborator.name}
+								tooltipId={collaborator._id}
 							/>
 							<StyledPendingDot />
 							{editCollaboratorsButtonIsClicked && (
@@ -285,7 +291,9 @@ const StyledAvatar = styled.div<IStyledAvatarProps>(
 	align-items: center;
 
 	&:hover {
-		transform: scale(1.1);
+		img {
+			transform: scale(1.1);
+		}
 	}
 
 	img {
@@ -312,7 +320,9 @@ const StyledPendingAvatar = styled.div<IStyledAvatarProps>(
 	}
 
 	&:hover {
-		transform: scale(1.1);
+		img {
+			transform: scale(1.1);
+		}
 	}
 
 	img {
