@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Tooltip } from 'react-tooltip';
 
 interface Props {
-	photo: string;
+	photo?: string;
 	dimensions: string;
 	hasBoxShadow?: boolean;
 	showTooltip?: boolean;
@@ -11,8 +11,9 @@ interface Props {
 }
 
 export const ProfilePhoto: React.FC<Props> = (props) => {
+	const defaultPhoto = '/icons/user-plain.svg';
 	const {
-		photo,
+		photo = defaultPhoto,
 		dimensions,
 		hasBoxShadow = false,
 		showTooltip = false,
@@ -29,6 +30,7 @@ export const ProfilePhoto: React.FC<Props> = (props) => {
 				hasBoxShadow={hasBoxShadow}
 				data-tooltip-id={tooltipId}
 				data-tooltip-content={tooltipContent}
+				isDefault={photo === defaultPhoto}
 			/>
 			{showTooltip && <Tooltip id={tooltipId} place='top' />}
 		</>
@@ -37,12 +39,13 @@ export const ProfilePhoto: React.FC<Props> = (props) => {
 
 interface IStyledImageProps {
 	hasBoxShadow: boolean;
+	isDefault: boolean;
 }
 const StyledImage = styled.img<IStyledImageProps>(
-	({ hasBoxShadow, theme: { shadows } }) => `
+	({ hasBoxShadow, isDefault, theme: { shadows, colors } }) => `
 	border-radius: 100%;
 	transition: 0.15s ease all;
 	box-shadow: ${hasBoxShadow ? shadows.standard : 'none'};
-	background: white;
+	background: ${isDefault ? colors.chip.defaultBg : 'white'};
 `
 );

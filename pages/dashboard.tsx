@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AllInvites } from '../components/events/AllInvites';
 import { UserCard } from '../components/cards/UserCard';
+import { VoteBlock } from '../components/votes/VoteBlock';
 
 const Dashboard = () => {
 	const router = useRouter();
@@ -58,6 +59,10 @@ const Dashboard = () => {
 					/>
 				</StyledGreeting>
 			</div>
+			<VoteBlock
+				title='What do you love most about ListRocket?'
+				creator={user?.name}
+			/>
 			<AllEvents />
 			<AllInvites />
 		</DashLayout>
