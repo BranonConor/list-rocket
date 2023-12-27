@@ -1,11 +1,14 @@
+import { motion } from 'framer-motion';
+import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { Text } from '../typography/Text';
 
 interface IOptionProps {
 	name: string;
 	isMostVotedOption?: boolean;
 	percentage?: number;
 	isOpen?: boolean;
+	currentValue?: string;
+	setCurrentValue?: Dispatch<SetStateAction<string>>;
 }
 
 export const Option: React.FC<IOptionProps> = ({
@@ -13,14 +16,38 @@ export const Option: React.FC<IOptionProps> = ({
 	isMostVotedOption,
 	percentage,
 	isOpen,
+	currentValue,
+	setCurrentValue,
 }) => {
+	const isDisabled = !isOpen;
+	const handleClick = (e) => {
+		if (isDisabled) {
+			return;
+		} else {
+			setCurrentValue(e.target.value);
+		}
+	};
+
 	return (
-		<StyledWrapper isOpaque={!isOpen && !isMostVotedOption}>
-			<StyledNameWrapper variant='body2'>
-				<StyledIcon src='/icons/radio-unchecked.svg' />
+		<StyledWrapper
+			isDisabled={isDisabled}
+			onClick={handleClick}
+			isMostVotedOption={isMostVotedOption}>
+			<StyledLabel>
+				<StyledInput
+					type='radio'
+					name={name}
+					value={name.toLowerCase()}
+					checked={currentValue === name.toLowerCase()}
+					isDisabled={isDisabled}
+					disabled={isDisabled}
+				/>
 				{name}
-			</StyledNameWrapper>
-			<StyledPercentageWrapper isMostVotedOption={isMostVotedOption}>
+			</StyledLabel>
+
+			<StyledPercentageWrapper
+				isDisabled={isDisabled}
+				isMostVotedOption={isMostVotedOption}>
 				{percentage}%
 			</StyledPercentageWrapper>
 			<StyledBar width={percentage} />
@@ -28,10 +55,11 @@ export const Option: React.FC<IOptionProps> = ({
 	);
 };
 interface IStyledWrapperProps {
-	isOpaque?: boolean;
+	isDisabled?: boolean;
+	isMostVotedOption?: boolean;
 }
 const StyledWrapper = styled.div<IStyledWrapperProps>(
-	({ isOpaque, theme: { colors } }) => `
+	({ isDisabled, isMostVotedOption, theme: { colors, shadows } }) => `
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -45,25 +73,31 @@ const StyledWrapper = styled.div<IStyledWrapperProps>(
     height: 32px;
     position: relative;
     overflow: hidden;
-	opacity: ${isOpaque ? '0.4' : '1'};
+	opacity: ${isDisabled && !isMostVotedOption ? '0.4' : '1'};
+	box-shadow: ${isDisabled && isMostVotedOption ? shadows.standard : 'none'};
+	cursor: ${isDisabled ? 'not-allowed' : 'pointer'};
 
     &:last-of-type {
         margin-bottom: 0px;
     }
 `
 );
-const StyledIcon = styled.img`
-	margin-right: 8px;
-`;
 interface IStyledPercentageWrapperProps {
 	isMostVotedOption: boolean;
+	isDisabled?: boolean;
 }
 const StyledPercentageWrapper = styled.div<IStyledPercentageWrapperProps>(
-	({ isMostVotedOption, theme: { colors, shadows } }) => `
+	({ isMostVotedOption, isDisabled, theme: { colors, shadows } }) => `
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
-    background: ${isMostVotedOption ? colors.tertiaryGradient : 'white'};
+    background: ${
+		isMostVotedOption
+			? isDisabled
+				? colors.bgDark
+				: colors.tertiaryGradient
+			: 'white'
+	};
     color: ${isMostVotedOption ? 'white' : colors.bgDark};
     box-shadow: ${shadows.standard};
     height: 20px;
@@ -76,12 +110,6 @@ const StyledPercentageWrapper = styled.div<IStyledPercentageWrapperProps>(
 
 `
 );
-const StyledNameWrapper = styled(Text)`
-	display: flex;
-	align-items: center;
-	position: relative;
-	z-index: 1;
-`;
 interface IStyledBarProps {
 	width: number;
 }
@@ -94,6 +122,52 @@ const StyledBar = styled.div<IStyledBarProps>(
     width: ${width}%;
     background: ${colors.chip.defaultBg};
     z-index: 0;
-    border-radius: 10px;
+    border-radius: 8px;
+`
+);
+const StyledLabel = styled.label(
+	({ theme: { typography } }) => `
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	z-index: 1;
+	font-size: ${typography.size.body2};
+`
+);
+
+interface IStyledInputProps {
+	isDisabled: boolean;
+}
+const StyledInput = styled(motion.input)<IStyledInputProps>(
+	({ isDisabled, theme: { colors } }) => `
+	appearance: none;
+  	background-color: transparent;
+	margin: 0 8px 0 4px;
+	font: inherit;
+	color: ${colors.bgDark};
+	width: 16px;
+	height: 16px;
+	border: 2px solid currentColor;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: ${isDisabled ? 'not-allowed' : 'pointer'};
+
+	&::before {
+		display: inline-block;
+		content: "";
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		transform: scale(0);
+		transition: 0.1s ease all;
+		background-color: ${colors.bgDark};
+	}
+
+	&:checked::before {
+		transform: scale(1);
+	} 
 `
 );

@@ -59,6 +59,10 @@ const Dashboard = () => {
 			percentage: 50,
 			isMostVotedOption: true,
 		},
+		{
+			name: 'Kansas',
+			percentage: 0,
+		},
 	];
 
 	return (

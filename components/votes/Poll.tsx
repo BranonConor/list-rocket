@@ -4,6 +4,7 @@ import { ProfilePhoto } from '../ProfilePhoto';
 import { Text } from '../typography/Text';
 import { Option } from './Option';
 import { IOption } from '../../contexts/types';
+import React, { useState } from 'react';
 
 interface IPollProps {
 	title: string;
@@ -20,9 +21,13 @@ export const Poll: React.FC<IPollProps> = ({
 	isOpen = false,
 	options,
 }) => {
+	const [currentValue, setCurrentValue] = useState<null | string>(null);
+
 	return (
-		<StyledWrapper>
-			<Title variant='heading3'>{title}</Title>
+		<StyledFormWrapper>
+			<legend>
+				<Title variant='heading3'>{title}</Title>
+			</legend>
 			<StyledDetailsWrapper>
 				<StyledCreatorLabel>
 					<ProfilePhoto
@@ -33,24 +38,28 @@ export const Poll: React.FC<IPollProps> = ({
 					<StyledText variant='body2'>{creator}</StyledText>
 				</StyledCreatorLabel>
 				<StyledStatusChip isOpen={isOpen}>
-					{isOpen ? 'OPEN' : 'CLOSED'}
+					<Text variant='overline'>{isOpen ? 'OPEN' : 'CLOSED'}</Text>
 				</StyledStatusChip>
 			</StyledDetailsWrapper>
 			<StyledOptionsGrid>
 				{options.map((option) => (
-					<Option
-						name={option.name}
-						percentage={option.percentage}
-						isMostVotedOption={option.isMostVotedOption}
-						isOpen={isOpen}
-					/>
+					<React.Fragment key={option.name}>
+						<Option
+							name={option.name}
+							percentage={option.percentage}
+							isMostVotedOption={option.isMostVotedOption}
+							isOpen={isOpen}
+							currentValue={currentValue}
+							setCurrentValue={setCurrentValue}
+						/>
+					</React.Fragment>
 				))}
 			</StyledOptionsGrid>
-		</StyledWrapper>
+		</StyledFormWrapper>
 	);
 };
 
-const StyledWrapper = styled.div(
+const StyledFormWrapper = styled.form(
 	({ theme: { colors } }) => `
 	display: flex;
 	flex-direction: column;
@@ -70,7 +79,9 @@ const StyledCreatorLabel = styled.div`
 const StyledText = styled(Text)`
 	margin-left: 8px;
 `;
-const StyledOptionsGrid = styled.div`
+const StyledOptionsGrid = styled.fieldset`
+	border: none;
+	padding: 0;
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-gap: 16px;
