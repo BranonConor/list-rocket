@@ -48,15 +48,15 @@ const Dashboard = () => {
 	const mockOptions2 = [
 		{
 			name: 'Mexico',
-			percentage: 2.5,
+			percentage: 15,
 		},
 		{
 			name: 'Canada',
-			percentage: 2.5,
+			percentage: 5,
 		},
 		{
 			name: 'Hawaii',
-			percentage: 95,
+			percentage: 80,
 			isMostVotedOption: true,
 		},
 		{
@@ -105,6 +105,7 @@ const Dashboard = () => {
 					title='Where should we go for our vacation?'
 					creator={user?.name}
 					options={mockOptions2}
+					userSelection='hawaii'
 				/>
 			</StyledPollWrapper>
 			<AllEvents />

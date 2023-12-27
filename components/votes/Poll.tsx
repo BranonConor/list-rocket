@@ -12,6 +12,7 @@ interface IPollProps {
 	image?: string;
 	isOpen?: boolean;
 	options: IOption[];
+	userSelection?: string;
 }
 
 export const Poll: React.FC<IPollProps> = ({
@@ -20,9 +21,11 @@ export const Poll: React.FC<IPollProps> = ({
 	creator,
 	isOpen = false,
 	options,
+	userSelection = null,
 }) => {
-	const [currentValue, setCurrentValue] = useState<null | string>(null);
-	console.log(currentValue);
+	const [currentValue, setCurrentValue] = useState<null | string>(
+		userSelection
+	);
 
 	return (
 		<StyledFormWrapper>
