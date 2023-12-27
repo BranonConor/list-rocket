@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AllInvites } from '../components/events/AllInvites';
 import { UserCard } from '../components/cards/UserCard';
-import { VoteBlock } from '../components/votes/VoteBlock';
+import { Poll } from '../components/votes/Poll';
 
 const Dashboard = () => {
 	const router = useRouter();
@@ -29,6 +29,37 @@ const Dashboard = () => {
 	if (status === 'loading') {
 		return <LoadingLayout>Loading...</LoadingLayout>;
 	}
+
+	const mockOptions1 = [
+		{
+			name: 'Convenience',
+			percentage: 20,
+		},
+		{
+			name: 'User Experience',
+			percentage: 60,
+			isMostVotedOption: true,
+		},
+		{
+			name: 'Collaboration',
+			percentage: 20,
+		},
+	];
+	const mockOptions2 = [
+		{
+			name: 'Mexico',
+			percentage: 30,
+		},
+		{
+			name: 'Canada',
+			percentage: 20,
+		},
+		{
+			name: 'Hawaii',
+			percentage: 50,
+			isMostVotedOption: true,
+		},
+	];
 
 	return (
 		<DashLayout>
@@ -59,10 +90,19 @@ const Dashboard = () => {
 					/>
 				</StyledGreeting>
 			</div>
-			<VoteBlock
-				title='What do you love most about ListRocket?'
-				creator={user?.name}
-			/>
+			<StyledPollWrapper>
+				<Poll
+					title='What do you love most about ListRocket?'
+					creator={user?.name}
+					isOpen
+					options={mockOptions1}
+				/>
+				<Poll
+					title='Where should we go for our vacation?'
+					creator={user?.name}
+					options={mockOptions2}
+				/>
+			</StyledPollWrapper>
 			<AllEvents />
 			<AllInvites />
 		</DashLayout>
@@ -95,3 +135,12 @@ const StyledGreeting = styled(motion.div)(
 `
 );
 const StyledTitleWrapper = styled(motion.div)``;
+const StyledPollWrapper = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 16px;
+
+	@media only screen and (max-width: 768px) {
+		grid-template-columns: 1fr;
+	}
+`;

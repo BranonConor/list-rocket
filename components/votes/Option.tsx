@@ -5,15 +5,17 @@ interface IOptionProps {
 	name: string;
 	isMostVotedOption?: boolean;
 	percentage?: number;
+	isOpen?: boolean;
 }
 
 export const Option: React.FC<IOptionProps> = ({
 	name,
 	isMostVotedOption,
 	percentage,
+	isOpen,
 }) => {
 	return (
-		<StyledWrapper>
+		<StyledWrapper isOpaque={!isOpen && !isMostVotedOption}>
 			<StyledNameWrapper variant='body2'>
 				<StyledIcon src='/icons/radio-unchecked.svg' />
 				{name}
@@ -25,9 +27,11 @@ export const Option: React.FC<IOptionProps> = ({
 		</StyledWrapper>
 	);
 };
-
-const StyledWrapper = styled.div(
-	({ theme: { colors } }) => `
+interface IStyledWrapperProps {
+	isOpaque?: boolean;
+}
+const StyledWrapper = styled.div<IStyledWrapperProps>(
+	({ isOpaque, theme: { colors } }) => `
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -41,6 +45,7 @@ const StyledWrapper = styled.div(
     height: 32px;
     position: relative;
     overflow: hidden;
+	opacity: ${isOpaque ? '0.4' : '1'};
 
     &:last-of-type {
         margin-bottom: 0px;
