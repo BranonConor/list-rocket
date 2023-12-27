@@ -48,15 +48,15 @@ const Dashboard = () => {
 	const mockOptions2 = [
 		{
 			name: 'Mexico',
-			percentage: 30,
+			percentage: 2.5,
 		},
 		{
 			name: 'Canada',
-			percentage: 20,
+			percentage: 2.5,
 		},
 		{
 			name: 'Hawaii',
-			percentage: 50,
+			percentage: 95,
 			isMostVotedOption: true,
 		},
 		{

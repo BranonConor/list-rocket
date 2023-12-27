@@ -22,6 +22,7 @@ export const Poll: React.FC<IPollProps> = ({
 	options,
 }) => {
 	const [currentValue, setCurrentValue] = useState<null | string>(null);
+	console.log(currentValue);
 
 	return (
 		<StyledFormWrapper>

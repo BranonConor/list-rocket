@@ -20,19 +20,20 @@ export const Option: React.FC<IOptionProps> = ({
 	setCurrentValue,
 }) => {
 	const isDisabled = !isOpen;
-	const handleClick = (e) => {
-		if (isDisabled) {
-			return;
-		} else {
-			setCurrentValue(e.target.value);
+
+	const handleClick = () => {
+		if (!isDisabled) {
+			if (currentValue !== name.toLowerCase() || currentValue === null) {
+				setCurrentValue(name.toLowerCase());
+			}
 		}
 	};
 
 	return (
 		<StyledWrapper
 			isDisabled={isDisabled}
-			onClick={handleClick}
-			isMostVotedOption={isMostVotedOption}>
+			isMostVotedOption={isMostVotedOption}
+			onClick={handleClick}>
 			<StyledLabel>
 				<StyledInput
 					type='radio'
