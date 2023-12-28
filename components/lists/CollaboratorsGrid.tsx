@@ -339,10 +339,16 @@ const StyledCollaboratorControlsButton = styled.button<IStyledAvatarProps>(
 	transition: 0.15s ease all;
 	filter: ${isInEditMode ? 'grayscale(0%)' : 'grayscale(100%)'};
 	padding: 0 4px;
+	cursor: pointer;
+
+	&:first-of-type {
+		margin-left: 4px;
+	}
 
 	&:hover {
-		cursor: pointer;
-		transform: scale(1.15) translateY(-2px);
+		img {
+			transform: scale(1.15);
+		}
 	}
 
 	img {
