@@ -92,11 +92,19 @@ const EventPage = ({ event }) => {
 				) : (
 					<StyledSkeletonWrapper>
 						<div id='desktop'>
-							<SkeletonLoader width='60%' margin='8px 0 16px 0' />
+							<SkeletonLoader width='30%' margin='8px 0 16px 0' />
 							<StyledSkeletonListsWrapper>
-								<SkeletonLoader width='300px' height='600px' />
+								<SkeletonLoader
+									width='300px'
+									height='500px'
+									margin='0 16px 0 0'
+								/>
+								<SkeletonLoader
+									width='300px'
+									height='350px'
+									margin='0 16px 0 0'
+								/>
 								<SkeletonLoader width='300px' height='300px' />
-								<SkeletonLoader width='300px' height='400px' />
 							</StyledSkeletonListsWrapper>
 						</div>
 						<div id='mobile'>
@@ -145,9 +153,7 @@ const StyledTitle = styled(Title)(
 );
 const StyledTitleWrapper = styled(motion.div)``;
 const StyledSkeletonListsWrapper = styled.div`
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-gap: 16px;
+	display: flex;
 
 	@media only screen and (max-width: 768px) {
 		grid-template-columns: 1fr;

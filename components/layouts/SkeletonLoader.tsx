@@ -30,6 +30,7 @@ export const SkeletonLoader: React.FC<ISkeletonProps> = ({
 const StyledCard = styled.div<ISkeletonProps>(
 	({ width, height, shape, margin, theme: { colors } }) => `
     width: ${width || '100%'};
+    min-width: ${width || '100%'};
     height: ${height || '40px'};
     background: ${colors.bgLight};
     border-radius: ${shape === 'circle' ? '100%' : '10px'};

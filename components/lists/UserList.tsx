@@ -206,16 +206,13 @@ export const UserList: React.FC<Props> = ({
 				strategy={verticalListSortingStrategy}>
 				<StyledListWrapper
 					initial={{
-						top: -20,
-						opacity: 0,
+						opacity: 0.5,
 					}}
 					animate={{
-						top: 0,
 						opacity: 1,
 					}}
 					transition={{
-						delay: 0.1,
-						duration: 0.25,
+						duration: 0.5,
 						type: 'spring',
 					}}>
 					<StyledList>

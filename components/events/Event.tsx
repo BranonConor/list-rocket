@@ -5,9 +5,7 @@ import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import styled from 'styled-components';
 import Pusher from 'pusher-js';
 import { Title } from '../typography/Title';
-import { Text } from '../typography/Text';
 import { AddBlockButton } from '../buttons/AddBlockButton';
-import { Dialog } from '../Dialog';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { UserContext } from '../../contexts/UserContext';
@@ -88,36 +86,6 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 			pusher.disconnect();
 		};
 	}, []);
-
-	if (isLoading) {
-		return (
-			<>
-				<StyledFlexWrapper>
-					<SkeletonLoader
-						width='128px'
-						height='24px'
-						margin='0 16px 16px 0'
-					/>
-					<SkeletonLoader
-						shape='circle'
-						width='24px'
-						height='24px'
-						margin='0 8px 16px 0'
-					/>
-					<SkeletonLoader
-						shape='circle'
-						width='24px'
-						height='24px'
-						margin='0 8px 16px 0'
-					/>
-					<SkeletonLoader shape='circle' width='24px' height='24px' />
-				</StyledFlexWrapper>
-				<SkeletonLoader />
-				<SkeletonLoader width='60%' />
-				<SkeletonLoader width='30%' />
-			</>
-		);
-	}
 
 	return (
 		<StyledEventWrapper>
