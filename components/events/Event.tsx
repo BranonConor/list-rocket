@@ -258,7 +258,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 				<StyledRocketWrapper>
 					<StyledImage src='/icons/rocket.svg' />
 					<Text variant='body2'>
-						Coming VERY soon 👀✨ Here's a sneak peak 👇🏽
+						Coming VERY soon 👀✨ Check out this sneak peak 👇🏽
 					</Text>
 					<StyledPollsWrapper>
 						<Poll
