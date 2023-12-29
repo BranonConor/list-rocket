@@ -1,8 +1,7 @@
 import { DashLayout } from '../../components/layouts/DashLayout';
 import Head from 'next/head';
-import { WorkspaceControls } from '../../components/events/WorkspaceControls';
 import styled from 'styled-components';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Title } from '../../components/typography/Title';
 import { Event } from '../../components/events/Event';
 import { useSession } from 'next-auth/react';
@@ -88,7 +87,34 @@ const EventPage = ({ event }) => {
 			<EventDetails />
 			{/* ---- WORKSPACE ---- */}
 			<StyledWorkspaceWrapper>
-				{currentEvent && <Event currentEvent={currentEvent} />}
+				{currentEvent ? (
+					<Event currentEvent={currentEvent} />
+				) : (
+					<StyledSkeletonWrapper>
+						<div id='desktop'>
+							<SkeletonLoader width='30%' margin='8px 0 16px 0' />
+							<StyledSkeletonListsWrapper>
+								<SkeletonLoader
+									width='300px'
+									height='500px'
+									margin='0 16px 0 0'
+								/>
+								<SkeletonLoader
+									width='300px'
+									height='350px'
+									margin='0 16px 0 0'
+								/>
+								<SkeletonLoader width='300px' height='300px' />
+							</StyledSkeletonListsWrapper>
+						</div>
+						<div id='mobile'>
+							<SkeletonLoader width='60%' />
+							<StyledSkeletonListsWrapper>
+								<SkeletonLoader width='100%' height='300px' />
+							</StyledSkeletonListsWrapper>
+						</div>
+					</StyledSkeletonWrapper>
+				)}
 			</StyledWorkspaceWrapper>
 		</DashLayout>
 	);
@@ -126,3 +152,30 @@ const StyledTitle = styled(Title)(
 `
 );
 const StyledTitleWrapper = styled(motion.div)``;
+const StyledSkeletonListsWrapper = styled.div`
+	display: flex;
+
+	@media only screen and (max-width: 768px) {
+		grid-template-columns: 1fr;
+	}
+`;
+const StyledSkeletonWrapper = styled.div`
+	width: 100%;
+	overflow: hidden;
+
+	#mobile {
+		display: none;
+	}
+	#desktop {
+		display: block;
+	}
+
+	@media only screen and (max-width: 768px) {
+		#mobile {
+			display: block;
+		}
+		#desktop {
+			display: none;
+		}
+	}
+`;

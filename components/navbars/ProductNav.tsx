@@ -41,8 +41,7 @@ const StyledWrapper = styled.div(
 	box-sizing: border-box;
 	position: relative;
 	top: 0;
-	z-index: 9;
-	overflow: hidden;
+	z-index: 10;
 	width: 100%;
 	padding: 0;
 	height: 100%;

@@ -143,19 +143,23 @@ export const AddCollaborator = (props) => {
 
 const StyledFormWrapper = styled.div`
 	display: block;
-	width: 500px;
+	width: 100%;
+	max-width: 500px;
+	margin-left: 8px;
+
+	@media only screen and (max-width: 1236px) {
+		margin-left: 0px;
+	}
 `;
 
 const StyledForm = styled(motion.form)`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-left: 8px;
 	box-sizing: border-box;
 	border-radius: 10px;
 
 	@media only screen and (max-width: 865px) {
-		margin-left: 0;
 		margin-top: 8px;
 	}
 

@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AllInvites } from '../components/events/AllInvites';
 import { UserCard } from '../components/cards/UserCard';
+import { Poll } from '../components/votes/Poll';
 
 const Dashboard = () => {
 	const router = useRouter();

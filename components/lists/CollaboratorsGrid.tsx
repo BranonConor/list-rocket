@@ -40,15 +40,12 @@ export const CollaboratorsGrid: React.FC<ICollaboratorsGridProps> = ({
 	return (
 		<StyledGrid
 			initial={{
-				top: -20,
 				opacity: 0,
 			}}
 			animate={{
-				top: 0,
 				opacity: 1,
 			}}
 			transition={{
-				delay: 0.1,
 				duration: 0.5,
 				type: 'spring',
 			}}>
@@ -62,6 +59,9 @@ export const CollaboratorsGrid: React.FC<ICollaboratorsGridProps> = ({
 							<ProfilePhoto
 								photo={collaborator.image}
 								dimensions='24px'
+								showTooltip
+								tooltipContent={collaborator?.name}
+								tooltipId={collaborator._id}
 							/>
 							{editCollaboratorsButtonIsClicked && (
 								<StyledDeleteCollaboratorButton
@@ -115,6 +115,9 @@ export const CollaboratorsGrid: React.FC<ICollaboratorsGridProps> = ({
 							<ProfilePhoto
 								photo={collaborator.image}
 								dimensions='24px'
+								showTooltip
+								tooltipContent={collaborator.name}
+								tooltipId={collaborator._id}
 							/>
 							<StyledPendingDot />
 							{editCollaboratorsButtonIsClicked && (
@@ -249,7 +252,6 @@ const StyledCollaboratorsWrapper = styled(motion.div)`
 	align-items: center;
 	width: 100%;
 	min-height: 40px;
-	margin: 0 0 16px 0;
 
 	&:hover {
 		button {
@@ -258,13 +260,14 @@ const StyledCollaboratorsWrapper = styled(motion.div)`
 	}
 `;
 const StyledH2 = styled(Title)`
-	margin: 0 16px 0 0;
+	margin: 0 4px 0 0;
 	min-height: 40px;
 	display: flex;
 	align-items: center;
+	transform: translateY(2px);
 
 	@media only screen and (max-width: 768px) {
-		margin: 0 8px 0 0;
+		margin: 0 4px 0 0;
 	}
 `;
 
@@ -285,7 +288,9 @@ const StyledAvatar = styled.div<IStyledAvatarProps>(
 	align-items: center;
 
 	&:hover {
-		transform: scale(1.1);
+		img {
+			transform: scale(1.1);
+		}
 	}
 
 	img {
@@ -312,7 +317,9 @@ const StyledPendingAvatar = styled.div<IStyledAvatarProps>(
 	}
 
 	&:hover {
-		transform: scale(1.1);
+		img {
+			transform: scale(1.1);
+		}
 	}
 
 	img {
@@ -332,15 +339,28 @@ const StyledCollaboratorControlsButton = styled.button<IStyledAvatarProps>(
 	transition: 0.15s ease all;
 	filter: ${isInEditMode ? 'grayscale(0%)' : 'grayscale(100%)'};
 	padding: 0 4px;
+	cursor: pointer;
+
+	&:first-of-type {
+		margin-left: 4px;
+	}
 
 	&:hover {
-		cursor: pointer;
-		transform: scale(1.15) translateY(-2px);
+		img {
+			transform: scale(1.15);
+		}
 	}
 
 	img {
+		transition: 0.1s ease all;
 		width: 16px;
 		height: 16px;
+	}
+
+	@media only screen and (max-width: 768px) {
+		&:first-of-type {
+			margin-left: 0;
+		}
 	}
 `
 );

@@ -20,6 +20,12 @@ const EventSchema = new Schema({
 			ref: 'lists',
 		},
 	],
+	polls: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'polls',
+		},
+	],
 	pendingCollaborators: [
 		{
 			type: Schema.Types.ObjectId,

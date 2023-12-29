@@ -7,22 +7,58 @@ import Pusher from 'pusher-js';
 import { Title } from '../typography/Title';
 import { Text } from '../typography/Text';
 import { AddBlockButton } from '../buttons/AddBlockButton';
-import { Dialog } from '../Dialog';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { UserContext } from '../../contexts/UserContext';
-import { SkeletonLoader } from '../layouts/SkeletonLoader';
+import { AddBlockModal } from './AddBlockModal';
+import { Poll } from '../votes/Poll';
 
 interface IEventProps {
 	currentEvent: any;
 }
 
+const mockOptions1 = [
+	{
+		name: 'Convenience',
+		percentage: 20,
+	},
+	{
+		name: 'User Experience',
+		percentage: 60,
+		isMostVotedOption: true,
+	},
+	{
+		name: 'Collaboration',
+		percentage: 20,
+	},
+];
+const mockOptions2 = [
+	{
+		name: 'Mexico',
+		percentage: 15,
+	},
+	{
+		name: 'Canada',
+		percentage: 5,
+	},
+	{
+		name: 'Hawaii',
+		percentage: 80,
+		isMostVotedOption: true,
+	},
+	{
+		name: 'Kansas',
+		percentage: 0,
+	},
+];
+
 export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
-	const { refreshEvent, isLoading } = useContext(WorkspaceContext);
+	const { refreshEvent } = useContext(WorkspaceContext);
 	const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
 	const { user } = useContext(UserContext);
 
 	const { lists, collaborators, pendingCollaborators } = currentEvent;
+	const [activeTab, setActiveTab] = useState('lists');
 
 	//This entire grid build is an abonimation and also a stroke of genius
 	const getGrid = (columnCount, lists) => {
@@ -88,172 +124,164 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 		};
 	}, []);
 
-	if (isLoading) {
-		return (
-			<>
-				<StyledFlexWrapper>
-					<SkeletonLoader
-						width='128px'
-						height='24px'
-						margin='0 16px 16px 0'
-					/>
-					<SkeletonLoader
-						shape='circle'
-						width='24px'
-						height='24px'
-						margin='0 8px 16px 0'
-					/>
-					<SkeletonLoader
-						shape='circle'
-						width='24px'
-						height='24px'
-						margin='0 8px 16px 0'
-					/>
-					<SkeletonLoader shape='circle' width='24px' height='24px' />
-				</StyledFlexWrapper>
-				<SkeletonLoader />
-				<SkeletonLoader width='60%' />
-				<SkeletonLoader width='30%' />
-			</>
-		);
-	}
-
 	return (
 		<StyledEventWrapper>
-			<CollaboratorsGrid
-				collaborators={collaborators}
-				pendingCollaborators={pendingCollaborators}
-			/>
-			{!lists?.length ? (
-				<StyledEmptyEventWrapper>
-					<StyledH3 variant='heading3'>
-						NO EVENT BLOCKS ADDED
-					</StyledH3>
-				</StyledEmptyEventWrapper>
-			) : (
-				<>
-					<StyledGrid id='extra-large-grid'>
-						{extraLargeGrid.map((column, index) => {
-							return (
-								<StyledListWrapper key={index}>
-									{column.map((list) => {
-										return (
-											<UserList
-												creator={list?.creator}
-												customCreator={
-													list?.customCreator
-												}
-												items={list?.items}
-												id={list?._id}
-												key={list?._id}
-											/>
-										);
-									})}
-								</StyledListWrapper>
-							);
-						})}
-					</StyledGrid>
-					<StyledGrid id='desktop-grid'>
-						{desktopGrid.map((column, index) => {
-							return (
-								<StyledListWrapper key={index}>
-									{column.map((list) => {
-										return (
-											<UserList
-												creator={list?.creator}
-												customCreator={
-													list?.customCreator
-												}
-												items={list?.items}
-												id={list?._id}
-												key={list?._id}
-											/>
-										);
-									})}
-								</StyledListWrapper>
-							);
-						})}
-					</StyledGrid>
-					<StyledGrid id='tablet-grid'>
-						{tabletGrid.map((column, index) => {
-							return (
-								<StyledListWrapper key={index}>
-									{column.map((list) => {
-										return (
-											<UserList
-												creator={list?.creator}
-												customCreator={
-													list?.customCreator
-												}
-												items={list?.items}
-												id={list?._id}
-												key={list?._id}
-											/>
-										);
-									})}
-								</StyledListWrapper>
-							);
-						})}
-					</StyledGrid>
-					<StyledGrid id='mobile-grid'>
-						{mobileGrid.map((column, index) => {
-							return (
-								<StyledListWrapper key={index}>
-									{column.map((list) => {
-										return (
-											<UserList
-												creator={list?.creator}
-												customCreator={
-													list?.customCreator
-												}
-												items={list?.items}
-												id={list?._id}
-												key={list?._id}
-											/>
-										);
-									})}
-								</StyledListWrapper>
-							);
-						})}
-					</StyledGrid>
-				</>
+			<StyledTopWrapper>
+				<CollaboratorsGrid
+					collaborators={collaborators}
+					pendingCollaborators={pendingCollaborators}
+				/>
+				<StyledTabsWrapper>
+					<StyledTab
+						isActive={activeTab === 'lists'}
+						onClick={() => setActiveTab('lists')}>
+						<StyledTabIcon
+							src={
+								activeTab === 'lists'
+									? '/icons/list-light.svg'
+									: '/icons/list-dark.svg'
+							}
+						/>
+						Lists
+					</StyledTab>
+					<StyledTab
+						isActive={activeTab === 'polls'}
+						onClick={() => setActiveTab('polls')}>
+						<StyledTabIcon
+							src={
+								activeTab === 'polls'
+									? '/icons/poll-light.svg'
+									: '/icons/poll-dark.svg'
+							}
+						/>
+						Polls
+					</StyledTab>
+				</StyledTabsWrapper>
+			</StyledTopWrapper>
+			{activeTab === 'lists' &&
+				(!lists?.length ? (
+					<StyledEmptyEventWrapper>
+						<StyledH3 variant='heading3'>
+							NO EVENT BLOCKS ADDED
+						</StyledH3>
+					</StyledEmptyEventWrapper>
+				) : (
+					<>
+						<StyledGrid id='extra-large-grid'>
+							{extraLargeGrid.map((column, index) => {
+								return (
+									<StyledListWrapper key={index}>
+										{column.map((list) => {
+											return (
+												<UserList
+													creator={list?.creator}
+													customCreator={
+														list?.customCreator
+													}
+													items={list?.items}
+													id={list?._id}
+													key={list?._id}
+												/>
+											);
+										})}
+									</StyledListWrapper>
+								);
+							})}
+						</StyledGrid>
+						<StyledGrid id='desktop-grid'>
+							{desktopGrid.map((column, index) => {
+								return (
+									<StyledListWrapper key={index}>
+										{column.map((list) => {
+											return (
+												<UserList
+													creator={list?.creator}
+													customCreator={
+														list?.customCreator
+													}
+													items={list?.items}
+													id={list?._id}
+													key={list?._id}
+												/>
+											);
+										})}
+									</StyledListWrapper>
+								);
+							})}
+						</StyledGrid>
+						<StyledGrid id='tablet-grid'>
+							{tabletGrid.map((column, index) => {
+								return (
+									<StyledListWrapper key={index}>
+										{column.map((list) => {
+											return (
+												<UserList
+													creator={list?.creator}
+													customCreator={
+														list?.customCreator
+													}
+													items={list?.items}
+													id={list?._id}
+													key={list?._id}
+												/>
+											);
+										})}
+									</StyledListWrapper>
+								);
+							})}
+						</StyledGrid>
+						<StyledGrid id='mobile-grid'>
+							{mobileGrid.map((column, index) => {
+								return (
+									<StyledListWrapper key={index}>
+										{column.map((list) => {
+											return (
+												<UserList
+													creator={list?.creator}
+													customCreator={
+														list?.customCreator
+													}
+													items={list?.items}
+													id={list?._id}
+													key={list?._id}
+												/>
+											);
+										})}
+									</StyledListWrapper>
+								);
+							})}
+						</StyledGrid>
+					</>
+				))}
+
+			{activeTab === 'polls' && (
+				<StyledRocketWrapper>
+					<StyledImage src='/icons/rocket.svg' />
+					<Text variant='body2'>
+						Coming VERY soon 👀✨ Check out this sneak peak 👇🏽
+					</Text>
+					<StyledPollsWrapper>
+						<Poll
+							title='What do you love most about ListRocket?'
+							creator={user?.name}
+							isOpen
+							options={mockOptions1}
+						/>
+						<Poll
+							title='Where should we go for our vacation?'
+							creator={user?.name}
+							options={mockOptions2}
+							userSelection='hawaii'
+						/>
+					</StyledPollsWrapper>
+				</StyledRocketWrapper>
 			)}
+
 			{blockModalIsOpen && (
-				<Dialog
-					maxWidth='50%'
-					title='✨ Add Event Blocks'
-					description={
-						'Customize your event by adding the blocks you need!'
-					}
-					buttonText={'Cancel'}
-					setDialogIsOpen={setBlockModalIsOpen}>
-					<StyledBlockSelection>
-						<StyledCard onClick={handleAddListBlock}>
-							<StyledTitle variant='heading3'>
-								<StyledIcon src='/icons/list.svg' />
-								List
-							</StyledTitle>
-							<Text variant='body2'>
-								Lists can be assigned a user and be filled with
-								various types of nifty List Items
-							</Text>
-						</StyledCard>
-						<StyledComingSoonCard>
-							<StyledTitle variant='heading3'>Poll</StyledTitle>
-							<Text variant='body2'>Coming soon! 👀</Text>
-						</StyledComingSoonCard>
-						<StyledComingSoonCard>
-							<StyledTitle variant='heading3'>Chats</StyledTitle>
-							<Text variant='body2'>Coming soon! 👀</Text>
-						</StyledComingSoonCard>
-						<StyledComingSoonCard>
-							<StyledTitle variant='heading3'>
-								Announcements
-							</StyledTitle>
-							<Text variant='body2'>Coming soon! 👀</Text>
-						</StyledComingSoonCard>
-					</StyledBlockSelection>
-				</Dialog>
+				<AddBlockModal
+					setBlockModalIsOpen={setBlockModalIsOpen}
+					handleAddListBlock={handleAddListBlock}
+				/>
 			)}
 			<StyledButtonWrapper>
 				<AddBlockButton onClick={() => setBlockModalIsOpen(true)} />
@@ -372,73 +400,86 @@ const StyledButtonWrapper = styled.div`
 		right: 16px;
 	}
 `;
-const StyledBlockSelection = styled.div(
-	({ theme: { colors } }) => `
+const StyledTabsWrapper = styled.div(
+	({ theme: { shadows } }) => `
 	width: 100%;
+	max-width: 400px;
+	display: flex;
+	box-shadow: ${shadows.standard};
+	border-radius: 10px;
+	box-sizing: border-box;
+	overflow: hidden;
+	height: 36px;
+	justify-self: end;
+	align-self: center;
+
+	@media only screen and (max-width: 768px) {
+		max-width: 100%;
+	}
+`
+);
+interface IStyledTabProps {
+	isActive?: boolean;
+}
+const StyledTab = styled.div<IStyledTabProps>(
+	({ isActive, theme: { typography, colors } }) => `
+	font-size: ${typography.size.caption};
+	line-height: ${typography.lineHeight.caption};
+	text-transform: ${typography.textTransform.caption};
+	box-sizing: border-box;
+	background: ${isActive ? colors.tertiaryGradient : 'white'};
+	color: ${isActive ? 'white' : colors.bgDark};
+	cursor: pointer;
+	transition: 0.1s ease all;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 50%;
+
+	&:hover {
+		background: ${isActive ? colors.tertiaryGradient : colors.chip.defaultBg};
+		color: ${isActive ? 'white' : colors.bgDark};
+	}
+`
+);
+const StyledTabIcon = styled.img`
+	margin-right: 4px;
+	width: 14px;
+	height: 14px;
+`;
+const StyledTopWrapper = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 1fr 1fr;
+	grid-template-columns: 2fr 1fr;
 	grid-gap: 16px;
-	color: ${colors.font.body2};
-	padding: 32px 0;
-	
+	width: 100%;
+
+	margin-bottom: 16px;
+
 	@media only screen and (max-width: 768px) {
 		grid-template-columns: 1fr;
-		max-height: 300px;
-		overflow: auto;
-		padding: 8px 0;
 	}
-`
-);
-const StyledCard = styled.div(
-	({ theme: { colors, shadows } }) => `
-	width: 100%;
-	background: ${colors.bgLight};
-	color: ${colors.font.body};
-	border-radius: 8px;
-	padding: 16px;
-	box-sizing: border-box;
-	transition: 0.15s ease all;
-
-	&:hover {
-		box-shadow: ${shadows.standard};
-		background: white;
-		transform: translateY(-3px);
-		cursor: pointer;
-	}
-
-	@media only screen and (max-width: 768px) {
-		padding: 8px 16px;
-	}
-`
-);
-const StyledComingSoonCard = styled.div(
-	({ theme: { colors } }) => `
-	width: 100%;
-	background: ${colors.bgLight};
-	color: ${colors.font.body};
-	border-radius: 8px;
-	padding: 16px;
-	box-sizing: border-box;
-	transition: 0.15s ease all;
-	opacity: 0.5;
-
-	&:hover {
-		cursor: not-allowed;
-	}
-
-	@media only screen and (max-width: 768px) {
-		padding: 8px 16px;
-	}
-`
-);
-const StyledIcon = styled.img`
-	margin: 0 8px 0 0;
 `;
-const StyledTitle = styled(Title)`
+const StyledImage = styled.img`
+	width: 40px;
+	margin-bottom: 32px;
+`;
+const StyledRocketWrapper = styled.div`
 	display: flex;
+	flex-direction: column;
 	align-items: center;
+	justify-content: center;
+	padding: 16px;
+	width: 100%;
+	box-sizing: border-box;
 `;
-const StyledFlexWrapper = styled.div`
-	display: flex;
+const StyledPollsWrapper = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 16px;
+	width: 100%;
+	margin-top: 16px;
+
+	@media only screen and (max-width: 768px) {
+		grid-template-columns: 1fr;
+	}
 `;

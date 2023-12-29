@@ -95,3 +95,10 @@ export interface IDialogContext {
 	dialogIsOpen: boolean;
 	setDialogIsOpen: Dispatch<SetStateAction<boolean>>;
 }
+
+//POLLS TYPES
+export interface IOption {
+	name: string;
+	percentage?: number;
+	isMostVotedOption?: boolean;
+}
