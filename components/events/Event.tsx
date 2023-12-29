@@ -9,7 +9,6 @@ import { AddBlockButton } from '../buttons/AddBlockButton';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { UserContext } from '../../contexts/UserContext';
-import { SkeletonLoader } from '../layouts/SkeletonLoader';
 import { AddBlockModal } from './AddBlockModal';
 
 interface IEventProps {
@@ -22,6 +21,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 	const { user } = useContext(UserContext);
 
 	const { lists, collaborators, pendingCollaborators } = currentEvent;
+	const [activeTab, setActiveTab] = useState('lists');
 
 	//This entire grid build is an abonimation and also a stroke of genius
 	const getGrid = (columnCount, lists) => {
@@ -89,104 +89,141 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 
 	return (
 		<StyledEventWrapper>
-			<CollaboratorsGrid
-				collaborators={collaborators}
-				pendingCollaborators={pendingCollaborators}
-			/>
-			{!lists?.length ? (
-				<StyledEmptyEventWrapper>
-					<StyledH3 variant='heading3'>
-						NO EVENT BLOCKS ADDED
-					</StyledH3>
-				</StyledEmptyEventWrapper>
-			) : (
-				<>
-					<StyledGrid id='extra-large-grid'>
-						{extraLargeGrid.map((column, index) => {
-							return (
-								<StyledListWrapper key={index}>
-									{column.map((list) => {
-										return (
-											<UserList
-												creator={list?.creator}
-												customCreator={
-													list?.customCreator
-												}
-												items={list?.items}
-												id={list?._id}
-												key={list?._id}
-											/>
-										);
-									})}
-								</StyledListWrapper>
-							);
-						})}
-					</StyledGrid>
-					<StyledGrid id='desktop-grid'>
-						{desktopGrid.map((column, index) => {
-							return (
-								<StyledListWrapper key={index}>
-									{column.map((list) => {
-										return (
-											<UserList
-												creator={list?.creator}
-												customCreator={
-													list?.customCreator
-												}
-												items={list?.items}
-												id={list?._id}
-												key={list?._id}
-											/>
-										);
-									})}
-								</StyledListWrapper>
-							);
-						})}
-					</StyledGrid>
-					<StyledGrid id='tablet-grid'>
-						{tabletGrid.map((column, index) => {
-							return (
-								<StyledListWrapper key={index}>
-									{column.map((list) => {
-										return (
-											<UserList
-												creator={list?.creator}
-												customCreator={
-													list?.customCreator
-												}
-												items={list?.items}
-												id={list?._id}
-												key={list?._id}
-											/>
-										);
-									})}
-								</StyledListWrapper>
-							);
-						})}
-					</StyledGrid>
-					<StyledGrid id='mobile-grid'>
-						{mobileGrid.map((column, index) => {
-							return (
-								<StyledListWrapper key={index}>
-									{column.map((list) => {
-										return (
-											<UserList
-												creator={list?.creator}
-												customCreator={
-													list?.customCreator
-												}
-												items={list?.items}
-												id={list?._id}
-												key={list?._id}
-											/>
-										);
-									})}
-								</StyledListWrapper>
-							);
-						})}
-					</StyledGrid>
-				</>
+			<StyledTopWrapper>
+				<CollaboratorsGrid
+					collaborators={collaborators}
+					pendingCollaborators={pendingCollaborators}
+				/>
+				<StyledTabsWrapper>
+					<StyledTab
+						isActive={activeTab === 'lists'}
+						onClick={() => setActiveTab('lists')}>
+						<StyledTabIcon
+							src={
+								activeTab === 'lists'
+									? '/icons/list-light.svg'
+									: '/icons/list-dark.svg'
+							}
+						/>
+						Lists
+					</StyledTab>
+					<StyledTab
+						isActive={activeTab === 'polls'}
+						onClick={() => setActiveTab('polls')}>
+						<StyledTabIcon
+							src={
+								activeTab === 'polls'
+									? '/icons/poll-light.svg'
+									: '/icons/poll-dark.svg'
+							}
+						/>
+						Polls
+					</StyledTab>
+				</StyledTabsWrapper>
+			</StyledTopWrapper>
+			{activeTab === 'lists' &&
+				(!lists?.length ? (
+					<StyledEmptyEventWrapper>
+						<StyledH3 variant='heading3'>
+							NO EVENT BLOCKS ADDED
+						</StyledH3>
+					</StyledEmptyEventWrapper>
+				) : (
+					<>
+						<StyledGrid id='extra-large-grid'>
+							{extraLargeGrid.map((column, index) => {
+								return (
+									<StyledListWrapper key={index}>
+										{column.map((list) => {
+											return (
+												<UserList
+													creator={list?.creator}
+													customCreator={
+														list?.customCreator
+													}
+													items={list?.items}
+													id={list?._id}
+													key={list?._id}
+												/>
+											);
+										})}
+									</StyledListWrapper>
+								);
+							})}
+						</StyledGrid>
+						<StyledGrid id='desktop-grid'>
+							{desktopGrid.map((column, index) => {
+								return (
+									<StyledListWrapper key={index}>
+										{column.map((list) => {
+											return (
+												<UserList
+													creator={list?.creator}
+													customCreator={
+														list?.customCreator
+													}
+													items={list?.items}
+													id={list?._id}
+													key={list?._id}
+												/>
+											);
+										})}
+									</StyledListWrapper>
+								);
+							})}
+						</StyledGrid>
+						<StyledGrid id='tablet-grid'>
+							{tabletGrid.map((column, index) => {
+								return (
+									<StyledListWrapper key={index}>
+										{column.map((list) => {
+											return (
+												<UserList
+													creator={list?.creator}
+													customCreator={
+														list?.customCreator
+													}
+													items={list?.items}
+													id={list?._id}
+													key={list?._id}
+												/>
+											);
+										})}
+									</StyledListWrapper>
+								);
+							})}
+						</StyledGrid>
+						<StyledGrid id='mobile-grid'>
+							{mobileGrid.map((column, index) => {
+								return (
+									<StyledListWrapper key={index}>
+										{column.map((list) => {
+											return (
+												<UserList
+													creator={list?.creator}
+													customCreator={
+														list?.customCreator
+													}
+													items={list?.items}
+													id={list?._id}
+													key={list?._id}
+												/>
+											);
+										})}
+									</StyledListWrapper>
+								);
+							})}
+						</StyledGrid>
+					</>
+				))}
+
+			{activeTab === 'polls' && (
+				<StyledRocketWrapper>
+					<StyledImage src='/icons/rocket.svg' />
+					Coming VERY soon 👀✨
+				</StyledRocketWrapper>
 			)}
+
 			{blockModalIsOpen && (
 				<AddBlockModal
 					setBlockModalIsOpen={setBlockModalIsOpen}
@@ -310,6 +347,73 @@ const StyledButtonWrapper = styled.div`
 		right: 16px;
 	}
 `;
-const StyledFlexWrapper = styled.div`
+const StyledTabsWrapper = styled.div(
+	({ theme: { shadows } }) => `
+	width: 100%;
+	max-width: 400px;
 	display: flex;
+	box-shadow: ${shadows.standard};
+	border-radius: 10px;
+	box-sizing: border-box;
+	overflow: hidden;
+	height: 36px;
+	justify-self: end;
+	align-self: center;
+
+	@media only screen and (max-width: 768px) {
+		max-width: 100%;
+	}
+`
+);
+interface IStyledTabProps {
+	isActive?: boolean;
+}
+const StyledTab = styled.div<IStyledTabProps>(
+	({ isActive, theme: { typography, colors } }) => `
+	font-size: ${typography.size.caption};
+	line-height: ${typography.lineHeight.caption};
+	text-transform: ${typography.textTransform.caption};
+	box-sizing: border-box;
+	background: ${isActive ? colors.tertiaryGradient : 'white'};
+	color: ${isActive ? 'white' : colors.bgDark};
+	cursor: pointer;
+	transition: 0.1s ease all;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 50%;
+
+	&:hover {
+		background: ${isActive ? colors.tertiaryGradient : colors.chip.defaultBg};
+		color: ${isActive ? 'white' : colors.bgDark};
+	}
+`
+);
+const StyledTabIcon = styled.img`
+	margin-right: 4px;
+	width: 14px;
+	height: 14px;
+`;
+const StyledTopWrapper = styled.div`
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	grid-gap: 16px;
+	width: 100%;
+
+	margin-bottom: 16px;
+
+	@media only screen and (max-width: 768px) {
+		grid-template-columns: 1fr;
+	}
+`;
+const StyledImage = styled.img`
+	width: 40px;
+	margin-bottom: 32px;
+`;
+const StyledRocketWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 32px 16px;
 `;

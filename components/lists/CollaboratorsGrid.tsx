@@ -252,7 +252,6 @@ const StyledCollaboratorsWrapper = styled(motion.div)`
 	align-items: center;
 	width: 100%;
 	min-height: 40px;
-	margin: 0 0 16px 0;
 
 	&:hover {
 		button {
@@ -261,13 +260,14 @@ const StyledCollaboratorsWrapper = styled(motion.div)`
 	}
 `;
 const StyledH2 = styled(Title)`
-	margin: 0 16px 0 0;
+	margin: 0 4px 0 0;
 	min-height: 40px;
 	display: flex;
 	align-items: center;
+	transform: translateY(2px);
 
 	@media only screen and (max-width: 768px) {
-		margin: 0 8px 0 0;
+		margin: 0 4px 0 0;
 	}
 `;
 
@@ -352,8 +352,15 @@ const StyledCollaboratorControlsButton = styled.button<IStyledAvatarProps>(
 	}
 
 	img {
+		transition: 0.1s ease all;
 		width: 16px;
 		height: 16px;
+	}
+
+	@media only screen and (max-width: 768px) {
+		&:first-of-type {
+			margin-left: 0;
+		}
 	}
 `
 );
