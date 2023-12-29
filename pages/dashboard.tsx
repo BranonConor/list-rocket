@@ -30,41 +30,6 @@ const Dashboard = () => {
 		return <LoadingLayout>Loading...</LoadingLayout>;
 	}
 
-	const mockOptions1 = [
-		{
-			name: 'Convenience',
-			percentage: 20,
-		},
-		{
-			name: 'User Experience',
-			percentage: 60,
-			isMostVotedOption: true,
-		},
-		{
-			name: 'Collaboration',
-			percentage: 20,
-		},
-	];
-	const mockOptions2 = [
-		{
-			name: 'Mexico',
-			percentage: 15,
-		},
-		{
-			name: 'Canada',
-			percentage: 5,
-		},
-		{
-			name: 'Hawaii',
-			percentage: 80,
-			isMostVotedOption: true,
-		},
-		{
-			name: 'Kansas',
-			percentage: 0,
-		},
-	];
-
 	return (
 		<DashLayout>
 			<Head>
@@ -94,20 +59,6 @@ const Dashboard = () => {
 					/>
 				</StyledGreeting>
 			</div>
-			<StyledPollWrapper>
-				<Poll
-					title='What do you love most about ListRocket?'
-					creator={user?.name}
-					isOpen
-					options={mockOptions1}
-				/>
-				<Poll
-					title='Where should we go for our vacation?'
-					creator={user?.name}
-					options={mockOptions2}
-					userSelection='hawaii'
-				/>
-			</StyledPollWrapper>
 			<AllEvents />
 			<AllInvites />
 		</DashLayout>
@@ -140,12 +91,3 @@ const StyledGreeting = styled(motion.div)(
 `
 );
 const StyledTitleWrapper = styled(motion.div)``;
-const StyledPollWrapper = styled.div`
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-gap: 16px;
-
-	@media only screen and (max-width: 768px) {
-		grid-template-columns: 1fr;
-	}
-`;

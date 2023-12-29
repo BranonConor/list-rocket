@@ -5,18 +5,55 @@ import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import styled from 'styled-components';
 import Pusher from 'pusher-js';
 import { Title } from '../typography/Title';
+import { Text } from '../typography/Text';
 import { AddBlockButton } from '../buttons/AddBlockButton';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { UserContext } from '../../contexts/UserContext';
 import { AddBlockModal } from './AddBlockModal';
+import { Poll } from '../votes/Poll';
 
 interface IEventProps {
 	currentEvent: any;
 }
 
+const mockOptions1 = [
+	{
+		name: 'Convenience',
+		percentage: 20,
+	},
+	{
+		name: 'User Experience',
+		percentage: 60,
+		isMostVotedOption: true,
+	},
+	{
+		name: 'Collaboration',
+		percentage: 20,
+	},
+];
+const mockOptions2 = [
+	{
+		name: 'Mexico',
+		percentage: 15,
+	},
+	{
+		name: 'Canada',
+		percentage: 5,
+	},
+	{
+		name: 'Hawaii',
+		percentage: 80,
+		isMostVotedOption: true,
+	},
+	{
+		name: 'Kansas',
+		percentage: 0,
+	},
+];
+
 export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
-	const { refreshEvent, isLoading } = useContext(WorkspaceContext);
+	const { refreshEvent } = useContext(WorkspaceContext);
 	const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
 	const { user } = useContext(UserContext);
 
@@ -220,7 +257,23 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 			{activeTab === 'polls' && (
 				<StyledRocketWrapper>
 					<StyledImage src='/icons/rocket.svg' />
-					Coming VERY soon 👀✨
+					<Text variant='body2'>
+						Coming VERY soon 👀✨ Here's a sneak peak 👇🏽
+					</Text>
+					<StyledPollsWrapper>
+						<Poll
+							title='What do you love most about ListRocket?'
+							creator={user?.name}
+							isOpen
+							options={mockOptions1}
+						/>
+						<Poll
+							title='Where should we go for our vacation?'
+							creator={user?.name}
+							options={mockOptions2}
+							userSelection='hawaii'
+						/>
+					</StyledPollsWrapper>
 				</StyledRocketWrapper>
 			)}
 
@@ -415,5 +468,18 @@ const StyledRocketWrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	padding: 32px 16px;
+	padding: 16px;
+	width: 100%;
+	box-sizing: border-box;
+`;
+const StyledPollsWrapper = styled.div`
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 16px;
+	width: 100%;
+	margin-top: 16px;
+
+	@media only screen and (max-width: 768px) {
+		grid-template-columns: 1fr;
+	}
 `;
