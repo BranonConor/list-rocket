@@ -256,7 +256,6 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 
 			{activeTab === 'polls' && (
 				<StyledRocketWrapper>
-					<StyledImage src='/icons/rocket.svg' />
 					<Text variant='body2'>
 						Coming VERY soon 👀✨ Check out this sneak peak 👇🏽
 					</Text>
@@ -459,16 +458,11 @@ const StyledTopWrapper = styled.div`
 		grid-template-columns: 1fr;
 	}
 `;
-const StyledImage = styled.img`
-	width: 40px;
-	margin-bottom: 32px;
-`;
 const StyledRocketWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	padding: 16px;
 	width: 100%;
 	box-sizing: border-box;
 `;
