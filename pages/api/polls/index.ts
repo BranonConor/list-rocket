@@ -7,11 +7,12 @@ const pollsApiRoutes = async (req, res) => {
 	await connectMongo();
 
 	if (req.method === 'POST') {
+		console.log('PAYLOAD:', req.body);
 		try {
 			//Create a new poll from req data
-			const newPoll = new Poll({ ...req.body.poll });
+			const newPoll = new Poll({ ...req.body });
 			//Add this event to the event's list of polls
-			const event = await Event.findById(req.body.user._id);
+			const event = await Event.findById(req.body.event._id);
 			event.polls.push(newPoll._id);
 			//Save everything
 			await newPoll.save();

@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import { UserContext } from '../../contexts/UserContext';
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import { useAddPollMutation } from '../../hooks/mutations/polls/useAddCustomNameMutation';
 import { Dialog } from '../Dialog';
 
 interface IAddBlockModalProps {
@@ -15,16 +16,10 @@ export const AddPollModal: React.FC<IAddBlockModalProps> = ({
 	const { currentEvent } = useContext(WorkspaceContext);
 	const [titleValue, setTitleValue] = useState('');
 	const [optionsValues, setOptionsValues] = useState<string[]>(['']);
-
+	const { mutate: addPoll } = useAddPollMutation();
 	const handleAddNewOption = (e) => {
 		e.preventDefault();
 		setOptionsValues([...optionsValues, '']);
-	};
-	const handleRemoveOption = (e, index: number) => {
-		e.preventDefault();
-		const values = [...optionsValues];
-		values.splice(index, 1);
-		setOptionsValues(values);
 	};
 
 	const handleChange = (e, index: number) => {
@@ -45,18 +40,26 @@ export const AddPollModal: React.FC<IAddBlockModalProps> = ({
 				creator: user,
 				title: titleValue,
 				options: optionsValues,
-				votes: [],
 				event: currentEvent,
 				isOpen: true,
 			};
-			console.log(pollData);
+
+			addPoll(pollData);
 			setTitleValue('');
 			setOptionsValues(['']);
 			setPollsModalIsOpen(false);
+
+			toast.success('Poll created 🗳️', {
+				toastId: 'error-empty-poll-option-toast',
+			});
 		} catch (error) {
 			if (error.message === 'empty fields') {
 				toast.error('Please make sure there are no empty fields.', {
-					toastId: 'error-delete-event-toast',
+					toastId: 'error-empty-poll-option-toast',
+				});
+			} else {
+				toast.error('Please make sure there are no empty fields.', {
+					toastId: 'error-delete-poll-option-toast',
 				});
 			}
 		}
@@ -79,7 +82,7 @@ export const AddPollModal: React.FC<IAddBlockModalProps> = ({
 					required
 					onChange={(e) => setTitleValue(e.target.value)}
 				/>
-				{optionsValues.map((option, index) => (
+				{optionsValues.map((option, index: number) => (
 					<StyledInputWrapper>
 						<StyledTextInput
 							value={option}
@@ -95,9 +98,12 @@ export const AddPollModal: React.FC<IAddBlockModalProps> = ({
 						{optionsValues.length > 1 && (
 							<StyledClearButton
 								aria-label='delete option'
-								onClick={(e, index) =>
-									handleRemoveOption(e, index)
-								}>
+								onClick={(e) => {
+									e.preventDefault();
+									const values = [...optionsValues];
+									values.splice(index, 1);
+									setOptionsValues(values);
+								}}>
 								<StyledClearIcon src='/icons/x.svg' />
 							</StyledClearButton>
 						)}
