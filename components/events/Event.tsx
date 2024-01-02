@@ -18,39 +18,14 @@ interface IEventProps {
 	currentEvent: any;
 }
 
-const mockOptions1 = [
-	{
-		name: 'Convenience',
-		percentage: 20,
-	},
-	{
-		name: 'User Experience',
-		percentage: 60,
-		isMostVotedOption: true,
-	},
-	{
-		name: 'Collaboration',
-		percentage: 20,
-	},
-];
-const mockOptions2 = [
-	{
-		name: 'Mexico',
-		percentage: 15,
-	},
-	{
-		name: 'Canada',
-		percentage: 5,
-	},
-	{
-		name: 'Hawaii',
-		percentage: 80,
-		isMostVotedOption: true,
-	},
-	{
-		name: 'Kansas',
-		percentage: 0,
-	},
+const mockOptions = ['Convenience', 'Collaboration', 'User Experience'];
+const mockVotes = [
+	{ user: 'branon', option: 'Convenience' },
+	{ user: 'rachel', option: 'Convenience' },
+	{ user: 'brooke', option: 'User Experience' },
+	{ user: 'donna', option: 'Collaboration' },
+	{ user: 'cruz', option: 'User Experience' },
+	{ user: 'caleb', option: 'Convenience' },
 ];
 
 export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
@@ -59,8 +34,10 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 	const [pollsModalIsOpen, setPollsModalIsOpen] = useState(false);
 	const { user } = useContext(UserContext);
 
-	const { lists, collaborators, pendingCollaborators } = currentEvent;
+	const { lists, collaborators, pendingCollaborators, polls } = currentEvent;
 	const [activeTab, setActiveTab] = useState('lists');
+
+	console.log('Polls: ', polls);
 
 	//This entire grid build is an abonimation and also a stroke of genius
 	const getGrid = (columnCount, lists) => {
@@ -256,27 +233,25 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 					</>
 				))}
 
-			{activeTab === 'polls' && (
-				<StyledRocketWrapper>
-					<Text variant='body2'>
-						Coming VERY soon 👀✨ Check out this sneak peak 👇🏽
-					</Text>
+			{activeTab === 'polls' &&
+				(polls?.length ? (
 					<StyledPollsWrapper>
-						<Poll
-							title='What do you love most about ListRocket?'
-							creator={user?.name}
-							isOpen
-							options={mockOptions1}
-						/>
-						<Poll
-							title='Where should we go for our vacation?'
-							creator={user?.name}
-							options={mockOptions2}
-							userSelection='hawaii'
-						/>
+						{polls?.map((poll) => {
+							return (
+								<Poll
+									creator={poll.creator}
+									title={poll.title}
+									options={poll.options}
+									key={poll.id}
+									isOpen={poll.isOpen}
+									votes={poll.votes}
+								/>
+							);
+						})}
 					</StyledPollsWrapper>
-				</StyledRocketWrapper>
-			)}
+				) : (
+					<Text variant='body1'>Nothing here :)</Text>
+				))}
 
 			{blockModalIsOpen && (
 				<AddBlockModal

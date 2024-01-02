@@ -3,30 +3,62 @@ import { Title } from '../typography/Title';
 import { ProfilePhoto } from '../ProfilePhoto';
 import { Text } from '../typography/Text';
 import { Option } from './Option';
-import { IOption } from '../../contexts/types';
+import { IUser } from '../../contexts/types';
 import React, { useState } from 'react';
 
 interface IPollProps {
 	title: string;
-	creator: string;
-	image?: string;
+	creator: IUser;
 	isOpen?: boolean;
-	options: IOption[];
+	options: string[];
 	userSelection?: string;
+	votes?: { user: IUser; option: string }[];
 }
 
 export const Poll: React.FC<IPollProps> = ({
 	title,
-	image,
 	creator,
 	isOpen = false,
 	options,
 	userSelection = null,
+	votes,
 }) => {
 	const [currentValue, setCurrentValue] = useState<null | string>(
 		userSelection
 	);
 
+	const getVoteMap = (votes) => {
+		const map = {};
+		votes.forEach((vote) => {
+			if (map[vote.option]) {
+				map[vote.option].push(vote.user);
+			} else {
+				map[vote.option] = [vote.user];
+			}
+		});
+		return map;
+	};
+	const getOptions = (options, voteMap) => {
+		let totalVotes = 0;
+		options.forEach((option) => {
+			totalVotes += voteMap[option]?.length;
+		});
+		let mostVotes = 0;
+		const reformattedOptions = options.map((option) => {
+			const freq = voteMap[option]?.length;
+			mostVotes = Math.max(freq, mostVotes);
+			const percentage = Math.ceil((freq / totalVotes) * 100);
+			return {
+				name: option,
+				percentage: percentage ? percentage : 0,
+				isMostVotedOption: mostVotes === freq,
+			};
+		});
+		return reformattedOptions;
+	};
+	console.log('Vote Map: ', getVoteMap(votes));
+	const formattedOptions = getOptions(options, getVoteMap(votes));
+	console.log(formattedOptions);
 	return (
 		<StyledFormWrapper>
 			<legend>
@@ -35,18 +67,18 @@ export const Poll: React.FC<IPollProps> = ({
 			<StyledDetailsWrapper>
 				<StyledCreatorLabel>
 					<ProfilePhoto
-						photo={image}
+						photo={creator.image}
 						dimensions='24px'
 						hasBoxShadow
 					/>
-					<StyledText variant='body2'>{creator}</StyledText>
+					<StyledText variant='body2'>{creator.name}</StyledText>
 				</StyledCreatorLabel>
 				<StyledStatusChip isOpen={isOpen}>
 					<Text variant='overline'>{isOpen ? 'OPEN' : 'CLOSED'}</Text>
 				</StyledStatusChip>
 			</StyledDetailsWrapper>
 			<StyledOptionsGrid>
-				{options.map((option) => (
+				{formattedOptions.map((option) => (
 					<React.Fragment key={option.name}>
 						<Option
 							name={option.name}

@@ -11,7 +11,7 @@ const PollSchema = new Schema({
 	votes: [
 		{
 			user: { type: Schema.Types.ObjectId, ref: 'users' },
-			vote: String,
+			option: String,
 		},
 	],
 	event: {
