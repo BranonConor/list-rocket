@@ -9,7 +9,7 @@ import { SecondaryButton } from './buttons/SecondaryButton';
 interface IProps extends React.DialogHTMLAttributes<HTMLDivElement> {
 	title: string;
 	description: string;
-	cta?: (e: any) => Promise<void>;
+	cta?: ((e: any) => Promise<void>) | ((e: any) => void);
 	buttonText: string;
 	setDialogIsOpen: Dispatch<SetStateAction<boolean>>;
 	showCancelButton?: boolean;

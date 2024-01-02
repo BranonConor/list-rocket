@@ -12,6 +12,7 @@ import axios from 'axios';
 import { UserContext } from '../../contexts/UserContext';
 import { AddBlockModal } from './AddBlockModal';
 import { Poll } from '../votes/Poll';
+import { AddPollModal } from './AddPollModal';
 
 interface IEventProps {
 	currentEvent: any;
@@ -55,6 +56,7 @@ const mockOptions2 = [
 export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 	const { refreshEvent } = useContext(WorkspaceContext);
 	const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
+	const [pollsModalIsOpen, setPollsModalIsOpen] = useState(false);
 	const { user } = useContext(UserContext);
 
 	const { lists, collaborators, pendingCollaborators } = currentEvent;
@@ -280,7 +282,11 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 				<AddBlockModal
 					setBlockModalIsOpen={setBlockModalIsOpen}
 					handleAddListBlock={handleAddListBlock}
+					setPollsModalIsOpen={setPollsModalIsOpen}
 				/>
+			)}
+			{pollsModalIsOpen && (
+				<AddPollModal setPollsModalIsOpen={setPollsModalIsOpen} />
 			)}
 			<StyledButtonWrapper>
 				<AddBlockButton onClick={() => setBlockModalIsOpen(true)} />
