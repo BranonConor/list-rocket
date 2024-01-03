@@ -43,8 +43,9 @@ const StyledWrapper = styled.div(
 	top: 0;
 	z-index: 10;
 	width: 100%;
-	padding: 0;
 	height: 100%;
+	max-height: 100vh;
+	padding: 0;
 	background: ${colors.white};
 	border-right: 3px solid ${colors.menu.border};
 
