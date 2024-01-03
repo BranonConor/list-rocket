@@ -7,11 +7,18 @@ import { Text } from '../typography/Text';
 interface IAddBlockModalProps {
 	setBlockModalIsOpen: Dispatch<SetStateAction<boolean>>;
 	handleAddListBlock: () => void;
+	setPollsModalIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 export const AddBlockModal: React.FC<IAddBlockModalProps> = ({
 	setBlockModalIsOpen,
 	handleAddListBlock,
+	setPollsModalIsOpen,
 }) => {
+	const handleAddPollBlock = () => {
+		setPollsModalIsOpen(true);
+		setBlockModalIsOpen(false);
+	};
+
 	return (
 		<Dialog
 			maxWidth='50%'
@@ -30,10 +37,15 @@ export const AddBlockModal: React.FC<IAddBlockModalProps> = ({
 						types of nifty List Items
 					</Text>
 				</StyledCard>
-				<StyledComingSoonCard>
-					<StyledTitle variant='heading3'>Poll</StyledTitle>
-					<Text variant='body2'>Coming soon! 👀</Text>
-				</StyledComingSoonCard>
+				<StyledCard onClick={handleAddPollBlock}>
+					<StyledTitle variant='heading3'>
+						<StyledIcon src='/icons/poll.svg' />
+						Poll
+					</StyledTitle>
+					<Text variant='body2'>
+						Polls can be used to make decisions as a group by voting
+					</Text>
+				</StyledCard>
 				<StyledComingSoonCard>
 					<StyledTitle variant='heading3'>Chats</StyledTitle>
 					<Text variant='body2'>Coming soon! 👀</Text>

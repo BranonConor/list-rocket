@@ -12,52 +12,19 @@ import axios from 'axios';
 import { UserContext } from '../../contexts/UserContext';
 import { AddBlockModal } from './AddBlockModal';
 import { Poll } from '../votes/Poll';
+import { AddPollModal } from './AddPollModal';
 
 interface IEventProps {
 	currentEvent: any;
 }
 
-const mockOptions1 = [
-	{
-		name: 'Convenience',
-		percentage: 20,
-	},
-	{
-		name: 'User Experience',
-		percentage: 60,
-		isMostVotedOption: true,
-	},
-	{
-		name: 'Collaboration',
-		percentage: 20,
-	},
-];
-const mockOptions2 = [
-	{
-		name: 'Mexico',
-		percentage: 15,
-	},
-	{
-		name: 'Canada',
-		percentage: 5,
-	},
-	{
-		name: 'Hawaii',
-		percentage: 80,
-		isMostVotedOption: true,
-	},
-	{
-		name: 'Kansas',
-		percentage: 0,
-	},
-];
-
 export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 	const { refreshEvent } = useContext(WorkspaceContext);
 	const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
+	const [pollsModalIsOpen, setPollsModalIsOpen] = useState(false);
 	const { user } = useContext(UserContext);
 
-	const { lists, collaborators, pendingCollaborators } = currentEvent;
+	const { lists, collaborators, pendingCollaborators, polls } = currentEvent;
 	const [activeTab, setActiveTab] = useState('lists');
 
 	//This entire grid build is an abonimation and also a stroke of genius
@@ -161,9 +128,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 			{activeTab === 'lists' &&
 				(!lists?.length ? (
 					<StyledEmptyEventWrapper>
-						<StyledH3 variant='heading3'>
-							NO EVENT BLOCKS ADDED
-						</StyledH3>
+						<StyledH3 variant='heading3'>NO LISTS ADDED</StyledH3>
 					</StyledEmptyEventWrapper>
 				) : (
 					<>
@@ -254,33 +219,38 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 					</>
 				))}
 
-			{activeTab === 'polls' && (
-				<StyledRocketWrapper>
-					<Text variant='body2'>
-						Coming VERY soon 👀✨ Check out this sneak peak 👇🏽
-					</Text>
+			{activeTab === 'polls' &&
+				(polls?.length ? (
 					<StyledPollsWrapper>
-						<Poll
-							title='What do you love most about ListRocket?'
-							creator={user?.name}
-							isOpen
-							options={mockOptions1}
-						/>
-						<Poll
-							title='Where should we go for our vacation?'
-							creator={user?.name}
-							options={mockOptions2}
-							userSelection='hawaii'
-						/>
+						{polls?.map((poll) => {
+							return (
+								<Poll
+									id={poll._id}
+									creator={poll.creator}
+									title={poll.title}
+									options={poll.options}
+									key={poll.id}
+									isOpen={poll.isOpen}
+									votes={poll.votes}
+								/>
+							);
+						})}
 					</StyledPollsWrapper>
-				</StyledRocketWrapper>
-			)}
+				) : (
+					<StyledEmptyEventWrapper>
+						<StyledH3 variant='heading3'>NO POLLS ADDED</StyledH3>
+					</StyledEmptyEventWrapper>
+				))}
 
 			{blockModalIsOpen && (
 				<AddBlockModal
 					setBlockModalIsOpen={setBlockModalIsOpen}
 					handleAddListBlock={handleAddListBlock}
+					setPollsModalIsOpen={setPollsModalIsOpen}
 				/>
+			)}
+			{pollsModalIsOpen && (
+				<AddPollModal setPollsModalIsOpen={setPollsModalIsOpen} />
 			)}
 			<StyledButtonWrapper>
 				<AddBlockButton onClick={() => setBlockModalIsOpen(true)} />
@@ -458,20 +428,16 @@ const StyledTopWrapper = styled.div`
 		grid-template-columns: 1fr;
 	}
 `;
-const StyledRocketWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	box-sizing: border-box;
-`;
 const StyledPollsWrapper = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr;
 	grid-gap: 16px;
 	width: 100%;
 	margin-top: 16px;
+
+	@media only screen and (max-width: 1100px) {
+		grid-template-columns: 1fr 1fr;
+	}
 
 	@media only screen and (max-width: 768px) {
 		grid-template-columns: 1fr;

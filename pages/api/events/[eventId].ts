@@ -2,6 +2,7 @@ import connectMongo from '../../../models/utils/connectMongo';
 import { Event } from '../../../models/Event';
 import { User } from '../../../models/User';
 import { List, ListItem } from '../../../models/List';
+import { Poll } from '../../../models/Poll';
 
 const eventApiRoutes = async (req, res) => {
 	//mongoose code
@@ -12,6 +13,7 @@ const eventApiRoutes = async (req, res) => {
 		await List.findOne({});
 		await ListItem.findOne({});
 		await User.findOne({});
+		await Poll.findOne({});
 
 		const event = await Event.findById(req.query.eventId)
 			.populate('creator')
@@ -29,6 +31,21 @@ const eventApiRoutes = async (req, res) => {
 					path: 'items',
 					populate: {
 						path: 'resolvedBy',
+					},
+				},
+			})
+			.populate({
+				path: 'polls',
+				populate: {
+					path: 'creator',
+				},
+			})
+			.populate({
+				path: 'polls',
+				populate: {
+					path: 'votes',
+					populate: {
+						path: 'user',
 					},
 				},
 			});
