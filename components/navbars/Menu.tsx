@@ -90,8 +90,8 @@ const StyledListItem = styled.div`
 	width: 100%;
 	height: 64px;
 
-	@media only screen and(max-width: 768px) {
-		height: 100%;
+	@media only screen and (max-width: 768px) {
+		height: 56px;
 	}
 `;
 interface IStyledAnchorProps {
@@ -111,6 +111,7 @@ const StyledAnchor = styled.a<IStyledAnchorProps>(
 	background: ${isActive && colors.bgLight};
 	box-shadow: inset ${isActive && shadows.standard};
 	transition: 0.1s ease all;
+	cursor: pointer;
 
 	img {
 		transition: 0.1s ease all;
@@ -118,7 +119,6 @@ const StyledAnchor = styled.a<IStyledAnchorProps>(
 	}
 
     &:hover {
-        cursor: pointer;
         background: ${colors.bgLight};
 		box-shadow: inset ${shadows.standard};
 

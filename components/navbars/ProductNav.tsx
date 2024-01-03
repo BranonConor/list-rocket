@@ -8,18 +8,18 @@ export const ProductNav = () => {
 	return (
 		<StyledWrapper>
 			<StyledMenu>
-				<StyledBrand
-					initial={{ y: '15%', opacity: 0 }}
-					animate={{ y: '0%', opacity: 1 }}
-					transition={{
-						duration: 1,
-						type: 'spring',
-					}}>
+				<StyledBrand>
 					<StyledLink href='/'>
 						<StyledAnchor>
 							<StyledLogo
 								src='/icons/rocket.svg'
 								alt='rocket icon'
+								initial={{ y: '15%', opacity: 0 }}
+								animate={{ y: '0%', opacity: 1 }}
+								transition={{
+									duration: 1,
+									type: 'spring',
+								}}
 							/>
 						</StyledAnchor>
 					</StyledLink>
@@ -58,13 +58,13 @@ const StyledWrapper = styled.div(
 	}
 	`
 );
-const StyledBrand = styled(motion.div)`
+const StyledBrand = styled.div`
 	padding: 16px 0;
 	position: relative;
 	top: 0;
 	z-index: 8;
 	width: 100%;
-	height: auto;
+	height: 150px;
 	display: flex;
 	justify-content: center;
 
@@ -79,6 +79,7 @@ const StyledAnchor = styled.a`
 	width: 100%;
 	display: flex;
 	justify-content: center;
+	padding-top: 16px;
 
 	&:hover {
 		cursor: pointer;
@@ -92,7 +93,7 @@ const StyledMenu = styled.div`
 		height: 100%;
 	}
 `;
-const StyledLogo = styled.img`
-	width: 50%;
-	height: 50%;
+const StyledLogo = styled(motion.img)`
+	width: 40%;
+	height: 40%;
 `;
