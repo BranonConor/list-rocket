@@ -85,7 +85,14 @@ export const Option: React.FC<IOptionProps> = ({
 				isMostVotedOption={isMostVotedOption}>
 				{percentage}%
 			</StyledPercentageWrapper>
-			<StyledBar width={percentage} />
+			<StyledBar
+				initial={{ width: '0%' }}
+				animate={{ width: `${percentage}%` }}
+				transition={{
+					duration: 0.25,
+					type: 'spring',
+				}}
+			/>
 		</StyledWrapper>
 	);
 };
@@ -145,16 +152,12 @@ const StyledPercentageWrapper = styled.div<IStyledPercentageWrapperProps>(
 
 `
 );
-interface IStyledBarProps {
-	width: number;
-}
-const StyledBar = styled.div<IStyledBarProps>(
-	({ width, theme: { colors } }) => `
+const StyledBar = styled(motion.div)(
+	({ theme: { colors } }) => `
 	position: absolute;
 	left: 0;
 	top: 0;
     height: 100%;
-    width: ${width}%;
     background: ${colors.chip.defaultBg};
     z-index: 0;
     border-radius: 8px;
