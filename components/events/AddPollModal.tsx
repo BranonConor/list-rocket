@@ -32,9 +32,20 @@ export const AddPollModal: React.FC<IAddBlockModalProps> = ({
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
+			const optionsMap = {};
 			optionsValues.forEach((option) => {
 				if (option === '') {
 					throw new Error('empty fields');
+				}
+				if (optionsMap[option]) {
+					optionsMap[option] += 1;
+				} else {
+					optionsMap[option] = 1;
+				}
+			});
+			Object.keys(optionsMap).forEach((option) => {
+				if (optionsMap[option] > 1) {
+					throw new Error('duplicate options');
 				}
 			});
 			const pollData = {
@@ -64,6 +75,13 @@ export const AddPollModal: React.FC<IAddBlockModalProps> = ({
 				toast.error('Please make sure there are no empty fields.', {
 					toastId: 'error-empty-poll-option-toast',
 				});
+			} else if (error.message === 'duplicate options') {
+				toast.error(
+					'Please make sure there are no duplicate options in the poll.',
+					{
+						toastId: 'error-empty-poll-option-toast',
+					}
+				);
 			} else {
 				toast.error('Please make sure there are no empty fields.', {
 					toastId: 'error-delete-poll-option-toast',
@@ -90,7 +108,7 @@ export const AddPollModal: React.FC<IAddBlockModalProps> = ({
 					onChange={(e) => setTitleValue(e.target.value)}
 				/>
 				{optionsValues.map((option, index: number) => (
-					<StyledInputWrapper>
+					<StyledInputWrapper key={index}>
 						<StyledTextInput
 							value={option}
 							placeholder={
