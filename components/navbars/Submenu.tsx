@@ -64,7 +64,9 @@ const StyledListItem = styled.li`
 	position: relative;
 	top: 0;
 	z-index: 10;
-	width: 100%;
+	width: 72px;
+	height: 64px;
+	cursor: pointer;
 `;
 const StyledAnchor = styled.a(
 	({ theme: { colors, shadows } }) => `
@@ -79,12 +81,15 @@ const StyledAnchor = styled.a(
 	width: 100%;
     height: 64px;
 	transition: 0.15s ease all;
+	cursor: pointer;
 
     &:hover {
-        cursor: pointer;
         background: ${colors.bgLight};
 		box-shadow: inset ${shadows.standard};
-		transform: scale(1.10);
+
+		img {
+			transform: scale(1.10);
+		}
     }
     `
 );
@@ -98,18 +103,21 @@ const StyledButton = styled.button(
 	position: relative;
 	top: 0;
 	z-index: 10;
-	width: 100%;
-    height: 64px;
+	width: 72px;
+	height: 64px;
 	outline: none;
 	border: none;
 	transition: 0.15s ease all;
 	background: none;
+	cursor: pointer;
 
     &:hover {
-        cursor: pointer;
         background: ${colors.bgLight};
 		box-shadow: inset ${shadows.standard};
-		transform: scale(1.10);
+
+		img {
+			transform: scale(1.10);
+		}
     }
     `
 );

@@ -53,14 +53,28 @@ export const DashLayout: React.FC<DashLayoutProps> = ({
 
 const StyledWrapper = styled.div`
 	width: 100%;
+	height: 100%;
 	box-sizing: border-box;
 	background: none;
 `;
+const StyledContainer = styled.div`
+	width: 100%;
+	max-height: 100%;
+	overflow: hidden;
+	display: flex;
+	padding-left: 75px;
+
+	@media only screen and (max-width: 768px) {
+		padding-left: 0;
+	}
+`;
 const StyledHeader = styled.header`
 	width: 75px;
-	height: 100%;
-	position: relative;
+	height: 100vh;
+	position: fixed;
 	z-index: 1000;
+	bottom: 0;
+	left: 0;
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
@@ -68,13 +82,6 @@ const StyledHeader = styled.header`
 		position: fixed;
 		bottom: 0;
 	}
-`;
-const StyledContainer = styled.div`
-	width: 100%;
-	height: 100%;
-	max-height: 100%;
-	overflow: hidden;
-	display: flex;
 `;
 const StyledMainSection = styled.div`
 	width: calc(100% - 75px);
