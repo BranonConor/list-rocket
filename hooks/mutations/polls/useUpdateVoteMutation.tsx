@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { IEvent, IUser } from '../../../contexts/types';
+import { IUser } from '../../../contexts/types';
 
 interface UpdateVoteParams {
 	pollId: string;

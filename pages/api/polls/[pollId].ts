@@ -52,6 +52,14 @@ const pollApiRoutes = async (req, res) => {
 			poll.save();
 			res.json({ status: 200, data: poll });
 		}
+		if (req.body.action === 'close-poll') {
+			const poll = await Poll.findById(req.query.pollId);
+
+			poll.isOpen = false;
+
+			poll.save();
+			res.json({ status: 200, data: poll });
+		}
 	}
 };
 

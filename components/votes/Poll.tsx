@@ -13,6 +13,7 @@ import { useDeletePollMutation } from '../../hooks/mutations/polls/useDeletePoll
 import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import { toast } from 'react-toastify';
 import { Dialog } from '../Dialog';
+import { useClosePollMutation } from '../../hooks/mutations/polls/useClosePollMutation';
 
 interface IPollProps {
 	id: string;
@@ -36,10 +37,12 @@ export const Poll: React.FC<IPollProps> = ({
 	const { user } = useContext(UserContext);
 	const { currentEvent } = useContext(WorkspaceContext);
 	const { mutate: deletePoll } = useDeletePollMutation();
+	const { mutate: closePoll } = useClosePollMutation();
 	const [currentValue, setCurrentValue] = useState<null | string>(
 		userSelection
 	);
 	const [deleteDialogIsOpen, setDeleteDialogIsOpen] = useState(false);
+	const [closePollDialogIsOpen, setClosePollDialogIsOpen] = useState(false);
 
 	const voteMap = getVoteMap(votes);
 	const getOptions = (options, voteMap) => {
@@ -87,87 +90,141 @@ export const Poll: React.FC<IPollProps> = ({
 		}
 	};
 
+	const handleClosePoll = async (e) => {
+		e.preventDefault();
+		try {
+			closePoll({
+				pollId: id,
+			});
+
+			await axios.post('/api/pusher', {
+				eventId: currentEvent?._id,
+				user: user,
+				action: 'event-update',
+			});
+			setClosePollDialogIsOpen(false);
+			toast.success('Closed poll ✅', {
+				toastId: 'close-poll-success-toast',
+			});
+		} catch (error) {
+			console.log(error);
+			toast.success('Something went wrong 😵‍💫', {
+				toastId: 'close-poll-error-toast',
+			});
+		}
+	};
+
 	return (
-		<StyledFormWrapper
-			initial={{
-				opacity: 0.5,
-			}}
-			animate={{
-				opacity: 1,
-			}}
-			transition={{
-				duration: 0.5,
-				type: 'spring',
-			}}>
-			<legend>
-				<Title variant='heading3'>{title}</Title>
-			</legend>
-			<StyledDetailsWrapper>
-				<StyledCreatorLabel>
-					<ProfilePhoto
-						photo={creator.image}
-						dimensions='24px'
-						hasBoxShadow
+		<StyledWrapper>
+			<StyledFormWrapper
+				initial={{
+					opacity: 0.5,
+				}}
+				animate={{
+					opacity: 1,
+				}}
+				transition={{
+					duration: 0.5,
+					type: 'spring',
+				}}>
+				<legend>
+					<Title variant='heading3'>{title}</Title>
+				</legend>
+				<StyledDetailsWrapper>
+					<StyledCreatorLabel>
+						<ProfilePhoto
+							photo={creator.image}
+							dimensions='24px'
+							hasBoxShadow
+						/>
+						<StyledText variant='body2'>{creator.name}</StyledText>
+					</StyledCreatorLabel>
+					<StyledStatusChip isOpen={isOpen}>
+						<Text variant='overline'>
+							{isOpen ? 'OPEN' : 'CLOSED'}
+						</Text>
+					</StyledStatusChip>
+				</StyledDetailsWrapper>
+				<StyledOptionsGrid>
+					{formattedOptions.map((option) => {
+						let isUserSelection = false;
+						voteMap[option.name]?.forEach((voter) => {
+							if (voter._id === user?._id) {
+								isUserSelection = true;
+							}
+						});
+
+						return (
+							<React.Fragment key={option.name}>
+								<Option
+									pollId={id}
+									name={option.name}
+									percentage={option.percentage}
+									isMostVotedOption={option.isMostVotedOption}
+									isOpen={isOpen}
+									currentValue={currentValue}
+									setCurrentValue={setCurrentValue}
+									isUserSelection={isUserSelection}
+								/>
+							</React.Fragment>
+						);
+					})}
+				</StyledOptionsGrid>
+				<StyledListButtonsWrapper>
+					<StyledAddNewIconButton
+						id='close-poll-button'
+						onClick={(e: any) => {
+							e.preventDefault();
+							if (isOpen) {
+								setClosePollDialogIsOpen(true);
+							} else {
+								toast.warning(
+									'This poll is already closed ☑️',
+									{
+										toastId: 'close-poll-warning-toast',
+									}
+								);
+							}
+						}}
+						isClosed={!isOpen}>
+						<StyledIcon src='/icons/check-circle-dark.svg' />
+					</StyledAddNewIconButton>
+					<StyledErrorIconButton
+						id='delete-poll-button'
+						onClick={(e: any) => {
+							e.preventDefault();
+							setDeleteDialogIsOpen(true);
+						}}>
+						<StyledIcon src='/icons/trash-red.svg' />
+					</StyledErrorIconButton>
+				</StyledListButtonsWrapper>
+
+				{deleteDialogIsOpen && (
+					<Dialog
+						title='Delete Poll'
+						description={`Are you sure you want to delete the poll: ${title}? All data for this poll will be permanently lost.`}
+						cta={handleDeletePoll}
+						buttonText='Delete'
+						setDialogIsOpen={setDeleteDialogIsOpen}
+						showCancelButton
 					/>
-					<StyledText variant='body2'>{creator.name}</StyledText>
-				</StyledCreatorLabel>
-				<StyledStatusChip isOpen={isOpen}>
-					<Text variant='overline'>{isOpen ? 'OPEN' : 'CLOSED'}</Text>
-				</StyledStatusChip>
-			</StyledDetailsWrapper>
-			<StyledOptionsGrid>
-				{formattedOptions.map((option) => {
-					let isUserSelection = false;
-					voteMap[option.name]?.forEach((voter) => {
-						if (voter._id === user?._id) {
-							isUserSelection = true;
-						}
-					});
-
-					return (
-						<React.Fragment key={option.name}>
-							<Option
-								pollId={id}
-								name={option.name}
-								percentage={option.percentage}
-								isMostVotedOption={option.isMostVotedOption}
-								isOpen={isOpen}
-								currentValue={currentValue}
-								setCurrentValue={setCurrentValue}
-								isUserSelection={isUserSelection}
-							/>
-						</React.Fragment>
-					);
-				})}
-			</StyledOptionsGrid>
-			<StyledListButtonsWrapper>
-				<StyledAddNewIconButton id='close-poll-button'>
-					<StyledIcon src='/icons/check-circle-dark.svg' />
-				</StyledAddNewIconButton>
-				<StyledErrorIconButton
-					id='delete-poll-button'
-					onClick={(e: any) => {
-						e.preventDefault();
-						setDeleteDialogIsOpen(true);
-					}}>
-					<StyledIcon src='/icons/trash-red.svg' />
-				</StyledErrorIconButton>
-			</StyledListButtonsWrapper>
-
-			{deleteDialogIsOpen && (
-				<Dialog
-					title='Delete Event'
-					description={`Are you sure you want to delete the poll: ${title}? All data for this poll will be permanently lost.`}
-					cta={handleDeletePoll}
-					buttonText='Delete'
-					setDialogIsOpen={setDeleteDialogIsOpen}
-					showCancelButton
-				/>
-			)}
-		</StyledFormWrapper>
+				)}
+				{closePollDialogIsOpen && (
+					<Dialog
+						title='Close Poll'
+						description={`Are you sure you want to close the poll: ${title}? Collaborators will no longer be able to cast votes on this poll.`}
+						cta={handleClosePoll}
+						buttonText='Close Poll'
+						setDialogIsOpen={setClosePollDialogIsOpen}
+						showCancelButton
+					/>
+				)}
+			</StyledFormWrapper>
+		</StyledWrapper>
 	);
 };
 
+const StyledWrapper = styled.div``;
 const StyledFormWrapper = styled(motion.form)(
 	({ theme: { colors } }) => `
 	display: flex;
@@ -178,6 +235,7 @@ const StyledFormWrapper = styled(motion.form)(
     border-radius: 10px;
     padding: 16px;
     box-sizing: border-box;
+	height: auto;
 
 	&:hover {
 		#close-poll-button {
@@ -242,8 +300,11 @@ const StyledListButtonsWrapper = styled.div`
 		margin: 0 8px 0 0;
 	}
 `;
-const StyledAddNewIconButton = styled.button(
-	({ theme: { colors } }) => `
+interface IStyledAddNewIconButtonProps {
+	isClosed: boolean;
+}
+const StyledAddNewIconButton = styled.button<IStyledAddNewIconButtonProps>(
+	({ isClosed, theme: { colors } }) => `
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -254,12 +315,11 @@ const StyledAddNewIconButton = styled.button(
 	border: none;
 	background: ${colors.chip.defaultBg};
 	transition: 0.15s ease all;
+	cursor: ${isClosed ? 'not-allowed' : 'pointer'};
 
 	&:hover {
-		cursor: pointer;
-
 		img {
-			transform: scale(1.2);
+			transform:  ${isClosed ? 'scale(1)' : 'scale(1.2)'};
 		}
 	}
 `

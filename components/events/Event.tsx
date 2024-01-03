@@ -428,20 +428,16 @@ const StyledTopWrapper = styled.div`
 		grid-template-columns: 1fr;
 	}
 `;
-const StyledRocketWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
-	box-sizing: border-box;
-`;
 const StyledPollsWrapper = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr;
 	grid-gap: 16px;
 	width: 100%;
 	margin-top: 16px;
+
+	@media only screen and (max-width: 1100px) {
+		grid-template-columns: 1fr 1fr;
+	}
 
 	@media only screen and (max-width: 768px) {
 		grid-template-columns: 1fr;
