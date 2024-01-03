@@ -56,16 +56,16 @@ export const AddPollModal: React.FC<IAddBlockModalProps> = ({
 				isOpen: true,
 			};
 
+			addPoll(pollData);
+			setTitleValue('');
+			setOptionsValues(['']);
+			setPollsModalIsOpen(false);
+
 			await axios.post('/api/pusher', {
 				eventId: currentEvent?._id,
 				user: user,
 				action: 'event-update',
 			});
-
-			addPoll(pollData);
-			setTitleValue('');
-			setOptionsValues(['']);
-			setPollsModalIsOpen(false);
 
 			toast.success('Poll created 🗳️', {
 				toastId: 'error-empty-poll-option-toast',
