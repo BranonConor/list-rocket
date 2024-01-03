@@ -1,10 +1,33 @@
 import connectMongo from '../../../models/utils/connectMongo';
 import { Poll } from '../../../models/Poll';
-import { _id } from '@next-auth/mongodb-adapter';
+import { Event } from '../../../models/Event';
 
 const pollApiRoutes = async (req, res) => {
 	//mongoose code
 	await connectMongo();
+
+	if (req.method === 'DELETE') {
+		//Delete it from the event it lives in
+		const event = await (
+			await Event.findById(req.body.eventId)
+		).populate({
+			path: 'polls',
+		});
+		const updatedPolls = event.polls.filter((poll) => {
+			return poll._id.toString() !== req.query.pollId;
+		});
+		event.polls = updatedPolls;
+		event.save();
+		// Delete the event
+		const deletedPoll = await Poll.deleteOne({
+			_id: req.query.pollId,
+		});
+
+		res.send({
+			status: 200,
+			data: deletedPoll,
+		});
+	}
 
 	if (req.method === 'PUT') {
 		// ---- POLL UPDATES ---

@@ -89,7 +89,7 @@ export const Option: React.FC<IOptionProps> = ({
 				initial={{ width: '0%' }}
 				animate={{ width: `${percentage}%` }}
 				transition={{
-					duration: 0.25,
+					duration: 0.35,
 					type: 'spring',
 				}}
 			/>
