@@ -7,7 +7,6 @@ const pollsApiRoutes = async (req, res) => {
 	await connectMongo();
 
 	if (req.method === 'POST') {
-		console.log('PAYLOAD:', req.body);
 		try {
 			//Create a new poll from req data
 			const newPoll = new Poll({ ...req.body });

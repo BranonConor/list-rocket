@@ -1,33 +1,67 @@
+import axios from 'axios';
 import { motion } from 'framer-motion';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 import styled from 'styled-components';
+import { UserContext } from '../../contexts/UserContext';
+import { WorkspaceContext } from '../../contexts/WorkspaceContext';
+import { useUpdateVoteMutation } from '../../hooks/mutations/polls/useUpdateVoteMutation';
 
 interface IOptionProps {
+	pollId: string;
 	name: string;
 	isMostVotedOption?: boolean;
 	percentage?: number;
 	isOpen?: boolean;
 	currentValue?: string;
 	setCurrentValue?: Dispatch<SetStateAction<string>>;
+	isUserSelection?: boolean;
 }
 
 export const Option: React.FC<IOptionProps> = ({
+	pollId,
 	name,
 	isMostVotedOption,
 	percentage,
 	isOpen,
 	currentValue,
 	setCurrentValue,
+	isUserSelection,
 }) => {
 	const isDisabled = !isOpen;
+	const { user } = useContext(UserContext);
+	const { currentEvent } = useContext(WorkspaceContext);
+	const { mutate: updateVote } = useUpdateVoteMutation();
 
-	const handleClick = () => {
-		if (!isDisabled) {
-			if (currentValue !== name.toLowerCase() || currentValue === null) {
-				setCurrentValue(name.toLowerCase());
+	const handleClick = async () => {
+		if (!isDisabled && currentValue !== name.toLowerCase()) {
+			try {
+				updateVote({
+					pollId,
+					userId: user?._id,
+					vote: {
+						user: user,
+						option: name,
+					},
+				});
+				if (
+					currentValue !== name.toLowerCase() ||
+					currentValue === null
+				) {
+					setCurrentValue(name.toLowerCase());
+				}
+
+				await axios.post('/api/pusher', {
+					eventId: currentEvent?._id,
+					user: user,
+					action: 'event-update',
+				});
+			} catch (error) {
+				console.log(error);
 			}
 		}
 	};
+
+	const isChecked = currentValue === name.toLowerCase() || isUserSelection;
 
 	return (
 		<StyledWrapper
@@ -39,7 +73,7 @@ export const Option: React.FC<IOptionProps> = ({
 					type='radio'
 					name={name}
 					value={name.toLowerCase()}
-					checked={currentValue === name.toLowerCase()}
+					checked={isChecked}
 					isDisabled={isDisabled}
 					disabled={isDisabled}
 				/>

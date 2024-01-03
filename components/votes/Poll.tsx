@@ -4,9 +4,13 @@ import { ProfilePhoto } from '../ProfilePhoto';
 import { Text } from '../typography/Text';
 import { Option } from './Option';
 import { IUser } from '../../contexts/types';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { motion } from 'framer-motion';
+import { UserContext } from '../../contexts/UserContext';
+import { getVoteMap } from '../../helpers/getVoteMap';
 
 interface IPollProps {
+	id: string;
 	title: string;
 	creator: IUser;
 	isOpen?: boolean;
@@ -16,6 +20,7 @@ interface IPollProps {
 }
 
 export const Poll: React.FC<IPollProps> = ({
+	id,
 	title,
 	creator,
 	isOpen = false,
@@ -23,44 +28,45 @@ export const Poll: React.FC<IPollProps> = ({
 	userSelection = null,
 	votes,
 }) => {
+	const { user } = useContext(UserContext);
 	const [currentValue, setCurrentValue] = useState<null | string>(
 		userSelection
 	);
 
-	const getVoteMap = (votes) => {
-		const map = {};
-		votes.forEach((vote) => {
-			if (map[vote.option]) {
-				map[vote.option].push(vote.user);
-			} else {
-				map[vote.option] = [vote.user];
-			}
-		});
-		return map;
-	};
+	const voteMap = getVoteMap(votes);
+
 	const getOptions = (options, voteMap) => {
 		let totalVotes = 0;
 		options.forEach((option) => {
-			totalVotes += voteMap[option]?.length;
+			totalVotes += voteMap[option]?.length || 0;
 		});
 		let mostVotes = 0;
 		const reformattedOptions = options.map((option) => {
-			const freq = voteMap[option]?.length;
+			const freq = voteMap[option]?.length || 0;
 			mostVotes = Math.max(freq, mostVotes);
 			const percentage = Math.ceil((freq / totalVotes) * 100);
 			return {
 				name: option,
 				percentage: percentage ? percentage : 0,
-				isMostVotedOption: mostVotes === freq,
+				isMostVotedOption: mostVotes === freq && freq !== 0,
 			};
 		});
 		return reformattedOptions;
 	};
-	console.log('Vote Map: ', getVoteMap(votes));
-	const formattedOptions = getOptions(options, getVoteMap(votes));
-	console.log(formattedOptions);
+	const formattedOptions = getOptions(options, voteMap);
+
 	return (
-		<StyledFormWrapper>
+		<StyledFormWrapper
+			initial={{
+				opacity: 0.5,
+			}}
+			animate={{
+				opacity: 1,
+			}}
+			transition={{
+				duration: 0.5,
+				type: 'spring',
+			}}>
 			<legend>
 				<Title variant='heading3'>{title}</Title>
 			</legend>
@@ -78,24 +84,35 @@ export const Poll: React.FC<IPollProps> = ({
 				</StyledStatusChip>
 			</StyledDetailsWrapper>
 			<StyledOptionsGrid>
-				{formattedOptions.map((option) => (
-					<React.Fragment key={option.name}>
-						<Option
-							name={option.name}
-							percentage={option.percentage}
-							isMostVotedOption={option.isMostVotedOption}
-							isOpen={isOpen}
-							currentValue={currentValue}
-							setCurrentValue={setCurrentValue}
-						/>
-					</React.Fragment>
-				))}
+				{formattedOptions.map((option) => {
+					let isUserSelection = false;
+					voteMap[option.name]?.forEach((voter) => {
+						if (voter._id === user?._id) {
+							isUserSelection = true;
+						}
+					});
+
+					return (
+						<React.Fragment key={option.name}>
+							<Option
+								pollId={id}
+								name={option.name}
+								percentage={option.percentage}
+								isMostVotedOption={option.isMostVotedOption}
+								isOpen={isOpen}
+								currentValue={currentValue}
+								setCurrentValue={setCurrentValue}
+								isUserSelection={isUserSelection}
+							/>
+						</React.Fragment>
+					);
+				})}
 			</StyledOptionsGrid>
 		</StyledFormWrapper>
 	);
 };
 
-const StyledFormWrapper = styled.form(
+const StyledFormWrapper = styled(motion.form)(
 	({ theme: { colors } }) => `
 	display: flex;
 	flex-direction: column;

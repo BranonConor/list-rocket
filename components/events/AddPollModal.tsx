@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import styled from 'styled-components';
@@ -28,7 +29,7 @@ export const AddPollModal: React.FC<IAddBlockModalProps> = ({
 		setOptionsValues(values);
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
 			optionsValues.forEach((option) => {
@@ -43,6 +44,12 @@ export const AddPollModal: React.FC<IAddBlockModalProps> = ({
 				event: currentEvent,
 				isOpen: true,
 			};
+
+			await axios.post('/api/pusher', {
+				eventId: currentEvent?._id,
+				user: user,
+				action: 'event-update',
+			});
 
 			addPoll(pollData);
 			setTitleValue('');

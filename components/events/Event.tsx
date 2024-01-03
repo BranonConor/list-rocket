@@ -18,16 +18,6 @@ interface IEventProps {
 	currentEvent: any;
 }
 
-const mockOptions = ['Convenience', 'Collaboration', 'User Experience'];
-const mockVotes = [
-	{ user: 'branon', option: 'Convenience' },
-	{ user: 'rachel', option: 'Convenience' },
-	{ user: 'brooke', option: 'User Experience' },
-	{ user: 'donna', option: 'Collaboration' },
-	{ user: 'cruz', option: 'User Experience' },
-	{ user: 'caleb', option: 'Convenience' },
-];
-
 export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 	const { refreshEvent } = useContext(WorkspaceContext);
 	const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
@@ -36,8 +26,6 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 
 	const { lists, collaborators, pendingCollaborators, polls } = currentEvent;
 	const [activeTab, setActiveTab] = useState('lists');
-
-	console.log('Polls: ', polls);
 
 	//This entire grid build is an abonimation and also a stroke of genius
 	const getGrid = (columnCount, lists) => {
@@ -140,9 +128,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 			{activeTab === 'lists' &&
 				(!lists?.length ? (
 					<StyledEmptyEventWrapper>
-						<StyledH3 variant='heading3'>
-							NO EVENT BLOCKS ADDED
-						</StyledH3>
+						<StyledH3 variant='heading3'>NO LISTS ADDED</StyledH3>
 					</StyledEmptyEventWrapper>
 				) : (
 					<>
@@ -239,6 +225,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 						{polls?.map((poll) => {
 							return (
 								<Poll
+									id={poll._id}
 									creator={poll.creator}
 									title={poll.title}
 									options={poll.options}
@@ -250,7 +237,9 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 						})}
 					</StyledPollsWrapper>
 				) : (
-					<Text variant='body1'>Nothing here :)</Text>
+					<StyledEmptyEventWrapper>
+						<StyledH3 variant='heading3'>NO POLLS ADDED</StyledH3>
+					</StyledEmptyEventWrapper>
 				))}
 
 			{blockModalIsOpen && (
