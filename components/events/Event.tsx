@@ -5,7 +5,6 @@ import { WorkspaceContext } from '../../contexts/WorkspaceContext';
 import styled from 'styled-components';
 import Pusher from 'pusher-js';
 import { Title } from '../typography/Title';
-import { Text } from '../typography/Text';
 import { AddBlockButton } from '../buttons/AddBlockButton';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -13,7 +12,6 @@ import { UserContext } from '../../contexts/UserContext';
 import { AddBlockModal } from './AddBlockModal';
 import { Poll } from '../votes/Poll';
 import { AddPollModal } from './AddPollModal';
-
 interface IEventProps {
 	currentEvent: any;
 }
@@ -26,6 +24,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 
 	const { lists, collaborators, pendingCollaborators, polls } = currentEvent;
 	const [activeTab, setActiveTab] = useState('lists');
+	const reversedPolls = [...polls].reverse();
 
 	//This entire grid build is an abonimation and also a stroke of genius
 	const getGrid = (columnCount, lists) => {
@@ -222,7 +221,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 			{activeTab === 'polls' &&
 				(polls?.length ? (
 					<StyledPollsWrapper>
-						{polls?.map((poll) => {
+						{reversedPolls?.map((poll) => {
 							return (
 								<Poll
 									id={poll._id}

@@ -58,7 +58,7 @@ const StyledWrapper = styled.div`
 `;
 const StyledHeader = styled.header`
 	width: 75px;
-	height: fill-content;
+	height: 100%;
 	position: relative;
 	z-index: 1000;
 
@@ -71,21 +71,22 @@ const StyledHeader = styled.header`
 `;
 const StyledContainer = styled.div`
 	width: 100%;
-	height: 100vh;
+	height: 100%;
 	max-height: 100%;
-	overflow: auto;
+	overflow: hidden;
 	display: flex;
 `;
 const StyledMainSection = styled.div`
 	width: calc(100% - 75px);
 	height: 100%;
-	overflow-y: scroll;
-	padding: 32px 32px 72px 32px;
+	padding: 32px;
+	margin-bottom: 41px;
 	box-sizing: border-box;
 	background: none;
 
 	@media only screen and (max-width: 768px) {
 		width: 100%;
-		padding: 16px 16px 80px 16px;
+		padding: 16px;
+		margin-bottom: 64px;
 	}
 `;

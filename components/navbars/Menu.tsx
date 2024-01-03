@@ -88,6 +88,7 @@ const StyledListItem = styled.div`
 	position: relative;
 	top: 0;
 	width: 100%;
+	height: 100%;
 `;
 interface IStyledAnchorProps {
 	isActive: boolean;
@@ -102,7 +103,7 @@ const StyledAnchor = styled.a<IStyledAnchorProps>(
 	position: relative;
 	top: 0;
 	width: 100%;
-    height: 64px;
+    height: 100%;
 	background: ${isActive && colors.bgLight};
 	box-shadow: inset ${isActive && shadows.standard};
 	transition: 0.1s ease all;
