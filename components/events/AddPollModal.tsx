@@ -169,7 +169,7 @@ const StyledTextInput = styled.input(
 	({ theme: { colors, typography } }) => `
 	width: 100%;
 	box-sizing: border-box;
-	padding: 8px;
+	padding: 8px 36px 8px 8px;
 	margin-bottom: 16px;
 	border: none;
     border-radius: 8px;

@@ -77,7 +77,7 @@ export const Option: React.FC<IOptionProps> = ({
 					isDisabled={isDisabled}
 					disabled={isDisabled}
 				/>
-				{name}
+				<StyledText>{name}</StyledText>
 			</StyledLabel>
 
 			<StyledPercentageWrapper
@@ -104,7 +104,7 @@ const StyledWrapper = styled.div<IStyledWrapperProps>(
 	({ isDisabled, isMostVotedOption, theme: { colors, shadows } }) => `
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
+	align-items: flex-start;
     background: white;
     color: ${colors.bgDark};
     padding: 8px;
@@ -112,7 +112,7 @@ const StyledWrapper = styled.div<IStyledWrapperProps>(
     width: 100%;
     box-sizing: border-box;
     cursor: pointer;
-    height: 32px;
+    min-height: 32px;
     position: relative;
     overflow: hidden;
 	opacity: ${isDisabled && !isMostVotedOption ? '0.4' : '1'};
@@ -166,7 +166,7 @@ const StyledBar = styled(motion.div)(
 const StyledLabel = styled.label(
 	({ theme: { typography } }) => `
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: center;
 	position: relative;
 	z-index: 1;
@@ -192,6 +192,8 @@ const StyledInput = styled(motion.input)<IStyledInputProps>(
 	align-items: center;
 	justify-content: center;
 	cursor: ${isDisabled ? 'not-allowed' : 'pointer'};
+	min-width: 16px;
+	margin-top: 3px;
 
 	&::before {
 		display: inline-block;
@@ -209,3 +211,9 @@ const StyledInput = styled(motion.input)<IStyledInputProps>(
 	} 
 `
 );
+const StyledText = styled.p`
+	display: flex;
+	align-items: flex-start;
+	margin: 0;
+	padding: 0;
+`;
