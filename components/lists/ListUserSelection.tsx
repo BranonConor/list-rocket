@@ -58,36 +58,42 @@ export const ListUserSelector: React.FC<IListUserSelectorProps> = ({
 	};
 
 	return (
-		<StyledWrapper
-			initial={{ opacity: 0, top: -8 }}
-			animate={{ opacity: 1, top: 0 }}
-			transition={{
-				duration: 0.2,
-				type: 'spring',
-			}}>
-			{users.map((user, index) => {
-				return (
-					<StyledMotionWrapper
-						key={user._id}
-						initial={{ opacity: 0, top: -16 }}
-						animate={{ opacity: 1, top: 0 }}
-						transition={{
-							duration: 0.25,
-							type: 'spring',
-						}}
-						onClick={() => handleClick(user)}>
-						<ProfilePhoto photo={user.image} dimensions='24px' />
-					</StyledMotionWrapper>
-				);
-			})}
-			<StyledIconWrapper>
-				<StyledIcon
-					id='add-user-icon'
-					src='/icons/add-minimal.svg'
-					onClick={handleAddCustomUser}
-				/>
-			</StyledIconWrapper>
-		</StyledWrapper>
+		<>
+			<StyledBlanket onClick={() => setIsUserSelectorOpen(false)} />
+			<StyledWrapper
+				initial={{ opacity: 0, top: -8 }}
+				animate={{ opacity: 1, top: 0 }}
+				transition={{
+					duration: 0.2,
+					type: 'spring',
+				}}>
+				{users.map((user, index) => {
+					return (
+						<StyledMotionWrapper
+							key={user._id}
+							initial={{ opacity: 0, top: -16 }}
+							animate={{ opacity: 1, top: 0 }}
+							transition={{
+								duration: 0.25,
+								type: 'spring',
+							}}
+							onClick={() => handleClick(user)}>
+							<ProfilePhoto
+								photo={user.image}
+								dimensions='24px'
+							/>
+						</StyledMotionWrapper>
+					);
+				})}
+				<StyledIconWrapper>
+					<StyledIcon
+						id='add-user-icon'
+						src='/icons/add-minimal.svg'
+						onClick={handleAddCustomUser}
+					/>
+				</StyledIconWrapper>
+			</StyledWrapper>
+		</>
 	);
 };
 
@@ -104,7 +110,7 @@ const StyledWrapper = styled(motion.div)(
 	border-radius: 20px;
 	height: auto;
     box-shadow: ${shadows.standard};
-    z-index: 5;
+    z-index: 1000;
 
     &:hover {
 
@@ -114,6 +120,14 @@ const StyledWrapper = styled(motion.div)(
     }
     `
 );
+const StyledBlanket = styled.div`
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+`;
 const StyledMotionWrapper = styled(motion.div)(
 	({ theme: { colors } }) => `
 	display: flex;
