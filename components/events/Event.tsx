@@ -12,6 +12,11 @@ import { UserContext } from '../../contexts/UserContext';
 import { AddBlockModal } from './AddBlockModal';
 import { Poll } from '../votes/Poll';
 import { AddPollModal } from './AddPollModal';
+import '@blocknote/core/fonts/inter.css';
+import { BlockNoteView } from '@blocknote/mantine';
+import '@blocknote/mantine/style.css';
+import { useCreateBlockNote } from '@blocknote/react';
+
 interface IEventProps {
 	currentEvent: any;
 }
@@ -21,6 +26,7 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 	const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
 	const [pollsModalIsOpen, setPollsModalIsOpen] = useState(false);
 	const { user } = useContext(UserContext);
+	const editor = useCreateBlockNote();
 
 	const { lists, collaborators, pendingCollaborators, polls } = currentEvent;
 	const [activeTab, setActiveTab] = useState('lists');
@@ -121,6 +127,18 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 							}
 						/>
 						Polls
+					</StyledTab>
+					<StyledTab
+						isActive={activeTab === 'docs'}
+						onClick={() => setActiveTab('docs')}>
+						<StyledTabIcon
+							src={
+								activeTab === 'docs'
+									? '/icons/poll-light.svg'
+									: '/icons/poll-dark.svg'
+							}
+						/>
+						Docs/Plans
 					</StyledTab>
 				</StyledTabsWrapper>
 			</StyledTopWrapper>
@@ -241,6 +259,8 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 					</StyledEmptyEventWrapper>
 				))}
 
+			{activeTab === 'docs' && <BlockNoteView editor={editor} />}
+
 			{blockModalIsOpen && (
 				<AddBlockModal
 					setBlockModalIsOpen={setBlockModalIsOpen}
@@ -262,6 +282,12 @@ const StyledEventWrapper = styled.div`
 	width: 100%;
 	height: 100%;
 	position: relative;
+
+	.bn-editor {
+		@media only screen and (max-width: 500px) {
+			padding: 16px;
+		}
+	}
 
 	#extra-large-grid {
 		display: grid;
