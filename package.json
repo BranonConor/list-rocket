@@ -25,7 +25,7 @@
 		"mongodb": "4.5.0",
 		"mongoose": "7.0.0",
 		"next": "12.0.7",
-		"next-auth": "4.0.5",
+		"next-auth": "4.24.10",
 		"pusher": "5.1.2",
 		"pusher-js": "^8.0.2",
 		"react": "18.0.0",
