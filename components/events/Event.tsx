@@ -13,21 +13,20 @@ import { AddBlockModal } from './AddBlockModal';
 import { Poll } from '../votes/Poll';
 import { AddPollModal } from './AddPollModal';
 import '@blocknote/core/fonts/inter.css';
-import { BlockNoteView } from '@blocknote/mantine';
 import '@blocknote/mantine/style.css';
-import { useCreateBlockNote } from '@blocknote/react';
+import { useUpdateDocMutation } from '../../hooks/mutations/useUpdateDocMutation';
+import { Block } from '@blocknote/core';
+import { DocEditor } from '../doc/DocEditor';
 
 interface IEventProps {
 	currentEvent: any;
 }
 
-export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
+export const Event = ({ currentEvent }: IEventProps) => {
 	const { refreshEvent } = useContext(WorkspaceContext);
 	const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
 	const [pollsModalIsOpen, setPollsModalIsOpen] = useState(false);
 	const { user } = useContext(UserContext);
-	const editor = useCreateBlockNote();
-
 	const { lists, collaborators, pendingCollaborators, polls } = currentEvent;
 	const [activeTab, setActiveTab] = useState('lists');
 	const reversedPolls = [...polls].reverse();
@@ -50,6 +49,23 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 	const desktopGrid = getGrid(5, lists);
 	const tabletGrid = getGrid(4, lists);
 	const mobileGrid = getGrid(1, lists);
+
+	//BLOCK EDITOR
+	const { mutate: updateDoc } = useUpdateDocMutation();
+	const handleDocChange = async (jsonBlocks: Block[]) => {
+		try {
+			console.log('updating doc!');
+			updateDoc({
+				eventId: currentEvent._id,
+				docData: JSON.stringify(jsonBlocks),
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error(`Something went wrong 😵‍💫`, {
+				toastId: 'doc-error-toast',
+			});
+		}
+	};
 
 	const handleAddListBlock = async () => {
 		setBlockModalIsOpen(false);
@@ -129,16 +145,16 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 						Polls
 					</StyledTab>
 					<StyledTab
-						isActive={activeTab === 'docs'}
-						onClick={() => setActiveTab('docs')}>
+						isActive={activeTab === 'doc'}
+						onClick={() => setActiveTab('doc')}>
 						<StyledTabIcon
 							src={
-								activeTab === 'docs'
-									? '/icons/poll-light.svg'
-									: '/icons/poll-dark.svg'
+								activeTab === 'doc'
+									? '/icons/doc-light.svg'
+									: '/icons/doc-dark.svg'
 							}
 						/>
-						Docs/Plans
+						Doc
 					</StyledTab>
 				</StyledTabsWrapper>
 			</StyledTopWrapper>
@@ -259,7 +275,12 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 					</StyledEmptyEventWrapper>
 				))}
 
-			{activeTab === 'docs' && <BlockNoteView editor={editor} />}
+			{activeTab === 'doc' && (
+				<DocEditor
+					onChange={handleDocChange}
+					currentEvent={currentEvent}
+				/>
+			)}
 
 			{blockModalIsOpen && (
 				<AddBlockModal
@@ -284,8 +305,15 @@ const StyledEventWrapper = styled.div`
 	position: relative;
 
 	.bn-editor {
-		@media only screen and (max-width: 500px) {
-			padding: 16px;
+		padding: 32px 54px;
+		margin: 16px 0 0 0;
+		min-height: 150px;
+		border-radius: 12px;
+	}
+
+	@media only screen and (max-width: 500px) {
+		.bn-editor {
+			padding: 16px 8px 16px 16px;
 		}
 	}
 

@@ -23,7 +23,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	className?: string;
 }
 
-export const SecondaryButton: React.FC<Props> = ({
+export const SecondaryButton = ({
 	variant,
 	content,
 	icon,
