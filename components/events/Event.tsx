@@ -433,7 +433,7 @@ const StyledTabsWrapper = styled.div(
 	overflow: hidden;
 	height: 36px;
 	justify-self: end;
-	align-self: center;
+	align-self: start;
 
 	@media only screen and (max-width: 768px) {
 		max-width: 100%;
