@@ -456,7 +456,7 @@ const StyledTab = styled.div<IStyledTabProps>(
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 50%;
+	width: 33.33%;
 
 	&:hover {
 		background: ${isActive ? colors.tertiaryGradient : colors.chip.defaultBg};
