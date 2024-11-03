@@ -37,7 +37,7 @@ export const DocEditor = ({ onChange, currentEvent }: DocEditorProps) => {
 
 	return (
 		<BlockNoteView
-			// @ts-ignore
+			//@ts-ignore
 			editor={editor as BlockNoteEditor}
 			theme='light'
 			onChange={() => {
