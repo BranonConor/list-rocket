@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import Image from 'next/image';
-import { Text } from '../typography/Text';
 
 export enum BUTTON_WIDTH_VARIANTS {
 	'small' = '100px',
@@ -25,7 +24,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	isLoading?: boolean;
 }
 
-export const PrimaryButton: React.FC<Props> = ({
+export const PrimaryButton = ({
 	variant,
 	content,
 	icon,
@@ -93,16 +92,3 @@ const StyledButton = styled.button<StyleProps>(
 	}
 `
 );
-const StyledText = styled(Text)`
-	position: absolute;
-	left: 0;
-	top: 0;
-	z-index: 2;
-	width: 100%;
-	height: 100%;
-	color: white;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin: 0;
-`;

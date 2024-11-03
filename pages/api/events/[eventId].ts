@@ -3,6 +3,7 @@ import { Event } from '../../../models/Event';
 import { User } from '../../../models/User';
 import { List, ListItem } from '../../../models/List';
 import { Poll } from '../../../models/Poll';
+import { Doc } from '../../../models/Doc';
 
 const eventApiRoutes = async (req, res) => {
 	//mongoose code
@@ -14,6 +15,7 @@ const eventApiRoutes = async (req, res) => {
 		await ListItem.findOne({});
 		await User.findOne({});
 		await Poll.findOne({});
+		await Doc.findOne({});
 
 		const event = await Event.findById(req.query.eventId)
 			.populate('creator')
@@ -48,7 +50,8 @@ const eventApiRoutes = async (req, res) => {
 						path: 'user',
 					},
 				},
-			});
+			})
+			.populate('doc');
 		res.json({ status: 200, data: event });
 	}
 
@@ -137,6 +140,32 @@ const eventApiRoutes = async (req, res) => {
 			event.save();
 
 			res.json({ status: 200, data: { event: event, newList: newList } });
+		}
+		if (req.body.action === 'update-doc') {
+			//find the event object we want to update the doc data for
+			const event = await Event.findById(req.query.eventId);
+			if (!event) {
+				res.status(404).send({
+					success: false,
+					error: { message: 'event not found' },
+				});
+			} else {
+				//if there's no doc for this event, create one and add it to the event
+				if (!event.doc) {
+					const newDoc = new Doc();
+					newDoc.data = req.body.docData;
+					newDoc.event = req.body.eventId;
+					event.doc = newDoc.id;
+					await newDoc.save();
+					await event.save();
+				} else {
+					//if one already exists, update it
+					const foundDoc = await Doc.findById(event.doc);
+					foundDoc.data = req.body.docData;
+					await foundDoc.save();
+				}
+				return res.status(200).send();
+			}
 		}
 
 		// ---- COLLABORATOR UPDATES ----

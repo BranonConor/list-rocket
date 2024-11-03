@@ -25,7 +25,6 @@ const listApiRoutes = async (req, res) => {
 		const list = await List.findById(req.body.listId);
 		//update the creator field, clear any collaborator creator values
 		list.customCreator = req.body.name;
-		list.creator = null;
 		//save
 		list.save();
 

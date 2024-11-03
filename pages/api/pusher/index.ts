@@ -34,15 +34,22 @@ export default async function handler(req, res) {
 	}
 	if (req.body.action === 'send-invite') {
 		const user = await User.findOne({ email: req.body.userEmail });
-		await pusherClient.trigger(
-			`user-channel-${user._id}`,
-			`user-channel-update-${user._id}`,
-			{
-				user: user,
-			}
-		);
+		if (!user) {
+			res.status(404).send({
+				success: false,
+				error: { message: 'user not found' },
+			});
+		} else {
+			await pusherClient.trigger(
+				`user-channel-${user._id}`,
+				`user-channel-update-${user._id}`,
+				{
+					user: user,
+				}
+			);
 
-		res.json({ message: 'completed' });
+			res.json({ message: 'completed' });
+		}
 	}
 	if (req.body.action === 'remove-collaborator') {
 		const user = await User.findById(req.body.userId);

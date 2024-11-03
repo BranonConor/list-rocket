@@ -12,16 +12,21 @@ import { UserContext } from '../../contexts/UserContext';
 import { AddBlockModal } from './AddBlockModal';
 import { Poll } from '../votes/Poll';
 import { AddPollModal } from './AddPollModal';
+import '@blocknote/core/fonts/inter.css';
+import '@blocknote/mantine/style.css';
+import { useUpdateDocMutation } from '../../hooks/mutations/useUpdateDocMutation';
+import { Block } from '@blocknote/core';
+import { DocEditor } from '../doc/DocEditor';
+
 interface IEventProps {
 	currentEvent: any;
 }
 
-export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
+export const Event = ({ currentEvent }: IEventProps) => {
 	const { refreshEvent } = useContext(WorkspaceContext);
 	const [blockModalIsOpen, setBlockModalIsOpen] = useState(false);
 	const [pollsModalIsOpen, setPollsModalIsOpen] = useState(false);
 	const { user } = useContext(UserContext);
-
 	const { lists, collaborators, pendingCollaborators, polls } = currentEvent;
 	const [activeTab, setActiveTab] = useState('lists');
 	const reversedPolls = [...polls].reverse();
@@ -44,6 +49,23 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 	const desktopGrid = getGrid(5, lists);
 	const tabletGrid = getGrid(4, lists);
 	const mobileGrid = getGrid(1, lists);
+
+	//BLOCK EDITOR
+	const { mutate: updateDoc } = useUpdateDocMutation();
+	const handleDocChange = async (jsonBlocks: Block[]) => {
+		try {
+			console.log('updating doc!');
+			updateDoc({
+				eventId: currentEvent._id,
+				docData: JSON.stringify(jsonBlocks),
+			});
+		} catch (error) {
+			console.log(error);
+			toast.error(`Something went wrong 😵‍💫`, {
+				toastId: 'doc-error-toast',
+			});
+		}
+	};
 
 	const handleAddListBlock = async () => {
 		setBlockModalIsOpen(false);
@@ -121,6 +143,18 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 							}
 						/>
 						Polls
+					</StyledTab>
+					<StyledTab
+						isActive={activeTab === 'doc'}
+						onClick={() => setActiveTab('doc')}>
+						<StyledTabIcon
+							src={
+								activeTab === 'doc'
+									? '/icons/doc-light.svg'
+									: '/icons/doc-dark.svg'
+							}
+						/>
+						Doc
 					</StyledTab>
 				</StyledTabsWrapper>
 			</StyledTopWrapper>
@@ -241,6 +275,13 @@ export const Event: React.FC<IEventProps> = ({ currentEvent }) => {
 					</StyledEmptyEventWrapper>
 				))}
 
+			{activeTab === 'doc' && (
+				<DocEditor
+					onChange={handleDocChange}
+					currentEvent={currentEvent}
+				/>
+			)}
+
 			{blockModalIsOpen && (
 				<AddBlockModal
 					setBlockModalIsOpen={setBlockModalIsOpen}
@@ -262,6 +303,19 @@ const StyledEventWrapper = styled.div`
 	width: 100%;
 	height: 100%;
 	position: relative;
+
+	.bn-editor {
+		padding: 32px 54px;
+		margin: 16px 0 0 0;
+		min-height: 150px;
+		border-radius: 12px;
+	}
+
+	@media only screen and (max-width: 500px) {
+		.bn-editor {
+			padding: 16px 8px 16px 16px;
+		}
+	}
 
 	#extra-large-grid {
 		display: grid;
@@ -379,7 +433,7 @@ const StyledTabsWrapper = styled.div(
 	overflow: hidden;
 	height: 36px;
 	justify-self: end;
-	align-self: center;
+	align-self: start;
 
 	@media only screen and (max-width: 768px) {
 		max-width: 100%;
@@ -402,7 +456,7 @@ const StyledTab = styled.div<IStyledTabProps>(
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 50%;
+	width: 33.33%;
 
 	&:hover {
 		background: ${isActive ? colors.tertiaryGradient : colors.chip.defaultBg};

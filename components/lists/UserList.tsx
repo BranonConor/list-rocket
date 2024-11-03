@@ -80,13 +80,13 @@ export const UserList: React.FC<Props> = ({
 	>(null);
 
 	let creatorName = isCurrentUser
-		? 'Your'
+		? 'Your List'
 		: creator
-		? `${creator?.name.split(' ')[0]}'s`
-		: 'Unassigned';
+		? `${creator?.name.split(' ')[0]}'s List`
+		: 'New List';
 
 	if (customCreator) {
-		creatorName = `${customCreator}'s`;
+		creatorName = customCreator;
 	}
 
 	const handleSubmit = async (event: any) => {
@@ -258,7 +258,8 @@ export const UserList: React.FC<Props> = ({
 									}}>
 									<ProfilePhoto
 										photo={
-											creator?.image || '/assets/user.svg'
+											creator?.image ||
+											'/icons/list-dark-small.svg'
 										}
 										dimensions='24px'
 										hasBoxShadow
@@ -324,7 +325,7 @@ export const UserList: React.FC<Props> = ({
 									<StyledTitle
 										variant='heading5'
 										onClick={handleListClick}>
-										{creatorName} List
+										{creatorName}
 										{currentEvent?.controls
 											?.anonymousModeIsOn &&
 											isCurrentUser && (
@@ -519,6 +520,7 @@ const StyledTitle = styled(Title)`
 	margin: 0px;
 	max-height: 40px;
 	width: 100%;
+	top: 2px;
 
 	img {
 		margin: 0 0 0 8px;
