@@ -2,6 +2,7 @@
 
 import { Block, BlockNoteEditor, PartialBlock } from '@blocknote/core';
 import { BlockNoteView } from '@blocknote/mantine';
+import { useCreateBlockNote } from '@blocknote/react';
 import React, { useEffect, useMemo, useState } from 'react';
 
 interface DocEditorProps {
@@ -36,7 +37,8 @@ export const DocEditor = ({ onChange, currentEvent }: DocEditorProps) => {
 
 	return (
 		<BlockNoteView
-			editor={editor}
+			// @ts-ignore
+			editor={editor as BlockNoteEditor}
 			theme='light'
 			onChange={() => {
 				onChange(editor.document);
